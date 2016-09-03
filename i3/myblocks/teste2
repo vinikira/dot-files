@@ -1,0 +1,7 @@
+#!/bin/bash
+acpi -b
+
+case $BLOCK_BUTTON in
+  4) /usr/bin/light -A 5 ;;
+  5) /usr/bin/light -U 5;;
+esac

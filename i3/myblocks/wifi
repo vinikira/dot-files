@@ -16,8 +16,8 @@
 
 #------------------------------------------------------------------------
 
-INTERFACE="${BLOCK_INSTANCE:-wlan0}"
-
+INTERFACE="$(ip route | awk '/^default/ { print $5 ; exit }')"
+ESSID="$(iwconfig $INTERFACE | awk '/ESSID/ { print $4 ; end }')"
 #------------------------------------------------------------------------
 
 # As per #36 -- It is transparent: e.g. if the machine has no battery or wireless
@@ -31,7 +31,7 @@ QUALITY=$(grep $INTERFACE /proc/net/wireless | awk '{ print int($3 * 100 / 70) }
 
 #------------------------------------------------------------------------
 
-echo $QUALITY% # full text
+echo $ESSID $QUALITY% # full text
 echo $QUALITY% # short text
 
 # color

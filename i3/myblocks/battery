@@ -38,9 +38,9 @@ $percent = $2;
 $full_text = "$percent%";
 $short_text = $full_text;
 
-#if ($acpi =~ /(\d\d:\d\d):/) {
+if ($acpi =~ /(\d\d:\d\d):/) {
 	$full_text .= " ($1)";
-#}
+}
 
 #icon battery
 
@@ -63,6 +63,16 @@ if ($status eq 'Charging') {
 
 # print text
 print "$full_text\n";
-#print "$short_text\n";
+print "$short_text\n";
+
+my $btn_mouse = $ENV{'BLOCK_BUTTON'};
+
+
+if($btn_mouse == '4') {
+  exec "/usr/bin/light -A 5";
+} elsif ($btn_mouse == '5') {
+  exec "/usr/bin/light -U 5";
+}
+  
 
 exit(0);

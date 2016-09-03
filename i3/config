@@ -96,11 +96,15 @@ bindsym $mod+a focus parent
 
 #My workspaces
 
-set $workspace1 "Editor"
+set $workspace1 "Code"
 set $workspace2 "Web"
 set $workspace3 "Chat"
 set $workspace4 "Work"
 set $workspace5 "Game"
+set $workspace6 "Six"
+set $workspace7 "Seven"
+set $workspace8 "Eight"
+set $workspace9 "Nine"
 set $workspace10 "Music"
 
 # switch to workspace
@@ -109,10 +113,10 @@ bindsym $mod+2 workspace $workspace2
 bindsym $mod+3 workspace $workspace3
 bindsym $mod+4 workspace $workspace4
 bindsym $mod+5 workspace $workspace5
-bindsym $mod+6 workspace 6
-bindsym $mod+7 workspace 7
-bindsym $mod+8 workspace 8
-bindsym $mod+9 workspace 9
+bindsym $mod+6 workspace $workspace6
+bindsym $mod+7 workspace $workspace7
+bindsym $mod+8 workspace $workspace8
+bindsym $mod+9 workspace $workspace9
 bindsym $mod+0 workspace $workspace10
 
 # move focused container to workspace
@@ -198,7 +202,7 @@ client.unfocused           $uColor  $uColor  $tColor  $iColor    $uColor
 
 
 #floating all windows
-#for_window [class="[.]*"] floating enable
+for_window [class="[.]*"] floating enable
 
 #no title bar
 for_window [class="[.]*"] border pixel 1
@@ -223,6 +227,6 @@ bindsym XF86MonBrightnessDown exec /usr/bin/light -U 5
 
 exec --no-startup-id compton -f
 
-exec feh --bg-scale ~/Imagens/Wallpappers/1.jpg
+exec_aways --no-startup-id nitrogen --restore
 
 #####################################################################################
