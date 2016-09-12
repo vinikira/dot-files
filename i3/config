@@ -224,9 +224,22 @@ bindsym XF86Launch1 exec /usr/bin/pactl play-sample that_was_easy
 bindsym XF86MonBrightnessUp exec /usr/bin/light -A 5
 bindsym XF86MonBrightnessDown exec /usr/bin/light -U 5
 
+#assign workspaces
+assign [class="firefox"] $workspace2
+assign [class="google-chrome"] $workspace2
+
+assign [class="franz"] $workspace3
+
+assign [class="code"] $workspace1
+assign [class="termite"] $workspace1
+assign [class="atom"] $workspace1
+assign [class="subl3"] $workspace1
+
 
 exec --no-startup-id compton -f
 
-exec_aways --no-startup-id nitrogen --restore
+exec --no-startup-id dunst
+
+exec --no-startup-id nitrogen --restore
 
 #####################################################################################

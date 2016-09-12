@@ -57,7 +57,7 @@ if ($percent <= 10) {
 }
 
 
-if ($status eq 'Charging') {
+if ($status eq 'Charging' or $status eq 'Full') {
 	$full_text .= ' ';
 }
 

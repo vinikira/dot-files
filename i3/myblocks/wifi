@@ -17,7 +17,7 @@
 #------------------------------------------------------------------------
 
 INTERFACE="$(ip route | awk '/^default/ { print $5 ; exit }')"
-ESSID="$(iwconfig $INTERFACE | awk '/ESSID/ { print $4 ; end }')"
+ESSID="$(iwconfig $INTERFACE | awk '/ESSID/ { print $4 ; end }' | sed 's/"/ /g; s/ESSID: //g')"
 #------------------------------------------------------------------------
 
 # As per #36 -- It is transparent: e.g. if the machine has no battery or wireless
