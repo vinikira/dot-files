@@ -6,6 +6,12 @@ set foldmethod=syntax
 set tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab
 set background=dark
 set cursorline
+ino " ""<left>
+ino ' ''<left>
+ino ( ()<left>
+ino [ []<left>
+ino { {}<left>
+ino {<CR> {<CR>}<ESC>O
 
 "Plugins------------------------------------------------------
 set nocompatible              " be iMproved, required
