@@ -1,11 +1,27 @@
 "My settings
 syntax on
-set number
 let g:javascript_plugin_jsdoc = 1
 set foldmethod=syntax
-set tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab
 set background=dark
 set cursorline
+" Desabilitar backups:
+set nobackup
+set noswapfile
+set nowritebackup
+" Clipboard do sistema:
+set clipboard=unnamed
+" Tabs por espaços:
+set expandtab
+set shiftwidth=4
+set tabstop=4
+" Indentação:
+filetype plugin indent on
+set autoindent
+" Régua, quebra e número de linhas:
+set linebreak
+set number
+set ruler
+" auto complete tags
 ino " ""<left>
 ino ' ''<left>
 ino ( ()<left>
@@ -13,29 +29,34 @@ ino [ []<left>
 ino { {}<left>
 ino {<CR> {<CR>}<ESC>O
 
-"Plugins------------------------------------------------------
-set nocompatible              " be iMproved, required
-filetype off                  " required
+" Navegação entre abas:
+map <C-Tab> :tabnext<CR>
+map <S-Tab> :tabprevious<CR>
+" Salvar
+nmap <silent> <C-S> :silent w<CR>
+" Busca
+set hlsearch
+set ignorecase
+set incsearch
+" Limpar os resultados destacados:
+nmap <silent> <C-C> :silent noh<CR>
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+"Plugs------------------------------------------------------
 
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'pangloss/vim-javascript'
-Plugin 'scrooloose/nerdtree'
-Plugin 'bling/vim-airline'
-Plugin 'majutsushi/tagbar'
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'tpope/vim-fugitive'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'valloric/youcompleteme'
+call plug#begin('~/.vim/plugged')
 
+Plug 'pangloss/vim-javascript'
+Plug 'scrooloose/nerdtree'
+Plug 'bling/vim-airline'
+Plug 'majutsushi/tagbar'
+Plug 'scrooloose/nerdcommenter'
+Plug 'altercation/vim-colors-solarized'
+Plug 'valloric/youcompleteme'
+Plug 'joshdick/onedark.vim'
+Plug 'sheerun/vim-polyglot'
 
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
+call plug#end()
+
 
 "-------------------------------------------------------------
 
@@ -57,9 +78,8 @@ let g:airline#extensions#tabline#enabled = 1
 nmap <F8> :TagbarToggle<CR>
 "------------------------------------------------------------
 
-"ColorScheme Configs----------------------------------------
-let g:solarized_termcolors=256
-colorscheme solarized
-"-----------------------------------------------------------
+if (has("termguicolors"))
+    set termguicolors
+endif
 
-
+colorscheme onedark
