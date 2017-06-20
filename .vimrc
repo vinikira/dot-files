@@ -48,7 +48,6 @@ call plug#begin('~/.vim/plugged')
 Plug 'pangloss/vim-javascript'
 Plug 'scrooloose/nerdtree'
 Plug 'bling/vim-airline'
-Plug 'majutsushi/tagbar'
 Plug 'scrooloose/nerdcommenter'
 Plug 'altercation/vim-colors-solarized'
 Plug 'valloric/youcompleteme'
@@ -72,10 +71,6 @@ map <C-n> :NERDTreeToggle<CR>
 
 "AirLine Configs---------------------------------------------
 let g:airline#extensions#tabline#enabled = 1
-"------------------------------------------------------------
-
-"Tagbar Configs----------------------------------------------
-nmap <F8> :TagbarToggle<CR>
 "------------------------------------------------------------
 
 if (has("termguicolors"))
