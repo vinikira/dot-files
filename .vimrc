@@ -3,6 +3,7 @@ let mapleader=","
 "My settings
 syntax on
 let g:javascript_plugin_jsdoc = 1
+set term=screen-256color
 set foldmethod=syntax
 set background=dark
 set cursorline
@@ -22,6 +23,7 @@ set autoindent
 " Régua, quebra e número de linhas:
 set linebreak
 set number
+set relativenumber
 set ruler
 " auto complete tags
 ino " ""<left>
