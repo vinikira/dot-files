@@ -1,3 +1,5 @@
+"map leader
+let mapleader=","
 "My settings
 syntax on
 let g:javascript_plugin_jsdoc = 1
@@ -55,7 +57,9 @@ Plug 'scrooloose/nerdtree'
 Plug 'bling/vim-airline'
 Plug 'scrooloose/nerdcommenter'
 Plug 'altercation/vim-colors-solarized'
-Plug 'valloric/youcompleteme'
+"Plug 'valloric/youcompleteme'
+"Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }                                                                                                       
+Plug 'tpope/vim-surround'                                                                                                                                           
 Plug 'joshdick/onedark.vim'
 Plug 'sheerun/vim-polyglot'
 
