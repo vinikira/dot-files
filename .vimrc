@@ -64,6 +64,7 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'tpope/vim-surround'                                                                                                                                           
 Plug 'joshdick/onedark.vim'
 Plug 'sheerun/vim-polyglot'
+Plug 'maksimr/vim-jsbeautify'
 
 call plug#end()
 
@@ -83,6 +84,13 @@ map <C-n> :NERDTreeToggle<CR>
 "AirLine Configs---------------------------------------------
 let g:airline#extensions#tabline#enabled = 1
 "------------------------------------------------------------
+
+"js beautify
+autocmd FileType javascript vnoremap <buffer>  <c-f> :call RangeJsBeautify()<cr>
+autocmd FileType json vnoremap <buffer> <c-f> :call RangeJsonBeautify()<cr>
+autocmd FileType jsx vnoremap <buffer> <c-f> :call RangeJsxBeautify()<cr>
+autocmd FileType html vnoremap <buffer> <c-f> :call RangeHtmlBeautify()<cr>
+autocmd FileType css vnoremap <buffer> <c-f> :call RangeCSSBeautify()<cr>
 
 if (has("termguicolors"))
     set termguicolors
