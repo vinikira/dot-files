@@ -109,6 +109,7 @@ let g:syntastic_check_on_wq = 1
 "ctrlp
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
 
 "ternjs
  let g:tern_request_timeout = 1
