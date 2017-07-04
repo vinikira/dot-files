@@ -60,6 +60,7 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'altercation/vim-colors-solarized'
 "Plug 'valloric/youcompleteme'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'carlitux/deoplete-ternjs', { 'do': 'sudo npm install -g tern' }
 Plug 'tpope/vim-surround'
 Plug 'joshdick/onedark.vim'
 Plug 'sheerun/vim-polyglot'
@@ -79,7 +80,7 @@ autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
 autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
+"autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
 
 map <C-n> :NERDTreeToggle<CR>
 "------------------------------------------------------------
@@ -108,6 +109,20 @@ let g:syntastic_check_on_wq = 1
 "ctrlp
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
+
+"ternjs
+ Use deoplete.
+ let g:tern_request_timeout = 1
+ let g:tern_show_signature_in_pum = '0'  " This do disable full signature
+ type on autocomplete
+
+ "Add extra filetypes
+ let g:tern#filetypes = [
+                 \ 'jsx',
+                 \ 'javascript.jsx',
+                 \ 'vue']
+
+
 
 if (has("termguicolors"))
     set termguicolors
