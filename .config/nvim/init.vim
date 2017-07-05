@@ -1,6 +1,6 @@
 "map leader
 let mapleader=","
-"My settings
+"My settings teste
 syntax on
 let g:javascript_plugin_jsdoc = 1
 set foldmethod=syntax
@@ -34,10 +34,10 @@ ino { {}<left>
 ino {<CR> {<CR>}<ESC>O
 
 " Navegação entre abas:
-map <C-Tab> :tabnext<CR>
-map <S-Tab> :tabprevious<CR>
+map <C-Tab> :tabNext<CR>
+map <S-Tab> :tabPrevious<CR>
 " Salvar
-nmap <silent> <C-S> :silent w<CR>
+nmap <C-S> :w<CR>
 " Busca
 set hlsearch
 set ignorecase
@@ -60,20 +60,30 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'altercation/vim-colors-solarized'
 "Plug 'valloric/youcompleteme'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'carlitux/deoplete-ternjs', { 'do': 'sudo npm install -g tern' }
+Plug 'carlitux/deoplete-ternjs', { 'do': 'sudo npm install -g tern', 'for': ['javascript', 'javascript.jsx'] }
 Plug 'tpope/vim-surround'
 Plug 'joshdick/onedark.vim'
 Plug 'sheerun/vim-polyglot'
 Plug 'maksimr/vim-jsbeautify'
 Plug 'vim-syntastic/syntastic'
-Plug 'kien/ctrlp.vim'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
 
 call plug#end()
 
 
 "-------------------------------------------------------------
+"deoplete
 
 let g:deoplete#enable_at_startup = 1
+let g:deoplete#omni#functions = {}
+let g:deoplete#omni#functions.javascript = ['tern#Complete']
+
+set completeopt=longest,menuone,preview
+let g:deoplete#sources = {}
+let g:deoplete#sources['javascript.jsx'] = ['file', 'ternjs', 'ultisnips']
+let g:tern#command = ['tern']
+let g:tern#arguments = ['--persistent']
 
 "NerdTree configs--------------------------------------------
 autocmd StdinReadPre * let s:std_in=1
