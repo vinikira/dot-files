@@ -1,8 +1,8 @@
 "map leader
 let mapleader=","
-"My settings teste
+"My settings 
 syntax on
-let g:javascript_plugin_jsdoc = 1
+set encoding=utf-8
 set foldmethod=syntax
 set background=dark
 set cursorline
@@ -55,7 +55,8 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'pangloss/vim-javascript'
 Plug 'scrooloose/nerdtree'
-Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'scrooloose/nerdcommenter'
 Plug 'altercation/vim-colors-solarized'
 "Plug 'valloric/youcompleteme'
@@ -68,11 +69,15 @@ Plug 'maksimr/vim-jsbeautify'
 Plug 'vim-syntastic/syntastic'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
+Plug 'kien/ctrlp.vim'
+Plug 'tpope/vim-fugitive'
 
 call plug#end()
 
-
 "-------------------------------------------------------------
+"jsdoc
+let g:javascript_plugin_jsdoc = 1
+
 "deoplete
 
 let g:deoplete#enable_at_startup = 1
@@ -95,9 +100,9 @@ autocmd StdinReadPre * let s:std_in=1
 map <C-n> :NERDTreeToggle<CR>
 "------------------------------------------------------------
 
-"AirLine Configs---------------------------------------------
+"AirLine Configs
 let g:airline#extensions#tabline#enabled = 1
-"------------------------------------------------------------
+let g:airline_powerline_fonts = 1
 
 "js beautify
 autocmd FileType javascript vnoremap <buffer>  <c-f> :call RangeJsBeautify()<cr>
