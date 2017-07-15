@@ -6,6 +6,7 @@ set encoding=utf-8
 set foldmethod=syntax
 set background=dark
 set cursorline
+set mouse=a
 ""set term=screen-256color
 " Desabilitar backups:
 set nobackup
@@ -71,6 +72,7 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'kien/ctrlp.vim'
 Plug 'tpope/vim-fugitive'
+Plug 'mattn/emmet-vim/'
 
 call plug#end()
 
