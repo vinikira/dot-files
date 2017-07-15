@@ -126,7 +126,10 @@ let g:syntastic_check_on_wq = 1
 "ctrlp
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
-let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
+let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git\|bower_components'
+nnoremap <Leader>b :CtrlPBuffer<CR>
+" Open most recently used files
+nnoremap <Leader>f :CtrlPMRUFiles<CR>
 
 "ternjs
  let g:tern_request_timeout = 1
