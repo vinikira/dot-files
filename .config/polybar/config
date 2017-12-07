@@ -47,8 +47,8 @@ font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
 font-2 = siji:pixelsize=10;1
 
 modules-left = bspwm
-modules-center = 
-modules-right = filesystem xbacklight volume memory cpu battery date powermenu
+modules-center = music
+modules-right = usb redshift bluetooth filesystem xbacklight volume memory cpu battery date powermenu
 
 tray-position = right
 tray-padding = 2
@@ -354,6 +354,38 @@ menu-2-0 = power off
 menu-2-0-exec = sudo poweroff
 menu-2-1 = cancel
 menu-2-1-exec = menu-open-0
+
+[module/music]
+type = custom/script
+interval = 2
+
+label = %output:0:45:...%
+exec = ~/.config/polybar/mpris.sh
+click-left = playerctl previous
+click-middle = playerctl play-pause
+click-right = playerctl next
+
+[module/redshift]
+type = custom/script
+interval = 5
+
+exec = ~/.config/polybar/redshift.sh
+
+[module/bluetooth]
+type = custom/script
+interval = 5
+
+exec = ~/.config/polybar/bluetooth.sh
+
+[module/usb]
+type = custom/script
+interval = 10
+; Could be exec = ~/.config/polybar/usb.sh /media/$USER
+exec = ~/.config/polybar/usb.sh
+; Unmount every devices on click
+click-left = udiskie-umount -a
+label = "%output:0:80%"
+format = "<label>"
 
 [settings]
 screenchange-reload = true

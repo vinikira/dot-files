@@ -1,9 +1,10 @@
 #! /bin/sh
 
 sxhkd &
-feh &
+feh --bg-fil ~/Imagens/Wallpapers/rick.png &
 polybar example &
-compton &
+compton -bcG &
+dunst &
 
 bspc monitor -d I II III IV V VI VII VIII IX X
 
@@ -19,3 +20,4 @@ bspc rule -a Chromium desktop='^2'
 bspc rule -a mplayer2 state=floating
 bspc rule -a Kupfer.py focus=on
 bspc rule -a Screenkey manage=off
+bspc rule -a Emacs state=tiled
