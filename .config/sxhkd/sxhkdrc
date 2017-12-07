@@ -18,6 +18,10 @@ super + alt + @space
 super + Escape
 	pkill -USR1 -x sxhkd
 
+# lock screen
+ctrl + alt + l
+	i3lock-fancy
+
 #
 # bspwm hotkeys
 #
