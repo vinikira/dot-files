@@ -22,6 +22,29 @@ super + Escape
 ctrl + alt + l
 	i3lock-fancy
 
+Print
+	scrot -s '%Y%m%d_$wx$h.png' -e 'mv $f ~/Imagens/screenshots/'
+
+XF86AudioMute
+	amixer -c 1 sset Master toggle
+
+XF86AudioLowerVolume
+	amixer -c 1 sset Master 3%-
+
+XF86AudioRaiseVolume
+	amixer -c 1 sset Master 3%+
+
+XF86AudioMicMute
+	sh -c "if amixer get Capture,0 | grep -q '\[on\]' ; then 
+amixer -q 
+set Capture,0 nocap ; else amixer -q set Capture,0 cap; fi"
+
+XF86MonBrightnessUp
+	xbacklight -inc 5%
+
+XF86MonBrightnessDown
+	xbacklight -dec 5%
+
 #
 # bspwm hotkeys
 #

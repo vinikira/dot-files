@@ -2,11 +2,20 @@
 
 sxhkd &
 feh --bg-fil ~/Imagens/Wallpapers/rick.png &
-polybar example &
+$HOME/.config/polybar/launch.sh &
 compton -bcG &
 dunst &
 
-bspc monitor -d I II III IV V VI VII VIII IX X
+# bspc monitor -d I II III IV V VI VII VIII IX X
+# Setup monitors
+i=1
+for monitor in $(bspc query -M); do
+    bspc monitor $monitor \
+        -n "$i" \
+        -d {One,Two,Three,Four,Five,Six,Seven,Eight,Nine,Ten}
+    let i++
+done
+unset i
 
 bspc config border_width         2
 bspc config window_gap          12
@@ -14,6 +23,8 @@ bspc config window_gap          12
 bspc config split_ratio          0.52
 bspc config borderless_monocle   true
 bspc config gapless_monocle      true
+bspc config click_to_focus	 button1
+bspc config remove_disabled_monitor true
 
 bspc rule -a Gimp desktop='^8' state=floating follow=on
 bspc rule -a Chromium desktop='^2'
