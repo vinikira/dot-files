@@ -22,14 +22,22 @@ srandrd autorandr --change --default &
 
 # bspc monitor -d I II III IV V VI VII VIII IX X
 # Setup monitors
-i=1
-for monitor in $(bspc query -M); do
-    bspc monitor $monitor \
-        -n "$i" \
-        -d {,,,,,,}
-    let i++
-done
-unset i
+setupMonitors() {
+	i=1
+	for monitor in $(bspc query -M); do
+    	bspc monitor $monitor \
+      	  -n "$i" \
+    	    -d {,,,,,,}
+  	  let i++
+	done
+	unset i
+}
+
+setupMonitors
+
+while read line; do
+	setupMonitors
+done < (bspc subscribe monitor)
 
 bspc config border_width         2
 bspc config window_gap          12
