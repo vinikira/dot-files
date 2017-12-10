@@ -6,7 +6,7 @@ icon=""
 
 pgrep -x redshift &> /dev/null
 if [[ $? -eq 0 ]]; then
-    temp=$(redshift -p 2>/dev/null | grep temp | cut -d' ' -f3)
+    temp=$(redshift -p 2>/dev/null | grep 'K' | cut -d' ' -f4)
     temp=${temp//K/}
 fi
 

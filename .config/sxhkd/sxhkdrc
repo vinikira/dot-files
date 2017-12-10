@@ -4,7 +4,7 @@
 
 # terminal emulator
 super + Return
-	st
+	st -f "Hack:size=11"
 
 # program launcher
 super + @space
@@ -21,9 +21,9 @@ super + Escape
 # lock screen
 ctrl + alt + l
 	i3lock-fancy
-
+# print screen
 Print
-	scrot -s '%Y%m%d_$wx$h.png' -e 'mv $f ~/Imagens/screenshots/'
+	scrot '%Y%m%d_$wx$h.png' -e 'mv $f ~/Imagens/screenshots/'
 
 XF86AudioMute
 	amixer -c 1 sset Master toggle
@@ -84,6 +84,13 @@ super + ctrl + {x,y,z}
 #
 # focus/swap
 #
+
+# multiple monitor desktop fucus
+alt + {_,shift + }{1-9,0}
+    bspc {desktop -f, window -d} $(bspc query -M -m)/{a,b,c}
+# next monitor
+alt + w
+        bspc monitor -f next
 
 # focus the node in the given direction
 super + {_,shift + }{h,j,k,l}

@@ -1,10 +1,24 @@
 #! /bin/sh
+#Auto start
 
 sxhkd &
 feh --bg-fil ~/Imagens/Wallpapers/rick.png &
 $HOME/.config/polybar/launch.sh &
-compton -bcG &
+compton -b &
 dunst &
+pulseaudio --start &
+xsetroot -cursor_name left_ptr &
+export GTK2_RC_FILES="$HOME/.gtkrc-2.0" &
+dropbox &
+megasync &
+redshift &
+xset +fp /usr/share/fonts/local &
+xset +fp /usr/share/fonts/misc &
+xset +fp ~/.fonts &
+xset fp rehash &
+fc-cache -fv &
+i3lock-wait-for-suspend &
+srandrd autorandr --change --default &
 
 # bspc monitor -d I II III IV V VI VII VIII IX X
 # Setup monitors
@@ -12,7 +26,7 @@ i=1
 for monitor in $(bspc query -M); do
     bspc monitor $monitor \
         -n "$i" \
-        -d {One,Two,Three,Four,Five,Six,Seven,Eight,Nine,Ten}
+        -d {,,,,,,}
     let i++
 done
 unset i
@@ -27,8 +41,11 @@ bspc config click_to_focus	 button1
 bspc config remove_disabled_monitor true
 
 bspc rule -a Gimp desktop='^8' state=floating follow=on
-bspc rule -a Chromium desktop='^2'
+bspc rule -a Chromium desktop='^1'
 bspc rule -a mplayer2 state=floating
 bspc rule -a Kupfer.py focus=on
+bspc rule -a Firefox desktop='^1'
+bspc rule -a Telegram desktop='^4'
+bspc rule -a Spotify desktop='^5'
 bspc rule -a Screenkey manage=off
 bspc rule -a Emacs state=tiled
