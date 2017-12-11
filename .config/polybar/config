@@ -18,14 +18,41 @@ primary = #ffb52a
 secondary = #e60053
 alert = #bd2c40
 
+[bar/left]
+monitor = DP1
+width = 100%
+height = 27
+fixed-center = true
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+line-size = 3
+line-color = #f00
+padding-left = 0
+padding-right = 2
+
+module-margin-left = 1
+module-margin-right = 2
+
+font-0 = "Noto Sans:pixelsize=10:antialias=yes;1"
+font-1 = "FontAwesome:fontformat=truetype:antialias=yes;2"
+
+modules-center = bspwm
+wm-restack = bspwm
+scroll-up = bspwm-desknext
+scroll-down = bspwm-deskprev
+
+
 [bar/example]
 monitor = ${env:MONITOR}
+;monitor = eDP1
 width = 100%
 height = 27
 ;offset-x = 0%
 ;offset-y = 0%
 ;radius = 6.0
-fixed-center = false
+fixed-center = true
 
 background = ${colors.background}
 foreground = ${colors.foreground}
@@ -97,6 +124,7 @@ label-unmounted-foreground = ${colors.foreground-alt}
 
 [module/bspwm]
 type = internal/bspwm
+format = <label-state><label-monitor>
 
 label-focused = %name%
 label-focused-background = ${colors.background-alt}

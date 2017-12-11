@@ -1,6 +1,8 @@
 #! /bin/sh
 #Auto start
 
+xrandr --output eDP1 --primary --auto --right-of DP1 --auto
+
 sxhkd &
 feh --bg-fil ~/Imagens/Wallpapers/rick.png &
 $HOME/.config/polybar/launch.sh &
@@ -20,24 +22,16 @@ fc-cache -fv &
 i3lock-wait-for-suspend &
 srandrd autorandr --change --default &
 
-# bspc monitor -d I II III IV V VI VII VIII IX X
+#bspc monitor -d I II III IV V VI VII VIII IX X
 # Setup monitors
-setupMonitors() {
-	i=1
-	for monitor in $(bspc query -M); do
-    	bspc monitor $monitor \
-      	  -n "$i" \
-    	    -d {,,,,,,}
-  	  let i++
-	done
-	unset i
-}
-
-setupMonitors
-
-while read line; do
-	setupMonitors
-done < (bspc subscribe monitor)
+i=1
+for monitor in $(bspc query -M); do
+   	bspc monitor $monitor \
+     	  -n "$i" \
+   	    -d {,,,,}
+ 	  let i++
+done
+unset i
 
 bspc config border_width         2
 bspc config window_gap          12
