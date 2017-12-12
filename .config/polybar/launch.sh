@@ -8,7 +8,7 @@ while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
 
 # Launch bars for all monitors
 for monitor in $(xrandr | grep " connected " | awk '{ print$1 }'); do
-    MONITOR=$monitor polybar example &
+    MONITOR=$monitor polybar top &
 done
 
 

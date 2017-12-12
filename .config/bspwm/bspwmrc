@@ -1,8 +1,6 @@
 #! /bin/sh
 #Auto start
 
-xrandr --output eDP1 --primary --auto --right-of DP1 --auto
-
 sxhkd &
 feh --bg-fil ~/Imagens/Wallpapers/rick.png &
 $HOME/.config/polybar/launch.sh &
@@ -24,14 +22,12 @@ srandrd autorandr --change --default &
 
 #bspc monitor -d I II III IV V VI VII VIII IX X
 # Setup monitors
-i=1
-for monitor in $(bspc query -M); do
-   	bspc monitor $monitor \
-     	  -n "$i" \
-   	    -d {,,,,}
- 	  let i++
+for monitor in $(xrandr | grep " connected " | awk '{ print $1 }'); do
+ 	bspc monitor $monitor \
+   	  -n "$monitor" \
+ 	    -d {,,,,}
+ 	let i++
 done
-unset i
 
 bspc config border_width         2
 bspc config window_gap          12

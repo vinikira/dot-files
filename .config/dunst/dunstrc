@@ -1,7 +1,7 @@
 [global]
-    font = xos4 Terminus 13
+    font = Noto Sans 13
     frame_width = 1
-    frame_color = "#1ABB9B"
+    frame_color = "#000000"
     # Allow a small subset of html markup:
     #   <b>bold</b>
     #   <i>italic</i>
@@ -9,10 +9,8 @@
     #   <u>underline</u>
     # 
     # For a complete reference see
-    # 
-<http://developer.gnome.org/pango/stable/PangoMarkupFormat.html>.
-    # If markup is not allowed, those tags will be stripped out of 
-the
+    # <http://developer.gnome.org/pango/stable/PangoMarkupFormat.html>.
+    # If markup is not allowed, those tags will be stripped out of the
     # message.
     markup = yes
     
@@ -29,24 +27,21 @@ the
     # Sort messages by urgency.
     sort = yes
     
-    # Show how many messages are currently hidden (because of 
-geometry).
+    # Show how many messages are currently hidden (because of geometry).
     indicate_hidden = yes
     
     # Alignment of message text.
     # Possible values are "left", "center" and "right".
     alignment = left
     
-    # The frequency with wich text that is longer than the 
-notification
+    # The frequency with wich text that is longer than the notification
     # window allows bounces back and forth.
     # This option conflicts with "word_wrap".
     # Set to 0 to disable.
     bounce_freq = 5
 
     
-    # Show age of message if message is older than 
-show_age_threshold
+    # Show age of message if message is older than show_age_threshold
     # seconds.
     # Set to -1 to disable.
     show_age_threshold = -1
@@ -62,25 +57,18 @@ show_age_threshold
     # The geometry of the window:
     #   [{width}]x{height}[+/-{x}+/-{y}]
     # The geometry of the message window.
-    # The height is measured in number of notifications everything 
-else
+    # The height is measured in number of notifications everything else
     # in pixels.  If the width is omitted but the height is given
-    # ("-geometry x2"), the message window expands over the whole 
-screen
-    # (dmenu-like).  If width is 0, the window expands to the 
-longest
+    # ("-geometry x2"), the message window expands over the whole screen
+    # (dmenu-like).  If width is 0, the window expands to the longest
     # message displayed.  A positive x is measured from the left, a
-    # negative from the right side of the screen.  Y is measured 
-from
+    # negative from the right side of the screen.  Y is measured from
     # the top and down respectevly.
-    # The width can be negative.  In this case the actual width is 
-the
-    # screen width minus the width defined in within the geometry 
-option.
+    # The width can be negative.  In this case the actual width is the
+    # screen width minus the width defined in within the geometry option.
     geometry = "0x4-25+25"
     
-    # Shrink window if it's smaller than the width.  Will be ignored 
-if
+    # Shrink window if it's smaller than the width.  Will be ignored if
     # width is 0.
     shrink = yes
     
@@ -89,8 +77,7 @@ if
     # present (e.g. xcompmgr, compiz, etc.).
     transparency = 0
     
-    # Don't remove messages, if the user is idle (no mouse or 
-keyboard input)
+    # Don't remove messages, if the user is idle (no mouse or keyboard input)
     # for longer than idle_threshold seconds.
     # Set to 0 to disable.
     # default 120
@@ -112,8 +99,7 @@ keyboard input)
     # will be ignored.
     follow = mouse
     
-    # Should a notification popped up from history be sticky or 
-timeout
+    # Should a notification popped up from history be sticky or timeout
     # as if it would normally do.
     sticky_history = yes
     
@@ -123,8 +109,7 @@ timeout
     # Display indicators for URLs (U) and actions (A).
     show_indicators = yes
     
-    # The height of a single line.  If the height is smaller than 
-the
+    # The height of a single line.  If the height is smaller than the
     # font height, it will get raised to the font height.
     # This adds empty space above and under the text.
     line_height = 0
@@ -143,16 +128,14 @@ the
     
     # Define a color for the separator.
     # possible values are:
-    #  * auto: dunst tries to find a color fitting to the 
-background;
+    #  * auto: dunst tries to find a color fitting to the background;
     #  * foreground: use the same color as the foreground;
     #  * frame: use the same color as the frame;
     #  * anything else will be interpreted as a X color.
     separator_color = #454947
     
     # Print a notification on startup.
-    # This is mainly for error detection, since dbus (re-)starts 
-dunst
+    # This is mainly for error detection, since dbus (re-)starts dunst
     # automatically after a crash.
     startup_notification = false
     
@@ -166,8 +149,7 @@ dunst
     icon_position = left
 
     # Paths to default icons.
-    icon_path = 
-/usr/share/icons/Breeze-Maia-Dark/status/32:/usr/share/icons/Breeze-Maia-Dark/devices/32/:/usr/share/icons/Breeze-Maia-Dark/apps/32/:/usr/share/icons/Breeze-Maia-Dark/categories/32:/usr/share/icons/Breeze-Maia-Dark/mimetypes/32/
+    icon_path = /usr/share/icons/Breeze-Maia-Dark/status/32:/usr/share/icons/Breeze-Maia-Dark/devices/32/:/usr/share/icons/Breeze-Maia-Dark/apps/32/:/usr/share/icons/Breeze-Maia-Dark/categories/32:/usr/share/icons/Breeze-Maia-Dark/mimetypes/32/
 
 [shortcuts]
 
@@ -184,8 +166,7 @@ dunst
     # close_all = ctrl+mod1+space
 
     # Redisplay last message(s).
-    # On the US keyboard layout "grave" is normally above TAB and 
-left
+    # On the US keyboard layout "grave" is normally above TAB and left
     # of "1".
     history = ctrl+mod1+v 
     
@@ -194,8 +175,7 @@ left
 
 [urgency_low]
     # IMPORTANT: colors have to be defined in quotation marks.
-    # Otherwise the "#" and following would be interpreted as a 
-comment.
+    # Otherwise the "#" and following would be interpreted as a comment.
     background = "#2f343f"
     foreground = "#888888"
     timeout = 10
@@ -211,13 +191,10 @@ comment.
     timeout = 0
 
 
-# Every section that isn't one of the above is interpreted as a 
-rules to
+# Every section that isn't one of the above is interpreted as a rules to
 # override settings for certain messages.
-# Messages can be matched by "appname", "summary", "body", "icon", 
-"category",
-# "msg_urgency" and you can override the "timeout", "urgency", 
-"foreground",
+# Messages can be matched by "appname", "summary", "body", "icon", "category",
+# "msg_urgency" and you can override the "timeout", "urgency", "foreground",
 # "background", "new_icon" and "format".
 # Shell-like globbing will get expanded.
 #
@@ -228,11 +205,9 @@ rules to
 #   script appname summary body icon urgency
 # where urgency can be "LOW", "NORMAL" or "CRITICAL".
 # 
-# NOTE: if you don't want a notification to be displayed, set the 
-format
+# NOTE: if you don't want a notification to be displayed, set the format
 # to "".
-# NOTE: It might be helpful to run dunst -print in a terminal in 
-order
+# NOTE: It might be helpful to run dunst -print in a terminal in order
 # to find fitting options for rules.
 
 #[espeak]
