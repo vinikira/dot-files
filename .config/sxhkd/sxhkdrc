@@ -16,7 +16,7 @@ super + alt + @space
 
 # make sxhkd reload its configuration files:
 super + Escape
-	pkill -USR1 -x sxhkd
+	pkill -USR1 -x sxhkd | notify-send "SXHKD success reloaded."
 
 # lock screen
 ctrl + alt + l
@@ -86,10 +86,10 @@ super + ctrl + {x,y,z}
 #
 
 # multiple monitor desktop fucus
-alt + {_,shift + }{1-9,0}
+super + alt + {_,shift + }{1-9,0}
     bspc {desktop -f, window -d} $(bspc query -M -m)/{a,b,c}
 # next monitor
-alt + w
+super + alt + w
         bspc monitor -f next
 
 # focus the node in the given direction
