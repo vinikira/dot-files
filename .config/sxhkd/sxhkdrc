@@ -12,7 +12,7 @@ super + @space
 
 # select open window
 super + alt + @space
-	rofi -show window 
+	rofi -show window
 
 # make sxhkd reload its configuration files:
 super + Escape
@@ -23,7 +23,15 @@ ctrl + alt + l
 	i3lock-fancy
 # print screen
 Print
-	scrot '%Y%m%d_$wx$h.png' -e 'mv $f ~/Imagens/screenshots/'
+	scrot '%Y%m%d_$wx$h.png' -e 'mv $f ~/Imagens/screenshots/ | notify-send "$f saved on ~/Imagens/screenshots/"'
+
+# ranger
+super + e
+      st -e ranger
+
+# pcmanfm qt
+super + shift + e
+      pcmanfm-qt
 
 XF86AudioMute
 	amixer -c 1 sset Master toggle
@@ -35,8 +43,8 @@ XF86AudioRaiseVolume
 	amixer -c 1 sset Master 3%+
 
 XF86AudioMicMute
-	sh -c "if amixer get Capture,0 | grep -q '\[on\]' ; then 
-amixer -q 
+	sh -c "if amixer get Capture,0 | grep -q '\[on\]' ; then
+amixer -q
 set Capture,0 nocap ; else amixer -q set Capture,0 cap; fi"
 
 XF86MonBrightnessUp

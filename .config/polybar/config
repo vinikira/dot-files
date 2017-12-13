@@ -84,7 +84,7 @@ tray-padding = 1
 
 wm-restack = bspwm
 
-override-redirect = true
+;override-redirect = true
 
 scroll-up = bspwm-desknext
 scroll-down = bspwm-deskprev
