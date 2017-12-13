@@ -7,11 +7,17 @@ killall -q polybar
 while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
 
 # Launch bars for all monitors
-for monitor in $(xrandr | grep " connected " | awk '{ print$1 }'); do
-    MONITOR=$monitor polybar top &
-done
+xrandr | grep " connected " | awk '{ print $1 " " $3 }' |
+    while read -r monitor
+    do
+        SCREEN_NAME=$(echo "$monitor" | awk '{ print $1 }')
+        SCREEN_STATUS=$(echo "$monitor" | awk '{ print $2 }')
 
-
-
+        if [ "$SCREEN_STATUS" == "primary" ]; then
+            MONITOR=$SCREEN_NAME polybar primary-top &
+        else
+            MONITOR=$SCREEN_NAME polybar secondary-top &
+        fi
+    done
 
 echo "Bars launched..."

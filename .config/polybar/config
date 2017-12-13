@@ -18,8 +18,8 @@ primary = #ffb52a
 secondary = #e60053
 alert = #bd2c40
 
-[bar/left]
-monitor = DP1
+[bar/secondary-top]
+monitor = ${env:MONITOR}
 width = 100%
 height = 27
 fixed-center = true
@@ -39,11 +39,12 @@ font-0 = "Noto Sans:pixelsize=10:antialias=yes;1"
 font-1 = "FontAwesome:fontformat=truetype:antialias=yes;2"
 
 modules-center = bspwm
+modules-right = date
 wm-restack = bspwm
 scroll-up = bspwm-desknext
 scroll-down = bspwm-deskprev
 
-[bar/top]
+[bar/primary-top]
 monitor = ${env:MONITOR}
 ;monitor = eDP1
 width = 100%

@@ -3,7 +3,6 @@
 
 sxhkd &
 feh --bg-fil ~/Imagens/Wallpapers/rick.png &
-$HOME/.config/polybar/launch.sh &
 compton -b &
 dunst &
 pulseaudio --start &
