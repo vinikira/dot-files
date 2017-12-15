@@ -17,7 +17,8 @@ xset +fp ~/.fonts &
 xset fp rehash &
 fc-cache -fv &
 i3lock-wait-for-suspend &
-srandrd autorandr --change --default &
+sh $HOME/.config/polybar/launch.sh &
+#srandrd autorandr --change --default &
 
 #bspc monitor -d I II III IV V VI VII VIII IX X
 # Setup monitors
