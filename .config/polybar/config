@@ -74,9 +74,9 @@ module-margin-right = 2
 font-0 = "Noto Sans:pixelsize=10:antialias=yes;1"
 font-1 = "FontAwesome:fontformat=truetype:antialias=yes;2"
 
-modules-left = music
-modules-center = bspwm
-modules-right = usb redshift bluetooth xbacklight volume wlan battery date powermenu
+modules-left = bspwm music
+modules-center = date
+modules-right = usb redshift bluetooth xbacklight volume wlan battery powermenu
 
 tray-position = right
 tray-padding = 1
