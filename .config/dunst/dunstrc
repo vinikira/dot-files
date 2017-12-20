@@ -2,6 +2,8 @@
     font = Monospace 10
     frame_width = 1
     frame_color = "#000000"
+    #icon
+    max_icon_size = 32
     # Allow a small subset of html markup:
     #   <b>bold</b>
     #   <i>italic</i>
@@ -162,7 +164,7 @@
     # close = mod1+space
     
     # Close all notifications.
-    # close_all = ctrl+shift+space
+    close_all = ctrl+shift+space
     # close_all = ctrl+mod1+space
 
     # Redisplay last message(s).
