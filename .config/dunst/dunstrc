@@ -1,5 +1,5 @@
 [global]
-    font = Noto Sans 13
+    font = Monospace 10
     frame_width = 1
     frame_color = "#000000"
     # Allow a small subset of html markup:
@@ -12,7 +12,7 @@
     # <http://developer.gnome.org/pango/stable/PangoMarkupFormat.html>.
     # If markup is not allowed, those tags will be stripped out of the
     # message.
-    markup = yes
+    markup = full
     
     # The format of the message.  Possible variables are:
     #   %a  appname
@@ -48,7 +48,7 @@
     
     # Split notifications into multiple lines if they don't fit into
     # geometry.
-    word_wrap = no
+    word_wrap = yes
     
     # Ignore newlines '\n' in notifications.
     ignore_newline = no

@@ -34,13 +34,13 @@ super + shift + e
       pcmanfm-qt
 
 XF86AudioMute
-	amixer -c 1 sset Master toggle
+	pulseaudio-ctl mute && notify-send "$(pulseaudio-ctl | grep "Volume level")"
 
 XF86AudioLowerVolume
-	amixer -c 1 sset Master 3%-
+	pulseaudio-ctl down && notify-send "$(pulseaudio-ctl | grep "Volume level")"
 
 XF86AudioRaiseVolume
-	amixer -c 1 sset Master 3%+
+	pulseaudio-ctl up && notify-send "$(pulseaudio-ctl | grep "Volume level")"
 
 XF86AudioMicMute
 	sh -c "if amixer get Capture,0 | grep -q '\[on\]' ; then
