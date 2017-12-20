@@ -16,14 +16,14 @@ super + alt + @space
 
 # make sxhkd reload its configuration files:
 super + Escape
-	pkill -USR1 -x sxhkd | notify-send "SXHKD success reloaded."
+	pkill -USR1 -x sxhkd | notify-send "SXHKD" "Success reloaded"
 
 # lock screen
 ctrl + alt + l
 	i3lock-fancy
 # print screen
 Print
-	scrot '%Y%m%d_$wx$h.png' -e 'mv $f ~/Imagens/screenshots/ | notify-send "$f saved on ~/Imagens/screenshots/"'
+	scrot '%Y%m%d_$wx$h.png' -e 'mv $f ~/Imagens/screenshots/ | notify-send "Scrot" "$f saved on ~/Imagens/screenshots/"'
 
 # ranger
 super + e
@@ -34,30 +34,28 @@ super + shift + e
       pcmanfm-qt
 
 XF86AudioMute
-	pulseaudio-ctl mute && notify-send "$(pulseaudio-ctl | grep "Volume level")"
+	pulseaudio-ctl mute && notify-send "Audio" "$(pulseaudio-ctl | grep "Volume level")"
 
 XF86AudioLowerVolume
-	pulseaudio-ctl down && notify-send "$(pulseaudio-ctl | grep "Volume level")"
+	pulseaudio-ctl down && notify-send "Audio" "$(pulseaudio-ctl | grep "Volume level")"
 
 XF86AudioRaiseVolume
-	pulseaudio-ctl up && notify-send "$(pulseaudio-ctl | grep "Volume level")"
+	pulseaudio-ctl up && notify-send "Audio" "$(pulseaudio-ctl | grep "Volume level")"
 
 XF86AudioMicMute
-	sh -c "if amixer get Capture,0 | grep -q '\[on\]' ; then
-amixer -q
-set Capture,0 nocap ; else amixer -q set Capture,0 cap; fi"
+	sh -c "if amixer get Capture,0 | grep -q '\[on\]' ; then amixer -q set Capture,0 nocap ; else amixer -q set Capture,0 cap; fi"
 
 XF86AudioPause
 	playerctl play-pause
 
 XF86AudioPlay
-  playerctl play-pause
+        playerctl play-pause
 
 XF86AudioNext
-  playerctl next
+        playerctl next
 
 XF86AudioPrev
-  playerctl previous
+        playerctl previous
 
 XF86MonBrightnessUp
 	xbacklight -inc 5%
@@ -108,6 +106,7 @@ super + ctrl + {x,y,z}
 # multiple monitor desktop fucus
 super + alt + {_,shift + }{1-9,0}
     bspc {desktop -f, window -d} $(bspc query -M -m)/{a,b,c}
+
 # next monitor
 super + alt + w
         bspc monitor -f next
