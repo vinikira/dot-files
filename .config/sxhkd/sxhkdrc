@@ -47,6 +47,18 @@ XF86AudioMicMute
 amixer -q
 set Capture,0 nocap ; else amixer -q set Capture,0 cap; fi"
 
+XF86AudioPause
+	playerctl play-pause
+
+XF86AudioPlay
+  playerctl play-pause
+
+XF86AudioNext
+  playerctl next
+
+XF86AudioPrev
+  playerctl previous
+
 XF86MonBrightnessUp
 	xbacklight -inc 5%
 
