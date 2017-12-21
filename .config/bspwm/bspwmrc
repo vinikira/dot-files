@@ -1,7 +1,7 @@
 #! /bin/sh
 #Auto start
 sxhkd &
-compton -b &
+compton --config "$HOME/.config/compton.conf" -b &
 dunst &
 pulseaudio --start &
 xsetroot -cursor_name left_ptr &
