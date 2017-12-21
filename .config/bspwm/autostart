@@ -1,0 +1,23 @@
+#! /bin/sh
+
+#Auto start
+
+sxhkd &
+compton -b &
+dunst &
+pulseaudio --start &
+xsetroot -cursor_name left_ptr &
+export GTK2_RC_FILES="$HOME/.gtkrc-2.0" &
+dropbox &
+megasync &
+redshift &
+xset +fp /usr/share/fonts/local &
+xset +fp /usr/share/fonts/misc &
+xset +fp ~/.fonts &
+xset fp rehash &
+fc-cache -fv &
+i3lock-wait-for-suspend &
+sh $HOME/.config/polybar/launch.sh &
+nitrogen --restore
+#srandrd autorandr --change --default &
+#feh --bg-fil ~/Imagens/Wallpapers/rick.png &

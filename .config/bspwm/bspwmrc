@@ -1,8 +1,6 @@
 #! /bin/sh
 #Auto start
-
 sxhkd &
-feh --bg-fil ~/Imagens/Wallpapers/rick.png &
 compton -b &
 dunst &
 pulseaudio --start &
@@ -18,7 +16,9 @@ xset fp rehash &
 fc-cache -fv &
 i3lock-wait-for-suspend &
 sh $HOME/.config/polybar/launch.sh &
+nitrogen --restore
 #srandrd autorandr --change --default &
+#feh --bg-fil ~/Imagens/Wallpapers/rick.png &
 
 #bspc monitor -d I II III IV V VI VII VIII IX X
 # Setup monitors
@@ -38,12 +38,10 @@ bspc config gapless_monocle      true
 bspc config click_to_focus	 button1
 bspc config remove_disabled_monitor true
 
-bspc rule -a Gimp desktop='^8' state=floating follow=on
-bspc rule -a Chromium desktop='^1'
-bspc rule -a mplayer2 state=floating
-bspc rule -a Kupfer.py focus=on
 bspc rule -a Firefox desktop='^1'
-bspc rule -a Telegram desktop='^4'
-bspc rule -a Spotify desktop='^5'
+bspc rule -a Telegram desktop='^5'
+bspc rule -a Spotify desktop='^4'
 bspc rule -a Screenkey manage=off
 bspc rule -a Emacs state=tiled
+
+bspc wm --adopt-orphans
