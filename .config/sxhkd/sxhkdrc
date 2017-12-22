@@ -21,6 +21,7 @@ super + Escape
 # lock screen
 ctrl + alt + l
 	i3lock-fancy
+
 # print screen
 Print
 	scrot '%Y%m%d_$wx$h.png' -e 'mv $f ~/Imagens/screenshots/ | notify-send "Scrot" "$f saved on ~/Imagens/screenshots/"'
@@ -36,36 +37,51 @@ super + shift + e
 # bc
 super + alt + c
 	st -e bc
-			
+
+# mute audio
 XF86AudioMute
 	pulseaudio-ctl mute && notify-send "Audio" "$(pulseaudio-ctl | grep "Volume level")"
 
+# downgrade audio
 XF86AudioLowerVolume
 	pulseaudio-ctl down && notify-send "Audio" "$(pulseaudio-ctl | grep "Volume level")"
 
+# increase audio
 XF86AudioRaiseVolume
 	pulseaudio-ctl up && notify-send "Audio" "$(pulseaudio-ctl | grep "Volume level")"
 
+# mute mic
 XF86AudioMicMute
 	sh -c "if amixer get Capture,0 | grep -q '\[on\]' ; then amixer -q set Capture,0 nocap ; else amixer -q set Capture,0 cap; fi"
 
+# pause player
 XF86AudioPause
 	playerctl play-pause
 
+# play/pause player
 XF86AudioPlay
         playerctl play-pause
 
+# next player
 XF86AudioNext
         playerctl next
 
+# previous player
 XF86AudioPrev
         playerctl previous
 
+# brightness up
 XF86MonBrightnessUp
 	xbacklight -inc 5%
 
+# brightness down
 XF86MonBrightnessDown
 	xbacklight -dec 5%
+
+# scratchpad trigger
+super + F12
+  id=$(cat /tmp/scratchid);\
+  bspc node $id --flag hidden;bspc node -f $id
 
 #
 # bspwm hotkeys

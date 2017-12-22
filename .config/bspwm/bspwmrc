@@ -46,3 +46,7 @@ bspc rule -a Emacs state=tiled
 bspc rule -a bc state=floating
 
 bspc wm --adopt-orphans
+
+#scratchpad
+bspc rule -a scratchpad sticky=on state=floating hidden=on
+st -c scratchpad -e ~/.bin/scratch &
