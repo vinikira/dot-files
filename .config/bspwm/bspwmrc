@@ -43,5 +43,6 @@ bspc rule -a Telegram desktop='^5'
 bspc rule -a Spotify desktop='^4'
 bspc rule -a Screenkey manage=off
 bspc rule -a Emacs state=tiled
+bspc rule -a bc state=floating
 
 bspc wm --adopt-orphans

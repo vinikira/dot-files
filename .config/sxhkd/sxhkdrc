@@ -33,6 +33,10 @@ super + e
 super + shift + e
       pcmanfm-qt
 
+# bc
+super + alt + c
+	st -e bc
+			
 XF86AudioMute
 	pulseaudio-ctl mute && notify-send "Audio" "$(pulseaudio-ctl | grep "Volume level")"
 
