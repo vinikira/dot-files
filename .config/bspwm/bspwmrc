@@ -26,7 +26,7 @@ nitrogen --restore
 for monitor in $(xrandr | grep " connected " | awk '{ print $1 }'); do
  	bspc monitor $monitor \
    	  -n "$monitor" \
- 	    -d {,,,,}
+ 	    -d {,,,,}
  	let i++
 done
 
@@ -47,7 +47,3 @@ bspc rule -a Emacs state=tiled
 bspc rule -a bc state=floating
 
 bspc wm --adopt-orphans
-
-#scratchpad
-bspc rule -a scratchpad sticky=on state=floating hidden=on
-st -c scratchpad -e ~/.bin/scratch &
