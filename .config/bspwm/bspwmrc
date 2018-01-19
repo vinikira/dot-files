@@ -16,19 +16,20 @@ xset +fp ~/.fonts &
 xset fp rehash &
 fc-cache -fv &
 i3lock-wait-for-suspend &
-sh $HOME/.config/polybar/launch.sh &
-nitrogen --restore
+sh $HOME/.local/bin/detect-monitors &
+#sh $HOME/.config/polybar/launch.sh &
+#nitrogen --restore
 #srandrd autorandr --change --default &
 #feh --bg-fil ~/Imagens/Wallpapers/rick.png &
 
 #bspc monitor -d I II III IV V VI VII VIII IX X
 # Setup monitors
-for monitor in $(xrandr | grep " connected " | awk '{ print $1 }'); do
- 	bspc monitor $monitor \
-   	  -n "$monitor" \
- 	    -d {,,,,}
- 	let i++
-done
+# for monitor in $(xrandr | grep " connected " | awk '{ print $1 }'); do
+#  	bspc monitor $monitor \
+#    	  -n "$monitor" \
+#  	    -d {,,,,}
+#  	let i++
+# done
 
 bspc config border_width         2
 bspc config window_gap          12
