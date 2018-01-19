@@ -16,7 +16,7 @@ xset +fp ~/.fonts &
 xset fp rehash &
 fc-cache -fv &
 i3lock-wait-for-suspend &
-sh $HOME/.local/bin/detect-monitors &
+sh detect-monitors &
 #sh $HOME/.config/polybar/launch.sh &
 #nitrogen --restore
 #srandrd autorandr --change --default &

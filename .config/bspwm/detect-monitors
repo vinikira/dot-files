@@ -1,5 +1,9 @@
 #! /bin/sh
 
+for desktop in $(bspc query -D); do
+	 bspc desktop $desktop -r
+done
+
 for monitor in $(xrandr | grep " connected " | awk '{ print $1 }'); do
  	bspc monitor $monitor \
    	  -n "$monitor" \
