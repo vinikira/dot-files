@@ -6,6 +6,7 @@ yaourt -S bspwm \
        rofi \
        polybar \
        xdo \
+       bmenu \
        bluez \
        bluez-tools \
        playerctl \
@@ -20,6 +21,7 @@ yaourt -S bspwm \
        neofetch \
        wal-git \
        qt5-styleplugins \
+       arandr \
        --noconfirm
 
 # https://github.com/hallgat89/WAL-theme-previewer-for-Nitrogen
