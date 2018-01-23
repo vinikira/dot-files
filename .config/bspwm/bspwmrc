@@ -1,35 +1,19 @@
 #! /bin/sh
-#Auto start
+#Auto start commands
+export PATH=$HOME/.bin:/usr/local/bin:$PATH
+export QT_QPA_PLATFORMTHEME="qt5ct"
 sxhkd &
 compton --config "$HOME/.config/compton.conf" -b &
 dunst &
 pulseaudio --start &
 xsetroot -cursor_name left_ptr &
-export GTK2_RC_FILES="$HOME/.gtkrc-2.0" &
-export QT_STYLE_OVERRIDE="kvantum" &
-dropbox &
-megasync &
-redshift &
 xset +fp /usr/share/fonts/local &
 xset +fp /usr/share/fonts/misc &
 xset +fp ~/.fonts &
 xset fp rehash &
 fc-cache -fv &
 i3lock-wait-for-suspend &
-sh detect-monitors &
-#sh $HOME/.config/polybar/launch.sh &
-#nitrogen --restore
-#srandrd autorandr --change --default &
-#feh --bg-fil ~/Imagens/Wallpapers/rick.png &
-
-#bspc monitor -d I II III IV V VI VII VIII IX X
-# Setup monitors
-# for monitor in $(xrandr | grep " connected " | awk '{ print $1 }'); do
-#  	bspc monitor $monitor \
-#    	  -n "$monitor" \
-#  	    -d {,,,,}
-#  	let i++
-# done
+sh $HOME/.bin/detect-monitors &
 
 bspc config border_width         2
 bspc config window_gap          12
@@ -48,3 +32,8 @@ bspc rule -a Emacs state=tiled
 bspc rule -a bc state=floating
 
 bspc wm --adopt-orphans
+
+#auto start applications
+dropbox &
+megasync &
+redshift &

@@ -4,6 +4,7 @@ yaourt -S bspwm \
        bspwm-ruler \
        sxhkd \
        rofi \
+       rofi-dmenu \
        polybar \
        xdo \
        bmenu \
@@ -22,6 +23,7 @@ yaourt -S bspwm \
        wal-git \
        qt5-styleplugins \
        arandr \
+       networkmanager-dmenu \
        --noconfirm
 
 # https://github.com/hallgat89/WAL-theme-previewer-for-Nitrogen
