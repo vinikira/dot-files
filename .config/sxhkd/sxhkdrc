@@ -18,9 +18,16 @@ super + Escape
 ctrl + alt + l
 	i3lock-fancy
 
-# normal scrot
+# print screen
 {shift,_} + Print
-	scrot {-s,_} '%Y%m%d_$wx$h.png' -e 'mv $f ~/Imagens/screenshots/ | notify-send "Scrot" "$f saved on ~/Imagens/screenshots/"'
+      maim {-s,_} | \
+      xclip -selection clipboard -t image/png; \
+      CHOISE=$(echo -e "no\nyes" | dmenu -p "Copy to clipboard. Save to file too?"); \
+      case $CHOISE in \
+      no) notify-send "Screenshot" "$(date +%s).png copied to clipboard.";; \
+      yes) xclip -o ~/Imagens/screenshots/$(date +%s).png && \
+           notify-send "Screenshot" "$(date +%s).png saved on ~/Imagens/screenshots/" ;; \
+      esac;
 
 # ranger
 super + e
@@ -34,29 +41,24 @@ super + shift + e
 super + alt + c
 	st -e bc
 
-# mute audio
+# mute volume
 XF86AudioMute
-	pulseaudio-ctl mute && notify-send "Audio" "$(pulseaudio-ctl | grep "Volume level")"
+        pulseaudio-ctl mute && \
+            notify-send "Volume" -t 1000 -i notification-audio-volume-muted "\
+                        The volume is $(amixer get Master|tail -n1|sed -E 's/.*\[([a-z]+)\]/\1/')"
 
-# downgrade audio
-XF86AudioLowerVolume
-	pulseaudio-ctl down && notify-send "Audio" "$(pulseaudio-ctl | grep "Volume level")"
-
-# increase audio
-XF86AudioRaiseVolume
-	pulseaudio-ctl up && notify-send "Audio" "$(pulseaudio-ctl | grep "Volume level")"
+# volume control
+XF86Audio{Raise,Lower}Volume
+        pulseaudio-ctl {up,down} && \
+            notify-send "Volume" -t 500 -i notification-audio-volume-medium -h int:value:$(amixer get Master|tail -n1|sed -E 's/.*\[([0-9]+)\%\].*/\1/')
 
 # mute mic
 XF86AudioMicMute
 	sh -c "if amixer get Capture,0 | grep -q '\[on\]' ; then amixer -q set Capture,0 nocap ; else amixer -q set Capture,0 cap; fi"
 
-# pause player
-XF86AudioPause
-	playerctl play-pause
-
 # music player control
-XF86Audio{Play,Next,Prev}
-        playerctl {play-pause,next,previous}
+XF86Audio{Play,Next,Prev,Pause}
+        playerctl {play-pause,next,previous,play-pause}
 
 # brightness control
 XF86MonBrightness{Up,Down}

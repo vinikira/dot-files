@@ -13,7 +13,7 @@ yaourt -S bspwm \
        playerctl \
        feh \
        nitrogen \
-       scrot \
+       maim \
        redshift \
        dunst \
        ttf-font-awesome \
