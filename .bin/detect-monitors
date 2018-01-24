@@ -17,3 +17,6 @@ done
 
 nitrogen --restore &
 sh $HOME/.config/polybar/launch.sh &
+
+bspc subscribe monitor_geometry | head -1 # wait for resize event
+sh $HOME/.bin/detect-monitors &
