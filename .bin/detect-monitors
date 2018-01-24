@@ -1,13 +1,18 @@
 #! /bin/sh
 
+for mon in $(bspc query -M); do
+    bspc monitor $mon -r
+done
+
 for desktop in $(bspc query -D); do
-	 bspc desktop $desktop -r
+    bspc desktop $desktop -r
 done
 
 for monitor in $(xrandr | grep " connected " | awk '{ print $1 }'); do
- 	bspc monitor $monitor \
-   	  -n "$monitor" \
- 	    -d {,,,,}
+    bspc monitor $monitor \
+   	 -n "$monitor" \
+ 	 -d {,,,,}
+    let i++
 done
 
 nitrogen --restore &
