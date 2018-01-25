@@ -25,10 +25,10 @@ bspc config merge_overlapping_monitors true
 bspc config remove_unplugged_monitors true
 
 bspc rule -a Firefox desktop='^1'
-bspc rule -a Telegram desktop='^5' state=floating
+bspc rule -a TelegramDesktop state=floating
 bspc rule -a Spotify desktop='^4'
 bspc rule -a Screenkey manage=off
-bspc rule -a Emacs state=tiled
+bspc rule -a Emacs desktop='^2' state=tiled
 bspc rule -a bc state=floating
 
 bspc wm --adopt-orphans
