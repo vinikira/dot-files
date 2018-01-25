@@ -1,5 +1,7 @@
 #! /bin/sh
 
+sh $HOME/.screenlayout/default.sh
+
 for monitor in $(xrandr | grep " connected " | awk '{ print $1 }'); do
     bspc monitor $monitor \
    	 -n "$monitor" \
@@ -9,5 +11,5 @@ done
 nitrogen --restore &
 sh $HOME/.config/polybar/launch.sh &
 
-bspc subscribe monitor_geometry | head -1 # wait for resize event
-sh $HOME/.bin/detect-monitors &
+#bspc subscribe monitor_geometry | head -1 # wait for resize event
+#sh $HOME/.bin/detect-monitors &
