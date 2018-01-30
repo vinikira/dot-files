@@ -4,7 +4,7 @@
 
 # terminal emulator
 super + Return
-	st -f "Hack:size=11"
+	st -f "Input Mono:size=11"
 
 # turbinated rofi
 super + @space
@@ -39,7 +39,7 @@ super + shift + e
 
 # bc
 super + alt + c
-	st -e bc
+	=
 
 # mute volume
 XF86AudioMute
