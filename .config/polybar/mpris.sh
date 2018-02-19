@@ -6,7 +6,7 @@ icon=""
 
 player_status=$(playerctl status 2> /dev/null)
 if [[ $? -eq 0 ]]; then
-    metadata="$(playerctl metadata artist) - $(playerctl metadata title)"
+    metadata="$(playerctl metadata title) - $(playerctl metadata artist)"
 fi
 
 # Foreground color formatting tags are optional
