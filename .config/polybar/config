@@ -376,7 +376,7 @@ menu-2-1-exec = menu-open-0
 [module/music]
 type = custom/script
 interval = 2
-label = %output:0:70:...%
+label = %output:0:30:...%
 exec = ~/.config/polybar/mpris.sh
 click-left = playerctl previous
 click-middle = playerctl play-pause
