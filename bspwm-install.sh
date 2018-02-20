@@ -24,6 +24,7 @@ yaourt -S bspwm \
        qt5-styleplugins \
        arandr \
        networkmanager-dmenu \
+       termite \
        --noconfirm
 
 # https://github.com/hallgat89/WAL-theme-previewer-for-Nitrogen
