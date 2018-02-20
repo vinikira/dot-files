@@ -4,7 +4,11 @@
 
 # terminal emulator
 super + Return
-	st -f "Input Mono:size=11"
+	termite
+
+# windo list
+alt + Tab
+        rofi -show window -lines 12 -padding 18 -width 60 -location 0 -columns 3 -font "monospace 11"
 
 # turbinated rofi
 super + @space
@@ -31,7 +35,7 @@ ctrl + alt + l
 
 # ranger
 super + e
-      st -e ranger
+      termite -e ranger
 
 # pcmanfm qt
 super + shift + e
