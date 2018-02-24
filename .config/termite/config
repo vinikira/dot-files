@@ -1,0 +1,6 @@
+[options]
+font = Input Mono 11
+
+[colors]
+foreground = #ddd
+background  = #222
