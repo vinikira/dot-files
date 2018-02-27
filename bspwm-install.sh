@@ -20,7 +20,7 @@ yaourt -S bspwm \
        i3lock-fancy \
        wireless_tools \
        neofetch \
-       wal-git \
+       python-pywal \
        qt5-styleplugins \
        arandr \
        networkmanager-dmenu \
