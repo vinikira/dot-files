@@ -12,7 +12,7 @@ alt + Tab
 
 # turbinated rofi
 super + @space
-        rofi -modi run,drun,window -lines 12 -padding 18 -width 60 -location 0 -show drun -sidebar-mode -columns 3 -font "monospace 11"
+        rofi -modi run,drun -lines 12 -padding 18 -width 60 -location 0 -show drun -sidebar-mode -columns 3 -font "monospace 11"
 
 # make sxhkd reload its configuration files:
 super + Escape
@@ -20,7 +20,7 @@ super + Escape
 
 # lock screen
 ctrl + alt + l
-	i3lock-fancy
+	slock
 
 # print screen
 {shift,_} + Print
