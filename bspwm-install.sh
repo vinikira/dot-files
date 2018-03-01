@@ -1,7 +1,5 @@
 #!/bin/bash
 yaourt -S bspwm \
-       bspwm-scripts \
-       bspwm-ruler \
        sxhkd \
        rofi \
        rofi-dmenu \
@@ -11,7 +9,6 @@ yaourt -S bspwm \
        bluez \
        bluez-tools \
        playerctl \
-       feh \
        nitrogen \
        maim \
        redshift \
@@ -25,6 +22,9 @@ yaourt -S bspwm \
        arandr \
        networkmanager-dmenu \
        termite \
+       zsh \
+       slock \
+       ranger \
        --noconfirm
 
 # https://github.com/hallgat89/WAL-theme-previewer-for-Nitrogen
