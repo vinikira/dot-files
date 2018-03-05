@@ -13,6 +13,7 @@ yaourt -S bspwm \
        maim \
        redshift \
        dunst \
+       otf-overpass \
        ttf-font-awesome \
        i3lock-fancy \
        wireless_tools \

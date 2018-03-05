@@ -41,7 +41,7 @@ padding-left = 0
 padding-right = 2
 module-margin-left = 1
 module-margin-right = 2
-font-0 = "Noto Sans:pixelsize=9:antialias=yes;1"
+font-0 = "Overpass Mono:pixelsize=8;2.25"
 font-1 = "FontAwesome:fontformat=truetype:antialias=yes;2"
 modules-left = bspwm
 modules-center = xwindow
@@ -65,8 +65,7 @@ padding-left = 0
 padding-right = 0
 module-margin-left = 1
 module-margin-right = 2
-font-0 = "Noto Sans:pixelsize=9:antialias=yes;1"
-;font-0 = "monospace:pixelsize=8:antialias=yes;1"
+font-0 = "Overpass Mono:pixelsize=8;2.25"
 font-1 = "FontAwesome:fontformat=truetype:antialias=yes;2"
 modules-left = bspwm
 modules-center = xwindow
