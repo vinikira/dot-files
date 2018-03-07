@@ -20,9 +20,9 @@
 
 [colors]
 background = ${xrdb:color0:#222}
-background-alt = ${xrdb:color0:#222}
+background-alt = ${xrdb:color6:#222}
 foreground = ${xrdb:color7:#222}
-foreground-alt = ${xrdb:color7:#222}
+foreground-alt = ${xrdb:color8:#222}
 primary = ${xrdb:color1:#222}
 secondary = ${xrdb:color2:#222}
 alert = ${xrdb:color3:#222}
@@ -31,12 +31,10 @@ alert = ${xrdb:color3:#222}
 monitor = ${env:MONITOR}
 locale = pt_BR.UTF-8
 width = 100%
-height = 27
+height = 28
 fixed-center = true
 background = ${colors.background}
 foreground = ${colors.foreground}
-line-size = 3
-line-color = #f00
 padding-left = 0
 padding-right = 2
 module-margin-left = 1
@@ -59,8 +57,6 @@ enable-ipc = true
 locale = pt_BR.UTF-8
 background = ${colors.background}
 foreground = ${colors.foreground}
-line-size = 3
-line-color = #f00
 padding-left = 0
 padding-right = 0
 module-margin-left = 1
@@ -75,7 +71,6 @@ tray-padding = 1
 tray-offset-x = 0
 tray-offset-y = 0
 tray-scale = 1.0
-
 wm-restack = bspwm
 scroll-up = bspwm-desknext
 scroll-down = bspwm-deskprev
@@ -112,21 +107,17 @@ label-unmounted-foreground = ${colors.foreground-alt}
 
 [module/bspwm]
 type = internal/bspwm
-format = <label-state><label-monitor>
-
+format = <label-state>
 label-focused = %name%
 label-focused-background = ${colors.background-alt}
 label-focused-underline= ${colors.primary}
 label-focused-padding = 1
-
 label-occupied = %name%
 label-occupied-padding = 1
-
 label-urgent = %name%!
 label-urgent-background = ${colors.alert}
 label-urgent-padding = 1
-
-label-empty = %name%
+label-empty =
 label-empty-foreground = ${colors.foreground-alt}
 label-empty-padding = 1
 
@@ -241,12 +232,10 @@ ramp-signal-foreground = ${colors.foreground}
 type = internal/network
 interface = enp7s0
 interval = 3.0
-
 format-connected-underline = #55aa55
 format-connected-prefix = " "
 format-connected-prefix-foreground = ${colors.foreground}
 label-connected = %ifname%
-
 format-disconnected =
 ;format-disconnected = <label-disconnected>
 ;format-disconnected-underline = ${self.format-connected-underline}
@@ -256,35 +245,27 @@ format-disconnected =
 [module/date]
 type = internal/date
 interval = 60
-
 date = "%d %b,"
 date-alt =
-
 time = "%H:%M"
 time-alt =
-
 format-prefix =
 format-prefix-foreground = ${colors.foreground}
 format-underline = #0a6cf5
-
 label = %date% %time%
 
 [module/volume]
 type = internal/volume
-
 format-volume = <ramp-volume> <label-volume>
 label-volume = %percentage%%
 label-volume-foreground = ${root.foreground}
 ;headphone-mixer = Headphone
-
 ;format-muted-prefix =
 format-muted-foreground = ${colors.foreground-alt}
 label-muted =  muted
-
 ramp-volume-0 = 
 ramp-volume-1 = 
 ramp-volume-2 = 
-
 ramp-headphones-0 = 
 ramp-headphones-1 = 
 
@@ -334,47 +315,23 @@ animation-charging-2 = 
 animation-charging-foreground = ${colors.alert}
 animation-charging-framerate = 750
 
-[module/temperature]
-type = internal/temperature
-thermal-zone = 0
-warn-temperature = 60
-
-format = <ramp> <label>
-format-underline = #f50a4d
-format-warn = <ramp> <label-warn>
-format-warn-underline = ${self.format-underline}
-
-label = %temperature%
-label-warn = %temperature%
-label-warn-foreground = ${colors.secondary}
-
-ramp-0 = 
-ramp-1 = 
-ramp-2 = 
-ramp-foreground = ${colors.foreground-alt}
-
 [module/powermenu]
 type = custom/menu
-
 format-spacing = 1
-
 label-open = 
 label-open-foreground = ${colors.secondary}
 label-close =  cancel
 label-close-foreground = ${colors.secondary}
 label-separator = |
 label-separator-foreground = ${colors.foreground-alt}
-
 menu-0-0 = reboot
 menu-0-0-exec = menu-open-1
 menu-0-1 = power off
 menu-0-1-exec = menu-open-2
-
 menu-1-0 = back
 menu-1-0-exec = menu-open-0
 menu-1-1 = reboot now
 menu-1-1-exec = reboot
-
 menu-2-0 = power off now
 menu-2-0-exec = poweroff
 menu-2-1 = back
@@ -393,21 +350,6 @@ click-right = playerctl next
 type = custom/script
 interval = 5
 exec = ~/.config/polybar/redshift.sh
-
-[module/bluetooth]
-type = custom/script
-interval = 5
-exec = ~/.config/polybar/bluetooth.sh
-
-[module/usb]
-type = custom/script
-interval = 10
-; Could be exec = ~/.config/polybar/usb.sh /media/$USER
-exec = ~/.config/polybar/usb.sh
-; Unmount every devices on click
-click-left = udiskie-umount -a
-label = "%output:0:80%"
-format = "<label>"
 
 [settings]
 screenchange-reload = true
