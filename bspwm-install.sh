@@ -15,7 +15,6 @@ yaourt -S bspwm \
        dunst \
        otf-overpass \
        ttf-font-awesome \
-       i3lock-fancy \
        wireless_tools \
        neofetch \
        python-pywal \
@@ -26,6 +25,17 @@ yaourt -S bspwm \
        zsh \
        slock \
        ranger \
+       ttf-input \
+       qt5ct \
+       breeze \
+       breeze-icons \
+       breeze-gtk \
+       pcmanfm-qt \
+       lximage-qt \
+       xdg-users-dirs \
+       xdg-su \
+       xdg-portal \
+       xdg-utils \
        --noconfirm
 
 # https://github.com/hallgat89/WAL-theme-previewer-for-Nitrogen
