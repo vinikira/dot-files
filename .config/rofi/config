@@ -1,1 +1,17 @@
 rofi.theme: ~/.cache/wal/colors-rofi-dark.rasi
+rofi.modi: combi
+rofi.combi-modi: drun,run
+rofi.me-select-entry: MouseSecondary
+rofi.me-accept-entry: MousePrimary
+rofi.scroll-method: 1
+rofi.display-run: #!
+rofi.display-drun:
+rofi.display-window:
+rofi.display-combi: Go to
+rofi.show-icons: true
+rofi.font: monospace 11
+rofi.lines: 12
+rofi.padding: 18
+rofi.width: 60
+rofi.location: 0
+rofi.columns: 3

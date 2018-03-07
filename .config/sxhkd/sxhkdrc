@@ -6,13 +6,13 @@
 super + Return
 	termite
 
-# windo list
+# window list
 alt + Tab
-        rofi -show window -lines 12 -padding 18 -width 60 -location 0 -columns 3 -font "monospace 11"
+        rofi -modi window -show window
 
 # turbinated rofi
 super + @space
-        rofi -modi run,drun -lines 12 -padding 18 -width 60 -location 0 -show drun -sidebar-mode -columns 3 -font "monospace 11"
+        rofi -show
 
 # make sxhkd reload its configuration files:
 super + Escape
