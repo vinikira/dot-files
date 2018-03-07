@@ -25,11 +25,11 @@ ctrl + alt + l
 # print screen
 {shift,_} + Print
       maim {-s,_} | \
-      xclip -selection clipboard -t image/png; \
+      xclip -t image/png -selection clipboard ; \
       CHOISE=$(echo -e "no\nyes" | dmenu -p "Copy to clipboard. Save to file too?"); \
       case $CHOISE in \
       no) notify-send "Screenshot" "$(date +%s).png copied to clipboard.";; \
-      yes) xclip -o ~/Imagens/screenshots/$(date +%s).png && \
+      yes) xclip -o > ~/Imagens/screenshots/$(date +%s).png && \
            notify-send "Screenshot" "$(date +%s).png saved on ~/Imagens/screenshots/" ;; \
       esac;
 
