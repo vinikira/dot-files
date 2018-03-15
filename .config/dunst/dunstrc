@@ -3,7 +3,7 @@
     frame_width = 1
     frame_color = "#000000"
     #icon
-    max_icon_size = 32
+    max_icon_size = 48
     # Allow a small subset of html markup:
     #   <b>bold</b>
     #   <i>italic</i>
@@ -68,7 +68,7 @@
     # the top and down respectevly.
     # The width can be negative.  In this case the actual width is the
     # screen width minus the width defined in within the geometry option.
-    geometry = "0x4-25+25"
+    geometry = "0x4-25+50"
     
     # Shrink window if it's smaller than the width.  Will be ignored if
     # width is 0.
@@ -151,7 +151,7 @@
     icon_position = left
 
     # Paths to default icons.
-    icon_path = /usr/share/icons/Breeze-Maia-Dark/status/32:/usr/share/icons/Breeze-Maia-Dark/devices/32/:/usr/share/icons/Breeze-Maia-Dark/apps/32/:/usr/share/icons/Breeze-Maia-Dark/categories/32:/usr/share/icons/Breeze-Maia-Dark/mimetypes/32/
+    icon_path = /usr/share/icons/breeze-dark/status/32:/usr/share/icons/breeze-dark/devices/32/:/usr/share/icons/breeze-dark/apps/32/:/usr/share/icons/breeze-dark/categories/32:/usr/share/icons/breeze-dark/mimetypes/32/
 
 [shortcuts]
 
