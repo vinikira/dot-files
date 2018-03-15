@@ -2,5 +2,5 @@
 font = Input Mono 11
 
 [colors]
-foreground = #ddd
-background  = #222
+foreground = #d8dee8
+background  = #2f343f

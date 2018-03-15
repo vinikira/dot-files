@@ -3,7 +3,7 @@
 export PATH=$HOME/.bin:/usr/local/bin:$PATH
 export QT_QPA_PLATFORMTHEME="qt5ct"
 sxhkd &
-compton --config "$HOME/.config/compton.conf" -b &
+pkill compton; compton --config "$HOME/.config/compton.conf" -b &
 dunst &
 pulseaudio --start &
 xsetroot -cursor_name left_ptr &
@@ -12,13 +12,11 @@ xset +fp /usr/share/fonts/misc &
 xset +fp ~/.fonts &
 xset fp rehash &
 fc-cache -fv &
-i3lock-wait-for-suspend &
+xrdb ~/.Xresources &
 
-sh $HOME/.cache/wal/colors.sh
-bspc config normal_border_color "$color1"
-bspc config active_border_color "$color2"
-bspc config focused_border_color "$color15"
-bspc config presel_border_color "$color1"
+
+bspc config focused_border_color "#ffffff"
+bspc config normal_border_color "#2f343f"
 
 bspc config border_width         2
 bspc config window_gap          12

@@ -5,7 +5,7 @@ sh $HOME/.screenlayout/default.sh
 for monitor in $(xrandr | grep " connected " | awk '{ print $1 }'); do
     bspc monitor $monitor \
    	 -n "$monitor" \
- 	 -d {I,II,III,IV,V}
+ 	 -d {1,2,3,4,5}
 done
 wal -R -n &
 nitrogen --restore &

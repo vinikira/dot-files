@@ -7,25 +7,24 @@
 ;
 ;=====================================================
 
-; [colors]
-; ;background = ${xrdb:color0:#222}
-; background = #222
-; background-alt = #444
-; ;foreground = ${xrdb:color7:#222}
-; foreground = #dfdfdf
-; foreground-alt = #555
-; primary = #ffb52a
-; secondary = #e60053
-; alert = #bd2c40
-
 [colors]
-background = ${xrdb:color0:#222}
-background-alt = ${xrdb:color6:#222}
-foreground = ${xrdb:color7:#222}
-foreground-alt = ${xrdb:color8:#222}
-primary = ${xrdb:color1:#222}
-secondary = ${xrdb:color2:#222}
-alert = ${xrdb:color3:#222}
+background = #2f343f
+background-alt = #4f545f
+foreground = #d8dee8
+foreground-alt = #787e68
+primary = #81a1c1
+secondary = #e60053
+alert = #ebcb8b
+
+;; Colors by system colorscheme
+; [colors]
+; background = ${xrdb:color0:#222}
+; background-alt = ${xrdb:color6:#222}
+; foreground = ${xrdb:color7:#222}
+; foreground-alt = ${xrdb:color8:#222}
+; primary = ${xrdb:color1:#222}
+; secondary = ${xrdb:color2:#222}
+; alert = ${xrdb:color3:#222}
 
 [bar/secondary-top]
 monitor = ${env:MONITOR}
@@ -39,8 +38,8 @@ padding-left = 0
 padding-right = 2
 module-margin-left = 1
 module-margin-right = 2
-font-0 = "Overpass Mono:style:Light:pixelsize=8;2.25"
-font-1 = "FontAwesome:fontformat=truetype:antialias=yes;2"
+font-0 = "Overpass:pixelsize=9;1"
+font-1 = "FontAwesome:fontformat=truetype:antialias=yes;2.25"
 modules-left = bspwm
 modules-center = xwindow
 modules-right = date
@@ -57,20 +56,20 @@ enable-ipc = true
 locale = pt_BR.UTF-8
 background = ${colors.background}
 foreground = ${colors.foreground}
-padding-left = 0
-padding-right = 0
+padding-left = 2
+padding-right = 2
 module-margin-left = 1
-module-margin-right = 2
-font-0 = "Overpass Mono:style=Light:pixelsize=8;2.25"
-font-1 = "FontAwesome:fontformat=truetype:antialias=yes;2"
-modules-left = bspwm
+module-margin-right = 1
+font-0 = "Overpass:pixelsize=9;1"
+font-1 = "FontAwesome:pixelsize=9:fontformat=truetype:antialias=yes;1"
+modules-left = bspwm music
 modules-center = xwindow
-modules-right = music volume wlan eth battery date powermenu
+modules-right = volume wlan eth battery date powermenu
 tray-position = right
-tray-padding = 1
+tray-padding = 0
 tray-offset-x = 0
 tray-offset-y = 0
-tray-scale = 1.0
+tray-scale = 1
 wm-restack = bspwm
 scroll-up = bspwm-desknext
 scroll-down = bspwm-deskprev
@@ -159,11 +158,11 @@ label-urgent-padding = ${module/bspwm.label-urgent-padding}
 type = internal/mpd
 format-online = <label-song>  <icon-prev> <icon-stop> <toggle> <icon-next>
 
-icon-prev = 
-icon-stop = 
-icon-play = 
-icon-pause = 
-icon-next = 
+icon-prev = 
+icon-stop = 
+icon-play = 
+icon-pause = 
+icon-next = 
 
 label-song-maxlen = 25
 label-song-ellipsis = true
@@ -208,12 +207,12 @@ label = %percentage_used%%
 
 [module/wlan]
 type = internal/network
-interface = wlp6s0
+interface = wlp1s0
 interval = 3.0
 
-format-connected = <ramp-signal> <label-connected>
+format-connected = <label-connected> <ramp-signal>
 format-connected-underline = #9f78e1
-label-connected = %essid%
+label-connected = 
 
 format-disconnected =
 ;format-disconnected = <label-disconnected>
@@ -221,16 +220,16 @@ format-disconnected =
 ;label-disconnected = %ifname% disconnected
 ;label-disconnected-foreground = ${colors.foreground-alt}
 
-ramp-signal-0 = 
-ramp-signal-1 = 
-ramp-signal-2 = 
-ramp-signal-3 = 
-ramp-signal-4 = 
+ramp-signal-0 = 
+ramp-signal-1 = 
+ramp-signal-2 = 
+ramp-signal-3 = 
+ramp-signal-4 = 
 ramp-signal-foreground = ${colors.foreground}
 
 [module/eth]
 type = internal/network
-interface = enp7s0
+interface = enp0s31f6
 interval = 3.0
 format-connected-underline = #55aa55
 format-connected-prefix = " "
@@ -262,10 +261,9 @@ label-volume-foreground = ${root.foreground}
 ;headphone-mixer = Headphone
 ;format-muted-prefix =
 format-muted-foreground = ${colors.foreground-alt}
-label-muted =  muted
-ramp-volume-0 = 
-ramp-volume-1 = 
-ramp-volume-2 = 
+label-muted = 
+ramp-volume-0 = 
+ramp-volume-1 = 
 ramp-headphones-0 = 
 ramp-headphones-1 = 
 
