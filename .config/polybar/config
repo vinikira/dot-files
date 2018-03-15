@@ -212,7 +212,7 @@ interval = 3.0
 
 format-connected = <label-connected> <ramp-signal>
 format-connected-underline = #9f78e1
-label-connected = 
+label-connected = "%{A1:networkmanager_dmenu:}%{A}"
 
 format-disconnected =
 ;format-disconnected = <label-disconnected>
@@ -256,7 +256,7 @@ label = %date% %time%
 [module/volume]
 type = internal/volume
 format-volume = <ramp-volume> <label-volume>
-label-volume = %percentage%%
+label-volume = "%percentage%%"
 label-volume-foreground = ${root.foreground}
 ;headphone-mixer = Headphone
 ;format-muted-prefix =
