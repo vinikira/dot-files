@@ -6,7 +6,7 @@ sxhkd &
 pkill compton; compton --config "$HOME/.config/compton.conf" -b &
 dunst &
 pulseaudio --start &
-clipmenu &
+clipmenud &
 xsetroot -cursor_name left_ptr &
 xset +fp /usr/share/fonts/local &
 xset +fp /usr/share/fonts/misc &
