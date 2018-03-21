@@ -7,7 +7,6 @@ for monitor in $(xrandr | grep " connected " | awk '{ print $1 }'); do
    	 -n "$monitor" \
  	 -d {1,2,3,4,5}
 done
-wal -R -n &
 nitrogen --restore &
 sh $HOME/.config/polybar/launch.sh &
 
