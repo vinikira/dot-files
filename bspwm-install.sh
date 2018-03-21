@@ -13,7 +13,7 @@ yaourt -S bspwm \
        maim \
        redshift \
        dunst \
-       otf-overpass \
+       otf-fira-mono \
        ttf-font-awesome \
        wireless_tools \
        neofetch \
