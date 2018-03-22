@@ -13,6 +13,7 @@ yaourt -S bspwm \
        maim \
        redshift \
        dunst \
+       otf-fira-sans \
        otf-fira-mono \
        ttf-font-awesome \
        wireless_tools \
