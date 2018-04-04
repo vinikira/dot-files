@@ -5,9 +5,11 @@ sh $HOME/.screenlayout/default.sh
 for monitor in $(xrandr | grep " connected " | awk '{ print $1 }'); do
     bspc monitor $monitor \
    	 -n "$monitor" \
- 	 -d {1,2,3,4,5}
+ 	 -d {1,2,3,4,5,6,7,8,9,0}
 done
+
 nitrogen --restore &
+
 sh $HOME/.config/polybar/launch.sh &
 
 #bspc subscribe monitor_geometry | head -1 # wait for resize event
