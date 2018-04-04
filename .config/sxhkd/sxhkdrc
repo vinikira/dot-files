@@ -1,10 +1,13 @@
 #
 # Custom Hotkeys
 #
+# applications
+super + e ; {w,e,m,f}
+      {firefox,emacs,pavucontrol-qt,pcmanfm-qt}
 
 # terminal emulator
 super + Return
-	termite
+       termite
 
 # window list
 alt + Tab
@@ -31,18 +34,6 @@ ctrl + alt + l
       yes) xclip -o > ~/Imagens/$(date +%s).png && \
            notify-send "Screenshot" "$(date +%s).png saved on ~/Imagens/screenshots/" ;; \
       esac;
-
-# ranger
-super + e
-      termite -e ranger
-
-# pcmanfm qt
-super + shift + e
-      pcmanfm-qt
-
-# bc
-super + alt + c
-	=
 
 # mute volume
 XF86AudioMute
