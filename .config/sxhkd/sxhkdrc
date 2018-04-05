@@ -27,7 +27,7 @@ ctrl + alt + l
 
 # print screen
 {shift,_} + Print
-      maim {-s,_} | xclip ; \
+      maim {-s,_} | xclip -selection clipboard -t image/png; \
       CHOISE=$(echo -e "no\nyes" | dmenu -p "Copy to clipboard. Save to file too?"); \
       case $CHOISE in \
       no) notify-send "Screenshot" "$(date +%s).png copied to clipboard.";; \
