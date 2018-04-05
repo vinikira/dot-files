@@ -1,3 +1,4 @@
+;;============ Variables ==============
 [colors]
 background = #2f343f
 background-alt = #4f545f
@@ -10,7 +11,6 @@ alert = #ebcb8b
 [fonts]
 primary = "Fira Mono:pixelsize=9;1"
 secondary = "FontAwesome:pixelsize=9:fontformat=truetype:antialias=yes;1"
-
 ;; Colors by system colorscheme
 ; [colors]
 ; background = ${xrdb:color0:#222}
@@ -20,7 +20,9 @@ secondary = "FontAwesome:pixelsize=9:fontformat=truetype:antialias=yes;1"
 ; primary = ${xrdb:color1:#222}
 ; secondary = ${xrdb:color2:#222}
 ; alert = ${xrdb:color3:#222}
+;;======================================
 
+;;============ Bars ====================
 [bar/primary-top]
 monitor = ${env:MONITOR}
 width = 100%
@@ -36,9 +38,9 @@ module-margin-left = 1
 module-margin-right = 1
 font-0 = ${fonts.primary}
 font-1 = ${fonts.secondary}
-modules-left = bspwm music
-modules-center = xwindow
-modules-right = pulseaudio-tail wlan eth battery date powermenu
+modules-left = bspwm xwindow
+modules-center = 
+modules-right = music bluetooth pulseaudio-tail wlan eth battery date powermenu
 tray-position = right
 tray-padding = 0
 tray-offset-x = 0
@@ -69,7 +71,9 @@ modules-right = date
 wm-restack = bspwm
 scroll-up = bspwm-desknext
 scroll-down = bspwm-deskprev
+;;==========================================
 
+;;============== Modules ===================
 [module/pulseaudio-tail]
 type = custom/script
 exec = ~/.config/polybar/pulseaudio-tail.sh
@@ -226,16 +230,24 @@ type = custom/script
 interval = 2
 label = %output:0:30:...%
 exec = ~/.config/polybar/mpris.sh
-click-left = playerctl previous
-click-middle = playerctl play-pause
+click-left = playerctl play-payse
+click-middle = playerctl previous
 click-right = playerctl next
 
+[module/bluetooth]
+type = custom/script
+exec = ~/.config/polybar/bluetooth.sh
+tail = true
+click-left = exec termite -e "bluetoothctl" &
+
+;;=======================================
+
+;;=========== Settings ==================
 [settings]
 screenchange-reload = true
-
 
 [global/wm]
 margin-top = 0
 margin-bottom = 0
-
+;;========================================
 ; vim:ft=dosini

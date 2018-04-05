@@ -2,8 +2,8 @@
 # Custom Hotkeys
 #
 # applications
-super + e ; {w,e,m,f}
-      {firefox,emacs,pavucontrol-qt,pcmanfm-qt}
+super + e ; {w,e,m,f,r}
+    {firefox,emacs,pavucontrol-qt,pcmanfm-qt,$(termite -e "ranger")}
 
 # terminal emulator
 super + Return
@@ -37,9 +37,9 @@ ctrl + alt + l
 
 # mute volume
 XF86AudioMute
-        pulseaudio-ctl mute && \
-            notify-send "Volume" -t 1000 -i notification-audio-volume-muted "\
-                        The volume is $(amixer get Master|tail -n1|sed -E 's/.*\[([a-z]+)\]/\1/')"
+    pulseaudio-ctl mute && \
+    notify-send "Volume" -t 1000 -i notification-audio-volume-muted "\
+    The volume is $(amixer get Master|tail -n1|sed -E 's/.*\[([a-z]+)\]/\1/')"
 
 # volume control
 XF86Audio{Raise,Lower}Volume
