@@ -39,8 +39,8 @@ module-margin-right = 1
 font-0 = ${fonts.primary}
 font-1 = ${fonts.secondary}
 modules-left = bspwm xwindow
-modules-center = 
-modules-right = music bluetooth pulseaudio-tail wlan eth battery date powermenu
+modules-center =
+modules-right = music office365 bluetooth pulseaudio-tail wlan eth battery date powermenu
 tray-position = right
 tray-padding = 0
 tray-offset-x = 0
@@ -239,6 +239,13 @@ type = custom/script
 exec = ~/.config/polybar/bluetooth.sh
 tail = true
 click-left = exec termite -e "bluetoothctl" &
+
+[module/office365]
+type = custom/script
+exec = ~/.config/polybar/mail.py
+interval = 30
+label =  %output%
+click-left = exec firefox https://outlook.office365.com &
 
 ;;=======================================
 
