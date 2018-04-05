@@ -230,7 +230,7 @@ type = custom/script
 interval = 2
 label = %output:0:30:...%
 exec = ~/.config/polybar/mpris.sh
-click-left = playerctl play-payse
+click-left = playerctl play-pause
 click-middle = playerctl previous
 click-right = playerctl next
 
