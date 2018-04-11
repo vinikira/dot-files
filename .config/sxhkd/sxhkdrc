@@ -3,7 +3,7 @@
 #
 # applications
 super + e ; {w,e,m,f,r}
-    {firefox,emacs,pavucontrol-qt,pcmanfm-qt,$(termite -e "ranger")}
+    {firefox,emacs,pavucontrol-qt,thunar,$(termite -e "ranger")}
 
 # terminal emulator
 super + Return
