@@ -27,13 +27,7 @@ ctrl + alt + l
 
 # print screen
 {shift,_} + Print
-      maim {-s,_} | xclip -selection clipboard -t image/png; \
-      CHOISE=$(echo -e "no\nyes" | dmenu -p "Copy to clipboard. Save to file too?"); \
-      case $CHOISE in \
-      no) notify-send "Screenshot" "$(date +%s).png copied to clipboard.";; \
-      yes) xclip -o > ~/Imagens/$(date +%s).png && \
-           notify-send "Screenshot" "$(date +%s).png saved on ~/Imagens/screenshots/" ;; \
-      esac;
+      screenshot-dialog {-s,_}
 
 # mute volume
 XF86AudioMute

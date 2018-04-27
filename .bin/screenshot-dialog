@@ -1,0 +1,14 @@
+#!/bin/bash
+maim $1 | xclip -selection clipboard -t image/png
+
+function show_dialog() {
+    local CHOISE=$(echo -e "no\nyes" | dmenu -p "Copy to clipboard. Save to file too?")
+    local FILE_NAME=$(date +%s)
+
+    case $CHOISE in
+        no) notify-send "Screenshot" "$FILE_NAME.png copied to clipboard." ;;
+        yes) xclip -selection clipboard -o > ~/Imagens/$(date +%s).png && notify-send "Screenshot" "$FILE_NAME.png saved on ~/Imagens/screenshots/"
+    esac
+}
+
+show_dialog
