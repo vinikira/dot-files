@@ -180,8 +180,9 @@ battery = BAT0
 adapter = AC
 full-at = 98
 
-format-charging = <animation-charging> <label-charging>
+format-charging = <label-charging>
 format-charging-underline = #ffb52a
+label-charging =  %percentage%%
 
 format-discharging = <ramp-capacity> <label-discharging>
 format-discharging-underline = ${self.format-charging-underline}
@@ -194,14 +195,7 @@ ramp-capacity-0 = 
 ramp-capacity-1 = 
 ramp-capacity-2 = 
 ramp-capacity-3 = 
-
 ramp-capacity-foreground = ${colors.foreground}
-
-animation-charging-0 = 
-animation-charging-1 = 
-animation-charging-2 = 
-animation-charging-foreground = ${colors.alert}
-animation-charging-framerate = 750
 
 [module/powermenu]
 type = custom/menu
