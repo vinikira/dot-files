@@ -6,11 +6,12 @@ rofi.scroll-method: 1
 rofi.display-run: #!
 rofi.display-drun:
 rofi.display-window:
-rofi.display-combi: Go to
+rofi.display-combi: Go to =>
 rofi.show-icons: true
-rofi.font: Fira Mono 11
+rofi.font: Fira Mono 10
 rofi.lines: 12
 rofi.padding: 18
 rofi.width: 60
 rofi.location: 0
-rofi.columns: 3
+rofi.columns: 1
+# rofi.theme: /usr/share/rofi/themes/Arc.rasi
