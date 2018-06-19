@@ -1,0 +1,27 @@
+# Rclone mount on boot ( service file template - add aditional rclone parameters )
+# Copy file to: /etc/systemd/system
+# Set remote name (current acdcrypt), path to mount and User,Group (current plex)
+# Register new service by typing:
+# sudo systemctl daemon-reload
+# sudo systemctl enable rclone-mount.service
+# systemctl start rclone-mount.service
+# systemctl enable NetworkManager-wait-online.service
+# Usage:
+# To unmount drive use
+# systemctl stop rclone-mount.service
+# To mount use:
+# systemctl start rclone-mount.service
+
+[Unit]
+Description=rclone Onedrive FUSE mount
+Documentation=http://rclone.org/docs/
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/rclone mount --allow-non-empty onedrive:/ %h/OneDrive
+ExecStop=/usr/bin/fusermount -uz %h/OneDrive
+
+[Install]
+Wants=network-online.target
+WantedBy=network-online.target
