@@ -32,7 +32,7 @@ ZSH_THEME="robbyrussell"
 ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
-COMPLETION_WAITING_DOTS="true"
+# COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
@@ -90,5 +90,5 @@ alias start_minidlna='minidlnad -f /home/$USER/.config/minidlna/minidlna.conf -P
 alias em='emacs -nw'
 alias ec='emacsclient'
 alias polybar-restart='sh $HOME/.config/polybar/launch.sh'
-
+alias dotfiles='/usr/bin/git --git-dir=$HOME/git/dotfiles --work-tree=$HOME'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
