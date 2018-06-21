@@ -88,6 +88,7 @@ fi
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias start_minidlna='minidlnad -f /home/$USER/.config/minidlna/minidlna.conf -P /home/$USER/.config/minidlna/minidlna.pid'
 alias em='emacs -nw'
+alias emc='emacsclient -nw'
 alias ec='emacsclient'
 alias polybar-restart='sh $HOME/.config/polybar/launch.sh'
 alias dotfiles='/usr/bin/git --git-dir=$HOME/git/dotfiles --work-tree=$HOME'
