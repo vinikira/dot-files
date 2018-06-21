@@ -4,23 +4,23 @@ root=true
 
 [**.js]
 ident_style = space
-ident_size = 4
+ident_size = 2
 
 [**.json]
 ident_style = space
-ident_size = 4
+ident_size = 2
 
 [**.jsx]
 e4x = true
 ident_style = space
-ident_size = 4
+ident_size = 2
 
 [**.css]
 ident_style = space
-ident_size = 4
+ident_size = 2
 
 [**.html]
 ident_style = space
-ident_size = 4
+ident_size = 2
 max_char = 78
 brace_style = expand
