@@ -91,5 +91,5 @@ alias em='emacs -nw'
 alias emc='emacsclient -nw'
 alias ec='emacsclient'
 alias polybar-restart='sh $HOME/.config/polybar/launch.sh'
-alias dotfiles='/usr/bin/git --git-dir=$HOME/git/dotfiles --work-tree=$HOME'
+alias dotfiles='/usr/bin/git --git-dir=$HOME/git/dot-files --work-tree=$HOME'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
