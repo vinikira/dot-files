@@ -93,3 +93,5 @@ alias ec='emacsclient'
 alias polybar-restart='sh $HOME/.config/polybar/launch.sh'
 alias dotfiles='/usr/bin/git --git-dir=$HOME/git/dot-files --work-tree=$HOME'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+export {http,https,ftp}_proxy="172.16.21.239:8080"
