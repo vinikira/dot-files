@@ -1,5 +1,5 @@
 # If you come from bash you might have to change your $PATH.
-export PATH=$HOME/.bin:/usr/local/bin:$PATH
+export PATH=$HOME/.bin:$HOME/.cargo/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
@@ -67,7 +67,7 @@ source $ZSH/oh-my-zsh.sh
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='emacsclient'
+  export EDITOR='emacs'
 else
   export EDITOR='emacs'
 fi
@@ -78,6 +78,12 @@ fi
 # ssh
 # export SSH_KEY_PATH="~/.ssh/rsa_id"
 
+# nvm
+source /usr/share/nvm/init-nvm.sh
+
+# fzf
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
@@ -87,9 +93,6 @@ fi
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias start_minidlna='minidlnad -f /home/$USER/.config/minidlna/minidlna.conf -P /home/$USER/.config/minidlna/minidlna.pid'
-alias em='emacs -nw'
-alias emc='emacsclient -nw'
-alias ec='emacsclient'
+alias emacs='emacsclient -nw'
 alias polybar-restart='sh $HOME/.config/polybar/launch.sh'
 alias dotfiles='/usr/bin/git --git-dir=$HOME/git/dot-files --work-tree=$HOME'
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
