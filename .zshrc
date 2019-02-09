@@ -4,6 +4,8 @@ export PATH=$HOME/.bin:$HOME/.cargo/bin:/usr/local/bin:$PATH
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
+export RUST_SRC_PATH=$(echo `rustc --print sysroot`/lib/rustlib/src/rust/src)
+
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
@@ -48,13 +50,13 @@ ENABLE_CORRECTION="true"
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
 # Tmux
-ZSH_TMUX_AUTOSTART="true"
+# ZSH_TMUX_AUTOSTART="true"
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git archlinux jsontools node npm tmux docker httpie nyan zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(git archlinux jsontools node npm tmux docker httpie zsh-autosuggestions zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -67,9 +69,9 @@ source $ZSH/oh-my-zsh.sh
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='emacs'
+  export EDITOR='nano'
 else
-  export EDITOR='emacs'
+  export EDITOR='nano'
 fi
 
 # Compilation flags
@@ -77,9 +79,6 @@ fi
 
 # ssh
 # export SSH_KEY_PATH="~/.ssh/rsa_id"
-
-# nvm
-source /usr/share/nvm/init-nvm.sh
 
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -93,6 +92,7 @@ source /usr/share/nvm/init-nvm.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias start_minidlna='minidlnad -f /home/$USER/.config/minidlna/minidlna.conf -P /home/$USER/.config/minidlna/minidlna.pid'
-alias emacs='emacsclient -nw'
 alias polybar-restart='sh $HOME/.config/polybar/launch.sh'
 alias dotfiles='/usr/bin/git --git-dir=$HOME/git/dot-files --work-tree=$HOME'
+alias clojurer='rlwrap clojure'
+alias e='emacsclient -cn'
