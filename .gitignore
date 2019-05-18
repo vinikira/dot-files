@@ -1,0 +1,8 @@
+*~
+.\#*
+\#*
+*.elc
+id_rsa
+id_*_rsa
+pubring.gpg
+secring.gpg
