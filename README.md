@@ -1,2 +1,2 @@
-# DotFiles
-DotFiles Arch Linux
+# dot-files
+Linux dot files
