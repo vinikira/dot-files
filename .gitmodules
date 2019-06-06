@@ -1,0 +1,3 @@
+[submodule "common/emacs/.emacs.d"]
+	path = common/emacs/.emacs.d
+	url = git://github.com/vinikira/emacs.d.git
