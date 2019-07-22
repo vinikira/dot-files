@@ -1,0 +1,60 @@
+#+TITLE: Vinícius's Emacs Configuration
+#+AUTHOR: Vinícius Simões
+#+BABEL: :cache yes
+#+PROPERTY: header-args :tangle yes
+#+STARTUP: overview
+
+* First-time initialization
+
+If you are using this configuration for the first time, you
+should put the following code on =.emacs.d/init.el=. It is
+responsible for bootstrapping the entire thing. Notice that
+it is not tangled along with the rest!
+
+#+begin_src emacs-lisp :tangle no
+  (require 'org)
+
+  (find-file (concat user-emacs-directory "init.org"))
+  (org-babel-tangle)
+  (load-file (concat user-emacs-directory "init.el"))
+  (byte-compile-file (concat user-emacs-directory "init.el"))
+#+end_src
+* Preparation
+** Boostrapping
+
+#+begin_src emacs-lisp
+  (defun tangle-init ()
+    "If the current buffer is 'init.org' the code-blocks are
+      tangled, and the tangled file is compiled."
+    (when (equal (buffer-file-name)
+		 (expand-file-name (concat user-emacs-directory "init.org")))
+      (let ((prog-mode-hook nil))
+	(org-babel-tangle)
+	(byte-compile-file (concat user-emacs-directory "init.el")))))
+
+  (add-hook 'after-save-hook 'tangle-init)
+#+end_src
+
+** Packaging
+
+Prepare packages managers.
+
+#+begin_src emacs-lisp
+  (setq package-archives '(("melpa" . "https://melpa.org/packages/")
+			   ("elpy" . "http://jorgenschaefer.github.io/packages/")))
+
+  (package-initialize)
+#+end_src
+
+Install use-package
+
+#+begin_src emacs-lisp
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package))
+
+  (eval-when-compile (require 'use-package))
+
+  (setq use-package-always-ensure t)
+		   
+#+end_src
