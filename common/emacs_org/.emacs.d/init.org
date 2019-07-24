@@ -21,7 +21,7 @@ it is not tangled along with the rest!
 #+end_src
 * Preparation
 ** Boostrapping
-
+   
 #+begin_src emacs-lisp
   (defun tangle-init ()
     "If the current buffer is 'init.org' the code-blocks are
@@ -41,7 +41,8 @@ Prepare packages managers.
 
 #+begin_src emacs-lisp
   (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-			   ("elpy" . "http://jorgenschaefer.github.io/packages/")))
+			   ("elpy" . "http://jorgenschaefer.github.io/packages/")
+			   ("org" . "https://orgmode.org/elpa/")))
 
   (package-initialize)
 #+end_src
@@ -56,5 +57,154 @@ Install use-package
   (eval-when-compile (require 'use-package))
 
   (setq use-package-always-ensure t)
-		   
+#+end_src
+
+** Custom
+
+Define private and temp directories
+
+#+begin_src emacs-lisp
+  (defconst private-dir (expand-file-name "private" user-emacs-directory))
+  (defconst temp-dir (format "%s/cache" private-dir))
+
+  (unless (file-exists-p private-dir)
+    (make-directory private-dir :parents))
+
+  (unless (file-exists-p temp-dir)
+    (make-directory temp-dir :parents))
+#+end_src
+
+Define and load custom-file
+
+#+begin_src emacs-lisp
+  (setq custom-file (expand-file-name (concat private-dir "/custom.el")))
+
+  (unless (file-exists-p custom-file)
+    (write-region "" nil custom-file))
+
+  (load custom-file)
+#+end_src
+* Appearence
+** Font
+
+My chosen fonts.
+
+#+begin_src emacs-lisp
+  (defconst vs/chosen-font-name "xos4 Terminus")
+#+end_src
+
+** Frame config
+
+My custom frame config. (WIP)
+
+#+begin_src emacs-lisp :tangle no
+  (defconst vs/frame-alist
+    '((font . ,vs/chosen-font-name)
+      (scroll-bar . -1)
+      (height . 60)
+      (width . 95)
+      (alpha . 95)
+      (vertical-scrollbars . nil)))
+
+  (setq default-frame-alist vs/frame-alist)
+#+end_src
+** Theme
+
+My custom theme
+
+#+begin_src emacs-lisp
+  (use-package dracula-theme
+    :config (load-theme 'dracula t))
+#+end_src
+** Modeline
+
+Install and activate telephone-line.
+
+#+begin_src emacs-lisp
+  (use-package telephone-line
+    :config (telephone-line-mode 1))
+#+end_src
+
+** Custom
+   
+My UI customizations
+
+#+begin_src emacs-lisp
+  (setq inhibit-startup-screen t
+	inhibit-splash-screen t
+	mouse-wheel-follow-mouse t
+	scroll-step 1
+	scroll-conservatively 101)
+
+  (show-paren-mode 1)
+
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+#+end_src
+* Programming Languages
+** Org
+
+Org mode latest version.
+
+#+begin_src emacs-lisp
+  (defconst vs/org-directory (if (file-directory-p "~/Sync/org")
+                                 "~/Sync/org"
+                               "~/"))
+
+  (use-package org
+    :ensure org-plus-contrib
+    :hook ((org-mode . toggle-word-wrap)
+           (org-mode . org-indent-mode)
+           (org-mode . turn-on-visual-line-mode))
+    :bind (("C-c l" . org-store-link)
+           ("C-c a" . org-agenda)))
+#+end_src
+
+*** Custom
+
+#+begin_src emacs-lisp
+  (setq org-directory vs/org-directory
+        org-default-notes-file (concat org-directory "/notes.org")
+        org-agenda-files '((concat org-directory "/work.org")
+                           (concat org-directory "/personal.org"))
+        org-confirm-babel-evaluate t
+        org-src-fontify-natively t
+        org-log-done 'time
+        org-babel-sh-command "bash")
+#+end_src
+
+*** Capture Templates
+
+My org capture templates
+
+#+begin_src emacs-lisp
+  (setq org-capture-templates '(("t" "todo" entry (file org-default-notes-file)
+                                  "* TODO %?\n%u\n%a\n" :clock-in t :clock-resume t)
+                                 ("m" "Meeting" entry (file org-default-notes-file)
+                                  "* MEETING with %? :MEETING:\n%t" :clock-in t :clock-resume t)
+                                 ("d" "Diary" entry (file+datetree "~/org/diary.org")
+                                  "* %?\n%U\n" :clock-in t :clock-resume t)
+                                 ("i" "Idea" entry (file org-default-notes-file)
+                                  "* %? :IDEA: \n%t" :clock-in t :clock-resume t)
+                                 ("n" "Next Task" entry (file+headline org-default-notes-file "Tasks")
+                                  "** NEXT %? \nDEADLINE: %t")))
+#+end_src
+
+*** Org Babel
+
+#+begin_src emacs-lisp
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   (org-babel-do-load-languages
+    'org-babel-load-languages
+    (append org-babel-load-languages
+            '((emacs-lisp . t)
+              (python . t)
+              (restclient . t)
+              (js . t)
+              (shell . t)
+              (plantuml . t)
+              (sql . t)
+              (ipython . t)))))
 #+end_src
