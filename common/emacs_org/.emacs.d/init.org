@@ -19,6 +19,7 @@ it is not tangled along with the rest!
   (load-file (concat user-emacs-directory "init.el"))
   (byte-compile-file (concat user-emacs-directory "init.el"))
 #+end_src
+
 * Preparation
 ** Boostrapping
    
@@ -84,6 +85,7 @@ Define and load custom-file
 
   (load custom-file)
 #+end_src
+
 * Appearence
 ** Font
 
@@ -108,6 +110,7 @@ My custom frame config. (WIP)
 
   (setq default-frame-alist vs/frame-alist)
 #+end_src
+
 ** Theme
 
 My custom theme
@@ -116,6 +119,7 @@ My custom theme
   (use-package dracula-theme
     :config (load-theme 'dracula t))
 #+end_src
+
 ** Modeline
 
 Install and activate telephone-line.
@@ -142,16 +146,34 @@ My UI customizations
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
 #+end_src
+
 * Programming Languages
+** Markdown
+
+#+begin_src emacs-lisp
+  (use-package markdown-mode
+    :mode (("README\\.md\\'" . gfm-mode)
+           ("\\.md\\'" . markdown-mode)
+           ("\\.markdown\\'" . markdown-mode))
+    :init (setq markdown-command "multimarkdown"))
+#+end_src
+
+*** Markdown format
+
+#+begin_src emacs-lisp
+
+  (use-package markdownfmt
+    :after markdown-mode
+    :hook (markdown-mode . markdownfmt-enable-on-save)
+    :bind (:map markdown-mode
+                ("C-c C-f" . markdownfmt-format-buffer)))
+#+end_src
+
 ** Org
 
 Org mode latest version.
 
 #+begin_src emacs-lisp
-  (defconst vs/org-directory (if (file-directory-p "~/Sync/org")
-                                 "~/Sync/org"
-                               "~/"))
-
   (use-package org
     :ensure org-plus-contrib
     :hook ((org-mode . toggle-word-wrap)
@@ -163,7 +185,13 @@ Org mode latest version.
 
 *** Custom
 
+Customize some variables.
+
 #+begin_src emacs-lisp
+  (defconst vs/org-directory (if (file-directory-p "~/Sync/org")
+                                   "~/Sync/org"
+                                 "~/"))
+
   (setq org-directory vs/org-directory
         org-default-notes-file (concat org-directory "/notes.org")
         org-agenda-files '((concat org-directory "/work.org")
@@ -174,9 +202,7 @@ Org mode latest version.
         org-babel-sh-command "bash")
 #+end_src
 
-*** Capture Templates
-
-My org capture templates
+Capture Templates
 
 #+begin_src emacs-lisp
   (setq org-capture-templates '(("t" "todo" entry (file org-default-notes-file)
@@ -191,7 +217,7 @@ My org capture templates
                                   "** NEXT %? \nDEADLINE: %t")))
 #+end_src
 
-*** Org Babel
+Org Babel
 
 #+begin_src emacs-lisp
   (org-babel-do-load-languages
@@ -207,4 +233,454 @@ My org capture templates
               (plantuml . t)
               (sql . t)
               (ipython . t)))))
+#+end_src
+
+Org structure tempaltes
+
+#+begin_src emacs-lisp
+  (define-key org-mode-map (kbd "C-c C-x t") #'org-insert-structure-template)
+
+  (setq org-structure-template-alist
+        '(("n" . "notes")
+          ("a" . "export ascii")
+          ("c" . "center")
+          ("C" . "comment")
+          ("e" . "example")
+          ("E" . "export")
+          ("h" . "export html")
+          ("l" . "export latex")
+          ("q" . "quote")
+          ("s" . "src")
+          ("v" . "verse")))
+#+end_src
+
+*** Org Bullets
+
+#+begin_src emacs-lisp
+
+  (use-package org-bullets
+    :hook ((org-mode . org-bullets-mode))
+    :init
+    (setq org-hide-leading-stars t))
+#+end_src
+
+*** Org Projectile
+
+#+begin_src emacs-lisp
+  (use-package org-projectile
+    :bind (("C-c n p" . org-projectile-project-todo-completing-read)
+           ("C-c c" . org-capture))
+    :config
+    (org-projectile-per-project)
+    (setq org-projectile-projects-file "todo.org"
+          org-agenda-files (append org-agenda-files (org-projectile-todo-files))))
+#+end_src
+
+*** Org + Reveal.js
+
+#+begin_src emacs-lisp
+  (use-package org-re-reveal
+    :init (setq org-re-reveal-root "https://cdn.jsdelivr.net/reveal.js/latest"))
+#+end_src
+
+*** Org Babel Restclient
+
+#+begin_src emacs-lisp
+  (use-package ob-restclient)
+#+end_src
+
+*** Org Babel Python
+
+#+begin_src emacs-lisp
+  (use-package ob-ipython)
+#+end_src
+
+*** Org Babel Async
+
+Turn code evaluation async.
+
+#+begin_src emacs-lisp
+  (use-package ob-async
+    :init (setq ob-async-no-async-languages-alist '("ipython")))
+#+end_src
+** Restclient
+
+Http tool for emacs.
+
+#+begin_src emacs-lisp
+  (use-package restclient
+    :mode
+    ("\\.http$" . restclient-mode)
+    ("\\.https$" . restclient-mode))
+#+end_src
+
+*** Restclient test
+
+#+begin_src emacs-lisp
+  (use-package restclient-test
+    :after restclient-mode)
+#+end_src
+
+* Extensions
+** Ace Window
+
+Jump between open windows.
+
+#+begin_src emacs-lisp
+
+  (use-package ace-window
+    :init
+    (progn
+      (global-set-key [remap other-window] 'ace-window)
+      (custom-set-faces
+       '(aw-leading-char-face
+         ((t (:inherit ace-jump-face-foreground :height 3.0)))))))
+#+end_src
+
+** All the icons
+
+Emacs icons.
+
+#+begin_src emacs-lisp
+  (use-package all-the-icons)
+#+end_src
+** Avy
+
+Jump to any visible character.
+
+#+begin_src emacs-lisp
+  (use-package avy
+    :bind (("C-:" . 'avy-goto-char)))
+#+end_src
+
+** Company
+
+Code completion for emacs
+
+#+begin_src emacs-lisp
+  (use-package company
+    :init
+    (setq company-dabbrev-downcase 0
+          company-idle-delay 0)
+    :bind (("C-." . company-complete))
+    :config (global-company-mode 1))
+#+end_src
+
+*** Company Quickhelp
+
+#+begin_src emacs-lisp
+  (use-package company-quickhelp
+    :after company
+    :config (company-quickhelp-mode 1))
+#+end_src
+
+*** Company Restclient
+
+Completions for restclient mode.
+
+#+begin_src emacs-lisp
+  (use-package company-restclient
+    :config (add-to-list 'company-backends 'company-restclient))
+#+end_src
+
+** Dashboard
+
+Emacs awesome dashboard!
+
+#+begin_src emacs-lisp
+  (use-package dashboard
+    :init
+    (setq dashboard-items '((recents  . 5)
+                            (projects . 5)
+                            (bookmarks . 5)
+                            (agenda . 5))
+          dashboard-set-file-icons t
+          dashboard-set-heading-icons t
+          dashboard-startup-banner 'logo)
+    :config
+    (dashboard-setup-startup-hook))
+#+end_src
+
+** Dump Jump
+
+Jump to definition polyglot.
+
+#+begin_src emacs-lisp
+  (use-package dumb-jump
+    :config (dumb-jump-mode))
+#+end_src
+** Editorconfig
+
+#+begin_src emacs-lisp
+  (use-package editorconfig
+    :config
+    (editorconfig-mode 1))
+#+end_src
+** Eglot
+
+LSP client
+
+#+begin_src emacs-lisp
+  (use-package eglot)
+#+end_src
+** Expand Region
+
+#+begin_src emacs-lisp
+  (use-package expand-region
+    :bind
+    ("C-=" . er/expand-region))
+#+end_src
+
+** Exec path from shell
+
+#+begin_src emacs-lisp
+  (use-package exec-path-from-shell
+    :config
+    ;; Add GOPATH to shell
+    (when (memq window-system '(mac ns x))
+      (exec-path-from-shell-copy-env "GOPATH")
+      (exec-path-from-shell-copy-env "PYTHONPATH")
+      (exec-path-from-shell-initialize)))
+#+end_src
+
+** Flycheck
+
+Syntax checker for emacs.
+
+#+begin_src emacs-lisp
+  (use-package flycheck
+    :config
+    (global-flycheck-mode 1))
+#+end_src
+
+** Ivy Stuff
+
+Ivy, a generic completion mechanism for Emacs.
+Swiper, an Ivy-enhanced alternative to isearch.
+
+#+begin_src emacs-lisp
+  (use-package ivy
+    :bind ("C-s" . swiper)
+    :init (setq ivy-use-virtual-buffers t)
+    :config (ivy-mode 1))
+#+end_src
+
+Counsel, a collection of Ivy-enhanced versions of common Emacs commands.
+
+#+begin_src emacs-lisp
+  (use-package counsel
+    :config (counsel-mode 1)
+    :bind (("M-x" . counsel-M-x)
+           ("C-x C-f" . counsel-find-file)
+           ("C-x c k" . counsel-yank-pop)
+           ("<f1> f" . counsel-describe-function)
+           ("<f1> v" . counsel-describe-variable)
+           ("<f1> l" . counsel-load-library)
+           ("<f2> i" . counsel-info-lookup-symbol)
+           ("<f2> u" . counsel-unicode-char)
+           ("C-x C-r" . counsel-recentf)))
+#+end_src
+
+*** Ivy rich
+
+#+begin_src emacs-lisp
+  (use-package ivy-rich
+    :after ivy
+    :config (ivy-rich-mode 1))
+#+end_src
+
+
+*** Counsel projectile
+
+#+begin_src emacs-lisp
+  (use-package counsel-projectile
+    :bind
+    ("C-x v" . counsel-projectile)
+    ("C-x c p" . counsel-projectile-ag))
+#+end_src
+
+** Magit
+
+Magic git client!
+
+#+begin_src emacs-lisp
+  (use-package magit
+    :if (executable-find "git")
+    :init
+    (setq magit-completing-read-function 'ivy-completing-read)
+    :bind
+    (("C-x g s" . magit-status)
+     ("C-x g x" . magit-checkout)
+     ("C-x g c" . magit-commit)
+     ("C-x g p" . magit-push)
+     ("C-x g u" . magit-pull)
+     ("C-x g e" . magit-ediff-resolve)
+     ("C-x g r" . magit-rebase-interactive)))
+#+end_src
+
+*** Magit Popup
+
+#+begin_src emacs-lisp
+  (use-package magit-popup
+    :after magit)
+#+end_src
+
+*** Git gutter
+
+#+begin_src emacs-lisp
+  (use-package git-gutter-fringe
+    :config (global-git-gutter-mode))
+#+end_src
+
+** Multiple cursors
+
+#+begin_src emacs-lisp
+  (use-package multiple-cursors
+    :bind
+    ("C-S-c C-S-c" . mc/edit-lines)
+    ("M-n" . mc/mark-next-like-this)
+    ("M-p" . mc/mark-previous-like-this)
+    ("C-c x" . mc/mark-all-like-this))
+#+end_src
+
+** Projectile
+
+Project managment.
+
+#+begin_src emacs-lisp
+  (use-package projectile
+    :init
+    (setq projectile-known-projects-file
+          (expand-file-name temp-dir "projectile-bookmarks.eld")
+          projectile-completion-system 'ivy
+          projectile-globally-ignored-directories '("node_modules" ".git" ".svn" "deps"))
+    :bind-keymap ("C-c p" . projectile-command-map)
+    :bind (("C-," . projectile-find-file))
+    :config (projectile-mode +1))
+#+end_src
+
+*** Projectile ripgrep
+
+#+begin_src emacs-lisp
+  (use-package projectile-ripgrep
+    :after projectile)
+#+end_src
+
+** Quickrun
+
+Quickrun buffer.
+
+#+begin_src emacs-lisp
+  (use-package quickrun
+    :bind (([f5] . quickrun)))
+#+end_src
+
+** Smartparens
+
+Smart parentheses
+
+#+begin_src emacs-lisp
+  (use-package smartparens
+    :config (smartparens-global-mode))
+#+end_src
+
+** Smex
+
+Command history
+
+#+begin_src emacs-lisp
+  (use-package smex)
+#+end_src
+
+** Treemacs
+
+File explorer.
+
+#+begin_src emacs-lisp
+  (use-package treemacs
+    :bind
+    (:map global-map
+          ("M-0"       . treemacs-select-window)
+          ("C-x t 1"   . treemacs-delete-other-windows)
+          ([f8]   . treemacs)
+          ("C-x t B"   . treemacs-bookmark)
+          ([f7] . treemacs-find-file)
+          ("C-x t M-t" . treemacs-find-tag)))
+#+end_src
+
+*** Treemacs projectile
+
+#+begin_src emacs-lisp
+  (use-package treemacs-projectile
+    :after treemacs projectile)
+#+end_src
+
+*** Treemacs magit
+
+#+begin_src emacs-lisp
+  (use-package treemacs-magit
+    :after treemacs magit)
+#+end_src
+
+** Try
+
+Try out packages in emacs without installing them
+
+#+begin_src emacs-lisp
+  (use-package try)
+#+end_src
+
+** Undo tree
+
+#+begin_src emacs-lisp
+  (use-package undo-tree
+    :init
+    ;; Remember undo history
+    (setq
+     undo-tree-auto-save-history nil
+     undo-tree-history-directory-alist `(("." . ,(concat temp-dir "/undo/"))))
+    :config
+    (global-undo-tree-mode 1))
+#+end_src
+
+** VLF
+
+View large files
+
+#+begin_src emacs-lisp
+  (use-package vlf
+    :config (require 'vlf-setup))
+#+end_src
+** Wich key
+
+#+begin_src emacs-lisp
+  (use-package which-key
+    :config
+    (which-key-mode))
+#+end_src
+
+** Xclip
+
+#+begin_src emacs-lisp
+  (use-package xclip
+    :if (executable-find "xclip")
+    :config (xclip-mode))
+#+end_src
+** Yasnippet
+
+Snippets in emacs
+
+#+begin_src emacs-lisp
+  (use-package yasnippet
+    :init (setq yas-snippet-dirs
+                '((concat user-emacs-directory "/snippets/")))
+    :config
+    (yas-global-mode 1))
+#+end_src
+
+Yasnippet snippet pack
+
+#+begin_src emacs-lisp
+  (use-package yasnippet-snippets
+    :after (yas-global-mode))
 #+end_src
