@@ -40,7 +40,10 @@
 *** Prepare packages managers.
 
    #+begin_src emacs-lisp
-     (setq package-archives '(("melpa" . "https://melpa.org/packages/")
+     (require 'package)
+
+     (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
+			      ("melpa" . "https://melpa.org/packages/")
 			      ("elpy" . "http://jorgenschaefer.github.io/packages/")
 			      ("org" . "https://orgmode.org/elpa/")))
 
@@ -695,7 +698,7 @@
      (use-package plantuml-mode
        :mode ("\\.plantuml\\'" . plantuml-mode)
        :config
-       (let ((plantuml-directory (concat user-emacs-directory "private"))
+       (let ((plantuml-directory (concat user-emacs-directory "private/"))
 	   (plantuml-link "https://superb-dca2.dl.sourceforge.net/project/plantuml/plantuml.jar"))
        (let ((plantuml-target (concat plantuml-directory "plantuml.jar")))
 	 (if (not (file-exists-p plantuml-target))
@@ -973,7 +976,7 @@
 
 ** Delight
    #+begin_src emacs-lisp
-     (use-package delight-mode)
+     (use-package delight)
    #+end_src
 ** Dump Jump
 
@@ -1236,7 +1239,7 @@
 ** Xclip
 
    #+begin_src emacs-lisp
-  (use-package xclip-mode
+  (use-package xclip
     :if (executable-find "xclip")
     :config (xclip-mode))
    #+end_src
