@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: n
+# key: n
+# Note
+# --
+note ${1:direction} of ${2:object}
+${0}
+end note

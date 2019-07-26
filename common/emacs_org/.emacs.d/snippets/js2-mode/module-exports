@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: module-export
+# key: mde
+# group: nodejs
+# --
+module.exports = $0

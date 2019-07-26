@@ -1,0 +1,20 @@
+# -*- mode: snippet -*-
+#name : SuiteScript Suitelet
+# --
+/**
+ *@NApiVersion 2.x
+ *@NScriptType Suitelet
+ */
+define([${1:deps}],
+    function(${2:aliases}) {
+        function onRequest(context) {
+            if (context.request.method === 'GET') {
+               $0
+            } else {
+              
+            }
+        }
+        return {
+            onRequest: onRequest
+        };
+    });

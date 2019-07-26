@@ -1,0 +1,41 @@
+# -*- mode: snippet -*-
+# name: er
+# key: er
+# WA to generate Entity Relationship Diagram
+# https://gist.github.com/QuantumGhost/0955a45383a0b6c0bc24f9654b3cb561
+# --
+@startuml
+' uncomment the line below if you're using computer with a retina display
+' skinparam dpi 300
+!define Table(name,desc) class name as "desc" << (T,#FFAAAA) >>
+' we use bold for primary key
+' green color for unique
+' and underscore for not_null
+!define primary_key(x) <b>x</b>
+!define unique(x) <color:green>x</color>
+!define not_null(x) <u>x</u>
+' other tags available:
+' <i></i>
+' <back:COLOR></color>, where color is a color name or html color code
+' (#FFAACC)
+' see: http://plantuml.com/classes.html#More
+hide methods
+hide stereotypes
+
+' entities
+
+Table(${1:table_name}, "$1\n(${2:description}") {
+primary_key(${3:primary_key}) INTEGER
+${0}
+}
+
+' relationships
+' one-to-one relationship
+' user -- user_profile : "A user only \nhas one profile"
+' one to may relationship
+' user --> session : "A user may have\n many sessions"
+' many to many relationship
+' Add mark if you like
+' user "1" --> "*" user_group : "A user may be \nin many groups"
+' group "1" --> "0..N" user_group : "A group may \ncontain many users"
+@enduml

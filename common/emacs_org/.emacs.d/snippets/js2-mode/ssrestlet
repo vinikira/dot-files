@@ -1,0 +1,18 @@
+# -*- mode: snippet -*-
+#name : SuiteScript RESTlet
+# --
+/**
+ *@NApiVersion 2.x
+ *@NScriptType Restlet
+ */
+define([${1:deps}],
+    function(${2:aliases}) {
+        $0
+        
+        return {
+            get: null,
+            delete: null,
+            post: null,
+            put: null
+        };
+    });

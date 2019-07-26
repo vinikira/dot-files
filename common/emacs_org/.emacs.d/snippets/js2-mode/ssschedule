@@ -1,0 +1,16 @@
+# -*- mode: snippet -*-
+#name : SuiteScript Schedule
+# --
+/**
+ *@NApiVersion 2.x
+ *@NScriptType ScheduledScript
+ */
+define([${1:deps}],
+    function(${2:aliases}) {
+        function execute(context) {
+           $0
+        }
+        return {
+            execute: execute
+        };
+    });

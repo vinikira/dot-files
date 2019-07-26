@@ -1,0 +1,17 @@
+# -*- mode: snippet -*-
+#name : SuiteScript MassUpdate
+# --
+/**
+ *@NApiVersion 2.0
+ *@NScriptType MassUpdateScript
+ */
+define([${1:deps}],
+    function(${2:aliases}) {
+        function each(params) {
+            $0
+        }
+        
+        return {
+            each: each
+        };
+    });

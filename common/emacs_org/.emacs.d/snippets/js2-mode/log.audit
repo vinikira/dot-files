@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+#name : Log audit NetSuite SuiteScript 2
+# --
+log.audit({title: '${1}', details: '${2}'})

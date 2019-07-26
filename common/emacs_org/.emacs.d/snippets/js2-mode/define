@@ -1,0 +1,16 @@
+# -*- mode: snippet -*-
+#name : Define RequireJS
+# --
+/**
+ * ${1: description}
+ * @author ${2: author}
+ * @since ${3: since}
+ */
+
+define([${4:deps}],
+       function (${5:aliases}) {
+           $0
+           return {
+	   	 myModule: null
+           };
+       });

@@ -1,0 +1,16 @@
+# -*- mode: snippet -*-
+#name : SuiteScript UserEvent
+# --
+/**
+ *@NApiVersion 2.x
+ *@NScriptType UserEventScript
+ */
+define([${1:deps}],
+    function(${2:aliases}) {
+        $0
+        return {
+            beforeLoad: null,
+            beforeSubmit: null,
+            afterSubmit: null
+        };
+    });
