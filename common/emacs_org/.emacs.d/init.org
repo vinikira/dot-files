@@ -22,41 +22,45 @@
 
 * Preparation
 ** Boostrapping
-   
-   #+begin_src emacs-lisp
-  (defun tangle-init ()
-    "If the current buffer is 'init.org' the code-blocks are
-      tangled, and the tangled file is compiled."
-    (when (equal (buffer-file-name)
-		 (expand-file-name (concat user-emacs-directory "init.org")))
-      (let ((prog-mode-hook nil))
-	(org-babel-tangle)
-	(byte-compile-file (concat user-emacs-directory "init.el")))))
 
-  (add-hook 'after-save-hook 'tangle-init)
+   #+begin_src emacs-lisp
+     (defun tangle-init ()
+       "If the current buffer is 'init.org' the code-blocks are
+	 tangled, and the tangled file is compiled."
+       (when (equal (buffer-file-name)
+		    (expand-file-name (concat user-emacs-directory "init.org")))
+	 (let ((prog-mode-hook nil))
+	   (org-babel-tangle)
+	   (byte-compile-file (concat user-emacs-directory "init.el")))))
+
+     (add-hook 'after-save-hook 'tangle-init)
    #+end_src
 
 ** Packaging
 *** Prepare packages managers.
 
    #+begin_src emacs-lisp
-  (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-			   ("elpy" . "http://jorgenschaefer.github.io/packages/")
-			   ("org" . "https://orgmode.org/elpa/")))
+     (setq package-archives '(("melpa" . "https://melpa.org/packages/")
+			      ("elpy" . "http://jorgenschaefer.github.io/packages/")
+			      ("org" . "https://orgmode.org/elpa/")))
 
-  (package-initialize) 
+     (package-initialize)
+
+     (when (not package-archive-contents)
+       (package-refresh-contents))
    #+end_src
 
 *** Install use-package
 
    #+begin_src emacs-lisp
-  (unless (package-installed-p 'use-package)
-    (package-refresh-contents)
-    (package-install 'use-package))
+     (unless (package-installed-p 'use-package)
+       (package-refresh-contents)
+       (package-install 'use-package))
 
-  (eval-when-compile (require 'use-package))
+     (require 'use-package)
+     (require 'use-package-ensure)
+     (setq use-package-always-ensure t)
 
-  (setq use-package-always-ensure t)
    #+end_src
 
 ** Custom
@@ -85,7 +89,7 @@
    #+end_src
 
 *** UTF-8
-    
+
     #+begin_src emacs-lisp
       (set-charset-priority 'unicode)
       (set-terminal-coding-system  'utf-8)   ; pretty
@@ -96,7 +100,7 @@
 	    locale-coding-system          'utf-8)
     #+end_src
 *** Variables
-    
+
     #+begin_src emacs-lisp
       (setq confirm-kill-emacs                  'y-or-n-p
             confirm-nonexistent-file-or-buffer  t
@@ -329,21 +333,13 @@
      (global-set-key (kbd "C-c s b") 'vs/scratch-buffer)
    #+end_src
 * Appearence
-** Font
-
-   My chosen fonts.
-
-   #+begin_src emacs-lisp
-  (defconst vs/chosen-font-name "xos4 Terminus")
-   #+end_src
-
 ** Frame config
 
-   My custom frame config. (WIP)
+   My custom frame config.
 
-   #+begin_src emacs-lisp :tangle no
+   #+begin_src emacs-lisp
   (defconst vs/frame-alist
-    '((font . ,vs/chosen-font-name)
+    '((font . "Fira Code")
       (scroll-bar . -1)
       (height . 60)
       (width . 95)
@@ -372,7 +368,7 @@
    #+end_src
 
 ** Custom
-   
+
    My UI customizations
 
    #+begin_src emacs-lisp
@@ -584,62 +580,64 @@
    Org mode latest version.
 
    #+begin_src emacs-lisp
-  (defconst vs/org-directory (if (file-directory-p "~/Sync/org") "~/Sync/org" "~/"))
+     (defconst vs/org-directory (if (file-directory-p "~/Sync/org") "~/Sync/org" "~/"))
 
-  (defconst vs/org-capture-templates '(("t" "todo" entry (file org-default-notes-file)
-				    "* TODO %?\n%u\n%a\n" :clock-in t :clock-resume t)
-				   ("m" "Meeting" entry (file org-default-notes-file)
-				    "* MEETING with %? :MEETING:\n%t" :clock-in t :clock-resume t)
-				   ("d" "Diary" entry (file+datetree "~/org/diary.org")
-				    "* %?\n%U\n" :clock-in t :clock-resume t)
-				   ("i" "Idea" entry (file org-default-notes-file)
-				    "* %? :IDEA: \n%t" :clock-in t :clock-resume t)
-				   ("n" "Next Task" entry (file+headline org-default-notes-file "Tasks")
-				    "** NEXT %? \nDEADLINE: %t")))
+     (defconst vs/org-capture-templates '(("t" "todo" entry (file org-default-notes-file)
+				       "* TODO %?\n%u\n%a\n" :clock-in t :clock-resume t)
+				      ("m" "Meeting" entry (file org-default-notes-file)
+				       "* MEETING with %? :MEETING:\n%t" :clock-in t :clock-resume t)
+				      ("d" "Diary" entry (file+datetree "~/org/diary.org")
+				       "* %?\n%U\n" :clock-in t :clock-resume t)
+				      ("i" "Idea" entry (file org-default-notes-file)
+				       "* %? :IDEA: \n%t" :clock-in t :clock-resume t)
+				      ("n" "Next Task" entry (file+headline org-default-notes-file "Tasks")
+				       "** NEXT %? \nDEADLINE: %t")))
 
-  (defconst vs/org-structure-template-alist
-	  '(("n" . "notes")
-	    ("a" . "export ascii")
-	    ("c" . "center")
-	    ("C" . "comment")
-	    ("e" . "example")
-	    ("E" . "export")
-	    ("h" . "export html")
-	    ("l" . "export latex")
-	    ("q" . "quote")
-	    ("s" . "src")
-	    ("v" . "verse")))
+     (defconst vs/org-structure-template-alist
+	     '(("n" . "notes")
+	       ("a" . "export ascii")
+	       ("c" . "center")
+	       ("C" . "comment")
+	       ("e" . "example")
+	       ("E" . "export")
+	       ("h" . "export html")
+	       ("l" . "export latex")
+	       ("q" . "quote")
+	       ("s" . "src")
+	       ("v" . "verse")))
 
-  (use-package org
-    :ensure org-plus-contrib
-    :hook ((org-mode . toggle-word-wrap)
-	   (org-mode . org-indent-mode)
-	   (org-mode . turn-on-visual-line-mode))
-    :bind (("C-c l" . org-store-link)
-	   ("C-c a" . org-agenda))
-    :init (setq org-directory vs/org-directory
-		org-default-notes-file (concat org-directory "/notes.org")
-		org-agenda-files '((concat org-directory "/work.org")
-				   (concat org-directory "/personal.org"))
-		org-confirm-babel-evaluate t
-		org-src-fontify-natively t
-		org-log-done 'time
-		org-babel-sh-command "bash"
-		org-capture-templates vs/org-capture-templates
-		org-structure-template-alist vs/org-structure-template-alist)
-    :config (org-babel-do-load-languages
-	     'org-babel-load-languages
-	     (org-babel-do-load-languages
-	      'org-babel-load-languages
-	      (append org-babel-load-languages
-		      '((emacs-lisp . t)
-			(python . t)
-			(restclient . t)
-			(js . t)
-			(shell . t)
-			(plantuml . t)
-			(sql . t)
-			(ipython . t))))))
+     (use-package org
+       :ensure org-plus-contrib
+       :hook ((org-mode . toggle-word-wrap)
+	      (org-mode . org-indent-mode)
+	      (org-mode . turn-on-visual-line-mode)
+	      (org-mode . (lambda () (display-line-numbers-mode -1))))
+       :bind (("C-c l" . org-store-link)
+	      ("C-c a" . org-agenda))
+       :init (setq org-directory vs/org-directory
+		   org-default-notes-file (concat org-directory "notes.org")
+		   org-agenda-files (list (concat org-directory "work.org")
+				      (concat org-directory "personal.org"))
+		   org-confirm-babel-evaluate t
+		   org-src-fontify-natively t
+		   org-log-done 'time
+		   org-babel-sh-command "bash"
+		   org-capture-templates vs/org-capture-templates
+		   org-structure-template-alist vs/org-structure-template-alist)
+       :config (org-babel-do-load-languages
+		'org-babel-load-languages
+		(org-babel-do-load-languages
+		 'org-babel-load-languages
+		 (append org-babel-load-languages
+			 '((emacs-lisp . t)
+			   (python . t)
+			   (restclient . t)
+			   (js . t)
+			   (shell . t)
+			   (plantuml . t)
+			   (sql . t)
+			   (ipython . t)))))
+       (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append))
    #+end_src
 
 *** Org Bullets
@@ -655,13 +653,13 @@
 *** Org Projectile
 
     #+begin_src emacs-lisp
-  (use-package org-projectile
-    :bind (("C-c n p" . org-projectile-project-todo-completing-read)
-           ("C-c c" . org-capture))
-    :init (setq org-projectile-projects-file "todo.org"
-                org-agenda-files (append org-agenda-files (org-projectile-todo-files)))
-    :config
-    (org-projectile-per-project))
+      (use-package org-projectile
+	:bind (("C-c n p" . org-projectile-project-todo-completing-read)
+	       ("C-c c" . org-capture))
+	:config
+	(org-projectile-per-project)
+	(setq org-projectile-projects-file "todo.org"
+	      org-agenda-files (append org-agenda-files (org-projectile-todo-files))))
     #+end_src
 
 *** Org + Reveal.js
@@ -697,7 +695,7 @@
      (use-package plantuml-mode
        :mode ("\\.plantuml\\'" . plantuml-mode)
        :config
-       (let ((plantuml-directory (concat user-emacs-directory "/private"))
+       (let ((plantuml-directory (concat user-emacs-directory "private"))
 	   (plantuml-link "https://superb-dca2.dl.sourceforge.net/project/plantuml/plantuml.jar"))
        (let ((plantuml-target (concat plantuml-directory "plantuml.jar")))
 	 (if (not (file-exists-p plantuml-target))
@@ -973,6 +971,10 @@
     (dashboard-setup-startup-hook))
    #+end_src
 
+** Delight
+   #+begin_src emacs-lisp
+     (use-package delight-mode)
+   #+end_src
 ** Dump Jump
 
    Jump to definition polyglot.
@@ -1123,7 +1125,7 @@
   (use-package projectile
     :init
     (setq projectile-known-projects-file
-          (expand-file-name temp-dir "projectile-bookmarks.eld")
+          (expand-file-name "projectile-bookmarks.eld" temp-dir)
           projectile-completion-system 'ivy
           projectile-globally-ignored-directories '("node_modules" ".git" ".svn" "deps"))
     :bind-keymap ("C-c p" . projectile-command-map)
@@ -1234,7 +1236,7 @@
 ** Xclip
 
    #+begin_src emacs-lisp
-  (use-package xclip
+  (use-package xclip-mode
     :if (executable-find "xclip")
     :config (xclip-mode))
    #+end_src
@@ -1243,16 +1245,15 @@
    Snippets in emacs
 
    #+begin_src emacs-lisp
-  (use-package yasnippet
-    :init (setq yas-snippet-dirs
-                '((concat user-emacs-directory "/snippets/")))
-    :config
-    (yas-global-mode 1))
+     (use-package yasnippet
+       :init (setq yas-snippet-dirs (list (concat user-emacs-directory "snippets/")))
+       :config
+       (yas-global-mode 1))
    #+end_src
 
    Yasnippet snippet pack
 
    #+begin_src emacs-lisp
-  (use-package yasnippet-snippets
-    :after (yas-global-mode))
+     (use-package yasnippet-snippets
+       :after (yas-global-mode))
    #+end_src
