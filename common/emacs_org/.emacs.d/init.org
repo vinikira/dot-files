@@ -37,8 +37,7 @@
    #+end_src
 
 ** Packaging
-
-   Prepare packages managers.
+*** Prepare packages managers.
 
    #+begin_src emacs-lisp
   (setq package-archives '(("melpa" . "https://melpa.org/packages/")
@@ -48,7 +47,7 @@
   (package-initialize) 
    #+end_src
 
-   Install use-package
+*** Install use-package
 
    #+begin_src emacs-lisp
   (unless (package-installed-p 'use-package)
