@@ -14,8 +14,11 @@
   #+begin_src emacs-lisp :tangle no
     (require 'org)
 
+    (setq vc-follow-symlinks t)
+
     (find-file (concat user-emacs-directory "init.org"))
-    (org-babel-tangle-file (concat user-emacs-directory "init.el"))
+    (org-babel-tangle)
+    (rename-file "init.el" (expand-file-name "init.el" user-emacs-directory) t)
     (load-file (concat user-emacs-directory "init.el"))
     (byte-compile-file (concat user-emacs-directory "init.el"))
   #+end_src
@@ -24,13 +27,16 @@
 ** Boostrapping
 
    #+begin_src emacs-lisp
+     ;;; -*- lexical-binding: t -*-
+
      (defun tangle-init ()
        "If the current buffer is 'init.org' the code-blocks are
-	 tangled, and the tangled file is compiled."
-       (when (equal (buffer-file-name)
-		    (expand-file-name (concat user-emacs-directory "init.org")))
+     tangled, and the tangled file is compiled."
+       (when (equal (buffer-file-name) "init.org")
+	 ;; Avoid running hooks when tangling.
 	 (let ((prog-mode-hook nil))
 	   (org-babel-tangle)
+	   (rename-file "init.el" (expand-file-name "init.el" user-emacs-directory) t)
 	   (byte-compile-file (concat user-emacs-directory "init.el")))))
 
      (add-hook 'after-save-hook 'tangle-init)
