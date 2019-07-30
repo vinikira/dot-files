@@ -304,7 +304,11 @@
 * Keybindings
 ** Ansi-term
    #+begin_src emacs-lisp
-     (global-set-key (kbd "C-x C-z") 'ansi-term)
+     (global-set-key (kbd "C-x C-z") (lambda ()
+                                       (interactive)
+                                       (split-window-sensibly)
+                                       (other-window 1)
+                                       (ansi-term "/bin/zsh")))
    #+end_src
 ** Ibuffer
    #+begin_src emacs-lisp
