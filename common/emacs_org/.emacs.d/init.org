@@ -32,7 +32,7 @@
      (defun tangle-init ()
        "If the current buffer is 'init.org' the code-blocks are
      tangled, and the tangled file is compiled."
-       (when (equal (buffer-file-name) "init.org")
+       (when (equal (buffer-name) "init.org")
 	 ;; Avoid running hooks when tangling.
 	 (let ((prog-mode-hook nil))
 	   (org-babel-tangle)
@@ -304,7 +304,7 @@
 * Keybindings
 ** Ansi-term
    #+begin_src emacs-lisp
-     (global-set-key (kbd "C-x C-z") 'shell)
+     (global-set-key (kbd "C-x C-z") 'ansi-term)
    #+end_src
 ** Ibuffer
    #+begin_src emacs-lisp
