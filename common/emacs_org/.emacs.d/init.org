@@ -352,7 +352,7 @@
 
    #+begin_src emacs-lisp
   (defconst vs/frame-alist
-    '((font . "Fira Code")
+    '((font . "Fira Code-10")
       (scroll-bar . -1)
       (height . 60)
       (width . 95)
@@ -709,7 +709,7 @@
        :mode ("\\.plantuml\\'" . plantuml-mode)
        :config
        (let ((plantuml-directory (concat user-emacs-directory "private/"))
-	   (plantuml-link "https://superb-dca2.dl.sourceforge.net/project/plantuml/plantuml.jar"))
+	   (plantuml-link "http://sourceforge.net/projects/plantuml/files/plantuml.jar/download"))
        (let ((plantuml-target (concat plantuml-directory "plantuml.jar")))
 	 (if (not (file-exists-p plantuml-target))
 	     (progn (message "Downloading plantuml.jar")
