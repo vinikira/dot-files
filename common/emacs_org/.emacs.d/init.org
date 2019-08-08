@@ -1047,6 +1047,7 @@ Swiper, an Ivy-enhanced alternative to isearch.
 
 #+begin_src emacs-lisp
   (use-package ivy
+    :defer 0.1
     :bind ("C-s" . swiper)
     :init (setq ivy-use-virtual-buffers t)
     :config (ivy-mode 1))
@@ -1056,6 +1057,7 @@ Counsel, a collection of Ivy-enhanced versions of common Emacs commands.
 
 #+begin_src emacs-lisp
   (use-package counsel
+    :after ivy
     :config (counsel-mode 1)
     :bind (("M-x" . counsel-M-x)
            ("C-x C-f" . counsel-find-file)
@@ -1075,7 +1077,6 @@ Counsel, a collection of Ivy-enhanced versions of common Emacs commands.
     :after ivy
     :config (ivy-rich-mode 1))
 #+end_src
-
 
 *** Counsel projectile
 
