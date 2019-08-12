@@ -426,28 +426,32 @@ My UI customizations
 
      (use-package docker-compose-mode)
 #+end_src
+** Erlang
+#+begin_src emacs-lisp
+  (use-package erlang
+    :mode "\\.erl$")
+#+end_src
 ** Elixir
 #+begin_src emacs-lisp
-     (defun format-elixir-buffer ()
-       "Format elixir buffer."
-       (add-hook 'before-save-hook 'elixir-format nil t))
+  (defun format-elixir-buffer ()
+    "Format elixir buffer."
+    (add-hook 'before-save-hook 'elixir-format nil t))
 
-     (use-package elixir-mode
-       :hook ((elixir-mode . format-elixir-buffer)
-              (elixir-mode . flycheck-mix-setup))
-       :mode (("\\.ex$" . elixir-mode)
-              ("\\.exs$" . elixir-mode)))
+  (use-package elixir-mode
+    :hook ((elixir-mode . format-elixir-buffer)
+           (elixir-mode . flycheck-mix-setup)
+           (elixir-mode . eglot-ensure))
+    :mode ("\\.ex$" "\\.exs$" "mix.lock"))
 #+end_src
-
-*** Alchemist
-#+begin_src emacs-lisp
-      (use-package alchemist
-        :hook (elixir-mode . alchemist-mode))
-#+end_src
-
 *** Flycheck mix
 #+begin_src emacs-lisp
       (use-package flycheck-mix)
+#+end_src
+*** Elixir LSP
+*** Exunit
+#+begin_src emacs-lisp
+  (use-package exunit
+    :after (elixir-mode))
 #+end_src
 ** Elm
 #+begin_src emacs-lisp
