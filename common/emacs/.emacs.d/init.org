@@ -445,13 +445,20 @@ My UI customizations
 #+end_src
 *** Flycheck mix
 #+begin_src emacs-lisp
-      (use-package flycheck-mix)
+  (use-package flycheck-mix
+    :after (flycheck elixir-mode)
+    :hook ((elixir-mode . flycheck-mix-setup)))
 #+end_src
-*** Elixir LSP
 *** Exunit
 #+begin_src emacs-lisp
   (use-package exunit
-    :after (elixir-mode))
+    :after (elixir-mode)
+    (:map elixir-mode-map
+          ("C-c , a" . exunit-verify-all)
+          ("C-c , A" . exunit-verify-all-in-umbrella)
+          ("C-c , s" . exunit-verify-single)
+          ("C-c , v" . exunit-verify)
+          ("C-c , r" . exunit-rerun)))
 #+end_src
 ** Elm
 #+begin_src emacs-lisp
@@ -475,31 +482,32 @@ My UI customizations
 ** JavaScript
 
 #+begin_src emacs-lisp
-     (use-package js2-mode
-       :delight "EcmaScript"
-       :hook ((js-mode . js2-minor-mode)
-              (js2-mode . prettify-symbols-mode)
-              (js2-mode . js2-imenu-extras-mode))
-       :interpreter (("node" . js2-mode)
-                     ("node" . js2-jsx-mode))
-       :bind (:map js2-mode-map
-                   (("C-c ." . js2-jump-to-definition)
-                    ("C-c f b" . vs/format-standardjs-buffer)))
-       :mode ("\\.js$" . js2-mode)
-       :init (setq js2-include-node-externs t
-             js2-highlight-level 3
-             js2-strict-missing-semi-warning nil
-             flycheck-check-syntax-automatically '(mode-enabled save)
-             indent-tabs-mode nil
-             js-indent-level 2
-             js2-basic-offset 2
-             flycheck-temp-prefix ".flycheck"
-             flycheck-disabled-checkers '(javascript-jshint)
-             flycheck-checkers '(javascript-standard javascript-eslint))
-       :config
-       (custom-set-variables '(js2-mode-show-parse-errors nil)
-                             '(js2-mode-show-strict-warnings nil)
-                             '(js2-bounce-indent-p t)))
+  (use-package js2-mode
+    :delight "EcmaScript"
+    :hook ((js-mode . js2-minor-mode)
+           (js2-mode . prettify-symbols-mode)
+           (js2-mode . js2-imenu-extras-mode)
+           (js2-mode . eglot-ensure))
+    :interpreter (("node" . js2-mode)
+                  ("node" . js2-jsx-mode))
+    :bind (:map js2-mode-map
+                (("C-c ." . js2-jump-to-definition)
+                 ("C-c f b" . vs/format-standardjs-buffer)))
+    :mode ("\\.js$" . js2-mode)
+    :init (setq js2-include-node-externs t
+          js2-highlight-level 3
+          js2-strict-missing-semi-warning nil
+          flycheck-check-syntax-automatically '(mode-enabled save)
+          indent-tabs-mode nil
+          js-indent-level 2
+          js2-basic-offset 2
+          flycheck-temp-prefix ".flycheck"
+          flycheck-disabled-checkers '(javascript-jshint)
+          flycheck-checkers '(javascript-standard javascript-eslint))
+    :config
+    (custom-set-variables '(js2-mode-show-parse-errors nil)
+                          '(js2-mode-show-strict-warnings nil)
+                          '(js2-bounce-indent-p t)))
 #+end_src
 
 *** JS2 refactor
@@ -969,7 +977,6 @@ Completions for restclient mode.
   (use-package company-restclient
     :config (add-to-list 'company-backends 'company-restclient))
 #+end_src
-
 ** Dashboard
 
 Emacs awesome dashboard!
