@@ -778,31 +778,10 @@ Turn code evaluation async.
 #+end_src
 ** TypeScript
 #+begin_src emacs-lisp
-     (use-package typescript-mode
-       :mode ("\\.ts$" . typescript-mode))
+  (use-package typescript-mode
+    :mode ("\\.ts$" . typescript-mode)
+    :hook ((typescript-mode . eglot-ensure)))
 #+end_src
-
-*** Tide
-TypeScript development environment
-
-#+begin_src emacs-lisp
-      (defun setup-tide-mode ()
-        "Setup tide mode."
-        (interactive)
-        (tide-setup)
-        (setq-default company-tooltip-align-annotations t)
-        (tide-hl-identifier-mode +1))
-
-      (use-package tide
-        :after (typescript-mode company flycheck)
-        :bind (:map tide-mode-map
-                    ("C-c C-d" . tide-jsdoc-template)
-                    ("C-c t f" . tide-organize-imports)
-                    ("C-c f b" . vs/format-standardjs-buffer))
-        :hook ((typescript-mode . setup-tide-mode)
-               (typescript-mode . tide-hl-identifier-mode)))
-#+end_src
-
 ** Restclient
 
 Http tool for emacs.
@@ -900,9 +879,9 @@ Http tool for emacs.
 #+end_src
 *** React
 #+begin_src emacs-lisp
-      (use-package rjsx-mode
-        :mode ("\\.jsx$" . rjsx-mode)
-        :magic ("%React" . rjsx-mode))
+  (use-package rjsx-mode
+    :mode ("\\.jsx$" . rjsx-mode)
+    :hook ((rjsx-mode . eglot-ensure)))
 #+end_src
 *** Vue
 #+begin_src emacs-lisp
