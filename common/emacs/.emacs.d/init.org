@@ -302,14 +302,6 @@ it is not tangled along with the rest!
        (indent-region (point-min) (point-max)))
 #+end_src
 * Keybindings
-** Ansi-term
-#+begin_src emacs-lisp
-     (global-set-key (kbd "C-x C-z") (lambda ()
-                                       (interactive)
-                                       (split-window-sensibly)
-                                       (other-window 1)
-                                       (ansi-term "/bin/zsh")))
-#+end_src
 ** Ibuffer
 #+begin_src emacs-lisp
      (global-set-key (kbd "C-x C-b") 'ibuffer)
@@ -1170,6 +1162,16 @@ Command history
   (use-package smex)
 #+end_src
 
+** Shell pop
+#+begin_src emacs-lisp
+  (use-package shell-pop
+    :config (custom-set-variables
+             '(shell-pop-shell-type (quote ("ansi-term" "*ansi-term*" (lambda nil (ansi-term shell-pop-term-shell)))))
+             '(shell-pop-universal-key "<f7>")
+             '(shell-pop-window-size 30)
+             '(shell-pop-full-span t)
+             '(shell-pop-window-position "bottom")))
+#+end_src
 ** Treemacs
 
 File explorer.
@@ -1182,7 +1184,6 @@ File explorer.
           ("C-x t 1"   . treemacs-delete-other-windows)
           ([f8]   . treemacs)
           ("C-x t B"   . treemacs-bookmark)
-          ([f7] . treemacs-find-file)
           ("C-x t M-t" . treemacs-find-tag)))
 #+end_src
 
