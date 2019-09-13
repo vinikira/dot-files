@@ -391,6 +391,28 @@ My UI customizations
 #+end_src
 
 * Programming Languages
+** Ansible
+#+begin_src emacs-lisp
+  (use-package ansible
+    :after yaml-mode
+    :hook (yaml-mode . ansible)
+    :bind
+    (:map ansible-key-map
+          ("C-c C-d" . ansible-doc)))
+#+end_src
+*** Ansible doc
+#+begin_src emacs-lisp
+  (use-package ansible-doc
+    :hook ansible-mode
+    :bind
+    (:map ansible-doc-module-mode-map
+          ("C-x C-s" . ignore)))
+#+end_src
+*** Ansible company
+#+begin_src emacs-lisp
+  (use-package company-ansible
+    :hook ansible-mode)
+#+end_src
 ** Csharp
 #+begin_src emacs-lisp
      (use-package csharp-mode
