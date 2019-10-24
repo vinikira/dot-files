@@ -506,7 +506,7 @@ My UI customizations
                   ("node" . js2-jsx-mode))
     :bind (:map js2-mode-map
                 (("C-c ." . js2-jump-to-definition)
-                 ("C-c f b" . vs/format-standardjs-buffer)))
+                 ("C-c f" . vs/format-standardjs-buffer)))
     :mode ("\\.js$" . js2-mode)
     :init (setq js2-include-node-externs t
           js2-highlight-level 3
@@ -1012,7 +1012,69 @@ Jump to definition polyglot.
 LSP client
 
 #+begin_src emacs-lisp
-  (use-package eglot)
+  (use-package eglot
+    :bind (:map eglot-mode-map
+                ("C-c h" . eglot-help-at-point)
+                ("C-c f" . eglot-format)))
+#+end_src
+*** Flycheck instead Flymake
+#+begin_src emacs-lisp
+  (require 'eglot)
+  (require 'flycheck)
+  (require 'flymake)
+  (require 'cl)
+
+  (defvar-local eglot-flycheck--fc-callback nil)
+
+  (cl-defun eglot-flycheck--point->line-col (buffer beg)
+    (with-current-buffer buffer
+      (save-excursion
+        (goto-char beg)
+        (cons (line-number-at-pos)
+              (- (point)
+                 (line-beginning-position))))))
+
+  (cl-defun eglot-flycheck--fm-error->fc-error (err)
+    (pcase-let* ((msg (flymake--diag-text err))
+                 (beg (flymake--diag-beg err))
+                 (buffer (flymake--diag-buffer err))
+                 (`(,line . ,col) (eglot-flycheck--point->line-col buffer beg)))
+      (flycheck-error-new-at
+       line nil ;; TODO: use column and region
+       (pcase (flymake--diag-type err)
+         ('eglot-error 'error)
+         ('eglot-warning 'warning)
+         ('eglot-note 'info))
+       msg
+       :id "eglot-flycheck"
+       ;; :checker
+       :buffer buffer
+       :filename (buffer-file-name buffer))))
+
+  (cl-defun eglot-flycheck--flymake-handle-result (flymake-errors &key region)
+    (funcall eglot-flycheck--fc-callback
+             'finished
+             (mapcar #'eglot-flycheck--fm-error->fc-error flymake-errors)))
+
+  (cl-defun eglot-flycheck-checker (checker callback)
+    (setq eglot-flycheck--fc-callback callback)
+    (eglot-flymake-backend #'eglot-flycheck--flymake-handle-result))
+
+  (flycheck-define-generic-checker
+      'eglot-checker
+    "eglot flycheck checker"
+    :start #'eglot-flycheck-checker
+    :modes (eglot--all-major-modes))
+
+  (add-to-list 'flycheck-checkers 'eglot-checker)
+
+  (defadvice flymake-mode (around flymake-mode-around)
+    "Always disable flymake-mode in eglot--managed-mode"
+    (if (bound-and-true-p eglot--managed-mode)
+        (ad-set-arg 0 0))
+    ad-do-it)
+
+  (ad-activate 'flymake-mode)
 #+end_src
 ** Expand Region
 
