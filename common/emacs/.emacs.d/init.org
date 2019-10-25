@@ -447,14 +447,8 @@ My UI customizations
 #+end_src
 ** Elixir
 #+begin_src emacs-lisp
-  (defun format-elixir-buffer ()
-    "Format elixir buffer."
-    (add-hook 'before-save-hook 'elixir-format nil t))
-
   (use-package elixir-mode
-    :hook ((elixir-mode . format-elixir-buffer)
-           (elixir-mode . flycheck-mix-setup)
-           (elixir-mode . eglot-ensure))
+    :hook ((elixir-mode . eglot-ensure))
     :mode ("\\.ex$" "\\.exs$" "mix.lock"))
 #+end_src
 *** Flycheck mix
@@ -467,12 +461,12 @@ My UI customizations
 #+begin_src emacs-lisp
   (use-package exunit
     :after (elixir-mode)
-    (:map elixir-mode-map
-          ("C-c , a" . exunit-verify-all)
-          ("C-c , A" . exunit-verify-all-in-umbrella)
-          ("C-c , s" . exunit-verify-single)
-          ("C-c , v" . exunit-verify)
-          ("C-c , r" . exunit-rerun)))
+    :bind (:map elixir-mode-map
+                (("C-c , a" . exunit-verify-all)
+                ("C-c , A" . exunit-verify-all-in-umbrella)
+                ("C-c , s" . exunit-verify-single)
+                ("C-c , v" . exunit-verify)
+                ("C-c , r" . exunit-rerun))))
 #+end_src
 ** Elm
 #+begin_src emacs-lisp
