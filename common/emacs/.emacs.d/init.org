@@ -1161,7 +1161,8 @@ Magic git client!
   (use-package magit
     :if (executable-find "git")
     :init
-    (setq magit-completing-read-function 'ivy-completing-read))
+    (setq magit-completing-read-function 'ivy-completing-read)
+    :bind ("C-x g" . magit-status))
 #+end_src
 
 *** Magit Popup
