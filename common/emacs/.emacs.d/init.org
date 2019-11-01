@@ -448,8 +448,7 @@ My UI customizations
 ** Elixir
 #+begin_src emacs-lisp
   (use-package elixir-mode
-    :hook ((elixir-mode . eglot-ensure))
-    :mode ("\\.ex$" "\\.exs$" "mix.lock"))
+      :mode ("\\.ex$" "\\.exs$" "mix.lock"))
 #+end_src
 *** Flycheck mix
 #+begin_src emacs-lisp
@@ -494,28 +493,19 @@ My UI customizations
     :delight "EcmaScript"
     :hook ((js-mode . js2-minor-mode)
            (js2-mode . prettify-symbols-mode)
-           (js2-mode . js2-imenu-extras-mode)
-           (js2-mode . eglot-ensure))
+           (js2-mode . js2-imenu-extras-mode))
     :interpreter (("node" . js2-mode)
                   ("node" . js2-jsx-mode))
-    :bind (:map js2-mode-map
-                (("C-c ." . js2-jump-to-definition)
-                 ("C-c f" . vs/format-standardjs-buffer)))
     :mode ("\\.js$" . js2-mode)
     :init (setq js2-include-node-externs t
-          js2-highlight-level 3
-          js2-strict-missing-semi-warning nil
-          flycheck-check-syntax-automatically '(mode-enabled save)
-          indent-tabs-mode nil
-          js-indent-level 2
-          js2-basic-offset 2
-          flycheck-temp-prefix ".flycheck"
-          flycheck-disabled-checkers '(javascript-jshint)
-          flycheck-checkers '(javascript-standard javascript-eslint))
-    :config
-    (custom-set-variables '(js2-mode-show-parse-errors nil)
-                          '(js2-mode-show-strict-warnings nil)
-                          '(js2-bounce-indent-p t)))
+                js2-highlight-level 3
+                js2-strict-missing-semi-warning nil
+                indent-tabs-mode nil
+                js-indent-level 2
+                js2-basic-offset 2)
+    :custom ((js2-mode-show-parse-errors nil)
+             (js2-mode-show-strict-warnings nil)
+             (js2-bounce-indent-p t)))
 #+end_src
 
 *** JS2 refactor
@@ -601,7 +591,7 @@ Run Mocha tests.
   (use-package markdownfmt
     :after markdown-mode
     :hook (markdown-mode . markdownfmt-enable-on-save)
-    :bind (:map markdown-mode
+    :bind (:map markdown-mode-map
                 ("C-c C-f" . markdownfmt-format-buffer)))
 #+end_src
 ** Nginx
@@ -787,8 +777,7 @@ Turn code evaluation async.
 ** TypeScript
 #+begin_src emacs-lisp
   (use-package typescript-mode
-    :mode ("\\.ts$" . typescript-mode)
-    :hook ((typescript-mode . eglot-ensure)))
+    :mode ("\\.ts$" . typescript-mode))
 #+end_src
 ** Restclient
 
@@ -888,8 +877,7 @@ Http tool for emacs.
 *** React
 #+begin_src emacs-lisp
   (use-package rjsx-mode
-    :mode ("\\.jsx$" . rjsx-mode)
-    :hook ((rjsx-mode . eglot-ensure)))
+    :mode ("\\.jsx$" . rjsx-mode))
 #+end_src
 *** Vue
 #+begin_src emacs-lisp
@@ -964,6 +952,12 @@ Completions for restclient mode.
   (use-package company-restclient
     :config (add-to-list 'company-backends 'company-restclient))
 #+end_src
+*** Company LSP
+#+begin_src emacs-lisp
+  (use-package company-lsp
+    :defer t
+    :custom (company-lsp-cache-candidates 'auto))
+#+end_src
 ** Dashboard
 
 Emacs awesome dashboard!
@@ -981,7 +975,31 @@ Emacs awesome dashboard!
     :config
     (dashboard-setup-startup-hook))
 #+end_src
+** DAP
 
+Debugger Adapter Protocol for Emacs
+
+#+begin_src emacs-lisp
+  (use-package dap-mode
+    :bind (:map dap-mode-map
+                (("<f12>" . dap-debug)
+                 ("<M-f9>" . dap-continue)
+                 ("<f9>" . dap-next)
+                 ("<M-f11>" . dap-step-in)
+                 ("C-M-<f11>" . dap-step-out)
+                 ("<f6>" . dap-breakpoint-toggle)))
+    :hook ((after-init . dap-mode)
+           (dap-mode . dap-ui-mode)
+           (python-mode . (lambda () (require 'dap-python)))
+           (java-mode . (lambda () (require 'dap-java)))
+           ((c-mode c++-mode) . (lambda () (require 'dap-lldb)))
+           (php-mode . (lambda () (require 'dap-php)))
+           (elixir-mode . (lambda () (require 'dap-elixir)))
+           ((js-mode js2-mode typescript-mode) . (lambda () (require 'dap-chrome)))
+           (rust-mode . (lambda ()
+                          (require 'dap-gdb-lldb)
+                          (dap-gdb-lldb-setup)))))
+#+end_src
 ** Delight
 #+begin_src emacs-lisp
      (use-package delight)
@@ -1000,75 +1018,6 @@ Jump to definition polyglot.
   (use-package editorconfig
     :config
     (editorconfig-mode 1))
-#+end_src
-** Eglot
-
-LSP client
-
-#+begin_src emacs-lisp
-  (use-package eglot
-    :bind (:map eglot-mode-map
-                ("C-c h" . eglot-help-at-point)
-                ("C-c f" . eglot-format)))
-#+end_src
-*** Flycheck instead Flymake
-#+begin_src emacs-lisp
-  (require 'eglot)
-  (require 'flycheck)
-  (require 'flymake)
-  (require 'cl)
-
-  (defvar-local eglot-flycheck--fc-callback nil)
-
-  (cl-defun eglot-flycheck--point->line-col (buffer beg)
-    (with-current-buffer buffer
-      (save-excursion
-        (goto-char beg)
-        (cons (line-number-at-pos)
-              (- (point)
-                 (line-beginning-position))))))
-
-  (cl-defun eglot-flycheck--fm-error->fc-error (err)
-    (pcase-let* ((msg (flymake--diag-text err))
-                 (beg (flymake--diag-beg err))
-                 (buffer (flymake--diag-buffer err))
-                 (`(,line . ,col) (eglot-flycheck--point->line-col buffer beg)))
-      (flycheck-error-new-at
-       line nil ;; TODO: use column and region
-       (pcase (flymake--diag-type err)
-         ('eglot-error 'error)
-         ('eglot-warning 'warning)
-         ('eglot-note 'info))
-       msg
-       :id "eglot-flycheck"
-       ;; :checker
-       :buffer buffer
-       :filename (buffer-file-name buffer))))
-
-  (cl-defun eglot-flycheck--flymake-handle-result (flymake-errors &key region)
-    (funcall eglot-flycheck--fc-callback
-             'finished
-             (mapcar #'eglot-flycheck--fm-error->fc-error flymake-errors)))
-
-  (cl-defun eglot-flycheck-checker (checker callback)
-    (setq eglot-flycheck--fc-callback callback)
-    (eglot-flymake-backend #'eglot-flycheck--flymake-handle-result))
-
-  (flycheck-define-generic-checker
-      'eglot-checker
-    "eglot flycheck checker"
-    :start #'eglot-flycheck-checker
-    :modes (eglot--all-major-modes))
-
-  (add-to-list 'flycheck-checkers 'eglot-checker)
-
-  (defadvice flymake-mode (around flymake-mode-around)
-    "Always disable flymake-mode in eglot--managed-mode"
-    (if (bound-and-true-p eglot--managed-mode)
-        (ad-set-arg 0 0))
-    ad-do-it)
-
-  (ad-activate 'flymake-mode)
 #+end_src
 ** Expand Region
 
@@ -1151,6 +1100,35 @@ Counsel, a collection of Ivy-enhanced versions of common Emacs commands.
     :bind
     ("C-x v" . counsel-projectile)
     ("C-x c p" . counsel-projectile-ag))
+#+end_src
+
+** LSP
+
+Language Server Protocol for Emacs.
+
+#+begin_src emacs-lisp
+  (use-package lsp-mode
+    :defer t
+    :commands lsp
+    :custom ((lsp-auto-guess-root t)
+             (lsp-prefer-flymake nil)
+             (lsp-file-watch-threshold 2000))
+    :bind (:map lsp-mode-map
+                ("C-c C-f" . lsp-format-buffer))
+    :hook ((js2-mode rust-mode elixir-mode
+                     typescript-mode java-mode) . lsp))
+#+end_src
+
+*** LSP UI
+
+#+begin_src emacs-lisp
+  (use-package lsp-ui
+    :after lsp-mode
+    :commands lsp-ui-mode
+    :bind (:map lsp-ui-mode-map
+                ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
+                ([remap xref-find-references] . lsp-ui-peek-find-references)
+                ("C-c u" . lsp-ui-imenu)))
 #+end_src
 
 ** Magit
