@@ -574,6 +574,18 @@ Run Mocha tests.
              slime1-contribs '(slime-fancy)))
 
 #+end_src
+** LaTeX
+#+begin_src emacs-lisp
+  (use-package tex-mode
+    :hook (TeX-mode . flyspell-mode)
+    :ensure auctex)
+
+  (use-package auctex)
+
+  (use-package auctex-latexmk
+    :custom ((auctex-latexmk-inherit-TeX-PDF-mode t))
+    :config (auctex-latexmk-setup))
+#+end_src
 ** Markdown
 
 #+begin_src emacs-lisp

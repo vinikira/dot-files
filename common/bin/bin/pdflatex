@@ -1,3 +1,2 @@
 #!/usr/bin/sh
-docker run --rm -it
 exec docker run --rm -i --user="$(id -u):$(id -g)" --net=none -v "$PWD":/workdir --workdir /workdir makisyu/texlive-2018 pdflatex "$@"
