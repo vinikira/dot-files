@@ -621,64 +621,65 @@ Run Mocha tests.
 Org mode latest version.
 
 #+begin_src emacs-lisp
-     (defconst vs/org-directory (if (file-directory-p "~/Sync/org/") "~/Sync/org/" "~/"))
+  (defconst vs/org-directory (if (file-directory-p "~/Sync/org/") "~/Sync/org/" "~/"))
 
-     (defconst vs/org-capture-templates '(("t" "todo" entry (file org-default-notes-file)
-                                       "* TODO %?\n%u\n%a\n" :clock-in t :clock-resume t)
-                                      ("m" "Meeting" entry (file org-default-notes-file)
-                                       "* MEETING with %? :MEETING:\n%t" :clock-in t :clock-resume t)
-                                      ("d" "Diary" entry (file+datetree "~/org/diary.org")
-                                       "* %?\n%U\n" :clock-in t :clock-resume t)
-                                      ("i" "Idea" entry (file org-default-notes-file)
-                                       "* %? :IDEA: \n%t" :clock-in t :clock-resume t)
-                                      ("n" "Next Task" entry (file+headline org-default-notes-file "Tasks")
-                                       "** NEXT %? \nDEADLINE: %t")))
+  (defconst vs/org-capture-templates '(("t" "todo" entry (file org-default-notes-file)
+                                    "* TODO %?\n%u\n%a\n" :clock-in t :clock-resume t)
+                                   ("m" "Meeting" entry (file org-default-notes-file)
+                                    "* MEETING with %? :MEETING:\n%t" :clock-in t :clock-resume t)
+                                   ("d" "Diary" entry (file+datetree "~/org/diary.org")
+                                    "* %?\n%U\n" :clock-in t :clock-resume t)
+                                   ("i" "Idea" entry (file org-default-notes-file)
+                                    "* %? :IDEA: \n%t" :clock-in t :clock-resume t)
+                                   ("n" "Next Task" entry (file+headline org-default-notes-file "Tasks")
+                                    "** NEXT %? \nDEADLINE: %t")))
 
-     (defconst vs/org-structure-template-alist
-             '(("n" . "notes")
-               ("a" . "export ascii")
-               ("c" . "center")
-               ("C" . "comment")
-               ("e" . "example")
-               ("E" . "export")
-               ("h" . "export html")
-               ("l" . "export latex")
-               ("q" . "quote")
-               ("s" . "src")
-               ("v" . "verse")))
+  (defconst vs/org-structure-template-alist
+          '(("n" . "notes")
+            ("a" . "export ascii")
+            ("c" . "center")
+            ("C" . "comment")
+            ("e" . "example")
+            ("E" . "export")
+            ("h" . "export html")
+            ("l" . "export latex")
+            ("q" . "quote")
+            ("s" . "src")
+            ("v" . "verse")))
 
-     (use-package org
-       :ensure org-plus-contrib
-       :hook ((org-mode . toggle-word-wrap)
-              (org-mode . org-indent-mode)
-              (org-mode . turn-on-visual-line-mode)
-              (org-mode . (lambda () (display-line-numbers-mode -1))))
-       :bind (("C-c l" . org-store-link)
-              ("C-c a" . org-agenda))
-       :init (setq org-directory vs/org-directory
-                   org-default-notes-file (concat org-directory "notes.org")
-                   org-agenda-files (list (concat org-directory "work.org")
-                                      (concat org-directory "personal.org"))
-                   org-confirm-babel-evaluate t
-                   org-src-fontify-natively t
-                   org-log-done 'time
-                   org-babel-sh-command "bash"
-                   org-capture-templates vs/org-capture-templates
-                   org-structure-template-alist vs/org-structure-template-alist)
-       :config (org-babel-do-load-languages
-                'org-babel-load-languages
-                (org-babel-do-load-languages
-                 'org-babel-load-languages
-                 (append org-babel-load-languages
-                         '((emacs-lisp . t)
-                           (python . t)
-                           (restclient . t)
-                           (js . t)
-                           (shell . t)
-                           (plantuml . t)
-                           (sql . t)
-                           (ipython . t)))))
-       (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append))
+  (use-package org
+    :ensure org-plus-contrib
+    :hook ((org-mode . toggle-word-wrap)
+           (org-mode . org-indent-mode)
+           (org-mode . turn-on-visual-line-mode)
+           (org-mode . (lambda () (display-line-numbers-mode -1)))
+           (org-mode . auto-fill-mode))
+    :bind (("C-c l" . org-store-link)
+           ("C-c a" . org-agenda))
+    :init (setq org-directory vs/org-directory
+                org-default-notes-file (concat org-directory "notes.org")
+                org-agenda-files (list (concat org-directory "work.org")
+                                   (concat org-directory "personal.org"))
+                org-confirm-babel-evaluate t
+                org-src-fontify-natively t
+                org-log-done 'time
+                org-babel-sh-command "bash"
+                org-capture-templates vs/org-capture-templates
+                org-structure-template-alist vs/org-structure-template-alist)
+    :config (org-babel-do-load-languages
+             'org-babel-load-languages
+             (org-babel-do-load-languages
+              'org-babel-load-languages
+              (append org-babel-load-languages
+                      '((emacs-lisp . t)
+                        (python . t)
+                        (restclient . t)
+                        (js . t)
+                        (shell . t)
+                        (plantuml . t)
+                        (sql . t)
+                        (ipython . t)))))
+    (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append))
 #+end_src
 
 *** Org Bullets
