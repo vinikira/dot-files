@@ -583,8 +583,7 @@ Run Mocha tests.
 ** LaTeX
 #+begin_src emacs-lisp
   (use-package tex-mode
-    :hook ((TeX-mode . flyspell-mode)
-           (TeX-mode . auto-fill-mode))
+    :hook ((TeX-mode . flyspell-mode))
     :ensure auctex)
 
   (use-package auctex)
