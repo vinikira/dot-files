@@ -162,21 +162,22 @@ it is not tangled along with the rest!
 #+end_src
 *** Hooks
 #+begin_src emacs-lisp
-      (defun vs/line-numbers ()
-        "Display line numbers."
-        (display-line-numbers-mode 1)
-        (hl-line-mode 1))
+  (defun vs/line-numbers ()
+    "Display line numbers."
+    (display-line-numbers-mode 1)
+    (hl-line-mode 1))
 
-      (defun vs/font-lock ()
-        "Font lock keywords."
-        (font-lock-add-keywords
-         nil '(("\\<\\(FIXME\\|TODO\\|NOCOMMIT\\)"
-                1 font-lock-warning-face t))))
+  (defun vs/font-lock ()
+    "Font lock keywords."
+    (font-lock-add-keywords
+     nil '(("\\<\\(FIXME\\|TODO\\|NOCOMMIT\\)"
+            1 font-lock-warning-face t))))
 
-      (add-hook 'before-save-hook 'delete-trailing-whitespace)
-      (add-hook 'prog-mode-hook 'vs/line-numbers)
-      (add-hook 'text-mode-hook 'vs/line-numbers)
-      (add-hook 'prog-mode-hook 'vs/font-lock)
+  (add-hook 'before-save-hook 'delete-trailing-whitespace)
+  (add-hook 'prog-mode-hook 'vs/line-numbers)
+  (add-hook 'text-mode-hook 'vs/line-numbers)
+  (add-hook 'prog-mode-hook 'vs/font-lock)
+  (add-hook 'text-mode-hook 'auto-fill-mode)
 #+end_src
 *** Remap yes-no
 #+begin_src emacs-lisp
