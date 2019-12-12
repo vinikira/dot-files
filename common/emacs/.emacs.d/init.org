@@ -635,7 +635,7 @@ Org mode latest version.
                                     "* TODO %?\n%u\n%a\n" :clock-in t :clock-resume t)
                                    ("m" "Meeting" entry (file org-default-notes-file)
                                     "* MEETING with %? :MEETING:\n%t" :clock-in t :clock-resume t)
-                                   ("d" "Diary" entry (file+datetree "~/org/diary.org")
+                                   ("d" "Diary" entry (file+datetree (concat vs/org-directory "diary.org"))
                                     "* %?\n%U\n" :clock-in t :clock-resume t)
                                    ("i" "Idea" entry (file org-default-notes-file)
                                     "* %? :IDEA: \n%t" :clock-in t :clock-resume t)
@@ -685,8 +685,7 @@ Org mode latest version.
                         (js . t)
                         (shell . t)
                         (plantuml . t)
-                        (sql . t)
-                        (ipython . t)))))
+                        (sql . t)))))
     (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append))
 #+end_src
 
@@ -724,12 +723,6 @@ Org mode latest version.
 
 #+begin_src emacs-lisp
   (use-package ob-restclient)
-#+end_src
-
-*** Org Babel Python
-
-#+begin_src emacs-lisp
-  (use-package ob-ipython)
 #+end_src
 
 *** Org Babel Async
