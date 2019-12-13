@@ -483,9 +483,14 @@
    #+begin_src emacs-lisp
      (use-package haskell-mode
        :hook ((haskell-mode . haskell-indentation-mode)
-              (haskell-mode . interactive-haskell-mode))
+              (haskell-mode . interactive-haskell-mode)
+              (haskell-mode . lsp))
        :custom ((haskell-font-lock-symbols t)))
    #+end_src
+*** LSP Haskell
+#+begin_src emacs-lisp
+  (use-package lsp-haskell)
+#+end_src
 
 ** Java
    #+begin_src emacs-lisp
