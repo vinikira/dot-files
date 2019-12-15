@@ -1140,17 +1140,18 @@
    Language Server Protocol for Emacs.
 
    #+begin_src emacs-lisp
-  (use-package lsp-mode
-    :defer t
-    :commands lsp
-    :custom ((lsp-auto-guess-root t)
-             (lsp-prefer-flymake nil)
-             (lsp-file-watch-threshold 2000))
-    :bind (:map lsp-mode-map
-                ("C-c C-f" . lsp-format-buffer)
-                ("C-c C-a" . lsp-execute-code-action))
-    :hook ((js2-mode rust-mode elixir-mode
-                     typescript-mode java-mode) . lsp))
+     (use-package lsp-mode
+       :defer t
+       :commands lsp
+       :custom ((lsp-auto-guess-root t)
+                (lsp-prefer-flymake nil)
+                (lsp-file-watch-threshold 2000))
+       :bind (:map lsp-mode-map
+                   ("C-c C-f" . lsp-format-buffer)
+                   ("C-c C-r" . lsp-rename)
+                   ("C-c C-a" . lsp-execute-code-action))
+       :hook ((js2-mode rust-mode elixir-mode
+                        typescript-mode java-mode) . lsp))
    #+end_src
 
 *** LSP UI
