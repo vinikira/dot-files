@@ -594,15 +594,17 @@
    #+end_src
 ** LaTeX
    #+begin_src emacs-lisp
-  (use-package tex-mode
-    :hook ((TeX-mode . flyspell-mode))
-    :ensure auctex)
+     (use-package tex-mode
+       :hook ((TeX-mode . flyspell-mode))
+       :ensure auctex)
 
-  (use-package auctex)
+     (use-package auctex
+       :ensure t
+       :defer t)
 
-  (use-package auctex-latexmk
-    :custom ((auctex-latexmk-inherit-TeX-PDF-mode t))
-    :config (auctex-latexmk-setup))
+     (use-package auctex-latexmk
+       :custom ((auctex-latexmk-inherit-TeX-PDF-mode t))
+       :config (auctex-latexmk-setup))
    #+end_src
 ** Markdown
 
