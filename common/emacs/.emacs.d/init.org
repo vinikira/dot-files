@@ -1151,7 +1151,8 @@
        :bind (:map lsp-mode-map
                    ("C-c C-f" . lsp-format-buffer)
                    ("C-c C-r" . lsp-rename)
-                   ("C-c C-a" . lsp-execute-code-action))
+                   ("C-c C-a" . lsp-execute-code-action)
+                   ("C-c C-." . lsp-find-type-definition))
        :hook ((js2-mode rust-mode elixir-mode
                         typescript-mode java-mode) . lsp))
    #+end_src
