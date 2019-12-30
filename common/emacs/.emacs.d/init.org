@@ -1344,7 +1344,10 @@
 
    #+begin_src emacs-lisp
      (use-package yasnippet
-       :init (setq yas-snippet-dirs (list (concat user-emacs-directory "snippets/")))
+       :init (setq yas-snippet-dirs (append
+                                     yas-snippet-dirs
+                                     (list
+                                      (concat user-emacs-directory "snippets/"))))
        :config
        (yas-global-mode 1))
    #+end_src
