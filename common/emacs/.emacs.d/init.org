@@ -1106,18 +1106,19 @@
    Counsel, a collection of Ivy-enhanced versions of common Emacs commands.
 
    #+begin_src emacs-lisp
-  (use-package counsel
-    :after ivy
-    :config (counsel-mode 1)
-    :bind (("M-x" . counsel-M-x)
-           ("C-x C-f" . counsel-find-file)
-           ("C-x c k" . counsel-yank-pop)
-           ("<f1> f" . counsel-describe-function)
-           ("<f1> v" . counsel-describe-variable)
-           ("<f1> l" . counsel-load-library)
-           ("<f2> i" . counsel-info-lookup-symbol)
-           ("<f2> u" . counsel-unicode-char)
-           ("C-x C-r" . counsel-recentf)))
+     (use-package counsel
+       :after ivy
+       :config (counsel-mode 1)
+       :bind (("M-x" . counsel-M-x)
+              ("C-x C-f" . counsel-find-file)
+              ("C-x c k" . counsel-yank-pop)
+              ("C-x c k" . counsel-rg)
+              ("<f1> f" . counsel-describe-function)
+              ("<f1> v" . counsel-describe-variable)
+              ("<f1> l" . counsel-load-library)
+              ("<f2> i" . counsel-info-lookup-symbol)
+              ("<f2> u" . counsel-unicode-char)
+              ("C-x C-r" . counsel-recentf)))
    #+end_src
 
 *** Ivy rich
@@ -1237,6 +1238,11 @@
   (use-package quickrun
     :bind (([f5] . quickrun)))
    #+end_src
+
+** Ripgrep
+#+begin_src emacs-lisp
+  (use-package ripgrep)
+#+end_src
 
 ** Smartparens
 
