@@ -1112,7 +1112,7 @@
        :bind (("M-x" . counsel-M-x)
               ("C-x C-f" . counsel-find-file)
               ("C-x c k" . counsel-yank-pop)
-              ("C-x c k" . counsel-rg)
+              ("C-x c r" . counsel-rg)
               ("<f1> f" . counsel-describe-function)
               ("<f1> v" . counsel-describe-variable)
               ("<f1> l" . counsel-load-library)
