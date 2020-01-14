@@ -878,7 +878,9 @@
         ("\\.as[cp]x\\'" . web-mode)
         ("\\.erb\\'" . web-mode)
         ("\\.mustache\\'" . web-mode)
-        ("\\.djhtml\\'" . web-mode))
+        ("\\.djhtml\\'" . web-mode)
+        ("\\.mjml\\'" . web-mode)
+        ("\\.eex\\'" . web-mode))
        :init   (setq web-mode-markup-indent-offset 2
                       web-mode-css-indent-offset 2
                       web-mode-code-indent-offset 2
