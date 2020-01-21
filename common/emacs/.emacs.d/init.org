@@ -504,6 +504,13 @@
              indent-tabs-mode t
              c-basic-offset 4))
    #+end_src
+
+*** LSP Java
+#+begin_src emacs-lisp
+  (use-package lsp-java
+    :after lsp
+    :hook ((java-mode . lsp)))
+#+end_src
 ** JavaScript
 
    #+begin_src emacs-lisp
