@@ -6,12 +6,12 @@
 
 * First-time initialization
 
-  If you are using this configuration for the first time, you
-  should put the following code on =.emacs.d/init.el=. It is
-  responsible for bootstrapping the entire thing. Notice that
-  it is not tangled along with the rest!
+If you are using this configuration for the first time, you
+should put the following code on =.emacs.d/init.el=. It is
+responsible for bootstrapping the entire thing. Notice that
+it is not tangled along with the rest!
 
-  #+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp :tangle no
     (require 'org)
 
     (setq vc-follow-symlinks t)
@@ -21,12 +21,12 @@
     (rename-file "init.el" (expand-file-name "init.el" user-emacs-directory) t)
     (load-file (concat user-emacs-directory "init.el"))
     (byte-compile-file (concat user-emacs-directory "init.el"))
-  #+end_src
+#+end_src
 
 * Preparation
 ** Boostrapping
 
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
      ;;; -*- lexical-binding: t -*-
 
      (defun tangle-init ()
@@ -40,12 +40,12 @@
            (byte-compile-file (concat user-emacs-directory "init.el")))))
 
      (add-hook 'after-save-hook 'tangle-init)
-   #+end_src
+#+end_src
 
 ** Packaging
 *** Prepare packages managers.
 
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
      (require 'package)
 
      (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
@@ -57,11 +57,11 @@
 
      (when (not package-archive-contents)
        (package-refresh-contents))
-    #+end_src
+#+end_src
 
 *** Install use-package
 
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
      (unless (package-installed-p 'use-package)
        (package-refresh-contents)
        (package-install 'use-package))
@@ -70,12 +70,12 @@
      (require 'use-package-ensure)
      (setq use-package-always-ensure t)
 
-    #+end_src
+#+end_src
 
 ** Custom
 *** Define private and temp directories
 
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (defconst private-dir (expand-file-name "private" user-emacs-directory))
   (defconst temp-dir (format "%s/cache" private-dir))
 
@@ -84,22 +84,22 @@
 
   (unless (file-exists-p temp-dir)
     (make-directory temp-dir :parents))
-    #+end_src
+#+end_src
 
 *** Define and load custom-file
 
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (setq custom-file (expand-file-name (concat private-dir "/custom.el")))
 
   (unless (file-exists-p custom-file)
     (write-region "" nil custom-file))
 
   (load custom-file)
-    #+end_src
+#+end_src
 
 *** UTF-8
 
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
       (set-charset-priority 'unicode)
       (set-terminal-coding-system  'utf-8)   ; pretty
       (set-keyboard-coding-system  'utf-8)   ; pretty
@@ -107,10 +107,10 @@
       (prefer-coding-system        'utf-8)   ; with sugar on top
       (setq default-process-coding-system '(utf-8-unix . utf-8-unix)
             locale-coding-system          'utf-8)
-    #+end_src
+#+end_src
 *** Variables
 
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (setq confirm-kill-emacs                  'y-or-n-p
         confirm-nonexistent-file-or-buffer  t
         save-interprogram-paste-before-kill t
@@ -159,9 +159,9 @@
                 indent-tabs-mode           nil
                 sh-basic-offset            2
                 save-place                 t)
-    #+end_src
+#+end_src
 *** Hooks
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (defun vs/line-numbers ()
     "Display line numbers."
     (display-line-numbers-mode 1)
@@ -178,26 +178,26 @@
   (add-hook 'text-mode-hook 'vs/line-numbers)
   (add-hook 'prog-mode-hook 'vs/font-lock)
   (add-hook 'text-mode-hook 'auto-fill-mode)
-    #+end_src
+#+end_src
 *** Remap yes-no
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
       (fset 'yes-or-no-p 'y-or-n-p)
-    #+end_src
+#+end_src
 *** Windmove
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
       (windmove-default-keybindings)
-    #+end_src
+#+end_src
 *** Server
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
       (require 'server)
       (when (and (fboundp 'server-running-p)
                  (not (server-running-p)))
         (server-start))
-    #+end_src
+#+end_src
 
 * Functions
 ** Split and switch
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
      (defun vs/split-window-below-and-switch ()
        "Split the window horizontally, then switch to the new pane."
        (interactive)
@@ -209,10 +209,10 @@
        (interactive)
        (split-window-right)
        (other-window 1))
-   #+end_src
+#+end_src
 ** Format buffers stuff
 *** StandardJS
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
       (defun vs/format-standardjs-buffer (&optional begin end)
         "Formart js buffer according standardjs, BEGIN region and END region."
         (interactive "r")
@@ -230,9 +230,9 @@
               (delete-region (point) (point-max)))
             (goto-char temp-point))))
 
-    #+end_src
+#+end_src
 *** XML
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
       (defun vs/format-xml-buffer (&optional begin end)
         "Format xml buffer using xmllint, BEGIN region and END region."
         (interactive "r")
@@ -245,10 +245,10 @@
              t
              (current-buffer))
             (goto-char curr-point))))
-    #+end_src
+#+end_src
 ** Indium
 *** Generate project config
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
       (defun vs/generate-indium-config-file ()
         "Generate indium generic config file for nodejs projects."
         (interactive)
@@ -259,9 +259,9 @@
                    (read-string "Enter indium project type (node or chrome):")
                    (read-string "Enter indium command:")))))
 
-    #+end_src
+#+end_src
 *** Stop debugger
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
       (defun vs/stop-indium-debug ()
         (interactive)
         (when (and (get-buffer "*node process*")
@@ -271,9 +271,9 @@
           (kill-buffer "*node process*")
           (revert-buffer t t)
           (delete-other-windows)))
-    #+end_src
+#+end_src
 ** Scratch Buffers
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
      (defun vs/scratch-buffer (open-new-frame)
        "Open generic scratch buffer"
        (interactive "P")
@@ -292,63 +292,63 @@
          (switch-to-buffer
           (get-buffer-create (concat "*" selected-mode "*")))
          (funcall (intern selected-mode))))
-   #+end_src
+#+end_src
 ** Sudo edit
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
      (defun sudo-edit (&optional arg)
        (interactive "p")
        (if (or arg (not buffer-file-name))
            (find-file (concat "/sudo:root@localhost:" (read-file-name "File: ")))
          (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
-   #+end_src
+#+end_src
 ** Indent buffer
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
      (defun vs/indent-buffer ()
        (interactive)
        (indent-region (point-min) (point-max)))
-   #+end_src
+#+end_src
 * Keybindings
 ** Ibuffer
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
      (global-set-key (kbd "C-x C-b") 'ibuffer)
-   #+end_src
+#+end_src
 ** Indent buffer
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
      (global-set-key (kbd "C-c i") 'vs/indent-buffer)
-   #+end_src
+#+end_src
 ** Mouse scroll
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
      (global-set-key (kbd "<mouse-4>")   'scroll-down-line)
      (global-set-key (kbd "<mouse-5>")   'scroll-up-line)
      (global-set-key (kbd "<C-mouse-4>") 'scroll-down-command)
      (global-set-key (kbd "<C-mouse-5>") 'scroll-up-command)
-   #+end_src
+#+end_src
 ** Remap search forward
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
      (global-set-key (kbd "C-x s") 'isearch-forward)
-   #+end_src
+#+end_src
 ** Resize Windows
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
      (global-set-key (kbd "M-<down>") 'enlarge-window)
      (global-set-key (kbd "M-<up>") 'shrink-window)
      (global-set-key (kbd "M-<left>") 'enlarge-window-horizontally)
      (global-set-key (kbd "M-<right>") 'shrink-window-horizontally)
-   #+end_src
+#+end_src
 ** Split and switch
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
      (global-set-key (kbd "C-x 2") 'vs/split-window-below-and-switch)
      (global-set-key (kbd "C-x 3") 'vs/split-window-right-and-switch)
-   #+end_src
+#+end_src
 ** Scratch Buffer
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
      (global-set-key (kbd "C-c s b") 'vs/scratch-buffer)
-   #+end_src
+#+end_src
 * Appearence
 ** Frame config
 
-   My custom frame config.
+My custom frame config.
 
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (defconst vs/frame-alist
     '((font . "Fira Code-10")
       (scroll-bar . -1)
@@ -358,31 +358,31 @@
       (vertical-scrollbars . nil)))
 
   (setq default-frame-alist vs/frame-alist)
-   #+end_src
+#+end_src
 
 ** Theme
 
-   My custom theme
+My custom theme
 
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package dracula-theme
     :config (load-theme 'dracula t))
-   #+end_src
+#+end_src
 
 ** Modeline
 
-   Install and activate telephone-line.
+Install and activate telephone-line.
 
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package telephone-line
     :config (telephone-line-mode 1))
-   #+end_src
+#+end_src
 
 ** Custom
 
-   My UI customizations
+My UI customizations
 
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (setq inhibit-startup-screen t
         inhibit-splash-screen t
         mouse-wheel-follow-mouse t
@@ -394,76 +394,76 @@
   (menu-bar-mode -1)
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
-   #+end_src
+#+end_src
 
 * Programming Languages
 ** Ansible
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package ansible
     :after yaml-mode
     :hook (yaml-mode . ansible)
     :bind
     (:map ansible-key-map
           ("C-c C-d" . ansible-doc)))
-   #+end_src
+#+end_src
 *** Ansible doc
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package ansible-doc
     :hook ansible-mode
     :bind
     (:map ansible-doc-module-mode-map
           ("C-x C-s" . ignore)))
-    #+end_src
+#+end_src
 *** Ansible company
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package company-ansible
     :hook ansible-mode)
-    #+end_src
+#+end_src
 ** Csharp
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
      (use-package csharp-mode
        :mode ("\\.cs$"))
-   #+end_src
+#+end_src
 ** Clojure
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
      (use-package clojure-mode
        :mode ("\\.clj$"))
-   #+end_src
+#+end_src
 *** Cider
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
     (use-package cider)
-    #+end_src
+#+end_src
 ** Dart
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
      (use-package dart-mode
        :mode ("\\.dart$")
        :init (setq dart-format-on-save t))
-   #+end_src
+#+end_src
 ** Docker
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
      (use-package dockerfile-mode
        :mode ("\\Dockerfile$" . dockerfile-mode))
 
      (use-package docker-compose-mode)
-   #+end_src
+#+end_src
 ** Erlang
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package erlang
     :mode "\\.erl$")
-   #+end_src
+#+end_src
 ** Elixir
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package elixir-mode
       :mode ("\\.ex$" "\\.exs$" "mix.lock"))
-   #+end_src
+#+end_src
 *** Flycheck mix
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package flycheck-mix
     :after (flycheck elixir-mode)
     :hook ((elixir-mode . flycheck-mix-setup)))
-    #+end_src
+#+end_src
 *** Exunit
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package exunit
     :after (elixir-mode)
     :bind (:map elixir-mode-map
@@ -472,27 +472,27 @@
                 ("C-c , s" . exunit-verify-single)
                 ("C-c , v" . exunit-verify)
                 ("C-c , r" . exunit-rerun))))
-    #+end_src
+#+end_src
 ** Elm
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
      (use-package elm-mode
        :mode ("\\.elm$")
        :config (add-to-list 'company-backends 'company-elm))
-   #+end_src
+#+end_src
 ** Haskell
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
      (use-package haskell-mode
        :hook ((haskell-mode . haskell-indentation-mode)
               (haskell-mode . interactive-haskell-mode))
        :custom ((haskell-font-lock-symbols t)))
-   #+end_src
+#+end_src
 *** LSP Haskell
 #+begin_src emacs-lisp
   (use-package lsp-haskell)
 #+end_src
 
 ** Java
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
      (use-package cc-mode)
 
      (use-package java-mode
@@ -503,7 +503,7 @@
          (setq tab-width 4
              indent-tabs-mode t
              c-basic-offset 4))
-   #+end_src
+#+end_src
 
 *** LSP Java
 #+begin_src emacs-lisp
@@ -513,7 +513,7 @@
 #+end_src
 ** JavaScript
 
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package js2-mode
     :delight "EcmaScript"
     :hook ((js-mode . js2-minor-mode)
@@ -531,19 +531,19 @@
     :custom ((js2-mode-show-parse-errors nil)
              (js2-mode-show-strict-warnings nil)
              (js2-bounce-indent-p t)))
-   #+end_src
+#+end_src
 
 *** JS2 refactor
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
       (use-package js2-refactor
         :after (js2-mode)
         :hook ((js2-mode . js2-refactor-mode))
         :config
         (js2r-add-keybindings-with-prefix "C-c j r")
         (define-key js2-mode-map (kbd "C-k") #'js2r-kill))
-    #+end_src
+#+end_src
 *** Xref js2
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
       (use-package xref-js2
         :delight
         :if (executable-find "ag")
@@ -553,12 +553,12 @@
         :hook ((js2-mode .
                          (lambda ()
                            (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))))
-    #+end_src
+#+end_src
 *** Indium
 
-    JavaScript development environment
+JavaScript development environment
 
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
       (use-package indium
         :after js2-mode
         :hook ((js2-mode . indium-interaction-mode))
@@ -568,28 +568,28 @@
                     ("S-<f6>" . indium-connect)
                     ("<f6>" . indium-launch))
         :config (delight indium-interaction-mode))
-    #+end_src
+#+end_src
 *** Mocha
-    Run Mocha tests.
+Run Mocha tests.
 
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
       (use-package mocha
         :init (setq mocha-reporter "spec")
         :bind (:map js2-mode-map
                     (("C-c t" . mocha-test-project))))
-    #+end_src
+#+end_src
 ** JSON
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
      (use-package json-mode
        :mode
        ("\\.json$" . json-mode))
-   #+end_src
+#+end_src
 ** Kotlin
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
      (use-package kotlin-mode)
-   #+end_src
+#+end_src
 ** Lisp
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
      (use-package slime
        :mode
        ("\\.lisp$" . slime-mode)
@@ -598,9 +598,9 @@
              slime-net-coding-system 'utf-8-unix
              slime1-contribs '(slime-fancy)))
 
-   #+end_src
+#+end_src
 ** LaTeX
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
      (use-package tex-mode
        :hook ((TeX-mode . flyspell-mode))
        :ensure auctex)
@@ -612,36 +612,36 @@
      (use-package auctex-latexmk
        :custom ((auctex-latexmk-inherit-TeX-PDF-mode t))
        :config (auctex-latexmk-setup))
-   #+end_src
+#+end_src
 ** Markdown
 
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package markdown-mode
     :mode (("README\\.md\\'" . gfm-mode)
            ("\\.md\\'" . markdown-mode)
            ("\\.markdown\\'" . markdown-mode))
     :init (setq markdown-command "multimarkdown"))
-   #+end_src
+#+end_src
 
 *** Markdown format
 
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package markdownfmt
     :after markdown-mode
     :hook (markdown-mode . markdownfmt-enable-on-save)
     :bind (:map markdown-mode-map
                 ("C-c C-f" . markdownfmt-format-buffer)))
-    #+end_src
+#+end_src
 ** Nginx
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
      (use-package nginx-mode)
-   #+end_src
+#+end_src
 ** Org
 
-   Org mode latest version.
+Org mode latest version.
 
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (defconst vs/org-directory (if (file-directory-p "~/Sync/org/") "~/Sync/org/" "~/"))
 
   (defconst vs/org-capture-templates '(("t" "todo" entry (file org-default-notes-file)
@@ -700,21 +700,21 @@
                         (plantuml . t)
                         (sql . t)))))
     (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append))
-   #+end_src
+#+end_src
 
 *** Org Bullets
 
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package org-bullets
     :hook ((org-mode . org-bullets-mode))
     :init
     (setq org-hide-leading-stars t))
-    #+end_src
+#+end_src
 
 *** Org Projectile
 
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
       (use-package org-projectile
         :bind (("C-c n p" . org-projectile-project-todo-completing-read)
                ("C-c c" . org-capture))
@@ -722,32 +722,32 @@
         (org-projectile-per-project)
         (setq org-projectile-projects-file "todo.org"
               org-agenda-files (append org-agenda-files (org-projectile-todo-files))))
-    #+end_src
+#+end_src
 
 *** Org + Reveal.js
 
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
       (use-package org-re-reveal
         :init (setq org-re-reveal-root "https://cdn.jsdelivr.net/reveal.js/latest"
                     org-reveal-mathjax t))
-    #+end_src
+#+end_src
 
 *** Org Babel Restclient
 
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package ob-restclient)
-    #+end_src
+#+end_src
 
 *** Org Babel Async
 
-    Turn code evaluation async.
+Turn code evaluation async.
 
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package ob-async
     :init (setq ob-async-no-async-languages-alist '("ipython")))
-    #+end_src
+#+end_src
 *** Org notify
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
       (require 'org-notify)
       (org-notify-start 60)
 
@@ -755,9 +755,9 @@
                       '(:time "10m" :period "2m" :duration 25 :actions -notify/window)
                       '(:time "1h" :period "15m" :duration 25 :actions -notify/window)
                       '(:time "2h" :period "30m" :duration 25 :actions -notify/window))
-    #+end_src
+#+end_src
 ** PlantUML
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
      (use-package plantuml-mode
        :mode ("\\.plantuml\\'" . plantuml-mode)
        :config
@@ -772,21 +772,21 @@
          (setq org-plantuml-jar-path plantuml-target
                plantuml-jar-path plantuml-target
                plantuml-output-type "svg"))))
-   #+end_src
+#+end_src
 *** Flycheck plantuml
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
       (use-package flycheck-plantuml
         :config (flycheck-plantuml-setup))
-    #+end_src
+#+end_src
 ** Python
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
      (use-package python
        :mode ("\\.py" . python-mode)
        :config (setq python-shell-interpreter "ipython"
                      python-shell-interpreter-args "-i --simple-prompt"))
-   #+end_src
+#+end_src
 *** elpy
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
       (use-package elpy
         :hook ((python-mode . elpy-mode)
                (python-mode . elpy-enable))
@@ -801,71 +801,71 @@
                     ("<M-S-right>" . elpy-nav-indent-shift-right)
                     ("C-c i" . elpy-autopep8-fix-code)
                     ("C-c C-d" . elpy-doc)))
-    #+end_src
+#+end_src
 *** pip requirements
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
       (use-package pip-requirements
         :hook ((pip-requirements-mode . #'pip-requirements-auto-complete-setup )))
-    #+end_src
+#+end_src
 *** py auto pep8
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
       (use-package py-autopep8
         :hook ((python-mode . py-autopep8-enable-on-save)))
-    #+end_src
+#+end_src
 ** TOML
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
      (use-package toml-mode
        :mode ("\\.toml$" . toml-mode))
-   #+end_src
+#+end_src
 ** TypeScript
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package typescript-mode
     :mode ("\\.ts$" . typescript-mode))
-   #+end_src
+#+end_src
 ** Restclient
 
-   Http tool for emacs.
+Http tool for emacs.
 
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package restclient
     :mode
     ("\\.http$" . restclient-mode)
     ("\\.https$" . restclient-mode))
-   #+end_src
+#+end_src
 
 *** Restclient test
 
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package restclient-test
     :after restclient-mode)
-    #+end_src
+#+end_src
 ** Rust
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
      (use-package rust-mode
        :init (setq rust-format-on-save t
                    company-tooltip-align-annotations t))
-   #+end_src
+#+end_src
 *** Flycheck Rust
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
       (use-package flycheck-rust
         :after rust-mode
         :hook ((rust-mode . flycheck-rust-setup)))
-    #+end_src
+#+end_src
 *** Cargo
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
       (use-package cargo
         :hook ((rust-mode . cargo-minor-mode)))
-    #+end_src
+#+end_src
 *** Racer
-    #+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp :tangle no
       (use-package racer
         :hook ((rust-mode . racer-mode)
                (racer-mode . eldoc-mode))
         :config
         (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common))
-    #+end_src
+#+end_src
 ** Web
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
      (defun my-web-mode-hook ()
          "Hook for `web-mode' config for company-backends."
          (set (make-local-variable 'company-backends)
@@ -892,56 +892,56 @@
                       web-mode-css-indent-offset 2
                       web-mode-code-indent-offset 2
                       web-mode-enable-current-element-highlight t))
-   #+end_src
+#+end_src
 *** CSS
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
       (defun my-css-mode-hook ()
         (set (make-local-variable 'company-backends)
              '((company-css company-dabbrev-code company-files))))
 
       (use-package css-mode
         :hook ((css-mode . my-css-mode-hook)))
-    #+end_src
+#+end_src
 *** Company web
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
       (use-package company-web
         :after web-mode)
-    #+end_src
+#+end_src
 *** Emmet
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
       (use-package emmet-mode
         :init (setq emmet-move-cursor-between-quotes t) ;; default nil
         :hook ((web-mode . emmet-mode)
                (vue-mode . emmet-mode)))
-    #+end_src
+#+end_src
 *** Pug
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
       (use-package pug-mode
         :mode ("\\.pug?\\'" . pug-mode))
-    #+end_src
+#+end_src
 *** React
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package rjsx-mode
     :mode ("\\.jsx$" . rjsx-mode))
-    #+end_src
+#+end_src
 *** Vue
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
       (use-package vue-mode
         :mode
         ("\\.vue$" . vue-mode))
-    #+end_src
+#+end_src
 ** YAML
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
      (use-package yaml-mode
        :mode ("\\.yaml|.yml$" . yaml-mode))
-   #+end_src
+#+end_src
 
 * Extensions
 ** Ace Window
 
-   Jump between open windows.
+Jump between open windows.
 
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package ace-window
     :init
@@ -950,64 +950,64 @@
       (custom-set-faces
        '(aw-leading-char-face
          ((t (:inherit ace-jump-face-foreground :height 3.0)))))))
-   #+end_src
+#+end_src
 
 ** All the icons
 
-   Emacs icons.
+Emacs icons.
 
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package all-the-icons)
-   #+end_src
+#+end_src
 ** Avy
 
-   Jump to any visible character.
+Jump to any visible character.
 
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package avy
     :bind (("C-:" . 'avy-goto-char)))
-   #+end_src
+#+end_src
 
 ** Company
 
-   Code completion for emacs
+Code completion for emacs
 
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package company
     :init
     (setq company-dabbrev-downcase 0
           company-idle-delay 0)
     :bind (("C-." . company-complete))
     :config (global-company-mode 1))
-   #+end_src
+#+end_src
 
 *** Company Quickhelp
 
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package company-quickhelp
     :after company
     :config (company-quickhelp-mode 1))
-    #+end_src
+#+end_src
 
 *** Company Restclient
 
-    Completions for restclient mode.
+Completions for restclient mode.
 
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package company-restclient
     :config (add-to-list 'company-backends 'company-restclient))
-    #+end_src
+#+end_src
 *** Company LSP
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package company-lsp
     :defer t
     :custom (company-lsp-cache-candidates 'auto))
-    #+end_src
+#+end_src
 ** Dashboard
 
-   Emacs awesome dashboard!
+Emacs awesome dashboard!
 
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package dashboard
     :init
     (setq dashboard-items '((recents  . 5)
@@ -1019,12 +1019,12 @@
           dashboard-startup-banner 'logo)
     :config
     (dashboard-setup-startup-hook))
-   #+end_src
+#+end_src
 ** DAP
 
-   Debugger Adapter Protocol for Emacs
+Debugger Adapter Protocol for Emacs
 
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package dap-mode
     :bind (:map dap-mode-map
                 (("<f12>" . dap-debug)
@@ -1044,77 +1044,77 @@
            (rust-mode . (lambda ()
                           (require 'dap-gdb-lldb)
                           (dap-gdb-lldb-setup)))))
-   #+end_src
+#+end_src
 ** Delight
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
      (use-package delight)
-   #+end_src
+#+end_src
 ** Dump Jump
 
-   Jump to definition polyglot.
+Jump to definition polyglot.
 
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package dumb-jump
     :config (dumb-jump-mode))
-   #+end_src
+#+end_src
 ** Editorconfig
 
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package editorconfig
     :config
     (editorconfig-mode 1))
-   #+end_src
+#+end_src
 ** Expand Region
 
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package expand-region
     :bind
     ("C-=" . er/expand-region))
-   #+end_src
+#+end_src
 
 ** Exec path from shell
 
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package exec-path-from-shell
     :config
     (when (memq window-system '(mac ns x))
       (exec-path-from-shell-copy-env "GOPATH")
       (exec-path-from-shell-copy-env "PYTHONPATH")
       (exec-path-from-shell-initialize)))
-   #+end_src
+#+end_src
 
 ** ERedis
-   Redis client
-   #+begin_src emacs-lisp
+Redis client
+#+begin_src emacs-lisp
   (use-package eredis)
-   #+end_src
+#+end_src
 
 ** Flycheck
 
-   Syntax checker for emacs.
+Syntax checker for emacs.
 
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package flycheck
     :config
     (global-flycheck-mode 1))
-   #+end_src
+#+end_src
 
 ** Ivy Stuff
 
-   Ivy, a generic completion mechanism for Emacs.
-   Swiper, an Ivy-enhanced alternative to isearch.
+Ivy, a generic completion mechanism for Emacs.
+Swiper, an Ivy-enhanced alternative to isearch.
 
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package ivy
     :defer 0.1
     :bind ("C-s" . swiper)
     :init (setq ivy-use-virtual-buffers t)
     :config (ivy-mode 1))
-   #+end_src
+#+end_src
 
-   Counsel, a collection of Ivy-enhanced versions of common Emacs commands.
+Counsel, a collection of Ivy-enhanced versions of common Emacs commands.
 
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
      (use-package counsel
        :after ivy
        :config (counsel-mode 1)
@@ -1128,30 +1128,30 @@
               ("<f2> i" . counsel-info-lookup-symbol)
               ("<f2> u" . counsel-unicode-char)
               ("C-x C-r" . counsel-recentf)))
-   #+end_src
+#+end_src
 
 *** Ivy rich
 
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package ivy-rich
     :after ivy
     :config (ivy-rich-mode 1))
-    #+end_src
+#+end_src
 
 *** Counsel projectile
 
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package counsel-projectile
     :bind
     ("C-x v" . counsel-projectile)
     ("C-x c p" . counsel-projectile-ag))
-    #+end_src
+#+end_src
 
 ** LSP
 
-   Language Server Protocol for Emacs.
+Language Server Protocol for Emacs.
 
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
      (use-package lsp-mode
        :defer t
        :commands lsp
@@ -1165,11 +1165,11 @@
                    ("C-c C-." . lsp-find-type-definition))
        :hook ((js2-mode rust-mode elixir-mode
                         typescript-mode java-mode) . lsp))
-   #+end_src
+#+end_src
 
 *** LSP UI
 
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package lsp-ui
     :after lsp-mode
     :commands lsp-ui-mode
@@ -1177,50 +1177,50 @@
                 ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
                 ([remap xref-find-references] . lsp-ui-peek-find-references)
                 ("C-c u" . lsp-ui-imenu)))
-    #+end_src
+#+end_src
 
 ** Magit
 
-   Magic git client!
+Magic git client!
 
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package magit
     :if (executable-find "git")
     :init
     (setq magit-completing-read-function 'ivy-completing-read)
     :bind ("C-x g" . magit-status))
-   #+end_src
+#+end_src
 
 *** Magit Popup
 
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package magit-popup
     :after magit)
-    #+end_src
+#+end_src
 
 *** Git gutter
 
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package git-gutter-fringe
     :config (global-git-gutter-mode))
-    #+end_src
+#+end_src
 
 ** Multiple cursors
 
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package multiple-cursors
     :bind
     ("C-S-c C-S-c" . mc/edit-lines)
     ("M-n" . mc/mark-next-like-this)
     ("M-p" . mc/mark-previous-like-this)
     ("C-c x" . mc/mark-all-like-this))
-   #+end_src
+#+end_src
 
 ** Projectile
 
-   Project managment.
+Project managment.
 
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package projectile
     :init
     (setq projectile-known-projects-file
@@ -1230,23 +1230,23 @@
     :bind-keymap ("C-c p" . projectile-command-map)
     :bind (("C-," . projectile-find-file))
     :config (projectile-mode +1))
-   #+end_src
+#+end_src
 
 *** Projectile ripgrep
 
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package projectile-ripgrep
     :after projectile)
-    #+end_src
+#+end_src
 
 ** Quickrun
 
-   Quickrun buffer.
+Quickrun buffer.
 
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package quickrun
     :bind (([f5] . quickrun)))
-   #+end_src
+#+end_src
 
 ** Ripgrep
 #+begin_src emacs-lisp
@@ -1255,23 +1255,23 @@
 
 ** Smartparens
 
-   Smart parentheses
+Smart parentheses
 
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package smartparens
     :config (smartparens-global-mode))
-   #+end_src
+#+end_src
 
 ** Smex
 
-   Command history
+Command history
 
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package smex)
-   #+end_src
+#+end_src
 
 ** Shell pop
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package shell-pop
     :config (custom-set-variables
              '(shell-pop-shell-type (quote ("ansi-term" "*ansi-term*" (lambda nil (ansi-term shell-pop-term-shell)))))
@@ -1279,12 +1279,12 @@
              '(shell-pop-window-size 30)
              '(shell-pop-full-span t)
              '(shell-pop-window-position "bottom")))
-   #+end_src
+#+end_src
 ** Treemacs
 
-   File explorer.
+File explorer.
 
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package treemacs
     :bind
     (:map global-map
@@ -1293,33 +1293,33 @@
           ([f8]   . treemacs)
           ("C-x t B"   . treemacs-bookmark)
           ("C-x t M-t" . treemacs-find-tag)))
-   #+end_src
+#+end_src
 
 *** Treemacs projectile
 
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package treemacs-projectile
     :after treemacs projectile)
-    #+end_src
+#+end_src
 
 *** Treemacs magit
 
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package treemacs-magit
     :after treemacs magit)
-    #+end_src
+#+end_src
 
 ** Try
 
-   Try out packages in emacs without installing them
+Try out packages in emacs without installing them
 
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package try)
-   #+end_src
+#+end_src
 
 ** Undo tree
 
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package undo-tree
     :init
     ;; Remember undo history
@@ -1328,36 +1328,36 @@
      undo-tree-history-directory-alist `(("." . ,(concat temp-dir "/undo/"))))
     :config
     (global-undo-tree-mode 1))
-   #+end_src
+#+end_src
 
 ** VLF
 
-   View large files
+View large files
 
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package vlf
     :config (require 'vlf-setup))
-   #+end_src
+#+end_src
 ** Wich key
 
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package which-key
     :config
     (which-key-mode))
-   #+end_src
+#+end_src
 
 ** Xclip
 
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (use-package xclip
     :if (executable-find "xclip")
     :config (xclip-mode))
-   #+end_src
+#+end_src
 ** Yasnippet
 
-   Snippets in emacs
+Snippets in emacs
 
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
      (use-package yasnippet
        :init (setq yas-snippet-dirs (append
                                      yas-snippet-dirs
@@ -1365,11 +1365,11 @@
                                       (concat user-emacs-directory "snippets/"))))
        :config
        (yas-global-mode 1))
-   #+end_src
+#+end_src
 
-   Yasnippet snippet pack
+Yasnippet snippet pack
 
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
      (use-package yasnippet-snippets
        :after (yas-global-mode))
-   #+end_src
+#+end_src
