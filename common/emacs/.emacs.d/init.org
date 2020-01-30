@@ -279,8 +279,7 @@ it is not tangled along with the rest!
        (interactive "P")
        (let ((selected-mode (completing-read
                              "Scratch buffer with mode: "
-                             '("restclient-mode"
-                               "js2-mode"
+                             '("js2-mode"
                                "json-mode"
                                "xml-mode"
                                "org-mode"
@@ -694,7 +693,7 @@ Org mode latest version.
               (append org-babel-load-languages
                       '((emacs-lisp . t)
                         (python . t)
-                        (restclient . t)
+                        (verb . t)
                         (js . t)
                         (shell . t)
                         (plantuml . t)
@@ -732,12 +731,12 @@ Org mode latest version.
                     org-reveal-mathjax t))
 #+end_src
 
-*** Org Babel Restclient
-
+*** Org Verb
 #+begin_src emacs-lisp
-  (use-package ob-restclient)
+  (use-package verb
+    :after org
+    :config (define-key org-mode-map (kbd "C-c C-r") verb-command-map))
 #+end_src
-
 *** Org Babel Async
 
 Turn code evaluation async.
@@ -821,23 +820,6 @@ Turn code evaluation async.
 #+begin_src emacs-lisp
   (use-package typescript-mode
     :mode ("\\.ts$" . typescript-mode))
-#+end_src
-** Restclient
-
-Http tool for emacs.
-
-#+begin_src emacs-lisp
-  (use-package restclient
-    :mode
-    ("\\.http$" . restclient-mode)
-    ("\\.https$" . restclient-mode))
-#+end_src
-
-*** Restclient test
-
-#+begin_src emacs-lisp
-  (use-package restclient-test
-    :after restclient-mode)
 #+end_src
 ** Rust
 #+begin_src emacs-lisp
