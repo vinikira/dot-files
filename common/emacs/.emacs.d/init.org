@@ -306,6 +306,23 @@ it is not tangled along with the rest!
        (interactive)
        (indent-region (point-min) (point-max)))
 #+end_src
+** Move lines
+#+begin_src emacs-lisp
+  (defun vs/move-line-up ()
+    "Move up the current line."
+    (interactive)
+    (transpose-lines 1)
+    (forward-line -2)
+    (indent-according-to-mode))
+
+  (defun vs/move-line-down ()
+    "Move down the current line."
+    (interactive)
+    (forward-line 1)
+    (transpose-lines 1)
+    (forward-line -1)
+    (indent-according-to-mode))
+#+end_src
 * Keybindings
 ** Ibuffer
 #+begin_src emacs-lisp
@@ -342,6 +359,12 @@ it is not tangled along with the rest!
 #+begin_src emacs-lisp
      (global-set-key (kbd "C-c s b") 'vs/scratch-buffer)
 #+end_src
+** Move lines
+#+begin_src emacs-lisp
+  (global-set-key (kbd "M-S-<up>") 'vs/move-line-up)
+  (global-set-key (kbd "M-S-<down>") 'vs/move-line-down)
+#+end_src
+
 * Appearence
 ** Frame config
 
