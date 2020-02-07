@@ -970,7 +970,7 @@ Jump to any visible character.
 
 #+begin_src emacs-lisp
   (use-package avy
-    :bind (("C-:" . 'avy-goto-char)))
+    :bind (("C-;" . 'avy-goto-char)))
 #+end_src
 
 ** Company
