@@ -189,10 +189,10 @@ it is not tangled along with the rest!
 #+end_src
 *** Server
 #+begin_src emacs-lisp
-      (require 'server)
-      (when (and (fboundp 'server-running-p)
-                 (not (server-running-p)))
-        (server-start))
+  (require 'server)
+  (when (and (fboundp 'server-running-p)
+             (not (server-running-p)))
+    (server-start))
 #+end_src
 
 * Functions
@@ -698,7 +698,8 @@ Org mode latest version.
            (org-mode . (lambda () (display-line-numbers-mode -1)))
            (org-mode . auto-fill-mode))
     :bind (("C-c l" . org-store-link)
-           ("C-c a" . org-agenda))
+           ("C-c a" . org-agenda)
+           ("C-c c" . org-capture))
     :init (setq org-directory vs/org-directory
                 org-default-notes-file (concat org-directory "notes.org")
                 org-agenda-files (list (concat org-directory "work.org")
@@ -732,18 +733,6 @@ Org mode latest version.
     :hook ((org-mode . org-bullets-mode))
     :init
     (setq org-hide-leading-stars t))
-#+end_src
-
-*** Org Projectile
-
-#+begin_src emacs-lisp
-      (use-package org-projectile
-        :bind (("C-c n p" . org-projectile-project-todo-completing-read)
-               ("C-c c" . org-capture))
-        :config
-        (org-projectile-per-project)
-        (setq org-projectile-projects-file "todo.org"
-              org-agenda-files (append org-agenda-files (org-projectile-todo-files))))
 #+end_src
 
 *** Org + Reveal.js
@@ -1013,7 +1002,9 @@ Emacs awesome dashboard!
                             (agenda . 5))
           dashboard-set-file-icons t
           dashboard-set-heading-icons t
-          dashboard-startup-banner 'logo)
+          dashboard-startup-banner 'logo
+          dashboard-center-content t
+          initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
     :config
     (dashboard-setup-startup-hook))
 #+end_src
