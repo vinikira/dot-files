@@ -1149,19 +1149,20 @@ Counsel, a collection of Ivy-enhanced versions of common Emacs commands.
 Language Server Protocol for Emacs.
 
 #+begin_src emacs-lisp
-     (use-package lsp-mode
-       :defer t
-       :commands lsp
-       :custom ((lsp-auto-guess-root t)
-                (lsp-prefer-flymake nil)
-                (lsp-file-watch-threshold 2000))
-       :bind (:map lsp-mode-map
-                   ("C-c C-f" . lsp-format-buffer)
-                   ("C-c C-r" . lsp-rename)
-                   ("C-c C-a" . lsp-execute-code-action)
-                   ("C-c C-." . lsp-find-type-definition))
-       :hook ((js2-mode rust-mode elixir-mode
-                        typescript-mode java-mode) . lsp))
+  (use-package lsp-mode
+    :defer t
+    :commands lsp
+    :custom ((lsp-auto-guess-root t)
+             (lsp-prefer-flymake nil)
+             (lsp-file-watch-threshold 2000))
+    :bind (:map lsp-mode-map
+                ("C-c C-f" . lsp-format-buffer)
+                ("C-c C-r" . lsp-rename)
+                ("C-c C-a" . lsp-execute-code-action)
+                ("C-c C-." . lsp-find-type-definition))
+    :hook ((lsp-mode . lsp-enable-which-key-integration)
+           ((js2-mode rust-mode elixir-mode
+                     typescript-mode java-mode) . lsp)))
 #+end_src
 
 *** LSP UI
