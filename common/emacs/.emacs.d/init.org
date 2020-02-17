@@ -1025,11 +1025,7 @@ Debugger Adapter Protocol for Emacs
   (use-package dap-mode
     :bind (:map dap-mode-map
                 (("<f12>" . dap-debug)
-                 ("<M-f9>" . dap-continue)
-                 ("<f9>" . dap-next)
-                 ("<M-f11>" . dap-step-in)
-                 ("C-M-<f11>" . dap-step-out)
-                 ("<f6>" . dap-breakpoint-toggle)))
+                 ("S-<f12>" . dap-hydra)))
     :hook ((after-init . dap-mode)
            (dap-mode . dap-ui-mode)
            (python-mode . (lambda () (require 'dap-python)))
@@ -1171,6 +1167,7 @@ Language Server Protocol for Emacs.
   (use-package lsp-ui
     :after lsp-mode
     :commands lsp-ui-mode
+    :config (lsp-lens-mode)
     :bind (:map lsp-ui-mode-map
                 ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
                 ([remap xref-find-references] . lsp-ui-peek-find-references)
