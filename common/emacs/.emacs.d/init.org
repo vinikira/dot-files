@@ -642,7 +642,8 @@ Run Mocha tests.
     :mode (("README\\.md\\'" . gfm-mode)
            ("\\.md\\'" . markdown-mode)
            ("\\.markdown\\'" . markdown-mode))
-    :init (setq markdown-command "multimarkdown"))
+    :commands (markdown-mode gfm-mode)
+    :custom ((markdown-command "pandoc --from markdown --to html --ascii")))
 #+end_src
 
 *** Markdown format
