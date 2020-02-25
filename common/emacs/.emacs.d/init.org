@@ -372,7 +372,7 @@ My custom frame config.
 
 #+begin_src emacs-lisp
   (defconst vs/frame-alist
-    '((font . "JetBrains Mono-10")
+    '((font . "JetBrainsMono-10")
       (scroll-bar . -1)
       (height . 60)
       (width . 95)
