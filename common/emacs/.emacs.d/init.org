@@ -501,6 +501,12 @@ My UI customizations
        :mode ("\\.elm$")
        :config (add-to-list 'company-backends 'company-elm))
 #+end_src
+** Graphql
+#+begin_src emacs-lisp :results output
+  (use-package graphql-mode
+    :mode ("\\.graphql$" "\\.gql$"))
+#+end_src
+
 ** Haskell
 #+begin_src emacs-lisp
      (use-package haskell-mode
