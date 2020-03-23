@@ -1026,6 +1026,10 @@ Debugger Adapter Protocol for Emacs
                  ("S-<f12>" . dap-hydra)))
     :hook ((after-init . dap-mode)
            (dap-mode . dap-ui-mode)
+           (dap-mode . tooltip-mode)
+           (dap-mode . dap-tooltip-mode)
+           (dap-stopped . vs/dap-show-debug-windows)
+           (dap-terminated . vs/dap-hide-debug-windows)
            (python-mode . (lambda () (require 'dap-python)))
            (java-mode . (lambda () (require 'dap-java)))
            ((c-mode c++-mode) . (lambda () (require 'dap-lldb)))
@@ -1036,10 +1040,61 @@ Debugger Adapter Protocol for Emacs
                           (require 'dap-gdb-lldb)
                           (dap-gdb-lldb-setup)))))
 #+end_src
+
+*** posframe
+#+begin_src emacs-lisp
+  (use-package posframe)
+#+end_src
+
+*** display debug windows
+#+begin_src emacs-lisp
+  (defun vs/dap-window-visible (b-name)
+    "Return whether B-NAME is visible."
+    (-> (-compose 'buffer-name 'window-buffer)
+        (-map (window-list))
+        (-contains? b-name)))
+
+  (defun vs/dap-show-debug-windows (session)
+    "Show debug windows when SESSION are actived."
+    (let ((lsp--cur-workspace (dap--debug-session-workspace session)))
+      (save-excursion
+        ;; display locals
+        (unless (vs/dap-window-visible dap-ui--locals-buffer)
+          (dap-ui-locals))
+
+        ;; display sessions
+        (unless (vs/dap-window-visible dap-ui--sessions-buffer)
+          (dap-ui-sessions))
+
+        ;; display breakpoints
+        (unless (vs/dap-window-visible dap-ui--breakpoints-buffer)
+          (dap-ui-breakpoints))
+
+        ;; show dap hydra
+        (dap-hydra))))
+
+  (defun vs/dap-hide-debug-windows (session)
+    "Hide debug windows when all debug SESSION are dead."
+    (unless (-filter 'dap--session-running (dap--get-sessions))
+      (and (get-buffer dap-ui--sessions-buffer)
+           (kill-buffer dap-ui--sessions-buffer))
+      (and (get-buffer dap-ui--locals-buffer)
+           (kill-buffer dap-ui--locals-buffer))
+      (and (get-buffer dap-ui--breakpoints-buffer)
+           (kill-buffer dap-ui--breakpoints-buffer)))
+    (dap-hydra/nil))
+
+#+end_src
+
 ** Delight
 #+begin_src emacs-lisp
      (use-package delight)
 #+end_src
+** Docker
+#+begin_src emacs-lisp
+  (use-package docker)
+#+end_src
+
 ** Dump Jump
 
 Jump to definition polyglot.
