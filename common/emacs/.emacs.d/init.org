@@ -716,7 +716,8 @@ Org mode latest version.
                 org-log-done 'time
                 org-babel-sh-command "bash"
                 org-capture-templates vs/org-capture-templates
-                org-structure-template-alist vs/org-structure-template-alist)
+                org-structure-template-alist vs/org-structure-template-alist
+                org-use-speed-commands t)
     :config (org-babel-do-load-languages
              'org-babel-load-languages
              (org-babel-do-load-languages
