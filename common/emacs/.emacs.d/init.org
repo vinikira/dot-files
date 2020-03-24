@@ -233,18 +233,18 @@ it is not tangled along with the rest!
 #+end_src
 *** XML
 #+begin_src emacs-lisp
-      (defun vs/format-xml-buffer (&optional begin end)
-        "Format xml buffer using xmllint, BEGIN region and END region."
-        (interactive "r")
-        (when (executable-find "xmllint")
-          (let ((curr-point (point)))
-            (call-shell-region
-             (if (region-active-p) begin (point-min))
-             (if (region-active-p) end (point-max))
-             "xmllint --format -"
-             t
-             (current-buffer))
-            (goto-char curr-point))))
+  (defun vs/format-xml-buffer (&optional begin end)
+    "Format xml buffer using xmllint, BEGIN region and END region."
+    (interactive "r")
+    (when (executable-find "xmllint")
+      (let ((curr-point (point)))
+        (call-shell-region
+         (if (region-active-p) begin (point-min))
+         (if (region-active-p) end (point-max))
+         "xmllint --nowarning --format -"
+         t
+         (current-buffer))
+        (goto-char curr-point))))
 #+end_src
 ** Indium
 *** Generate project config
