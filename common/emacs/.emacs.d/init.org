@@ -1204,7 +1204,10 @@ Language Server Protocol for Emacs.
     :commands lsp
     :custom ((lsp-auto-guess-root t)
              (lsp-prefer-flymake nil)
-             (lsp-file-watch-threshold 2000))
+             (lsp-file-watch-threshold 2000)
+             (lsp-file-watch-ignored (-concat
+             '("\\.asdf" "[/\\\\]\\.elixir_ls$" "[/\\\\]deps$" "[/\\\\]_build$")
+             lsp-file-watch-ignored)))
     :bind (:map lsp-mode-map
                 ("C-c C-f" . lsp-format-buffer)
                 ("C-c C-r" . lsp-rename)
@@ -1222,10 +1225,15 @@ Language Server Protocol for Emacs.
     :after lsp-mode
     :commands lsp-ui-mode
     :config (lsp-lens-mode)
+    :custom ((lsp-ui-doc-include-signature t)
+             (lsp-ui-doc-enable nil)
+             (lsp-ui-peek-enable nil)
+             (lsp-ui-sideline-enable nil))
     :bind (:map lsp-ui-mode-map
                 ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
                 ([remap xref-find-references] . lsp-ui-peek-find-references)
-                ("C-c u" . lsp-ui-imenu)))
+                ("C-c u" . lsp-ui-imenu)
+                ("C-c d" . lsp-ui-doc-show)))
 #+end_src
 
 ** Magit
