@@ -153,7 +153,13 @@ it is not tangled along with the rest!
         scroll-preserve-screen-position    nil
 
         bookmark-save-flag                 t
-        bookmark-default-file              (concat temp-dir "/bookmarks"))
+        bookmark-default-file              (concat temp-dir "/bookmarks")
+
+        ;; increase gc size
+        gc-cons-threshold                  100000000
+
+        ;; increase the amount of data which Emacs reads from the process
+        read-process-output-max            (* 1024 1024))
 
   (setq-default fill-column                80
                 indent-tabs-mode           nil
