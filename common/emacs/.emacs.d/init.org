@@ -1206,7 +1206,10 @@ Language Server Protocol for Emacs.
              (lsp-file-watch-threshold 2000)
              (lsp-file-watch-ignored (-concat
              '("\\.asdf" "[/\\\\]\\.elixir_ls$" "[/\\\\]deps$" "[/\\\\]_build$")
-             lsp-file-watch-ignored)))
+             lsp-file-watch-ignored))
+             (lsp-rust-server 'rust-analyzer)
+             (lsp-idle-delay 0.500)
+             (lsp-prefer-capf t))
     :bind (:map lsp-mode-map
                 ("C-c C-f" . lsp-format-buffer)
                 ("C-c C-r" . lsp-rename)
