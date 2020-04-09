@@ -1111,8 +1111,8 @@ Debugger Adapter Protocol for Emacs
   (defun sidebar-toggle ()
     "Toggle both `dired-sidebar' and `ibuffer-sidebar'."
     (interactive)
-    (dired-sidebar-toggle-sidebar)
-    (ibuffer-sidebar-toggle-sidebar))
+    (ibuffer-sidebar-toggle-sidebar)
+    (dired-sidebar-toggle-sidebar))
 
   (use-package dired-sidebar
     :commands (dired-sidebar-toggle-sidebar)
