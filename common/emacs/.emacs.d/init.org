@@ -1121,7 +1121,8 @@ Debugger Adapter Protocol for Emacs
              (dired-sidebar-use-term-integration t)
              (dired-sidebar-subtree-line-prefix "__")
              (dired-sidebar-use-custom-font t)
-             (dired-sidebar-face `(:family "Ubuntu" :height 120)))
+             (dired-sidebar-should-follow-file t)
+             (dired-sidebar-face `(:family "Ubuntu" :height 100)))
     :config (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
              (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
     :hook ((dired-sidebar-mode .  (lambda ()
@@ -1190,7 +1191,7 @@ Syntax checker for emacs.
   (use-package ibuffer-sidebar
     :commands (ibuffer-sidebar-toggle-sidebar)
     :custom ((ibuffer-sidebar-use-custom-font t)
-             (ibuffer-sidebar-face `(:family "Ubuntu" :height 120))))
+             (ibuffer-sidebar-face `(:family "Ubuntu" :height 100))))
 #+end_src
 
 ** Ivy Stuff
