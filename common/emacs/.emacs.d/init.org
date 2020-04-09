@@ -974,6 +974,14 @@ Emacs icons.
 #+begin_src emacs-lisp
   (use-package all-the-icons)
 #+end_src
+
+** All the icons Dired
+
+#+begin_src emacs-lisp
+  (use-package all-the-icons-dired
+    :hook ((dired-mode . all-the-icons-dired-mode)))
+#+end_src
+
 ** Avy
 
 Jump to any visible character.
@@ -1097,6 +1105,30 @@ Debugger Adapter Protocol for Emacs
 #+begin_src emacs-lisp
      (use-package delight)
 #+end_src
+** Dired Sidebar
+
+#+begin_src emacs-lisp
+  (defun sidebar-toggle ()
+    "Toggle both `dired-sidebar' and `ibuffer-sidebar'."
+    (interactive)
+    (dired-sidebar-toggle-sidebar)
+    (ibuffer-sidebar-toggle-sidebar))
+
+  (use-package dired-sidebar
+    :commands (dired-sidebar-toggle-sidebar)
+    :bind (("C-x C-n" . sidebar-toggle))
+    :custom ((dired-sidebar-theme 'icons)
+             (dired-sidebar-use-term-integration t)
+             (dired-sidebar-subtree-line-prefix "__")
+             (dired-sidebar-use-custom-font t)
+             (dired-sidebar-face `(:family "Ubuntu" :height 120)))
+    :config (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
+             (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
+    :hook ((dired-sidebar-mode .  (lambda ()
+                                    (unless (file-remote-p default-directory)
+                                      (auto-revert-mode))))))
+#+end_src
+
 ** Docker
 #+begin_src emacs-lisp
   (use-package docker)
@@ -1150,6 +1182,15 @@ Syntax checker for emacs.
   (use-package flycheck
     :config
     (global-flycheck-mode 1))
+#+end_src
+
+** IBuffer sidebar
+
+#+begin_src emacs-lisp
+  (use-package ibuffer-sidebar
+    :commands (ibuffer-sidebar-toggle-sidebar)
+    :custom ((ibuffer-sidebar-use-custom-font t)
+             (ibuffer-sidebar-face `(:family "Ubuntu" :height 120))))
 #+end_src
 
 ** Ivy Stuff
@@ -1346,35 +1387,6 @@ Command history
              '(shell-pop-full-span t)
              '(shell-pop-window-position "bottom")))
 #+end_src
-** Treemacs
-
-File explorer.
-
-#+begin_src emacs-lisp
-  (use-package treemacs
-    :bind
-    (:map global-map
-          ("M-0"       . treemacs-select-window)
-          ("C-x t 1"   . treemacs-delete-other-windows)
-          ([f8]   . treemacs)
-          ("C-x t B"   . treemacs-bookmark)
-          ("C-x t M-t" . treemacs-find-tag)))
-#+end_src
-
-*** Treemacs projectile
-
-#+begin_src emacs-lisp
-  (use-package treemacs-projectile
-    :after treemacs projectile)
-#+end_src
-
-*** Treemacs magit
-
-#+begin_src emacs-lisp
-  (use-package treemacs-magit
-    :after treemacs magit)
-#+end_src
-
 ** Try
 
 Try out packages in emacs without installing them
