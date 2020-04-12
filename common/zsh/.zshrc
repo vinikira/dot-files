@@ -54,7 +54,7 @@ ENABLE_CORRECTION="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git archlinux jsontools node npm tmux docker)
+plugins=(git archlinux jsontools node npm tmux docker asdf)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -82,8 +82,6 @@ export VISUAL="emacsclient -c"
 
 # asdf vm
 [ -f $HOME/.asdf/asdf.sh ] && source $HOME/.asdf/asdf.sh
-
-[ -f $HOME/.asdf/completions/asdf.bash ] && source $HOME/.asdf/completions/asdf.bash
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
