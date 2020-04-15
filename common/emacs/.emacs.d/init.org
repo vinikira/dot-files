@@ -1258,7 +1258,8 @@ Language Server Protocol for Emacs.
              lsp-file-watch-ignored))
              (lsp-rust-server 'rust-analyzer)
              (lsp-idle-delay 0.500)
-             (lsp-prefer-capf t))
+             (lsp-prefer-capf nil)
+             (lsp-keep-workspace-alive nil))
     :bind (:map lsp-mode-map
                 ("C-c C-f" . lsp-format-buffer)
                 ("C-c C-r" . lsp-rename)
@@ -1285,6 +1286,15 @@ Language Server Protocol for Emacs.
                 ([remap xref-find-references] . lsp-ui-peek-find-references)
                 ("C-c u" . lsp-ui-imenu)
                 ("C-c d" . lsp-ui-doc-show)))
+#+end_src
+
+*** Company LSP
+#+begin_src emacs-lisp
+  (use-package company-lsp
+    :defer t
+    :custom ((company-lsp-cache-candidates 'auto)
+             (company-lsp-enable-snippet t)
+             (company-lsp-enable-recompletion t)))
 #+end_src
 
 ** Magit
