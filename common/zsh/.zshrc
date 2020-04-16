@@ -99,4 +99,5 @@ export VISUAL="emacsclient -c"
 alias start_minidlna='minidlnad -f $HOME/.config/minidlna/minidlna.conf -P $HOME/.config/minidlna/minidlna.pid'
 alias polybar-restart='sh $HOME/.config/polybar/launch.sh'
 alias clojurer='rlwrap clojure'
-alias e='emacsclient -cn'
+alias ec='emacsclient -cn'
+alias e='emacsclient -n'
