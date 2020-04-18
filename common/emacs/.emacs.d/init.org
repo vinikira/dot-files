@@ -1248,14 +1248,13 @@ Language Server Protocol for Emacs.
 
 #+begin_src emacs-lisp
   (use-package lsp-mode
-    :defer t
     :commands lsp
     :custom ((lsp-auto-guess-root t)
              (lsp-prefer-flymake nil)
              (lsp-file-watch-threshold 2000)
              (lsp-file-watch-ignored (-concat
-             '("\\.asdf" "[/\\\\]\\.elixir_ls$" "[/\\\\]deps$" "[/\\\\]_build$")
-             lsp-file-watch-ignored))
+                                      '("\\.asdf" "[/\\\\]\\.elixir_ls$" "[/\\\\]deps$" "[/\\\\]_build$")
+                                      lsp-file-watch-ignored))
              (lsp-rust-server 'rust-analyzer)
              (lsp-idle-delay 0.500)
              (lsp-prefer-capf nil)
@@ -1267,16 +1266,14 @@ Language Server Protocol for Emacs.
                 ("C-c C-." . lsp-find-type-definition))
     :hook ((lsp-mode . lsp-enable-which-key-integration)
            ((js2-mode rust-mode elixir-mode
-                     typescript-mode java-mode) . lsp)))
+                      typescript-mode java-mode) . lsp)))
 #+end_src
 
 *** LSP UI
 
 #+begin_src emacs-lisp
   (use-package lsp-ui
-    :after lsp-mode
     :commands lsp-ui-mode
-    :config (lsp-lens-mode)
     :custom ((lsp-ui-doc-include-signature t)
              (lsp-ui-doc-enable nil)
              (lsp-ui-peek-enable nil)
@@ -1289,12 +1286,20 @@ Language Server Protocol for Emacs.
 #+end_src
 
 *** Company LSP
+
 #+begin_src emacs-lisp
   (use-package company-lsp
-    :defer t
+    :commands company-lsp
     :custom ((company-lsp-cache-candidates 'auto)
              (company-lsp-enable-snippet t)
              (company-lsp-enable-recompletion t)))
+#+end_src
+
+*** Ivy LSP
+
+#+begin_src emacs-lisp
+  (use-package lsp-ivy
+    :commands lsp-ivy-workspace-symbol)
 #+end_src
 
 ** Magit
