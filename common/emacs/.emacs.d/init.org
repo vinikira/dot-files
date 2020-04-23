@@ -329,6 +329,23 @@ it is not tangled along with the rest!
     (forward-line -1)
     (indent-according-to-mode))
 #+end_src
+** Duplicate line
+#+begin_src emacs-lisp
+  (defun vs/duplicate-current-line (&optional n)
+    "duplicate current line, make more than 1 copy given a numeric argument"
+    (interactive "p")
+    (save-excursion
+      (let ((nb (or n 1))
+            (current-line (thing-at-point 'line)))
+        ;; when on last line, insert a newline first
+        (when (or (= 1 (forward-line 1)) (eq (point) (point-max)))
+          (insert "\n"))
+
+        ;; now insert as many time as requested
+        (while (> n 0)
+          (insert current-line)
+          (decf n)))))
+#+end_src
 * Keybindings
 ** Ibuffer
 #+begin_src emacs-lisp
@@ -369,6 +386,11 @@ it is not tangled along with the rest!
 #+begin_src emacs-lisp
   (global-set-key (kbd "M-S-<up>") 'vs/move-line-up)
   (global-set-key (kbd "M-S-<down>") 'vs/move-line-down)
+#+end_src
+** Duplicate Line
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-c C-d") 'vs/duplicate-current-line)
 #+end_src
 
 * Appearence
