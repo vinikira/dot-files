@@ -61,9 +61,6 @@ source $ZSH/oh-my-zsh.sh
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
-if [[ -x "$(command -v rustc)" ]]; then
-    export RUST_SRC_PATH=$(echo `rustc --print sysroot`/lib/rustlib/src/rust/src)
-fi
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
