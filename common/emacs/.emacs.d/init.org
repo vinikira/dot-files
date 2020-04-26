@@ -484,11 +484,19 @@ My UI customizations
     (use-package cider)
 #+end_src
 ** Dart
+
 #+begin_src emacs-lisp
      (use-package dart-mode
        :mode ("\\.dart$")
        :init (setq dart-format-on-save t))
 #+end_src
+
+*** lsp Dart
+
+#+begin_src emacs-lisp
+  (use-package lsp-dart)
+#+end_src
+
 ** Docker
 #+begin_src emacs-lisp
      (use-package dockerfile-mode
