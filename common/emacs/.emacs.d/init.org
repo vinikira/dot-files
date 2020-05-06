@@ -379,6 +379,11 @@ it is not tangled along with the rest!
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c C-d") 'vs/duplicate-current-line)
 #+end_src
+** Hippie Expand
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "M-/") 'hippie-expand)
+#+end_src
 
 * Appearence
 ** Frame config
