@@ -27,19 +27,19 @@ it is not tangled along with the rest!
 ** Boostrapping
 
 #+begin_src emacs-lisp
-     ;;; -*- lexical-binding: t -*-
+  ;;; -*- lexical-binding: t -*-
 
-     (defun tangle-init ()
-       "If the current buffer is 'init.org' the code-blocks are
-     tangled, and the tangled file is compiled."
-       (when (equal (buffer-name) "init.org")
-         ;; Avoid running hooks when tangling.
-         (let ((prog-mode-hook nil))
-           (org-babel-tangle)
-           (rename-file "init.el" (expand-file-name "init.el" user-emacs-directory) t)
-           (byte-compile-file (concat user-emacs-directory "init.el")))))
+  (defun tangle-init ()
+    "If the current buffer is 'init.org' the code-blocks are
+  tangled, and the tangled file is compiled."
+    (when (equal (buffer-name) "init.org")
+      ;; Avoid running hooks when tangling.
+      (let ((prog-mode-hook nil))
+        (org-babel-tangle)
+        (rename-file "init.el" (expand-file-name "init.el" user-emacs-directory) t)
+        (byte-compile-file (concat user-emacs-directory "init.el")))))
 
-     (add-hook 'after-save-hook 'tangle-init)
+  (add-hook 'after-save-hook 'tangle-init)
 #+end_src
 
 ** Packaging
@@ -108,6 +108,7 @@ it is not tangled along with the rest!
       (setq default-process-coding-system '(utf-8-unix . utf-8-unix)
             locale-coding-system          'utf-8)
 #+end_src
+
 *** Variables
 
 #+begin_src emacs-lisp
@@ -203,6 +204,7 @@ it is not tangled along with the rest!
 
 * Functions
 ** Split and switch
+
 #+begin_src emacs-lisp
      (defun vs/split-window-below-and-switch ()
        "Split the window horizontally, then switch to the new pane."
@@ -216,8 +218,10 @@ it is not tangled along with the rest!
        (split-window-right)
        (other-window 1))
 #+end_src
+
 ** Format buffers stuff
 *** StandardJS
+
 #+begin_src emacs-lisp
       (defun vs/format-standardjs-buffer (&optional begin end)
         "Formart js buffer according standardjs, BEGIN region and END region."
@@ -237,7 +241,9 @@ it is not tangled along with the rest!
             (goto-char temp-point))))
 
 #+end_src
+
 *** XML
+
 #+begin_src emacs-lisp
   (defun vs/format-xml-buffer (&optional begin end)
     "Format xml buffer using xmllint, BEGIN region and END region."
@@ -252,32 +258,7 @@ it is not tangled along with the rest!
          (current-buffer))
         (goto-char curr-point))))
 #+end_src
-** Indium
-*** Generate project config
-#+begin_src emacs-lisp
-      (defun vs/generate-indium-config-file ()
-        "Generate indium generic config file for nodejs projects."
-        (interactive)
-        (when (string= major-mode "dired-mode")
-          (shell-command
-           (format "echo '{\"configurations\": [{\"name\": \"%s\",\"type\": \"%s\",\"command\": \"%s\"}]}' > .indium.json"
-                   (read-string "Enter indium project name:")
-                   (read-string "Enter indium project type (node or chrome):")
-                   (read-string "Enter indium command:")))))
 
-#+end_src
-*** Stop debugger
-#+begin_src emacs-lisp
-      (defun vs/stop-indium-debug ()
-        (interactive)
-        (when (and (get-buffer "*node process*")
-                   (get-buffer-process "*node process*"))
-          (indium-quit)
-          (interrupt-process (get-buffer-process "*node process*"))
-          (kill-buffer "*node process*")
-          (revert-buffer t t)
-          (delete-other-windows)))
-#+end_src
 ** Scratch Buffers
 #+begin_src emacs-lisp
      (defun vs/scratch-buffer (open-new-frame)
@@ -307,12 +288,15 @@ it is not tangled along with the rest!
          (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
 #+end_src
 ** Indent buffer
+
 #+begin_src emacs-lisp
-     (defun vs/indent-buffer ()
-       (interactive)
-       (indent-region (point-min) (point-max)))
+  (defun vs/indent-buffer ()
+    (interactive)
+    (indent-region (point-min) (point-max)))
 #+end_src
+
 ** Move lines
+
 #+begin_src emacs-lisp
   (defun vs/move-line-up ()
     "Move up the current line."
@@ -329,7 +313,9 @@ it is not tangled along with the rest!
     (forward-line -1)
     (indent-according-to-mode))
 #+end_src
+
 ** Duplicate line
+
 #+begin_src emacs-lisp
   (defun vs/duplicate-current-line (&optional n)
     "duplicate current line, make more than 1 copy given a numeric argument"
@@ -346,6 +332,7 @@ it is not tangled along with the rest!
           (insert current-line)
           (decf n)))))
 #+end_src
+
 * Keybindings
 ** Ibuffer
 #+begin_src emacs-lisp
@@ -412,11 +399,15 @@ My custom frame config.
 
 ** Theme
 
-My custom theme
+My custom themes
 
 #+begin_src emacs-lisp
   (use-package dracula-theme
     :config (load-theme 'dracula t))
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package spacemacs-theme)
 #+end_src
 
 ** Modeline
@@ -622,21 +613,6 @@ My UI customizations
         :hook ((js2-mode .
                          (lambda ()
                            (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))))
-#+end_src
-*** Indium
-
-JavaScript development environment
-
-#+begin_src emacs-lisp
-      (use-package indium
-        :after js2-mode
-        :hook ((js2-mode . indium-interaction-mode))
-        :bind (:map indium-interaction-mode-map
-                    ("C-x C-e" . indium-eval-last-node)
-                    ("C-<f6>" . vs/stop-indium-debug)
-                    ("S-<f6>" . indium-connect)
-                    ("<f6>" . indium-launch))
-        :config (delight indium-interaction-mode))
 #+end_src
 *** Mocha
 Run Mocha tests.
@@ -1041,6 +1017,7 @@ Code completion for emacs
     :after company
     :config (company-quickhelp-mode 1))
 #+end_src
+
 ** Dashboard
 
 Emacs awesome dashboard!
@@ -1087,11 +1064,13 @@ Debugger Adapter Protocol for Emacs
 #+end_src
 
 *** posframe
+
 #+begin_src emacs-lisp
   (use-package posframe)
 #+end_src
 
 *** display debug windows
+
 #+begin_src emacs-lisp
   (defun vs/dap-window-visible (b-name)
     "Return whether B-NAME is visible."
@@ -1128,7 +1107,6 @@ Debugger Adapter Protocol for Emacs
       (and (get-buffer dap-ui--breakpoints-buffer)
            (kill-buffer dap-ui--breakpoints-buffer)))
     (dap-hydra/nil))
-
 #+end_src
 
 ** Delight
@@ -1148,16 +1126,12 @@ Debugger Adapter Protocol for Emacs
     :commands (dired-sidebar-toggle-sidebar)
     :bind (("C-x C-n" . sidebar-toggle))
     :custom ((dired-sidebar-theme 'icons)
-             (dired-sidebar-use-term-integration t)
-             (dired-sidebar-subtree-line-prefix "__")
-             (dired-sidebar-use-custom-font t)
-             (dired-sidebar-should-follow-file t)
-             (dired-sidebar-face `(:family "Ubuntu" :height 100)))
-    :config (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
-             (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
-    :hook ((dired-sidebar-mode .  (lambda ()
-                                    (unless (file-remote-p default-directory)
-                                      (auto-revert-mode))))))
+             (dired-sidebar-subtree-line-prefix "__"))
+  :config (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
+  (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
+  :hook ((dired-sidebar-mode .  (lambda ()
+                                  (unless (file-remote-p default-directory)
+                                    (auto-revert-mode))))))
 #+end_src
 
 ** Docker
@@ -1219,9 +1193,7 @@ Syntax checker for emacs.
 
 #+begin_src emacs-lisp
   (use-package ibuffer-sidebar
-    :commands (ibuffer-sidebar-toggle-sidebar)
-    :custom ((ibuffer-sidebar-use-custom-font t)
-             (ibuffer-sidebar-face `(:family "Ubuntu" :height 100))))
+    :commands (ibuffer-sidebar-toggle-sidebar))
 #+end_src
 
 ** Ivy Stuff
@@ -1344,13 +1316,6 @@ Magic git client!
     :bind ("C-x g" . magit-status))
 #+end_src
 
-*** Magit Popup
-
-#+begin_src emacs-lisp
-  (use-package magit-popup
-    :after magit)
-#+end_src
-
 *** Git gutter
 
 #+begin_src emacs-lisp
@@ -1375,11 +1340,12 @@ Project managment.
 
 #+begin_src emacs-lisp
   (use-package projectile
-    :init
-    (setq projectile-known-projects-file
-          (expand-file-name "projectile-bookmarks.eld" temp-dir)
-          projectile-completion-system 'ivy
-          projectile-globally-ignored-directories '("node_modules" ".git" ".svn" "deps"))
+    :custom
+    ((projectile-known-projects-file
+      (expand-file-name "projectile-bookmarks.eld" temp-dir))
+     (projectile-completion-system 'ivy)
+     (projectile-globally-ignored-directories
+      '("node_modules" ".git" ".svn" "deps" "_build")))
     :bind-keymap ("C-c p" . projectile-command-map)
     :bind (("C-," . projectile-find-file))
     :config (projectile-mode +1))
@@ -1402,6 +1368,7 @@ Quickrun buffer.
 #+end_src
 
 ** Ripgrep
+
 #+begin_src emacs-lisp
   (use-package ripgrep)
 #+end_src
@@ -1424,6 +1391,7 @@ Command history
 #+end_src
 
 ** Shell pop
+
 #+begin_src emacs-lisp
   (use-package shell-pop
     :config (custom-set-variables
@@ -1433,6 +1401,7 @@ Command history
              '(shell-pop-full-span t)
              '(shell-pop-window-position "bottom")))
 #+end_src
+
 ** Try
 
 Try out packages in emacs without installing them
