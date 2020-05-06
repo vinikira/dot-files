@@ -1328,6 +1328,14 @@ Magic git client!
     :config (global-git-gutter-mode))
 #+end_src
 
+** MMM
+
+Multiples modes in one buffer.
+
+#+begin_src emacs-lisp
+  (use-package mmm-mode)
+#+end_src
+
 ** Multiple cursors
 
 #+begin_src emacs-lisp
