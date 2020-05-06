@@ -67,6 +67,7 @@ source $ZSH/oh-my-zsh.sh
 export ALTERNATE_EDITOR="emacs -q -nw"
 export EDITOR="emacsclient -t"
 export VISUAL="emacsclient -c"
+export ELIXIR_EDITOR="emacsclient -n +__LINE__ __FILE__"
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -94,7 +95,6 @@ export VISUAL="emacsclient -c"
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias start_minidlna='minidlnad -f $HOME/.config/minidlna/minidlna.conf -P $HOME/.config/minidlna/minidlna.pid'
-alias polybar-restart='sh $HOME/.config/polybar/launch.sh'
 alias clojurer='rlwrap clojure'
 alias ec='emacsclient -cn'
 alias e='emacsclient -n'
