@@ -506,30 +506,62 @@ My UI customizations
     :mode "\\.erl$")
 #+end_src
 ** Elixir
+
 #+begin_src emacs-lisp
   (use-package elixir-mode
       :mode ("\\.ex$" "\\.exs$" "mix.lock"))
 #+end_src
+
 *** Flycheck mix
+
 #+begin_src emacs-lisp
   (use-package flycheck-mix
     :after (flycheck elixir-mode)
     :hook ((elixir-mode . flycheck-mix-setup)))
 #+end_src
+
 *** Exunit
+
 #+begin_src emacs-lisp
   (use-package exunit
     :after (elixir-mode)
     :bind (:map elixir-mode-map
                 (("C-c , a" . exunit-verify-all)
-                ("C-c , A" . exunit-verify-all-in-umbrella)
-                ("C-c , s" . exunit-verify-single)
-                ("C-c , v" . exunit-verify)
-                ("C-c , r" . exunit-rerun))))
+                 ("C-c , A" . exunit-verify-all-in-umbrella)
+                 ("C-c , s" . exunit-verify-single)
+                 ("C-c , v" . exunit-verify)
+                 ("C-c , r" . exunit-rerun))))
 #+end_src
+
 *** Ob Elixir
+
 #+begin_src emacs-lisp
   (use-package ob-elixir)
+#+end_src
+
+*** LiveView Sigil
+
+#+begin_src emacs-lisp
+  (require 'mmm-mode)
+  (require 'web-mode)
+  (setq mmm-global-mode 'maybe)
+  (setq mmm-parse-when-idle 't)
+  (setq mmm-set-file-name-for-modes '(web-mode))
+  (custom-set-faces '(mmm-default-submode-face ((t (:background nil)))))
+  (let ((class 'elixir-eex)
+        (submode 'web-mode)
+        (front "^[ ]+~L\"\"\"")
+        (back "^[ ]+\"\"\""))
+    (mmm-add-classes (list (list class :submode submode :front front :back back)))
+    (mmm-add-mode-ext-class 'elixir-mode nil class))
+
+  (define-advice web-mode-guess-engine-and-content-type (:around (f &rest r) guess-engine-by-extension)
+    (if (and buffer-file-name
+             (equal "ex" (file-name-extension buffer-file-name)))
+        (progn (setq web-mode-content-type "html")
+               (setq web-mode-engine "elixir")
+               (web-mode-on-engine-setted))
+      (apply f r)))
 #+end_src
 
 ** Elm
