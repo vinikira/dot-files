@@ -1278,10 +1278,12 @@ Language Server Protocol for Emacs.
     :commands lsp
     :custom ((lsp-auto-guess-root t)
              (lsp-prefer-flymake nil)
-             (lsp-file-watch-threshold 2000)
-             (lsp-file-watch-ignored (-concat
-                                      '("\\.asdf" "[/\\\\]\\.elixir_ls$" "[/\\\\]deps$" "[/\\\\]_build$")
-                                      lsp-file-watch-ignored))
+             (lsp-file-watch-threshold 8000)
+             (lsp-file-watch-ignored
+              (-concat
+               '("\\.asdf" "[/\\\\]\\.elixir_ls$"
+                 "[/\\\\]deps$" "[/\\\\]_build$")
+               lsp-file-watch-ignored))
              (lsp-rust-server 'rust-analyzer)
              (lsp-idle-delay 0.500)
              (lsp-prefer-capf nil)
@@ -1292,8 +1294,8 @@ Language Server Protocol for Emacs.
                 ("C-c C-a" . lsp-execute-code-action)
                 ("C-c C-." . lsp-find-type-definition))
     :hook ((lsp-mode . lsp-enable-which-key-integration)
-           ((js2-mode rust-mode elixir-mode
-                      typescript-mode java-mode) . lsp)))
+            ((js2-mode rust-mode elixir-mode
+                       typescript-mode java-mode) . lsp)))
 #+end_src
 
 *** LSP UI
