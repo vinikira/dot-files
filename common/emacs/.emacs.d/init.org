@@ -412,10 +412,6 @@ My custom themes
     :config (load-theme 'dracula t))
 #+end_src
 
-#+begin_src emacs-lisp
-  (use-package spacemacs-theme)
-#+end_src
-
 ** Modeline
 
 Install and activate telephone-line.
