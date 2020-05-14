@@ -220,6 +220,7 @@ it is not tangled along with the rest!
 #+end_src
 
 ** Format buffers stuff
+
 *** StandardJS
 
 #+begin_src emacs-lisp
@@ -512,14 +513,6 @@ My UI customizations
       :mode ("\\.ex$" "\\.exs$" "mix.lock"))
 #+end_src
 
-*** Flycheck mix
-
-#+begin_src emacs-lisp
-  (use-package flycheck-mix
-    :after (flycheck elixir-mode)
-    :hook ((elixir-mode . flycheck-mix-setup)))
-#+end_src
-
 *** Exunit
 
 #+begin_src emacs-lisp
@@ -615,7 +608,8 @@ My UI customizations
     :delight "EcmaScript"
     :hook ((js-mode . js2-minor-mode)
            (js2-mode . prettify-symbols-mode)
-           (js2-mode . js2-imenu-extras-mode))
+           (js2-mode . js2-imenu-extras-mode)
+           (js2-mode . rjsx-minor-mode))
     :interpreter (("node" . js2-mode)
                   ("node" . js2-jsx-mode))
     :mode ("\\.js$" . js2-mode)
@@ -631,27 +625,18 @@ My UI customizations
 #+end_src
 
 *** JS2 refactor
+
 #+begin_src emacs-lisp
-      (use-package js2-refactor
-        :after (js2-mode)
-        :hook ((js2-mode . js2-refactor-mode))
-        :config
-        (js2r-add-keybindings-with-prefix "C-c j r")
-        (define-key js2-mode-map (kbd "C-k") #'js2r-kill))
+  (use-package js2-refactor
+    :after (js2-mode)
+    :hook ((js2-mode . js2-refactor-mode))
+    :config
+    (js2r-add-keybindings-with-prefix "C-c j r")
+    (define-key js2-mode-map (kbd "C-k") #'js2r-kill))
 #+end_src
-*** Xref js2
-#+begin_src emacs-lisp
-      (use-package xref-js2
-        :delight
-        :if (executable-find "ag")
-        :after (js2-mode)
-        :config
-        (define-key js2-mode-map (kbd "M-.") nil)
-        :hook ((js2-mode .
-                         (lambda ()
-                           (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))))
-#+end_src
+
 *** Mocha
+
 Run Mocha tests.
 
 #+begin_src emacs-lisp
@@ -660,6 +645,7 @@ Run Mocha tests.
         :bind (:map js2-mode-map
                     (("C-c t" . mocha-test-project))))
 #+end_src
+
 ** JSON
 #+begin_src emacs-lisp
      (use-package json-mode
@@ -953,24 +939,26 @@ Turn code evaluation async.
 #+end_src
 *** CSS
 #+begin_src emacs-lisp
-      (defun my-css-mode-hook ()
-        (set (make-local-variable 'company-backends)
-             '((company-css company-dabbrev-code company-files))))
+  (defun my-css-mode-hook ()
+    (set (make-local-variable 'company-backends)
+         '((company-css company-dabbrev-code company-files))))
 
-      (use-package css-mode
-        :hook ((css-mode . my-css-mode-hook)))
+  (use-package css-mode
+    :hook ((css-mode . my-css-mode-hook)))
 #+end_src
 *** Company web
 #+begin_src emacs-lisp
-      (use-package company-web
-        :after web-mode)
+  (use-package company-web
+    :after web-mode)
 #+end_src
 *** Emmet
 #+begin_src emacs-lisp
-      (use-package emmet-mode
-        :init (setq emmet-move-cursor-between-quotes t) ;; default nil
-        :hook ((web-mode . emmet-mode)
-               (vue-mode . emmet-mode)))
+  (use-package emmet-mode
+    :init (setq emmet-move-cursor-between-quotes t) ;; default nil
+    :hook ((web-mode . emmet-mode)
+           (vue-mode . emmet-mode)
+           (rjsx-mode . emmet-mode)
+           (rjsx-minor-mode . emmet-mode)))
 #+end_src
 *** Pug
 #+begin_src emacs-lisp
