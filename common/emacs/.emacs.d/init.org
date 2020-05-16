@@ -1290,8 +1290,8 @@ Language Server Protocol for Emacs.
                 ("C-c C-a" . lsp-execute-code-action)
                 ("C-c C-." . lsp-find-type-definition))
     :hook ((lsp-mode . lsp-enable-which-key-integration)
-            ((js2-mode rust-mode elixir-mode
-                       typescript-mode java-mode) . lsp)))
+           ((js2-mode rust-mode elixir-mode
+                      typescript-mode java-mode dart-mode) . lsp)))
 #+end_src
 
 *** LSP UI
