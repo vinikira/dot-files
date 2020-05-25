@@ -319,12 +319,10 @@ it is not tangled along with the rest!
 
 #+begin_src emacs-lisp
   (defun vs/duplicate-current-line (&optional n)
-    "duplicate current line, make more than 1 copy given a numeric argument"
+    "Duplicate current line, make more than 1 copy given a N argument."
     (interactive "p")
     (save-excursion
-      (let ((nb (or n 1))
-            (current-line (thing-at-point 'line)))
-        ;; when on last line, insert a newline first
+      (let ((current-line (thing-at-point 'line)))
         (when (or (= 1 (forward-line 1)) (eq (point) (point-max)))
           (insert "\n"))
 
@@ -393,11 +391,11 @@ My custom frame config.
 
 #+begin_src emacs-lisp
   (defconst vs/frame-alist
-    '((font . "JetBrainsMono-10")
+    '((font . "JetBrainsMono-11")
       (scroll-bar . -1)
       (height . 60)
       (width . 95)
-      (alpha . 95)
+      (alpha . 100)
       (vertical-scrollbars . nil)))
 
   (setq default-frame-alist vs/frame-alist)
@@ -1067,12 +1065,7 @@ Debugger Adapter Protocol for Emacs
     :bind (:map dap-mode-map
                 (("<f12>" . dap-debug)
                  ("S-<f12>" . dap-hydra)))
-    :hook ((after-init . dap-mode)
-           (dap-mode . dap-ui-mode)
-           (dap-mode . tooltip-mode)
-           (dap-mode . dap-tooltip-mode)
-           (dap-stopped . vs/dap-show-debug-windows)
-           (dap-terminated . vs/dap-hide-debug-windows)
+    :hook ((after-init . dap-auto-configure-mode)
            (python-mode . (lambda () (require 'dap-python)))
            (java-mode . (lambda () (require 'dap-java)))
            ((c-mode c++-mode) . (lambda () (require 'dap-lldb)))
@@ -1090,45 +1083,34 @@ Debugger Adapter Protocol for Emacs
   (use-package posframe)
 #+end_src
 
-*** display debug windows
+*** activate minor modes when stepping through code
 
 #+begin_src emacs-lisp
-  (defun vs/dap-window-visible (b-name)
-    "Return whether B-NAME is visible."
-    (-> (-compose 'buffer-name 'window-buffer)
-        (-map (window-list))
-        (-contains? b-name)))
+  ;; -*- lexical-binding: t -*-
+  (define-minor-mode +dap-running-session-mode
+    "A mode for adding keybindings to running sessions"
+    nil
+    nil
+    (make-sparse-keymap)
+    (when +dap-running-session-mode
+      (let ((session-at-creation (dap--cur-active-session-or-die)))
+        (add-hook 'dap-terminated-hook
+                  (lambda (session)
+                    (when (eq session session-at-creation)
+                      (+dap-running-session-mode -1)))))))
 
-  (defun vs/dap-show-debug-windows (session)
-    "Show debug windows when SESSION are actived."
-    (let ((lsp--cur-workspace (dap--debug-session-workspace session)))
-      (save-excursion
-        ;; display locals
-        (unless (vs/dap-window-visible dap-ui--locals-buffer)
-          (dap-ui-locals))
+  ;; Activate this minor mode when dap is initialized
+  (add-hook 'dap-session-created-hook '+dap-running-session-mode)
 
-        ;; display sessions
-        (unless (vs/dap-window-visible dap-ui--sessions-buffer)
-          (dap-ui-sessions))
+  ;; Activate this minor mode when hitting a breakpoint in another file
+  (add-hook 'dap-stopped-hook '+dap-running-session-mode)
 
-        ;; display breakpoints
-        (unless (vs/dap-window-visible dap-ui--breakpoints-buffer)
-          (dap-ui-breakpoints))
-
-        ;; show dap hydra
-        (dap-hydra))))
-
-  (defun vs/dap-hide-debug-windows (session)
-    "Hide debug windows when all debug SESSION are dead."
-    (unless (-filter 'dap--session-running (dap--get-sessions))
-      (and (get-buffer dap-ui--sessions-buffer)
-           (kill-buffer dap-ui--sessions-buffer))
-      (and (get-buffer dap-ui--locals-buffer)
-           (kill-buffer dap-ui--locals-buffer))
-      (and (get-buffer dap-ui--breakpoints-buffer)
-           (kill-buffer dap-ui--breakpoints-buffer)))
-    (dap-hydra/nil))
+  ;; Activate this minor mode when stepping into code in another file
+  (add-hook 'dap-stack-frame-changed-hook (lambda (session)
+                                            (when (dap--session-running session)
+                                              (+dap-running-session-mode 1))))
 #+end_src
+
 
 ** Delight
 #+begin_src emacs-lisp
