@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: abnt article with org mode
+# key: <abnt_article
+# --
+#+title: ${1:title}
+#+author: ${2:author}
+#+date: ${3:date}
+#+latex_header: \input{/home/vsimoes/Sync/tex/templates/abnt_article.tex}
+#+options: toc:nil
+#+startup: showeverything
+
+$0
