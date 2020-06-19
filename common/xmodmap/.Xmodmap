@@ -1,0 +1,39 @@
+! Motospeed CK62 - layout remaped
+
+! Caps as Ctrl, Menu as Hyper_L
+clear      lock 
+clear   control
+clear      mod1
+clear      mod2
+clear      mod3
+clear      mod4
+clear      mod5
+keycode     135 = Hyper_L
+keycode      66 = Control_L Caps_Lock
+add     control = Control_L Control_R
+add        mod1 = Alt_L Alt_R Meta_L
+add        mod2 = Num_Lock
+add        mod3 = Hyper_L
+add        mod4 = Super_L Super_R
+add        mod5 = Mode_switch ISO_Level3_Shift
+
+! Remap 1 - 0, - and + to F1 - F12 when pressed with AltGr
+keycode  10 = 1 exclam 1 exclam onesuperior onesuperior F1 exclamdown 1 exclam
+keycode  11 = 2 at 2 at twosuperior onehalf F2 twosuperior 2 at
+keycode  12 = 3 numbersign 3 numbersign threesuperior threequarters F3 threesuperior 3 numbersign
+keycode  13 = 4 dollar 4 dollar sterling onequarter F4 sterling 4 dollar
+keycode  14 = 5 percent 5 percent cent threeeighths F5 EuroSign 5 percent
+keycode  15 = 6 dead_diaeresis 6 asciicircum notsign diaeresis F6 dead_circumflex 6 asciicircum
+keycode  16 = 7 ampersand 7 ampersand braceleft seveneighths F7 onehalf 7 ampersand
+keycode  17 = 8 asterisk 8 asterisk bracketleft trademark F8 threequarters 8 asterisk
+keycode  18 = 9 parenleft 9 parenleft bracketright plusminus F9 dead_breve 9 parenleft
+keycode  19 = 0 parenright 0 parenright braceright degree F10 rightsinglequotemark dead_abovering 0 parenright
+keycode  20 = minus underscore minus underscore backslash questiondown F11 dead_belowdot minus underscore
+keycode  21 = equal plus equal plus section dead_ogonek F12 multiply equal plus
+
+! Escape as grave and dead_tilde
+keycode   9 = grave dead_tilde
+
+! Ctrl_left as Escape
+keycode      37 = Escape
+
