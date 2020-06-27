@@ -1433,6 +1433,14 @@ Multiples modes in one buffer.
     ("C-c x" . mc/mark-all-like-this))
 #+end_src
 
+** Nov
+Ebook reader
+
+#+begin_src emacs-lisp
+  (use-package nov
+    :mode ("\\.epub$" . nov-mode))
+#+end_src
+
 ** Projectile
 
 Project managment.
