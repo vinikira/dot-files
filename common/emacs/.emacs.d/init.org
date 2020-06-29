@@ -551,6 +551,19 @@ My UI customizations
       (apply f r)))
 #+end_src
 
+*** Evil stuff
+
+#+begin_src emacs-lisp
+  (evil-leader/set-key-for-mode
+   'elixir-mode
+   "=b" 'lsp-format-buffer
+   "=r" 'lsp-format-region
+   "mf" 'elixir-format
+   "mgb" 'xref-pop-marker-stack
+   "mgi" 'lsp-ui-peek-find-implementation
+   "mgd" 'lsp-ui-peek-find-definitions)
+#+end_src
+
 ** Elm
 #+begin_src emacs-lisp
      (use-package elm-mode
@@ -595,6 +608,21 @@ My UI customizations
     :after lsp
     :hook ((java-mode . lsp)))
 #+end_src
+
+*** Evil stuff
+#+begin_src emacs-lisp
+  (evil-leader/set-key-for-mode
+   'java-mode
+   "=b" 'lsp-format-buffer
+   "=r" 'lsp-format-region
+   "mgb" 'xref-pop-marker-stack
+   "mgi" 'lsp-ui-peek-find-implementation
+   "mgd" 'lsp-ui-peek-find-definitions
+   "mai" 'lsp-java-add-import
+   "maum" 'lsp-java-add-unimplemented-methods
+   "mca" 'lsp-execute-code-action)
+#+end_src
+
 ** JavaScript
 
 #+begin_src emacs-lisp
@@ -895,14 +923,6 @@ Turn code evaluation async.
 #+begin_src emacs-lisp
       (use-package cargo
         :hook ((rust-mode . cargo-minor-mode)))
-#+end_src
-*** Racer
-#+begin_src emacs-lisp :tangle no
-      (use-package racer
-        :hook ((rust-mode . racer-mode)
-               (racer-mode . eldoc-mode))
-        :config
-        (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common))
 #+end_src
 ** Web
 #+begin_src emacs-lisp
@@ -1205,48 +1225,54 @@ Redis client
     :config (progn
               (evil-leader/set-leader "<SPC>")
               (evil-leader/set-key
-                "ff" 'find-file
-                "bbj" 'bookmark-jump
-                "bb4j" 'bookmark-jump-other-window
-                "bb5j" 'bookmark-jump-other-frame
-                "bbs" 'bookmark-set
-                "bbl" 'bookmark-bmenu-list
-                "bl" 'switch-to-buffer
-                "bs" 'save-buffer
-                "bw" 'write-file
-                "bk" 'kill-buffer
-                "bi" 'ibuffer
-                "1" 'delete-other-windows
-                "2" 'vs/split-window-below-and-switch
-                "3" 'vs/split-window-right-and-switch
-                "0" 'delete-window
-                ;; Dired stuff
-                "dj" 'dired-jump
-                "d4j" 'dired-j
-                ;; Docker
-                "dd" 'docker
-                "dcl" 'docker-compose-logsump-other-window
-                ;; Magit
-                "gs" 'magit-status
-                "gb" 'magit-blame
-                "gc" 'magit-branch-or-checkout
-                "gf" 'magit-fetch-all-prune
-                "gm" 'magit-commit
-                "g!" 'magit-git-command
-                "g$" 'magit-process-buffer
-                "gz" 'magit-stash
-                "gl" 'magit-log
-                "gp" 'magit-push
-                "gx" 'magit-reset
-                "l" 'lsp-command-map
-                "p" 'projectile-command-map
-                "x" 'counsel-M-x
-                "o" 'ace-window)
+               ;; file stuff
+               "ff" 'find-file
+               "fw" 'write-file
+               ;; bookmark stuff
+               "boj" 'bookmark-jump
+               "bo4j" 'bookmark-jump-other-window
+               "bo5j" 'bookmark-jump-other-frame
+               "bos" 'bookmark-set
+               "bol" 'bookmark-bmenu-list
+               ;; buffer stuff
+               "bb" 'switch-to-buffer
+               "bs" 'save-buffer
+               "bk" 'kill-buffer
+               "bl" 'ibuffer
+               ;; window stuff
+               "1" 'delete-other-windows
+               "2" 'vs/split-window-below-and-switch
+               "3" 'vs/split-window-right-and-switch
+               "0" 'delete-window
+               ;; Dired stuff
+               "dj" 'dired-jump
+               "d4j" 'dired-j
+               ;; Docker
+               "dd" 'docker
+               "dcl" 'docker-compose-logsump-other-window
+               ;; Magit
+               "gs" 'magit-status
+               "gb" 'magit-blame
+               "gc" 'magit-branch-or-checkout
+               "gf" 'magit-fetch-all-prune
+               "gm" 'magit-commit
+               "g!" 'magit-git-command
+               "g$" 'magit-process-buffer
+               "gz" 'magit-stash
+               "gl" 'magit-log
+               "gp" 'magit-push
+               "gx" 'magit-reset
+               ;; command map
+               "l" 'lsp-command-map
+               "p" 'projectile-command-map
+               ;; extensions
+               "x" 'counsel-M-x
+               "o" 'ace-window)
               (global-evil-leader-mode 1)))
 #+end_src
 
 *** evil goggles
-#+begin_src emacs-lisp :results output
+#+begin_src emacs-lisp
   (use-package evil-goggles
     :ensure t
     :config
@@ -1258,15 +1284,12 @@ Redis client
 #+begin_src emacs-lisp
   (use-package evil-org
     :after org
-    :hook ((org-mode . evil-org-mode)
-           (evil-org-mode .
-                          (lambda ()
-                            (evil-org-set-key-theme))))
+    :hook ((org-mode . (lambda ()
+                         (evil-org-mode))))
     :config (progn
               (require 'evil-org-agenda)
               (evil-org-agenda-set-keys)))
 #+end_src
-
 
 ** Flycheck
 
@@ -1545,7 +1568,6 @@ View large files
     :config
     (which-key-mode))
 #+end_src
-
 ** Xclip
 
 #+begin_src emacs-lisp
