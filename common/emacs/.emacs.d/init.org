@@ -583,6 +583,7 @@ My UI customizations
               (haskell-mode . interactive-haskell-mode))
        :custom ((haskell-font-lock-symbols t)))
 #+end_src
+
 *** LSP Haskell
 #+begin_src emacs-lisp
   (use-package lsp-haskell)
@@ -605,8 +606,7 @@ My UI customizations
 *** LSP Java
 #+begin_src emacs-lisp
   (use-package lsp-java
-    :after lsp
-    :hook ((java-mode . lsp)))
+    :after lsp)
 #+end_src
 
 *** Evil stuff
@@ -1263,7 +1263,6 @@ Redis client
                "gp" 'magit-push
                "gx" 'magit-reset
                ;; command map
-               "l" 'lsp-command-map
                "p" 'projectile-command-map
                ;; extensions
                "x" 'counsel-M-x
@@ -1274,7 +1273,6 @@ Redis client
 *** evil goggles
 #+begin_src emacs-lisp
   (use-package evil-goggles
-    :ensure t
     :config
     (evil-goggles-mode)
     (evil-goggles-use-diff-faces))
@@ -1362,8 +1360,9 @@ Language Server Protocol for Emacs.
 
 #+begin_src emacs-lisp
   (use-package lsp-mode
-    :commands lsp
-    :custom ((lsp-auto-guess-root t)
+    :commands (lsp lsp-deferred)
+    :custom ((lsp-keymap-prefix "H-l")
+             (lsp-auto-guess-root t)
              (lsp-prefer-flymake nil)
              (lsp-file-watch-threshold 8000)
              (lsp-file-watch-ignored
@@ -1375,14 +1374,8 @@ Language Server Protocol for Emacs.
              (lsp-idle-delay 0.500)
              (lsp-prefer-capf nil)
              (lsp-keep-workspace-alive nil))
-    :bind (:map lsp-mode-map
-                ("C-c C-f" . lsp-format-buffer)
-                ("C-c C-r" . lsp-rename)
-                ("C-c C-a" . lsp-execute-code-action)
-                ("C-c C-." . lsp-find-type-definition))
     :hook ((lsp-mode . lsp-enable-which-key-integration)
-           ((js2-mode rust-mode elixir-mode
-                      typescript-mode java-mode dart-mode) . lsp)))
+           (prog-mode . lsp-deferred)))
 #+end_src
 
 *** LSP UI
@@ -1393,12 +1386,7 @@ Language Server Protocol for Emacs.
     :custom ((lsp-ui-doc-include-signature t)
              (lsp-ui-doc-enable nil)
              (lsp-ui-peek-enable nil)
-             (lsp-ui-sideline-enable nil))
-    :bind (:map lsp-ui-mode-map
-                ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
-                ([remap xref-find-references] . lsp-ui-peek-find-references)
-                ("C-c u" . lsp-ui-imenu)
-                ("C-c d" . lsp-ui-doc-show)))
+             (lsp-ui-sideline-enable nil)))
 #+end_src
 
 *** Company LSP
@@ -1417,6 +1405,7 @@ Language Server Protocol for Emacs.
   (use-package lsp-ivy
     :commands lsp-ivy-workspace-symbol)
 #+end_src
+
 
 ** Magit
 
