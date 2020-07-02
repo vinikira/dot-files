@@ -1216,6 +1216,7 @@ Redis client
               (evil-set-initial-state 'comint-mode 'emacs)
               (evil-set-initial-state 'compilation-mode 'emacs)
               (evil-set-initial-state 'special-mode 'emacs)
+              (evil-set-initial-state 'dired-mode 'emacs)
               (evil-mode 1)))
 #+end_src
 
@@ -1361,8 +1362,7 @@ Language Server Protocol for Emacs.
 #+begin_src emacs-lisp
   (use-package lsp-mode
     :commands (lsp lsp-deferred)
-    :custom ((lsp-keymap-prefix "H-l")
-             (lsp-auto-guess-root t)
+    :custom ((lsp-auto-guess-root t)
              (lsp-prefer-flymake nil)
              (lsp-file-watch-threshold 8000)
              (lsp-file-watch-ignored
