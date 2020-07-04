@@ -14,10 +14,12 @@
     "hotkey": {
         "hotKey": "1", 
         "modifiers": [
-            "<alt>"
+            "<hyper>"
         ]
     }, 
-    "modes": [], 
+    "modes": [
+        3
+    ], 
     "showInTrayMenu": false, 
     "filter": {
         "regex": null, 
