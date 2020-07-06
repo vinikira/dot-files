@@ -188,11 +188,11 @@ it is not tangled along with the rest!
 #+end_src
 *** Remap yes-no
 #+begin_src emacs-lisp
-      (fset 'yes-or-no-p 'y-or-n-p)
+  (fset 'yes-or-no-p 'y-or-n-p)
 #+end_src
 *** Windmove
 #+begin_src emacs-lisp
-      (windmove-default-keybindings)
+  (windmove-default-keybindings)
 #+end_src
 *** Server
 #+begin_src emacs-lisp
@@ -206,17 +206,17 @@ it is not tangled along with the rest!
 ** Split and switch
 
 #+begin_src emacs-lisp
-     (defun vs/split-window-below-and-switch ()
-       "Split the window horizontally, then switch to the new pane."
-       (interactive)
-       (split-window-below)
-       (other-window 1))
+  (defun vs/split-window-below-and-switch ()
+    "Split the window horizontally, then switch to the new pane."
+    (interactive)
+    (split-window-below)
+    (other-window 1))
 
-     (defun vs/split-window-right-and-switch ()
-       "Split the window vertically, then switch to the new pane."
-       (interactive)
-       (split-window-right)
-       (other-window 1))
+  (defun vs/split-window-right-and-switch ()
+    "Split the window vertically, then switch to the new pane."
+    (interactive)
+    (split-window-right)
+    (other-window 1))
 #+end_src
 
 ** Format buffers stuff
@@ -224,22 +224,22 @@ it is not tangled along with the rest!
 *** StandardJS
 
 #+begin_src emacs-lisp
-      (defun vs/format-standardjs-buffer (&optional begin end)
-        "Formart js buffer according standardjs, BEGIN region and END region."
-        (interactive "r")
-        (let ((temp-point (point)))
-          (when (executable-find "standard")
-            (call-shell-region
-             (if (region-active-p) begin (point-min))
-             (if (region-active-p) end (point-max))
-             "standard --stdin --fix"
-             t
-             (current-buffer))
-            (goto-char (point-min))
-            (when (search-forward "standard:" nil t)
-              (beginning-of-line)
-              (delete-region (point) (point-max)))
-            (goto-char temp-point))))
+  (defun vs/format-standardjs-buffer (&optional begin end)
+    "Formart js buffer according standardjs, BEGIN region and END region."
+    (interactive "r")
+    (let ((temp-point (point)))
+      (when (executable-find "standard")
+        (call-shell-region
+         (if (region-active-p) begin (point-min))
+         (if (region-active-p) end (point-max))
+         "standard --stdin --fix"
+         t
+         (current-buffer))
+        (goto-char (point-min))
+        (when (search-forward "standard:" nil t)
+          (beginning-of-line)
+          (delete-region (point) (point-max)))
+        (goto-char temp-point))))
 
 #+end_src
 
@@ -262,31 +262,31 @@ it is not tangled along with the rest!
 
 ** Scratch Buffers
 #+begin_src emacs-lisp
-     (defun vs/scratch-buffer (open-new-frame)
-       "Open generic scratch buffer"
-       (interactive "P")
-       (let ((selected-mode (completing-read
-                             "Scratch buffer with mode: "
-                             '("js2-mode"
-                               "json-mode"
-                               "xml-mode"
-                               "org-mode"
-                               "sql-mode"
-                               "lisp-interaction-mode"))))
-         (when open-new-frame
-           (select-frame
-            (make-frame)))
-         (switch-to-buffer
-          (get-buffer-create (concat "*" selected-mode "*")))
-         (funcall (intern selected-mode))))
+  (defun vs/scratch-buffer (open-new-frame)
+    "Open generic scratch buffer"
+    (interactive "P")
+    (let ((selected-mode (completing-read
+                          "Scratch buffer with mode: "
+                          '("js2-mode"
+                            "json-mode"
+                            "xml-mode"
+                            "org-mode"
+                            "sql-mode"
+                            "lisp-interaction-mode"))))
+      (when open-new-frame
+        (select-frame
+         (make-frame)))
+      (switch-to-buffer
+       (get-buffer-create (concat "*" selected-mode "*")))
+      (funcall (intern selected-mode))))
 #+end_src
 ** Sudo edit
 #+begin_src emacs-lisp
-     (defun sudo-edit (&optional arg)
-       (interactive "p")
-       (if (or arg (not buffer-file-name))
-           (find-file (concat "/sudo:root@localhost:" (read-file-name "File: ")))
-         (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
+  (defun sudo-edit (&optional arg)
+    (interactive "p")
+    (if (or arg (not buffer-file-name))
+        (find-file (concat "/sudo:root@localhost:" (read-file-name "File: ")))
+      (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
 #+end_src
 ** Indent buffer
 
@@ -335,38 +335,38 @@ it is not tangled along with the rest!
 * Keybindings
 ** Ibuffer
 #+begin_src emacs-lisp
-     (global-set-key (kbd "C-x C-b") 'ibuffer)
+  (global-set-key (kbd "C-x C-b") 'ibuffer)
 #+end_src
 ** Indent buffer
 #+begin_src emacs-lisp
-     (global-set-key (kbd "C-c i") 'vs/indent-buffer)
+  (global-set-key (kbd "C-c i") 'vs/indent-buffer)
 #+end_src
 ** Mouse scroll
 #+begin_src emacs-lisp
-     (global-set-key (kbd "<mouse-4>")   'scroll-down-line)
-     (global-set-key (kbd "<mouse-5>")   'scroll-up-line)
-     (global-set-key (kbd "<C-mouse-4>") 'scroll-down-command)
-     (global-set-key (kbd "<C-mouse-5>") 'scroll-up-command)
+  (global-set-key (kbd "<mouse-4>")   'scroll-down-line)
+  (global-set-key (kbd "<mouse-5>")   'scroll-up-line)
+  (global-set-key (kbd "<C-mouse-4>") 'scroll-down-command)
+  (global-set-key (kbd "<C-mouse-5>") 'scroll-up-command)
 #+end_src
 ** Remap search forward
 #+begin_src emacs-lisp
-     (global-set-key (kbd "C-x s") 'isearch-forward)
+  (global-set-key (kbd "C-x s") 'isearch-forward)
 #+end_src
 ** Resize Windows
 #+begin_src emacs-lisp
-     (global-set-key (kbd "M-<down>") 'enlarge-window)
-     (global-set-key (kbd "M-<up>") 'shrink-window)
-     (global-set-key (kbd "M-<left>") 'enlarge-window-horizontally)
-     (global-set-key (kbd "M-<right>") 'shrink-window-horizontally)
+  (global-set-key (kbd "M-<down>") 'enlarge-window)
+  (global-set-key (kbd "M-<up>") 'shrink-window)
+  (global-set-key (kbd "M-<left>") 'enlarge-window-horizontally)
+  (global-set-key (kbd "M-<right>") 'shrink-window-horizontally)
 #+end_src
 ** Split and switch
 #+begin_src emacs-lisp
-     (global-set-key (kbd "C-x 2") 'vs/split-window-below-and-switch)
-     (global-set-key (kbd "C-x 3") 'vs/split-window-right-and-switch)
+  (global-set-key (kbd "C-x 2") 'vs/split-window-below-and-switch)
+  (global-set-key (kbd "C-x 3") 'vs/split-window-right-and-switch)
 #+end_src
 ** Scratch Buffer
 #+begin_src emacs-lisp
-     (global-set-key (kbd "C-c s b") 'vs/scratch-buffer)
+  (global-set-key (kbd "C-c s b") 'vs/scratch-buffer)
 #+end_src
 ** Move lines
 #+begin_src emacs-lisp
@@ -374,7 +374,6 @@ it is not tangled along with the rest!
   (global-set-key (kbd "M-S-<down>") 'vs/move-line-down)
 #+end_src
 ** Duplicate Line
-
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c C-d") 'vs/duplicate-current-line)
 #+end_src
@@ -462,24 +461,24 @@ My UI customizations
 #+end_src
 ** Csharp
 #+begin_src emacs-lisp
-     (use-package csharp-mode
-       :mode ("\\.cs$"))
+  (use-package csharp-mode
+    :mode ("\\.cs$"))
 #+end_src
 ** Clojure
 #+begin_src emacs-lisp
-     (use-package clojure-mode
-       :mode ("\\.clj$"))
+  (use-package clojure-mode
+    :mode ("\\.clj$"))
 #+end_src
 *** Cider
 #+begin_src emacs-lisp
-    (use-package cider)
+  (use-package cider)
 #+end_src
 ** Dart
 
 #+begin_src emacs-lisp
-     (use-package dart-mode
-       :mode ("\\.dart$")
-       :init (setq dart-format-on-save t))
+  (use-package dart-mode
+    :mode ("\\.dart$")
+    :init (setq dart-format-on-save t))
 #+end_src
 
 *** lsp Dart
@@ -490,10 +489,10 @@ My UI customizations
 
 ** Docker
 #+begin_src emacs-lisp
-     (use-package dockerfile-mode
-       :mode ("\\Dockerfile$" . dockerfile-mode))
+  (use-package dockerfile-mode
+    :mode ("\\Dockerfile$" . dockerfile-mode))
 
-     (use-package docker-compose-mode)
+  (use-package docker-compose-mode)
 #+end_src
 ** Erlang
 #+begin_src emacs-lisp
@@ -583,10 +582,10 @@ My UI customizations
 
 ** Haskell
 #+begin_src emacs-lisp
-     (use-package haskell-mode
-       :hook ((haskell-mode . haskell-indentation-mode)
-              (haskell-mode . interactive-haskell-mode))
-       :custom ((haskell-font-lock-symbols t)))
+  (use-package haskell-mode
+    :hook ((haskell-mode . haskell-indentation-mode)
+           (haskell-mode . interactive-haskell-mode))
+    :custom ((haskell-font-lock-symbols t)))
 #+end_src
 
 *** LSP Haskell
@@ -667,17 +666,17 @@ My UI customizations
 Run Mocha tests.
 
 #+begin_src emacs-lisp
-      (use-package mocha
-        :init (setq mocha-reporter "spec")
-        :bind (:map js2-mode-map
-                    (("C-c t" . mocha-test-project))))
+  (use-package mocha
+    :init (setq mocha-reporter "spec")
+    :bind (:map js2-mode-map
+                (("C-c t" . mocha-test-project))))
 #+end_src
 
 ** JSON
 #+begin_src emacs-lisp
-     (use-package json-mode
-       :mode
-       ("\\.json$" . json-mode))
+  (use-package json-mode
+    :mode
+    ("\\.json$" . json-mode))
 #+end_src
 ** Kotlin
 #+begin_src emacs-lisp
@@ -686,28 +685,28 @@ Run Mocha tests.
 #+end_src
 ** Lisp
 #+begin_src emacs-lisp
-     (use-package slime
-       :mode
-       ("\\.lisp$" . slime-mode)
-       :init
-       (setq inferior-lisp-program "/usr/bin/sbcl"
-             slime-net-coding-system 'utf-8-unix
-             slime1-contribs '(slime-fancy)))
+  (use-package slime
+    :mode
+    ("\\.lisp$" . slime-mode)
+    :init
+    (setq inferior-lisp-program "/usr/bin/sbcl"
+          slime-net-coding-system 'utf-8-unix
+          slime1-contribs '(slime-fancy)))
 
 #+end_src
 ** LaTeX
 #+begin_src emacs-lisp
-     (use-package tex-mode
-       :hook ((TeX-mode . flyspell-mode))
-       :ensure auctex)
+  (use-package tex-mode
+    :hook ((TeX-mode . flyspell-mode))
+    :ensure auctex)
 
-     (use-package auctex
-       :ensure t
-       :defer t)
+  (use-package auctex
+    :ensure t
+    :defer t)
 
-     (use-package auctex-latexmk
-       :custom ((auctex-latexmk-inherit-TeX-PDF-mode t))
-       :config (auctex-latexmk-setup))
+  (use-package auctex-latexmk
+    :custom ((auctex-latexmk-inherit-TeX-PDF-mode t))
+    :config (auctex-latexmk-setup))
 #+end_src
 ** Markdown
 
@@ -723,7 +722,6 @@ Run Mocha tests.
 *** Markdown format
 
 #+begin_src emacs-lisp
-
   (use-package markdownfmt
     :after markdown-mode
     :hook (markdown-mode . markdownfmt-enable-on-save)
@@ -732,7 +730,7 @@ Run Mocha tests.
 #+end_src
 ** Nginx
 #+begin_src emacs-lisp
-     (use-package nginx-mode)
+  (use-package nginx-mode)
 #+end_src
 ** Org
 
@@ -807,7 +805,6 @@ Org mode latest version.
 *** Org Bullets
 
 #+begin_src emacs-lisp
-
   (use-package org-bullets
     :hook ((org-mode . org-bullets-mode))
     :init
@@ -817,9 +814,9 @@ Org mode latest version.
 *** Org + Reveal.js
 
 #+begin_src emacs-lisp
-      (use-package org-re-reveal
-        :init (setq org-re-reveal-root "https://cdn.jsdelivr.net/reveal.js/latest"
-                    org-reveal-mathjax t))
+  (use-package org-re-reveal
+    :init (setq org-re-reveal-root "https://cdn.jsdelivr.net/reveal.js/latest"
+                org-reveal-mathjax t))
 #+end_src
 
 *** Org Verb
@@ -838,74 +835,74 @@ Turn code evaluation async.
 #+end_src
 *** Org notify
 #+begin_src emacs-lisp
-      (require 'org-notify)
-      (org-notify-start 60)
+  (require 'org-notify)
+  (org-notify-start 60)
 
-      (org-notify-add 'default
-                      '(:time "10m" :period "2m" :duration 25 :actions -notify/window)
-                      '(:time "1h" :period "15m" :duration 25 :actions -notify/window)
-                      '(:time "2h" :period "30m" :duration 25 :actions -notify/window))
+  (org-notify-add 'default
+                  '(:time "10m" :period "2m" :duration 25 :actions -notify/window)
+                  '(:time "1h" :period "15m" :duration 25 :actions -notify/window)
+                  '(:time "2h" :period "30m" :duration 25 :actions -notify/window))
 #+end_src
 ** PlantUML
 #+begin_src emacs-lisp
-     (use-package plantuml-mode
-       :mode ("\\.plantuml\\'" . plantuml-mode)
-       :config
-       (let ((plantuml-directory (concat user-emacs-directory "private/"))
-           (plantuml-link "http://sourceforge.net/projects/plantuml/files/plantuml.jar/download"))
-       (let ((plantuml-target (concat plantuml-directory "plantuml.jar")))
-         (if (not (file-exists-p plantuml-target))
-             (progn (message "Downloading plantuml.jar")
-                    (shell-command
-                     (mapconcat 'identity (list "wget" plantuml-link "-O" plantuml-target) " "))
-                    (kill-buffer "*Shell Command Output*")))
-         (setq org-plantuml-jar-path plantuml-target
-               plantuml-jar-path plantuml-target
-               plantuml-output-type "svg"))))
+  (use-package plantuml-mode
+    :mode ("\\.plantuml\\'" . plantuml-mode)
+    :config
+    (let ((plantuml-directory (concat user-emacs-directory "private/"))
+        (plantuml-link "http://sourceforge.net/projects/plantuml/files/plantuml.jar/download"))
+    (let ((plantuml-target (concat plantuml-directory "plantuml.jar")))
+      (if (not (file-exists-p plantuml-target))
+          (progn (message "Downloading plantuml.jar")
+                 (shell-command
+                  (mapconcat 'identity (list "wget" plantuml-link "-O" plantuml-target) " "))
+                 (kill-buffer "*Shell Command Output*")))
+      (setq org-plantuml-jar-path plantuml-target
+            plantuml-jar-path plantuml-target
+            plantuml-output-type "svg"))))
 #+end_src
 *** Flycheck plantuml
 #+begin_src emacs-lisp
-      (use-package flycheck-plantuml
-        :config (flycheck-plantuml-setup))
+  (use-package flycheck-plantuml
+    :config (flycheck-plantuml-setup))
 #+end_src
 ** Python
 #+begin_src emacs-lisp
-     (use-package python
-       :mode ("\\.py" . python-mode)
-       :config (setq python-shell-interpreter "ipython"
-                     python-shell-interpreter-args "-i --simple-prompt"))
+  (use-package python
+    :mode ("\\.py" . python-mode)
+    :config (setq python-shell-interpreter "ipython"
+                  python-shell-interpreter-args "-i --simple-prompt"))
 #+end_src
 *** elpy
 #+begin_src emacs-lisp
-      (use-package elpy
-        :hook ((python-mode . elpy-mode)
-               (python-mode . elpy-enable))
-        :custom
-        (elpy-rpc-backend "jedi")
-        :bind (:map elpy-mode-map
-                    ("M-." . elpy-goto-definition)
-                    ("M-," . pop-tag-mark)
-                    ("<M-left>" . nil)
-                    ("<M-right>" . nil)
-                    ("<M-S-left>" . elpy-nav-indent-shift-left)
-                    ("<M-S-right>" . elpy-nav-indent-shift-right)
-                    ("C-c i" . elpy-autopep8-fix-code)
-                    ("C-c C-d" . elpy-doc)))
+  (use-package elpy
+    :hook ((python-mode . elpy-mode)
+           (python-mode . elpy-enable))
+    :custom
+    (elpy-rpc-backend "jedi")
+    :bind (:map elpy-mode-map
+                ("M-." . elpy-goto-definition)
+                ("M-," . pop-tag-mark)
+                ("<M-left>" . nil)
+                ("<M-right>" . nil)
+                ("<M-S-left>" . elpy-nav-indent-shift-left)
+                ("<M-S-right>" . elpy-nav-indent-shift-right)
+                ("C-c i" . elpy-autopep8-fix-code)
+                ("C-c C-d" . elpy-doc)))
 #+end_src
 *** pip requirements
 #+begin_src emacs-lisp
-      (use-package pip-requirements
-        :hook ((pip-requirements-mode . #'pip-requirements-auto-complete-setup )))
+  (use-package pip-requirements
+    :hook ((pip-requirements-mode . #'pip-requirements-auto-complete-setup )))
 #+end_src
 *** py auto pep8
 #+begin_src emacs-lisp
-      (use-package py-autopep8
-        :hook ((python-mode . py-autopep8-enable-on-save)))
+  (use-package py-autopep8
+    :hook ((python-mode . py-autopep8-enable-on-save)))
 #+end_src
 ** TOML
 #+begin_src emacs-lisp
-     (use-package toml-mode
-       :mode ("\\.toml$" . toml-mode))
+  (use-package toml-mode
+    :mode ("\\.toml$" . toml-mode))
 #+end_src
 ** TypeScript
 #+begin_src emacs-lisp
@@ -914,49 +911,49 @@ Turn code evaluation async.
 #+end_src
 ** Rust
 #+begin_src emacs-lisp
-     (use-package rust-mode
-       :init (setq rust-format-on-save t
-                   company-tooltip-align-annotations t))
+  (use-package rust-mode
+    :init (setq rust-format-on-save t
+                company-tooltip-align-annotations t))
 #+end_src
 *** Flycheck Rust
 #+begin_src emacs-lisp
-      (use-package flycheck-rust
-        :after rust-mode
-        :hook ((rust-mode . flycheck-rust-setup)))
+  (use-package flycheck-rust
+    :after rust-mode
+    :hook ((rust-mode . flycheck-rust-setup)))
 #+end_src
 *** Cargo
 #+begin_src emacs-lisp
-      (use-package cargo
-        :hook ((rust-mode . cargo-minor-mode)))
+  (use-package cargo
+    :hook ((rust-mode . cargo-minor-mode)))
 #+end_src
 ** Web
 #+begin_src emacs-lisp
-     (defun my-web-mode-hook ()
-         "Hook for `web-mode' config for company-backends."
-         (set (make-local-variable 'company-backends)
-              '((company-css company-web-html company-files))))
+  (defun my-web-mode-hook ()
+      "Hook for `web-mode' config for company-backends."
+      (set (make-local-variable 'company-backends)
+           '((company-css company-web-html company-files))))
 
-     (use-package web-mode
-       :bind (("C-c ]" . emmet-next-edit-point)
-              ("C-c [" . emmet-prev-edit-point)
-              ("C-c o b" . browse-url-of-file))
-       :hook ((web-mode . my-web-mode-hook))
-       :mode
-       (("\\.html?\\'" . web-mode)
-        ("\\.njk?\\'" . web-mode)
-        ("\\.phtml?\\'" . web-mode)
-        ("\\.tpl\\.php\\'" . web-mode)
-        ("\\.[agj]sp\\'" . web-mode)
-        ("\\.as[cp]x\\'" . web-mode)
-        ("\\.erb\\'" . web-mode)
-        ("\\.mustache\\'" . web-mode)
-        ("\\.djhtml\\'" . web-mode)
-        ("\\.mjml\\'" . web-mode)
-        ("\\.eex\\'" . web-mode))
-       :init   (setq web-mode-markup-indent-offset 2
-                      web-mode-css-indent-offset 2
-                      web-mode-code-indent-offset 2
-                      web-mode-enable-current-element-highlight t))
+  (use-package web-mode
+    :bind (("C-c ]" . emmet-next-edit-point)
+           ("C-c [" . emmet-prev-edit-point)
+           ("C-c o b" . browse-url-of-file))
+    :hook ((web-mode . my-web-mode-hook))
+    :mode
+    (("\\.html?\\'" . web-mode)
+     ("\\.njk?\\'" . web-mode)
+     ("\\.phtml?\\'" . web-mode)
+     ("\\.tpl\\.php\\'" . web-mode)
+     ("\\.[agj]sp\\'" . web-mode)
+     ("\\.as[cp]x\\'" . web-mode)
+     ("\\.erb\\'" . web-mode)
+     ("\\.mustache\\'" . web-mode)
+     ("\\.djhtml\\'" . web-mode)
+     ("\\.mjml\\'" . web-mode)
+     ("\\.eex\\'" . web-mode))
+    :init   (setq web-mode-markup-indent-offset 2
+                   web-mode-css-indent-offset 2
+                   web-mode-code-indent-offset 2
+                   web-mode-enable-current-element-highlight t))
 #+end_src
 *** CSS
 #+begin_src emacs-lisp
@@ -983,8 +980,8 @@ Turn code evaluation async.
 #+end_src
 *** Pug
 #+begin_src emacs-lisp
-      (use-package pug-mode
-        :mode ("\\.pug?\\'" . pug-mode))
+  (use-package pug-mode
+    :mode ("\\.pug?\\'" . pug-mode))
 #+end_src
 *** React
 #+begin_src emacs-lisp
@@ -993,14 +990,14 @@ Turn code evaluation async.
 #+end_src
 *** Vue
 #+begin_src emacs-lisp
-      (use-package vue-mode
-        :mode
-        ("\\.vue$" . vue-mode))
+  (use-package vue-mode
+    :mode
+    ("\\.vue$" . vue-mode))
 #+end_src
 ** YAML
 #+begin_src emacs-lisp
-     (use-package yaml-mode
-       :mode ("\\.yaml|.yml$" . yaml-mode))
+  (use-package yaml-mode
+    :mode ("\\.yaml|.yml$" . yaml-mode))
 #+end_src
 
 * Extensions
@@ -1009,7 +1006,6 @@ Turn code evaluation async.
 Jump between open windows.
 
 #+begin_src emacs-lisp
-
   (use-package ace-window
     :init
     (progn
@@ -1140,7 +1136,7 @@ Debugger Adapter Protocol for Emacs
 
 ** Delight
 #+begin_src emacs-lisp
-     (use-package delight)
+  (use-package delight)
 #+end_src
 ** Dired Sidebar
 
@@ -1268,6 +1264,9 @@ Redis client
                "gl" 'magit-log
                "gp" 'magit-push
                "gx" 'magit-reset
+               ;; code stuff
+               "cgg" 'dumb-jump-go
+               "cgb" 'dumb-jump-back
                ;; command map
                "p" 'projectile-command-map
                ;; extensions
@@ -1328,19 +1327,19 @@ Swiper, an Ivy-enhanced alternative to isearch.
 Counsel, a collection of Ivy-enhanced versions of common Emacs commands.
 
 #+begin_src emacs-lisp
-     (use-package counsel
-       :after ivy
-       :config (counsel-mode 1)
-       :bind (("M-x" . counsel-M-x)
-              ("C-x C-f" . counsel-find-file)
-              ("C-x c k" . counsel-yank-pop)
-              ("C-x c r" . counsel-rg)
-              ("<f1> f" . counsel-describe-function)
-              ("<f1> v" . counsel-describe-variable)
-              ("<f1> l" . counsel-load-library)
-              ("<f2> i" . counsel-info-lookup-symbol)
-              ("<f2> u" . counsel-unicode-char)
-              ("C-x C-r" . counsel-recentf)))
+  (use-package counsel
+    :after ivy
+    :config (counsel-mode 1)
+    :bind (("M-x" . counsel-M-x)
+           ("C-x C-f" . counsel-find-file)
+           ("C-x c k" . counsel-yank-pop)
+           ("C-x c r" . counsel-rg)
+           ("<f1> f" . counsel-describe-function)
+           ("<f1> v" . counsel-describe-variable)
+           ("<f1> l" . counsel-load-library)
+           ("<f2> i" . counsel-info-lookup-symbol)
+           ("<f2> u" . counsel-unicode-char)
+           ("C-x C-r" . counsel-recentf)))
 #+end_src
 
 *** Ivy rich
@@ -1410,7 +1409,6 @@ Language Server Protocol for Emacs.
   (use-package lsp-ivy
     :commands lsp-ivy-workspace-symbol)
 #+end_src
-
 
 ** Magit
 
@@ -1574,18 +1572,18 @@ View large files
 Snippets in emacs
 
 #+begin_src emacs-lisp
-     (use-package yasnippet
-       :init (setq yas-snippet-dirs (append
-                                     yas-snippet-dirs
-                                     (list
-                                      (concat user-emacs-directory "snippets/"))))
-       :config
-       (yas-global-mode 1))
+  (use-package yasnippet
+    :init (setq yas-snippet-dirs (append
+                                  yas-snippet-dirs
+                                  (list
+                                   (concat user-emacs-directory "snippets/"))))
+    :config
+    (yas-global-mode 1))
 #+end_src
 
 Yasnippet snippet pack
 
 #+begin_src emacs-lisp
-     (use-package yasnippet-snippets
-       :after (yas-global-mode))
+  (use-package yasnippet-snippets
+    :after (yas-global-mode))
 #+end_src
