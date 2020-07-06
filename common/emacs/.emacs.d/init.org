@@ -561,14 +561,19 @@ My UI customizations
    "mf" 'elixir-format
    "mgb" 'xref-pop-marker-stack
    "mgi" 'lsp-ui-peek-find-implementation
-   "mgd" 'lsp-ui-peek-find-definitions)
+   "mgd" 'lsp-ui-peek-find-definitions
+   "mta" 'exunit-verify-all
+   "mtA" 'exunit-verify-all-in-umbrella
+   "mts" 'exunit-verify-single
+   "mtv" 'exunit-verify
+   "mtr" 'exunit-rerun)
 #+end_src
 
 ** Elm
 #+begin_src emacs-lisp
-     (use-package elm-mode
-       :mode ("\\.elm$")
-       :config (add-to-list 'company-backends 'company-elm))
+  (use-package elm-mode
+    :mode ("\\.elm$")
+    :config (add-to-list 'company-backends 'company-elm))
 #+end_src
 ** Graphql
 #+begin_src emacs-lisp :results output
