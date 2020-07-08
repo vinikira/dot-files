@@ -180,11 +180,22 @@ it is not tangled along with the rest!
      nil '(("\\<\\(FIXME\\|TODO\\|NOCOMMIT\\)"
             1 font-lock-warning-face t))))
 
+  ;; Enable ANSI colors on compilation mode
+  (require 'ansi-color)
+
+  (defun vs/colorize-compilation ()
+    "Colorize from `compilation-filter-start' to `point'."
+    (let ((inhibit-read-only t))
+      (ansi-color-apply-on-region
+       compilation-filter-start (point))))
+
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
   (add-hook 'prog-mode-hook 'vs/line-numbers)
   (add-hook 'text-mode-hook 'vs/line-numbers)
   (add-hook 'prog-mode-hook 'vs/font-lock)
   (add-hook 'text-mode-hook 'auto-fill-mode)
+  (add-hook 'compilation-filter-hook
+            #'vs/colorize-compilation)
 #+end_src
 *** Remap yes-no
 #+begin_src emacs-lisp
