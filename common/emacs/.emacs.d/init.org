@@ -635,7 +635,8 @@ My UI customizations
    "mgd" 'lsp-ui-peek-find-definitions
    "mai" 'lsp-java-add-import
    "maum" 'lsp-java-add-unimplemented-methods
-   "mca" 'lsp-execute-code-action)
+   "mca" 'lsp-execute-code-action
+   "mcr" 'lsp-rename)
 #+end_src
 
 ** JavaScript
