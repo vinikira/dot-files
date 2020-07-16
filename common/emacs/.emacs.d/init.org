@@ -343,6 +343,14 @@ it is not tangled along with the rest!
           (decf n)))))
 #+end_src
 
+** Shell command without newline
+#+begin_src emacs-lisp
+  (defun vs/sh-cmd-to-string (cmd)
+    "Execute shell CMD and remove newline of output."
+    (shell-command-to-string
+     (concat "printf %s \"$(" cmd ")\"")))
+#+end_src
+
 * Keybindings
 ** Ibuffer
 #+begin_src emacs-lisp
@@ -1492,6 +1500,12 @@ Project managment.
     :after projectile)
 #+end_src
 
+** Password Store
+Pass extension
+
+#+begin_src emacs-lisp
+  (use-package password-store)
+#+end_src
 ** Quickrun
 
 Quickrun buffer.
