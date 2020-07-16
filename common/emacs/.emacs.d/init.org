@@ -598,6 +598,11 @@ My UI customizations
   (use-package graphql-mode
     :mode ("\\.graphql$" "\\.gql$"))
 #+end_src
+** Groovy
+#+begin_src emacs-lisp
+  (use-package groovy-mode
+    :mode ("\\.groovy$"))
+#+end_src
 
 ** Haskell
 #+begin_src emacs-lisp
