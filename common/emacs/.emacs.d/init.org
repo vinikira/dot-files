@@ -1491,6 +1491,7 @@ Pass extension
 #+begin_src emacs-lisp
   (use-package password-store)
 #+end_src
+
 ** Quickrun
 
 Quickrun buffer.
