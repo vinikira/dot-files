@@ -1234,6 +1234,7 @@ Redis client
               (evil-leader/set-key
                ;; file stuff
                "ff" 'find-file
+               "fv" 'find-alternate-file
                "fw" 'write-file
                ;; bookmark stuff
                "boj" 'bookmark-jump
@@ -1243,6 +1244,8 @@ Redis client
                "bol" 'bookmark-bmenu-list
                ;; buffer stuff
                "bb" 'switch-to-buffer
+               "b4b" 'switch-buffer-other-window
+               "b5b" 'switch-to-buffer-other-frame
                "bs" 'save-buffer
                "bk" 'kill-buffer
                "bl" 'ibuffer
@@ -1250,15 +1253,16 @@ Redis client
                "1" 'delete-other-windows
                "2" 'vs/split-window-below-and-switch
                "3" 'vs/split-window-right-and-switch
+               "52" 'make-frame-command
                "0" 'delete-window
                ;; Dired stuff
                "dj" 'dired-jump
-               "d4j" 'dired-j
+               "d4j" 'dired-jump-other-window
                ;; Docker
                "dd" 'docker
-               "dcl" 'docker-compose-logsump-other-window
+               "dcl" 'docker-compose-logs
                ;; Magit
-               "gs" 'magit-status
+               "gg" 'magit-status
                "gb" 'magit-blame
                "gc" 'magit-branch-or-checkout
                "gf" 'magit-fetch-all-prune
@@ -1275,6 +1279,7 @@ Redis client
                ;; command map
                "p" 'projectile-command-map
                ;; extensions
+               ";" 'avy-goto-char
                "x" 'counsel-M-x
                "o" 'ace-window)
               (global-evil-leader-mode 1)))
@@ -1286,6 +1291,13 @@ Redis client
     :config
     (evil-goggles-mode)
     (evil-goggles-use-diff-faces))
+#+end_src
+
+*** evil surround
+#+begin_src emacs-lisp
+  (use-package evil-surround
+    :config
+    (global-evil-surround-mode 1))
 #+end_src
 
 *** org evil
