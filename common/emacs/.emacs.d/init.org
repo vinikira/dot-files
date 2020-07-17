@@ -897,33 +897,13 @@ Turn code evaluation async.
     :config (setq python-shell-interpreter "ipython"
                   python-shell-interpreter-args "-i --simple-prompt"))
 #+end_src
-*** elpy
+
+*** LSP Python MS
 #+begin_src emacs-lisp
-  (use-package elpy
-    :hook ((python-mode . elpy-mode)
-           (python-mode . elpy-enable))
-    :custom
-    (elpy-rpc-backend "jedi")
-    :bind (:map elpy-mode-map
-                ("M-." . elpy-goto-definition)
-                ("M-," . pop-tag-mark)
-                ("<M-left>" . nil)
-                ("<M-right>" . nil)
-                ("<M-S-left>" . elpy-nav-indent-shift-left)
-                ("<M-S-right>" . elpy-nav-indent-shift-right)
-                ("C-c i" . elpy-autopep8-fix-code)
-                ("C-c C-d" . elpy-doc)))
+  (use-package lsp-python-ms
+    :custom ((lsp-python-ms-auto-install-server t)))
 #+end_src
-*** pip requirements
-#+begin_src emacs-lisp
-  (use-package pip-requirements
-    :hook ((pip-requirements-mode . #'pip-requirements-auto-complete-setup )))
-#+end_src
-*** py auto pep8
-#+begin_src emacs-lisp
-  (use-package py-autopep8
-    :hook ((python-mode . py-autopep8-enable-on-save)))
-#+end_src
+
 ** TOML
 #+begin_src emacs-lisp
   (use-package toml-mode
