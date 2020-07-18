@@ -522,7 +522,8 @@ My UI customizations
 
 #+begin_src emacs-lisp
   (use-package elixir-mode
-      :mode ("\\.ex$" "\\.exs$" "mix.lock"))
+    :mode ("\\.ex$" "\\.exs$" "mix.lock")
+    :hook ((elixir-mode . emmet-mode)))
 #+end_src
 
 *** Exunit
@@ -542,31 +543,6 @@ My UI customizations
 
 #+begin_src emacs-lisp
   (use-package ob-elixir)
-#+end_src
-
-*** LiveView Sigil
-
-#+begin_src emacs-lisp
-  (require 'mmm-mode)
-  (require 'web-mode)
-  (setq mmm-global-mode 'maybe)
-  (setq mmm-parse-when-idle 't)
-  (setq mmm-set-file-name-for-modes '(web-mode))
-  (custom-set-faces '(mmm-default-submode-face ((t (:background nil)))))
-  (let ((class 'elixir-eex)
-        (submode 'web-mode)
-        (front "^[ ]+~L\"\"\"")
-        (back "^[ ]+\"\"\""))
-    (mmm-add-classes (list (list class :submode submode :front front :back back)))
-    (mmm-add-mode-ext-class 'elixir-mode nil class))
-
-  (define-advice web-mode-guess-engine-and-content-type (:around (f &rest r) guess-engine-by-extension)
-    (if (and buffer-file-name
-             (equal "ex" (file-name-extension buffer-file-name)))
-        (progn (setq web-mode-content-type "html")
-               (setq web-mode-engine "elixir")
-               (web-mode-on-engine-setted))
-      (apply f r)))
 #+end_src
 
 *** Evil stuff
@@ -1443,14 +1419,6 @@ Magic git client!
     :config (global-git-gutter-mode))
 #+end_src
 
-** MMM
-
-Multiples modes in one buffer.
-
-#+begin_src emacs-lisp
-  (use-package mmm-mode)
-#+end_src
-
 ** Multiple cursors
 
 #+begin_src emacs-lisp
@@ -1468,6 +1436,35 @@ Ebook reader
 #+begin_src emacs-lisp
   (use-package nov
     :mode ("\\.epub$" . nov-mode))
+#+end_src
+
+** Password Store
+Pass extension
+
+#+begin_src emacs-lisp
+  (use-package password-store)
+#+end_src
+
+** Polymode
+#+begin_src emacs-lisp
+  (use-package polymode
+    :mode ("\\.ex$" . poly-elixir-web-mode)
+    :config (progn
+              ;; Elixir + web
+              (define-hostmode poly-elixir-hostmode :mode 'elixir-mode)
+              (define-innermode poly-liveview-expr-elixir-innermode
+                :mode 'web-mode
+                :head-matcher (rx line-start (* space) "~L" (= 3 (char "\"'")) line-end)
+                :tail-matcher (rx line-start (* space) (= 3 (char "\"'")) line-end)
+                :head-mode 'host
+                :tail-mode 'host
+                :allow-nested nil
+                :keep-in-mode 'host
+                :fallback-mode 'host)
+              (define-polymode poly-elixir-web-mode
+                :hostmode 'poly-elixir-hostmode
+                :innermodes '(poly-liveview-expr-elixir-innermode))
+              (setq web-mode-engines-alist '("elixir" . "\\.ex\\'"))))
 #+end_src
 
 ** Projectile
@@ -1492,13 +1489,6 @@ Project managment.
 #+begin_src emacs-lisp
   (use-package projectile-ripgrep
     :after projectile)
-#+end_src
-
-** Password Store
-Pass extension
-
-#+begin_src emacs-lisp
-  (use-package password-store)
 #+end_src
 
 ** Quickrun
