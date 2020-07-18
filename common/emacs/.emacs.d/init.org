@@ -1175,7 +1175,7 @@ Jump to definition polyglot.
 
 #+begin_src emacs-lisp
   (use-package dumb-jump
-    :config (dumb-jump-mode))
+    :config (add-to-list 'xref-backend-functions #'dumb-jump-xref-activate))
 #+end_src
 ** Editorconfig
 
@@ -1273,9 +1273,6 @@ Redis client
                "gl" 'magit-log
                "gp" 'magit-push
                "gx" 'magit-reset
-               ;; code stuff
-               "cgg" 'dumb-jump-go
-               "cgb" 'dumb-jump-back
                ;; command map
                "p" 'projectile-command-map
                ;; extensions
