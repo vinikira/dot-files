@@ -4,7 +4,7 @@
 # C4 model diagram
 # --
 @startuml
-!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/release/1-0/C4_Container.puml
+!include https://raw.githubusercontent.com/adrianvlupu/C4-PlantUML/latest/C4_Container.puml
 
 Person(personAlias, "Label", "Optional")
 Container(containerAlias, "Label", "Tecnology", "Optional description")
