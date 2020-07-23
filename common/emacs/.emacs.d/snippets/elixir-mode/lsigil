@@ -1,0 +1,8 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: L Sigil
+# key: ~L
+# group: elixir
+# --
+~L"""
+$0
+"""

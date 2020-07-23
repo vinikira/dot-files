@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: elixir tag
+# key: etag
+# group: elixir
+# --
+<% @$1 %>
