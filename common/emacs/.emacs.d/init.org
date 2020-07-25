@@ -1041,6 +1041,12 @@ Code completion for emacs
     :config (company-quickhelp-mode 1))
 #+end_src
 
+** CSV
+#+begin_src emacs-lisp
+  (use-package csv-mode
+    :mode ("\\.csv$")
+    :hook ((csv-mode . csv-align-mode)))
+#+end_src
 ** Dashboard
 
 Emacs awesome dashboard!
