@@ -1230,6 +1230,7 @@ Redis client
                "2" 'vs/split-window-below-and-switch
                "3" 'vs/split-window-right-and-switch
                "52" 'make-frame-command
+               "50" 'delete-frame
                "0" 'delete-window
                ;; Dired stuff
                "dj" 'dired-jump
