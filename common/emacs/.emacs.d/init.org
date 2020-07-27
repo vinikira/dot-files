@@ -171,7 +171,8 @@ it is not tangled along with the rest!
 #+begin_src emacs-lisp
   (defun vs/line-numbers ()
     "Display line numbers."
-    (display-line-numbers-mode 1)
+    (setq display-line-numbers 'relative
+          display-line-numbers-current-absolute t)
     (hl-line-mode 1))
 
   (defun vs/font-lock ()
