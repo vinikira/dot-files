@@ -1365,7 +1365,6 @@ Language Server Protocol for Emacs.
   (use-package lsp-mode
     :commands (lsp lsp-deferred)
     :custom ((lsp-auto-guess-root t)
-             (lsp-prefer-flymake nil)
              (lsp-file-watch-threshold 8000)
              (lsp-file-watch-ignored
               (-concat
@@ -1374,7 +1373,7 @@ Language Server Protocol for Emacs.
                lsp-file-watch-ignored))
              (lsp-rust-server 'rust-analyzer)
              (lsp-idle-delay 0.500)
-             (lsp-prefer-capf nil)
+             (lsp-completion-provider 'capf)
              (lsp-keep-workspace-alive nil))
     :hook ((lsp-mode . lsp-enable-which-key-integration)
            (prog-mode . lsp-deferred)))
@@ -1389,16 +1388,6 @@ Language Server Protocol for Emacs.
              (lsp-ui-doc-enable nil)
              (lsp-ui-peek-enable nil)
              (lsp-ui-sideline-enable nil)))
-#+end_src
-
-*** Company LSP
-
-#+begin_src emacs-lisp
-  (use-package company-lsp
-    :commands company-lsp
-    :custom ((company-lsp-cache-candidates 'auto)
-             (company-lsp-enable-snippet t)
-             (company-lsp-enable-recompletion t)))
 #+end_src
 
 *** Ivy LSP
