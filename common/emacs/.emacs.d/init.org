@@ -1129,22 +1129,18 @@ Debugger Adapter Protocol for Emacs
 ** Dired Sidebar
 
 #+begin_src emacs-lisp
-  (defun sidebar-toggle ()
-    "Toggle both `dired-sidebar' and `ibuffer-sidebar'."
-    (interactive)
-    (ibuffer-sidebar-toggle-sidebar)
-    (dired-sidebar-toggle-sidebar))
-
   (use-package dired-sidebar
     :commands (dired-sidebar-toggle-sidebar)
-    :bind (("C-x C-n" . sidebar-toggle))
+    :bind (("C-x C-n" . dired-sidebar-toggle-sidebar))
     :custom ((dired-sidebar-theme 'icons)
-             (dired-sidebar-subtree-line-prefix "__"))
-  :config (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
-  (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
-  :hook ((dired-sidebar-mode .  (lambda ()
-                                  (unless (file-remote-p default-directory)
-                                    (auto-revert-mode))))))
+             (dired-sidebar-subtree-line-prefix "__")
+             (dired-sidebar-should-follow-file t)
+             (dired-sidebar-one-instance-p t))
+    :config (progn (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
+                   (push 'rotate-windows dired-sidebar-toggle-hidden-commands))
+    :hook ((dired-sidebar-mode .  (lambda ()
+                                    (unless (file-remote-p default-directory)
+                                      (auto-revert-mode))))))
 #+end_src
 
 ** Docker
@@ -1300,13 +1296,6 @@ Syntax checker for emacs.
   (use-package flycheck
     :config
     (global-flycheck-mode 1))
-#+end_src
-
-** IBuffer sidebar
-
-#+begin_src emacs-lisp
-  (use-package ibuffer-sidebar
-    :commands (ibuffer-sidebar-toggle-sidebar))
 #+end_src
 
 ** Ivy Stuff
