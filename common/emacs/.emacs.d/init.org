@@ -1373,7 +1373,7 @@ Counsel, a collection of Ivy-enhanced versions of common Emacs commands.
   (use-package counsel-projectile
     :bind
     ("C-x v" . counsel-projectile)
-    ("C-x c p" . counsel-projectile-ag))
+    ("C-x c p" . counsel-projectile-rg))
 #+end_src
 
 ** LSP
