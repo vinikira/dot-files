@@ -213,6 +213,10 @@ it is not tangled along with the rest!
              (not (server-running-p)))
     (server-start))
 #+end_src
+*** Global auto revert mode
+#+begin_src emacs-lisp
+  (global-auto-revert-mode 1)
+#+end_src
 
 * Functions
 ** Split and switch
