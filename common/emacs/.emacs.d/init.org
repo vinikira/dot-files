@@ -2,7 +2,7 @@
 #+AUTHOR: Vinícius Simões
 #+BABEL: :cache yes
 #+PROPERTY: header-args :tangle yes
-#+STARTUP: overview
+#+STARTUP: content
 
 * First-time initialization
 
@@ -849,6 +849,12 @@ Turn code evaluation async.
                   '(:time "10m" :period "2m" :duration 25 :actions -notify/window)
                   '(:time "1h" :period "15m" :duration 25 :actions -notify/window)
                   '(:time "2h" :period "30m" :duration 25 :actions -notify/window))
+#+end_src
+*** Org Epub
+Export Org file to Epub file.
+
+#+begin_src emacs-lisp
+  (use-package ox-epub)
 #+end_src
 *** Latex
 
