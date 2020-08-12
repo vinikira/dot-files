@@ -982,7 +982,8 @@ Source code highlight with Minted package.
      ("\\.mustache\\'" . web-mode)
      ("\\.djhtml\\'" . web-mode)
      ("\\.mjml\\'" . web-mode)
-     ("\\.eex\\'" . web-mode))
+     ("\\.eex\\'" . web-mode)
+     ("\\.leex\\'" . web-mode))
     :init   (setq web-mode-markup-indent-offset 2
                    web-mode-css-indent-offset 2
                    web-mode-code-indent-offset 2
