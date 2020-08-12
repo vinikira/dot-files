@@ -849,6 +849,33 @@ Turn code evaluation async.
                   '(:time "1h" :period "15m" :duration 25 :actions -notify/window)
                   '(:time "2h" :period "30m" :duration 25 :actions -notify/window))
 #+end_src
+*** Latex
+
+Abntex2 class
+
+#+begin_src emacs-lisp
+  (add-to-list 'org-latex-classes
+               '("abntex2"
+                 "\\documentclass{abntex2}
+                    [NO-DEFAULT-PACKAGES]
+                    [EXTRA]"
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")
+                 ("\\maketitle" . "\\imprimircapa")))
+#+end_src
+
+Source code highlight with Minted package.
+
+#+begin_src emacs-lisp
+  (setq org-latex-listings 'minted
+        org-latex-packages-alist '(("" "minted"))
+        org-latex-pdf-process
+        '("latexmk -shell-escape -pdf -interaction=nonstopmode -file-line-error %f"))
+#+end_src
+
 ** PlantUML
 #+begin_src emacs-lisp
   (use-package plantuml-mode
