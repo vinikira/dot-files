@@ -740,23 +740,32 @@ Run Mocha tests.
   (use-package nginx-mode)
 #+end_src
 ** Org
-
-Org mode latest version.
+Defining where the Org files will be stored.
 
 #+begin_src emacs-lisp
-  (defconst vs/org-directory (if (file-directory-p "~/Sync/org/") "~/Sync/org/" "~/"))
+  (defconst vs/org-directory
+    (if (file-directory-p "~/Sync/org/") "~/Sync/org/" "~/"))
+#+end_src
 
-  (defconst vs/org-capture-templates '(("t" "todo" entry (file org-default-notes-file)
-                                        "* TODO %?\n%u\n%a\n" :clock-in t :clock-resume t)
-                                       ("m" "Meeting" entry (file org-default-notes-file)
-                                        "* MEETING with %? :MEETING:\n%t" :clock-in t :clock-resume t)
-                                       ("d" "Diary" entry (file+datetree (concat vs/org-directory "diary.org"))
-                                        "* %?\n%U\n" :clock-in t :clock-resume t)
-                                       ("i" "Idea" entry (file org-default-notes-file)
-                                        "* %? :IDEA: \n%t" :clock-in t :clock-resume t)
-                                       ("n" "Next Task" entry (file+headline org-default-notes-file "Tasks")
-                                        "** NEXT %? \nDEADLINE: %t")))
+My Org capture templates.
 
+#+begin_src emacs-lisp
+  (defconst vs/org-capture-templates
+    '(("t" "todo" entry (file org-default-notes-file)
+       "* TODO %?\n%u\n%a\n" :clock-in t :clock-resume t)
+      ("m" "Meeting" entry (file org-default-notes-file)
+       "* MEETING with %? :MEETING:\n%t" :clock-in t :clock-resume t)
+      ("d" "Diary" entry (file+datetree (concat vs/org-directory "diary.org"))
+       "* %?\n%U\n" :clock-in t :clock-resume t)
+      ("i" "Idea" entry (file org-default-notes-file)
+       "* %? :IDEA: \n%t" :clock-in t :clock-resume t)
+      ("n" "Next Task" entry (file+headline org-default-notes-file "Tasks")
+       "** NEXT %? \nDEADLINE: %t")))
+#+end_src
+
+My Org structure templates.
+
+#+begin_src emacs-lisp
   (defconst vs/org-structure-template-alist
     '(("n" . "notes")
       ("a" . "export ascii")
@@ -769,7 +778,11 @@ Org mode latest version.
       ("q" . "quote")
       ("s" . "src")
       ("v" . "verse")))
+#+end_src
 
+Org mode latest version.
+
+#+begin_src emacs-lisp
   (use-package org
     :ensure org-plus-contrib
     :hook ((org-mode . toggle-word-wrap)
