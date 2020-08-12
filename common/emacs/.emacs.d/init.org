@@ -1115,9 +1115,7 @@ Debugger Adapter Protocol for Emacs
            (php-mode . (lambda () (require 'dap-php)))
            (elixir-mode . (lambda () (require 'dap-elixir)))
            ((js-mode js2-mode typescript-mode) . (lambda () (require 'dap-chrome)))
-           (rust-mode . (lambda ()
-                          (require 'dap-gdb-lldb)
-                          (dap-gdb-lldb-setup)))))
+           (rust-mode . (lambda () (require 'dap-gdb-lldb)))))
 #+end_src
 
 *** posframe
