@@ -609,7 +609,7 @@ Debugger Adapter Protocol for Emacs
     :commands (dired-sidebar-toggle-sidebar)
     :bind (("C-x C-n" . dired-sidebar-toggle-sidebar))
     :custom ((dired-sidebar-theme 'icons)
-             (dired-sidebar-subtree-line-prefix "__")
+             (dired-sidebar-subtree-line-prefix "  ")
              (dired-sidebar-should-follow-file t)
              (dired-sidebar-one-instance-p t))
     :config (progn (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
