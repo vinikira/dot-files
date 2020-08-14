@@ -621,7 +621,8 @@ Debugger Adapter Protocol for Emacs
 
 ** Docker
 #+begin_src emacs-lisp
-  (use-package docker)
+  (use-package docker
+    :bind ("C-c d" . docker))
 #+end_src
 
 ** Dump Jump
@@ -1145,9 +1146,6 @@ Yasnippet snippet pack
 
 ** Docker
 #+begin_src emacs-lisp
-  (use-package docker
-    :bind ("C-c d" . docker))
-
   (use-package dockerfile-mode
     :mode ("\\Dockerfile$" . dockerfile-mode))
 
