@@ -460,6 +460,638 @@ My UI customizations
   (scroll-bar-mode -1)
 #+end_src
 
+* Extensions
+** Ace Window
+
+Jump between open windows.
+
+#+begin_src emacs-lisp
+  (use-package ace-window
+    :init
+    (progn
+      (global-set-key [remap other-window] 'ace-window)
+      (custom-set-faces
+       '(aw-leading-char-face
+         ((t (:inherit ace-jump-face-foreground :height 3.0)))))))
+#+end_src
+
+** All the icons
+
+Emacs icons.
+
+#+begin_src emacs-lisp
+  (use-package all-the-icons)
+#+end_src
+
+** All the icons Dired
+
+#+begin_src emacs-lisp
+  (use-package all-the-icons-dired
+    :hook ((dired-mode . all-the-icons-dired-mode)))
+#+end_src
+
+** Avy
+
+Jump to any visible character.
+
+#+begin_src emacs-lisp
+  (use-package avy
+    :bind (("C-;" . 'avy-goto-char)))
+#+end_src
+
+** Company
+
+Code completion for emacs
+
+#+begin_src emacs-lisp
+  (use-package company
+    :init
+    (setq company-dabbrev-downcase 0
+          company-idle-delay 0)
+    :bind (("C-." . company-complete))
+    :config (global-company-mode 1))
+#+end_src
+
+*** Company Quickhelp
+
+#+begin_src emacs-lisp
+  (use-package company-quickhelp
+    :after company
+    :config (company-quickhelp-mode 1))
+#+end_src
+
+** CSV
+#+begin_src emacs-lisp
+  (use-package csv-mode
+    :mode ("\\.csv$")
+    :hook ((csv-mode . csv-align-mode)))
+#+end_src
+** Dashboard
+
+Emacs awesome dashboard!
+
+#+begin_src emacs-lisp
+  (use-package dashboard
+    :init
+    (setq dashboard-items '((recents  . 5)
+                            (projects . 5)
+                            (bookmarks . 5)
+                            (agenda . 5))
+          dashboard-set-file-icons t
+          dashboard-set-heading-icons t
+          dashboard-startup-banner 'logo
+          dashboard-center-content t
+          initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
+    :config
+    (dashboard-setup-startup-hook))
+#+end_src
+** DAP
+
+Debugger Adapter Protocol for Emacs
+
+#+begin_src emacs-lisp
+  (use-package dap-mode
+    :bind (:map dap-mode-map
+                (("<f12>" . dap-debug)
+                 ("S-<f12>" . dap-hydra)))
+    :hook ((after-init . dap-auto-configure-mode)
+           (python-mode . (lambda () (require 'dap-python)))
+           (java-mode . (lambda () (require 'dap-java)))
+           ((c-mode c++-mode) . (lambda () (require 'dap-lldb)))
+           (php-mode . (lambda () (require 'dap-php)))
+           (elixir-mode . (lambda () (require 'dap-elixir)))
+           ((js-mode js2-mode typescript-mode) . (lambda () (require 'dap-chrome)))
+           (rust-mode . (lambda () (require 'dap-gdb-lldb)))))
+#+end_src
+
+*** posframe
+
+#+begin_src emacs-lisp
+  (use-package posframe)
+#+end_src
+
+*** activate minor modes when stepping through code
+
+#+begin_src emacs-lisp
+  ;; -*- lexical-binding: t -*-
+  (define-minor-mode +dap-running-session-mode
+    "A mode for adding keybindings to running sessions"
+    nil
+    nil
+    (make-sparse-keymap)
+    (when +dap-running-session-mode
+      (let ((session-at-creation (dap--cur-active-session-or-die)))
+        (add-hook 'dap-terminated-hook
+                  (lambda (session)
+                    (when (eq session session-at-creation)
+                      (+dap-running-session-mode -1)))))))
+
+  ;; Activate this minor mode when dap is initialized
+  (add-hook 'dap-session-created-hook '+dap-running-session-mode)
+
+  ;; Activate this minor mode when hitting a breakpoint in another file
+  (add-hook 'dap-stopped-hook '+dap-running-session-mode)
+
+  ;; Activate this minor mode when stepping into code in another file
+  (add-hook 'dap-stack-frame-changed-hook (lambda (session)
+                                            (when (dap--session-running session)
+                                              (+dap-running-session-mode 1))))
+#+end_src
+
+** Delight
+#+begin_src emacs-lisp
+  (use-package delight)
+#+end_src
+** Dired Sidebar
+
+#+begin_src emacs-lisp
+  (use-package dired-sidebar
+    :commands (dired-sidebar-toggle-sidebar)
+    :bind (("C-x C-n" . dired-sidebar-toggle-sidebar))
+    :custom ((dired-sidebar-theme 'icons)
+             (dired-sidebar-subtree-line-prefix "__")
+             (dired-sidebar-should-follow-file t)
+             (dired-sidebar-one-instance-p t))
+    :config (progn (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
+                   (push 'rotate-windows dired-sidebar-toggle-hidden-commands))
+    :hook ((dired-sidebar-mode .  (lambda ()
+                                    (unless (file-remote-p default-directory)
+                                      (auto-revert-mode))))))
+#+end_src
+
+** Docker
+#+begin_src emacs-lisp
+  (use-package docker)
+#+end_src
+
+** Dump Jump
+
+Jump to definition polyglot.
+
+#+begin_src emacs-lisp
+  (use-package dumb-jump
+    :config (add-to-list 'xref-backend-functions #'dumb-jump-xref-activate))
+#+end_src
+** Editorconfig
+
+#+begin_src emacs-lisp
+  (use-package editorconfig
+    :config
+    (editorconfig-mode 1))
+#+end_src
+** Expand Region
+
+#+begin_src emacs-lisp
+  (use-package expand-region
+    :bind
+    ("C-=" . er/expand-region))
+#+end_src
+
+** Exec path from shell
+
+#+begin_src emacs-lisp
+  (use-package exec-path-from-shell
+    :config
+    (when (memq window-system '(mac ns x))
+      (exec-path-from-shell-copy-env "GOPATH")
+      (exec-path-from-shell-copy-env "PYTHONPATH")
+      (exec-path-from-shell-initialize)))
+#+end_src
+
+** ERedis
+Redis client
+#+begin_src emacs-lisp
+  (use-package eredis)
+#+end_src
+
+** Evil
+#+begin_src emacs-lisp
+  (use-package evil
+    :bind (:map evil-insert-state-map
+                ("C-g" . 'evil-force-normal-state)
+                ("C-e" . 'end-of-line))
+    :config (progn
+              ;; Set Emacs state as initial state for a handful of modes.
+              ;; This includes Dired, Xref, shell-related modes and list modes.
+              (evil-set-initial-state 'tabulated-list-mode 'emacs)
+              (evil-set-initial-state 'comint-mode 'emacs)
+              (evil-set-initial-state 'compilation-mode 'emacs)
+              (evil-set-initial-state 'special-mode 'emacs)
+              (evil-set-initial-state 'dired-mode 'emacs)
+              (evil-mode 1)))
+#+end_src
+
+*** evil leader
+#+begin_src emacs-lisp
+  (use-package evil-leader
+    :config (progn
+              (evil-leader/set-leader "<SPC>")
+
+              ;; Global
+              (evil-leader/set-key
+               ;; file stuff
+               "ff" 'find-file
+               "fv" 'find-alternate-file
+               "fw" 'write-file
+               ;; bookmark stuff
+               "boj" 'bookmark-jump
+               "bo4j" 'bookmark-jump-other-window
+               "bo5j" 'bookmark-jump-other-frame
+               "bos" 'bookmark-set
+               "bol" 'bookmark-bmenu-list
+               ;; buffer stuff
+               "bb" 'switch-to-buffer
+               "b4b" 'switch-buffer-other-window
+               "b5b" 'switch-to-buffer-other-frame
+               "bs" 'save-buffer
+               "bk" 'kill-buffer
+               "bl" 'ibuffer
+               ;; window stuff
+               "1" 'delete-other-windows
+               "2" 'vs/split-window-below-and-switch
+               "3" 'vs/split-window-right-and-switch
+               "52" 'make-frame-command
+               "50" 'delete-frame
+               "0" 'delete-window
+               ;; Dired stuff
+               "dj" 'dired-jump
+               "d4j" 'dired-jump-other-window
+               ;; Docker
+               "dd" 'docker
+               "dcl" 'docker-compose-logs
+               ;; Magit
+               "gg" 'magit-status
+               "gb" 'magit-blame
+               "gc" 'magit-branch-or-checkout
+               "gf" 'magit-fetch-all-prune
+               "gm" 'magit-commit
+               "g!" 'magit-git-command
+               "g$" 'magit-process-buffer
+               "gz" 'magit-stash
+               "gl" 'magit-log
+               "gp" 'magit-push
+               "gx" 'magit-reset
+               ;; command map
+               "p" 'projectile-command-map
+               ;; extensions
+               ";" 'avy-goto-char
+               "x" 'counsel-M-x
+               "o" 'ace-window)
+
+              ;; Elixir stuff
+              (evil-leader/set-key-for-mode
+               'elixir-mode
+               "=b" 'lsp-format-buffer
+               "=r" 'lsp-format-region
+               "mf" 'elixir-format
+               "mgb" 'xref-pop-marker-stack
+               "mgi" 'lsp-ui-peek-find-implementation
+               "mgd" 'lsp-ui-peek-find-definitions
+               "mta" 'exunit-verify-all
+               "mtA" 'exunit-verify-all-in-umbrella
+               "mts" 'exunit-verify-single
+               "mtv" 'exunit-verify
+               "mtr" 'exunit-rerun)
+
+              ;; Java stuff
+              (evil-leader/set-key-for-mode
+               'java-mode
+               "=b" 'lsp-format-buffer
+               "=r" 'lsp-format-region
+               "mgb" 'xref-pop-marker-stack
+               "mgi" 'lsp-ui-peek-find-implementation
+               "mgd" 'lsp-ui-peek-find-definitions
+               "mai" 'lsp-java-add-import
+               "maum" 'lsp-java-add-unimplemented-methods
+               "mca" 'lsp-execute-code-action
+               "mcr" 'lsp-rename)
+              (global-evil-leader-mode 1)))
+#+end_src
+
+*** evil goggles
+#+begin_src emacs-lisp
+  (use-package evil-goggles
+    :config
+    (evil-goggles-mode)
+    (evil-goggles-use-diff-faces))
+#+end_src
+
+*** evil surround
+#+begin_src emacs-lisp
+  (use-package evil-surround
+    :config
+    (global-evil-surround-mode 1))
+#+end_src
+
+*** org evil
+#+begin_src emacs-lisp
+  (use-package evil-org
+    :after org
+    :hook ((org-mode . (lambda ()
+                         (evil-org-mode))))
+    :config (progn
+              (require 'evil-org-agenda)
+              (evil-org-agenda-set-keys)))
+#+end_src
+
+** Flycheck
+
+Syntax checker for emacs.
+
+#+begin_src emacs-lisp
+  (use-package flycheck
+    :config
+    (global-flycheck-mode 1))
+#+end_src
+
+** Ivy Stuff
+
+Ivy, a generic completion mechanism for Emacs.
+Swiper, an Ivy-enhanced alternative to isearch.
+
+#+begin_src emacs-lisp
+  (use-package ivy
+    :defer 0.1
+    :bind ("C-s" . swiper)
+    :init (setq ivy-use-virtual-buffers t)
+    :config (ivy-mode 1))
+#+end_src
+
+Counsel, a collection of Ivy-enhanced versions of common Emacs commands.
+
+#+begin_src emacs-lisp
+  (use-package counsel
+    :after ivy
+    :config (counsel-mode 1)
+    :bind (("M-x" . counsel-M-x)
+           ("C-x C-f" . counsel-find-file)
+           ("C-x c k" . counsel-yank-pop)
+           ("C-x c r" . counsel-rg)
+           ("<f1> f" . counsel-describe-function)
+           ("<f1> v" . counsel-describe-variable)
+           ("<f1> l" . counsel-load-library)
+           ("<f2> i" . counsel-info-lookup-symbol)
+           ("<f2> u" . counsel-unicode-char)
+           ("C-x C-r" . counsel-recentf)))
+#+end_src
+
+*** Ivy rich
+
+#+begin_src emacs-lisp
+  (use-package ivy-rich
+    :after ivy
+    :config (ivy-rich-mode 1))
+#+end_src
+
+*** Counsel projectile
+
+#+begin_src emacs-lisp
+  (use-package counsel-projectile
+    :bind
+    ("C-x v" . counsel-projectile)
+    ("C-x c p" . counsel-projectile-rg))
+#+end_src
+
+** LSP
+
+Language Server Protocol for Emacs.
+
+#+begin_src emacs-lisp
+  (use-package lsp-mode
+    :commands (lsp lsp-deferred)
+    :init (setq lsp-auto-guess-root t
+                lsp-file-watch-threshold 8000
+                lsp-file-watch-ignored
+                (-concat
+                 '("\\.asdf" "[/\\\\]\\.elixir_ls$"
+                   "[/\\\\]deps$" "[/\\\\]_build$")
+                 lsp-file-watch-ignored)
+                lsp-rust-server 'rust-analyzer
+                lsp-idle-delay 0.500
+                lsp-completion-provider 'capf
+                lsp-keep-workspace-alive nil)
+    :hook ((lsp-mode . lsp-enable-which-key-integration)
+           (prog-mode . lsp-deferred)))
+#+end_src
+
+*** LSP UI
+
+#+begin_src emacs-lisp
+  (use-package lsp-ui
+    :commands lsp-ui-mode
+    :custom ((lsp-ui-doc-include-signature t)
+             (lsp-ui-doc-enable nil)
+             (lsp-ui-peek-enable nil)
+             (lsp-ui-sideline-enable nil)))
+#+end_src
+
+*** Ivy LSP
+
+#+begin_src emacs-lisp
+  (use-package lsp-ivy
+    :commands lsp-ivy-workspace-symbol)
+#+end_src
+
+** Magit
+
+Magic git client!
+
+#+begin_src emacs-lisp
+  (use-package magit
+    :if (executable-find "git")
+    :init
+    (setq magit-completing-read-function 'ivy-completing-read)
+    :bind ("C-x g" . magit-status))
+#+end_src
+
+*** Git gutter
+
+#+begin_src emacs-lisp
+  (use-package git-gutter-fringe
+    :config (global-git-gutter-mode))
+#+end_src
+
+** Multiple cursors
+
+#+begin_src emacs-lisp
+  (use-package multiple-cursors
+    :bind
+    ("C-S-c C-S-c" . mc/edit-lines)
+    ("M-n" . mc/mark-next-like-this)
+    ("M-p" . mc/mark-previous-like-this)
+    ("C-c x" . mc/mark-all-like-this))
+#+end_src
+
+** Nov
+Ebook reader
+
+#+begin_src emacs-lisp
+  (use-package nov
+    :mode ("\\.epub$" . nov-mode))
+#+end_src
+
+** Password Store
+Pass extension
+
+#+begin_src emacs-lisp
+  (use-package password-store)
+#+end_src
+
+** Polymode
+#+begin_src emacs-lisp
+  (use-package polymode
+    :mode ("\\.ex$" . poly-elixir-web-mode)
+    :config (progn
+              ;; Elixir + web
+              (define-hostmode poly-elixir-hostmode :mode 'elixir-mode)
+              (define-innermode poly-liveview-expr-elixir-innermode
+                :mode 'web-mode
+                :head-matcher (rx line-start (* space) "~L" (= 3 (char "\"'")) line-end)
+                :tail-matcher (rx line-start (* space) (= 3 (char "\"'")) line-end)
+                :head-mode 'host
+                :tail-mode 'host
+                :allow-nested nil
+                :keep-in-mode 'host
+                :fallback-mode 'host)
+              (define-polymode poly-elixir-web-mode
+                :hostmode 'poly-elixir-hostmode
+                :innermodes '(poly-liveview-expr-elixir-innermode))
+              (setq web-mode-engines-alist '("elixir" . "\\.ex\\'"))))
+#+end_src
+
+** Projectile
+
+Project managment.
+
+#+begin_src emacs-lisp
+  (use-package projectile
+    :custom
+    ((projectile-known-projects-file
+      (expand-file-name "projectile-bookmarks.eld" temp-dir))
+     (projectile-completion-system 'ivy)
+     (projectile-globally-ignored-directories
+      '("node_modules" ".git" ".svn" "deps" "_build")))
+    :bind-keymap ("C-c p" . projectile-command-map)
+    :bind (("C-," . projectile-find-file))
+    :config (projectile-mode +1))
+#+end_src
+
+*** Projectile ripgrep
+
+#+begin_src emacs-lisp
+  (use-package projectile-ripgrep
+    :after projectile)
+#+end_src
+
+** Quickrun
+
+Quickrun buffer.
+
+#+begin_src emacs-lisp
+  (use-package quickrun
+    :bind (([f5] . quickrun)))
+#+end_src
+
+** Ripgrep
+
+#+begin_src emacs-lisp
+  (use-package ripgrep)
+#+end_src
+
+** Smartparens
+
+Smart parentheses
+
+#+begin_src emacs-lisp
+  (use-package smartparens
+    :config (progn
+              (require 'smartparens-config)
+              (smartparens-global-mode t)))
+#+end_src
+
+** Smex
+
+Command history
+
+#+begin_src emacs-lisp
+  (use-package smex)
+#+end_src
+
+** Shell pop
+
+#+begin_src emacs-lisp
+  (use-package shell-pop
+    :config (custom-set-variables
+             '(shell-pop-shell-type (quote ("ansi-term" "*ansi-term*" (lambda nil (ansi-term shell-pop-term-shell)))))
+             '(shell-pop-universal-key "<f7>")
+             '(shell-pop-window-size 30)
+             '(shell-pop-full-span t)
+             '(shell-pop-window-position "bottom")))
+#+end_src
+
+** Try
+
+Try out packages in emacs without installing them
+
+#+begin_src emacs-lisp
+  (use-package try)
+#+end_src
+
+** Undo tree
+
+#+begin_src emacs-lisp
+  (use-package undo-tree
+    :init
+    ;; Remember undo history
+    (setq
+     undo-tree-auto-save-history nil
+     undo-tree-history-directory-alist `(("." . ,(concat temp-dir "/undo/"))))
+    :config
+    (global-undo-tree-mode 1))
+#+end_src
+
+** VLF
+
+View large files
+
+#+begin_src emacs-lisp
+  (use-package vlf
+    :config (require 'vlf-setup))
+#+end_src
+** Wich key
+
+#+begin_src emacs-lisp
+  (use-package which-key
+    :config
+    (which-key-mode))
+#+end_src
+** Xclip
+
+#+begin_src emacs-lisp
+  (use-package xclip
+    :if (executable-find "xclip")
+    :config (xclip-mode))
+#+end_src
+** Yasnippet
+
+Snippets in emacs
+
+#+begin_src emacs-lisp
+  (use-package yasnippet
+    :init (setq yas-snippet-dirs (append
+                                  yas-snippet-dirs
+                                  (list
+                                   (concat user-emacs-directory "snippets/"))))
+    :config
+    (yas-global-mode 1))
+#+end_src
+
+Yasnippet snippet pack
+
+#+begin_src emacs-lisp
+  (use-package yasnippet-snippets
+    :after (yas-global-mode))
+#+end_src
 * Programming Languages
 ** Ansible
 #+begin_src emacs-lisp
@@ -527,6 +1159,7 @@ My UI customizations
 
 #+begin_src emacs-lisp
   (use-package elixir-mode
+    :after (evil-leader)
     :mode ("\\.ex$" "\\.exs$" "mix.lock")
     :hook ((elixir-mode . emmet-mode)))
 #+end_src
@@ -547,25 +1180,8 @@ My UI customizations
 *** Ob Elixir
 
 #+begin_src emacs-lisp
-  (use-package ob-elixir)
-#+end_src
-
-*** Evil stuff
-
-#+begin_src emacs-lisp
-  (evil-leader/set-key-for-mode
-   'elixir-mode
-   "=b" 'lsp-format-buffer
-   "=r" 'lsp-format-region
-   "mf" 'elixir-format
-   "mgb" 'xref-pop-marker-stack
-   "mgi" 'lsp-ui-peek-find-implementation
-   "mgd" 'lsp-ui-peek-find-definitions
-   "mta" 'exunit-verify-all
-   "mtA" 'exunit-verify-all-in-umbrella
-   "mts" 'exunit-verify-single
-   "mtv" 'exunit-verify
-   "mtr" 'exunit-rerun)
+    (use-package ob-elixir
+      :after (elixir-mode))
 #+end_src
 
 ** Elm
@@ -604,6 +1220,7 @@ My UI customizations
 
   (use-package java-mode
     :ensure nil
+    :after (evil-leader)
     :mode ("\\.java$")
     :config (progn
               (c-set-style "cc-mode")
@@ -616,21 +1233,6 @@ My UI customizations
 #+begin_src emacs-lisp
   (use-package lsp-java
     :after lsp)
-#+end_src
-
-*** Evil stuff
-#+begin_src emacs-lisp
-  (evil-leader/set-key-for-mode
-   'java-mode
-   "=b" 'lsp-format-buffer
-   "=r" 'lsp-format-region
-   "mgb" 'xref-pop-marker-stack
-   "mgi" 'lsp-ui-peek-find-implementation
-   "mgd" 'lsp-ui-peek-find-definitions
-   "mai" 'lsp-java-add-import
-   "maum" 'lsp-java-add-unimplemented-methods
-   "mca" 'lsp-execute-code-action
-   "mcr" 'lsp-rename)
 #+end_src
 
 ** JavaScript
@@ -1032,605 +1634,4 @@ Source code highlight with Minted package.
 #+begin_src emacs-lisp
   (use-package yaml-mode
     :mode ("\\.yaml|.yml$" . yaml-mode))
-#+end_src
-
-* Extensions
-** Ace Window
-
-Jump between open windows.
-
-#+begin_src emacs-lisp
-  (use-package ace-window
-    :init
-    (progn
-      (global-set-key [remap other-window] 'ace-window)
-      (custom-set-faces
-       '(aw-leading-char-face
-         ((t (:inherit ace-jump-face-foreground :height 3.0)))))))
-#+end_src
-
-** All the icons
-
-Emacs icons.
-
-#+begin_src emacs-lisp
-  (use-package all-the-icons)
-#+end_src
-
-** All the icons Dired
-
-#+begin_src emacs-lisp
-  (use-package all-the-icons-dired
-    :hook ((dired-mode . all-the-icons-dired-mode)))
-#+end_src
-
-** Avy
-
-Jump to any visible character.
-
-#+begin_src emacs-lisp
-  (use-package avy
-    :bind (("C-;" . 'avy-goto-char)))
-#+end_src
-
-** Company
-
-Code completion for emacs
-
-#+begin_src emacs-lisp
-  (use-package company
-    :init
-    (setq company-dabbrev-downcase 0
-          company-idle-delay 0)
-    :bind (("C-." . company-complete))
-    :config (global-company-mode 1))
-#+end_src
-
-*** Company Quickhelp
-
-#+begin_src emacs-lisp
-  (use-package company-quickhelp
-    :after company
-    :config (company-quickhelp-mode 1))
-#+end_src
-
-** CSV
-#+begin_src emacs-lisp
-  (use-package csv-mode
-    :mode ("\\.csv$")
-    :hook ((csv-mode . csv-align-mode)))
-#+end_src
-** Dashboard
-
-Emacs awesome dashboard!
-
-#+begin_src emacs-lisp
-  (use-package dashboard
-    :init
-    (setq dashboard-items '((recents  . 5)
-                            (projects . 5)
-                            (bookmarks . 5)
-                            (agenda . 5))
-          dashboard-set-file-icons t
-          dashboard-set-heading-icons t
-          dashboard-startup-banner 'logo
-          dashboard-center-content t
-          initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
-    :config
-    (dashboard-setup-startup-hook))
-#+end_src
-** DAP
-
-Debugger Adapter Protocol for Emacs
-
-#+begin_src emacs-lisp
-  (use-package dap-mode
-    :bind (:map dap-mode-map
-                (("<f12>" . dap-debug)
-                 ("S-<f12>" . dap-hydra)))
-    :hook ((after-init . dap-auto-configure-mode)
-           (python-mode . (lambda () (require 'dap-python)))
-           (java-mode . (lambda () (require 'dap-java)))
-           ((c-mode c++-mode) . (lambda () (require 'dap-lldb)))
-           (php-mode . (lambda () (require 'dap-php)))
-           (elixir-mode . (lambda () (require 'dap-elixir)))
-           ((js-mode js2-mode typescript-mode) . (lambda () (require 'dap-chrome)))
-           (rust-mode . (lambda () (require 'dap-gdb-lldb)))))
-#+end_src
-
-*** posframe
-
-#+begin_src emacs-lisp
-  (use-package posframe)
-#+end_src
-
-*** activate minor modes when stepping through code
-
-#+begin_src emacs-lisp
-  ;; -*- lexical-binding: t -*-
-  (define-minor-mode +dap-running-session-mode
-    "A mode for adding keybindings to running sessions"
-    nil
-    nil
-    (make-sparse-keymap)
-    (when +dap-running-session-mode
-      (let ((session-at-creation (dap--cur-active-session-or-die)))
-        (add-hook 'dap-terminated-hook
-                  (lambda (session)
-                    (when (eq session session-at-creation)
-                      (+dap-running-session-mode -1)))))))
-
-  ;; Activate this minor mode when dap is initialized
-  (add-hook 'dap-session-created-hook '+dap-running-session-mode)
-
-  ;; Activate this minor mode when hitting a breakpoint in another file
-  (add-hook 'dap-stopped-hook '+dap-running-session-mode)
-
-  ;; Activate this minor mode when stepping into code in another file
-  (add-hook 'dap-stack-frame-changed-hook (lambda (session)
-                                            (when (dap--session-running session)
-                                              (+dap-running-session-mode 1))))
-#+end_src
-
-** Delight
-#+begin_src emacs-lisp
-  (use-package delight)
-#+end_src
-** Dired Sidebar
-
-#+begin_src emacs-lisp
-  (use-package dired-sidebar
-    :commands (dired-sidebar-toggle-sidebar)
-    :bind (("C-x C-n" . dired-sidebar-toggle-sidebar))
-    :custom ((dired-sidebar-theme 'icons)
-             (dired-sidebar-subtree-line-prefix "__")
-             (dired-sidebar-should-follow-file t)
-             (dired-sidebar-one-instance-p t))
-    :config (progn (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
-                   (push 'rotate-windows dired-sidebar-toggle-hidden-commands))
-    :hook ((dired-sidebar-mode .  (lambda ()
-                                    (unless (file-remote-p default-directory)
-                                      (auto-revert-mode))))))
-#+end_src
-
-** Docker
-#+begin_src emacs-lisp
-  (use-package docker)
-#+end_src
-
-** Dump Jump
-
-Jump to definition polyglot.
-
-#+begin_src emacs-lisp
-  (use-package dumb-jump
-    :config (add-to-list 'xref-backend-functions #'dumb-jump-xref-activate))
-#+end_src
-** Editorconfig
-
-#+begin_src emacs-lisp
-  (use-package editorconfig
-    :config
-    (editorconfig-mode 1))
-#+end_src
-** Expand Region
-
-#+begin_src emacs-lisp
-  (use-package expand-region
-    :bind
-    ("C-=" . er/expand-region))
-#+end_src
-
-** Exec path from shell
-
-#+begin_src emacs-lisp
-  (use-package exec-path-from-shell
-    :config
-    (when (memq window-system '(mac ns x))
-      (exec-path-from-shell-copy-env "GOPATH")
-      (exec-path-from-shell-copy-env "PYTHONPATH")
-      (exec-path-from-shell-initialize)))
-#+end_src
-
-** ERedis
-Redis client
-#+begin_src emacs-lisp
-  (use-package eredis)
-#+end_src
-
-** Evil
-#+begin_src emacs-lisp
-  (use-package evil
-    :bind (:map evil-insert-state-map
-                ("C-g" . 'evil-force-normal-state)
-                ("C-e" . 'end-of-line))
-    :config (progn
-              ;; Set Emacs state as initial state for a handful of modes.
-              ;; This includes Dired, Xref, shell-related modes and list modes.
-              (evil-set-initial-state 'tabulated-list-mode 'emacs)
-              (evil-set-initial-state 'comint-mode 'emacs)
-              (evil-set-initial-state 'compilation-mode 'emacs)
-              (evil-set-initial-state 'special-mode 'emacs)
-              (evil-set-initial-state 'dired-mode 'emacs)
-              (evil-mode 1)))
-#+end_src
-
-*** evil leader
-#+begin_src emacs-lisp
-  (use-package evil-leader
-    :config (progn
-              (evil-leader/set-leader "<SPC>")
-              (evil-leader/set-key
-               ;; file stuff
-               "ff" 'find-file
-               "fv" 'find-alternate-file
-               "fw" 'write-file
-               ;; bookmark stuff
-               "boj" 'bookmark-jump
-               "bo4j" 'bookmark-jump-other-window
-               "bo5j" 'bookmark-jump-other-frame
-               "bos" 'bookmark-set
-               "bol" 'bookmark-bmenu-list
-               ;; buffer stuff
-               "bb" 'switch-to-buffer
-               "b4b" 'switch-buffer-other-window
-               "b5b" 'switch-to-buffer-other-frame
-               "bs" 'save-buffer
-               "bk" 'kill-buffer
-               "bl" 'ibuffer
-               ;; window stuff
-               "1" 'delete-other-windows
-               "2" 'vs/split-window-below-and-switch
-               "3" 'vs/split-window-right-and-switch
-               "52" 'make-frame-command
-               "50" 'delete-frame
-               "0" 'delete-window
-               ;; Dired stuff
-               "dj" 'dired-jump
-               "d4j" 'dired-jump-other-window
-               ;; Docker
-               "dd" 'docker
-               "dcl" 'docker-compose-logs
-               ;; Magit
-               "gg" 'magit-status
-               "gb" 'magit-blame
-               "gc" 'magit-branch-or-checkout
-               "gf" 'magit-fetch-all-prune
-               "gm" 'magit-commit
-               "g!" 'magit-git-command
-               "g$" 'magit-process-buffer
-               "gz" 'magit-stash
-               "gl" 'magit-log
-               "gp" 'magit-push
-               "gx" 'magit-reset
-               ;; command map
-               "p" 'projectile-command-map
-               ;; extensions
-               ";" 'avy-goto-char
-               "x" 'counsel-M-x
-               "o" 'ace-window)
-              (global-evil-leader-mode 1)))
-#+end_src
-
-*** evil goggles
-#+begin_src emacs-lisp
-  (use-package evil-goggles
-    :config
-    (evil-goggles-mode)
-    (evil-goggles-use-diff-faces))
-#+end_src
-
-*** evil surround
-#+begin_src emacs-lisp
-  (use-package evil-surround
-    :config
-    (global-evil-surround-mode 1))
-#+end_src
-
-*** org evil
-#+begin_src emacs-lisp
-  (use-package evil-org
-    :after org
-    :hook ((org-mode . (lambda ()
-                         (evil-org-mode))))
-    :config (progn
-              (require 'evil-org-agenda)
-              (evil-org-agenda-set-keys)))
-#+end_src
-
-** Flycheck
-
-Syntax checker for emacs.
-
-#+begin_src emacs-lisp
-  (use-package flycheck
-    :config
-    (global-flycheck-mode 1))
-#+end_src
-
-** Ivy Stuff
-
-Ivy, a generic completion mechanism for Emacs.
-Swiper, an Ivy-enhanced alternative to isearch.
-
-#+begin_src emacs-lisp
-  (use-package ivy
-    :defer 0.1
-    :bind ("C-s" . swiper)
-    :init (setq ivy-use-virtual-buffers t)
-    :config (ivy-mode 1))
-#+end_src
-
-Counsel, a collection of Ivy-enhanced versions of common Emacs commands.
-
-#+begin_src emacs-lisp
-  (use-package counsel
-    :after ivy
-    :config (counsel-mode 1)
-    :bind (("M-x" . counsel-M-x)
-           ("C-x C-f" . counsel-find-file)
-           ("C-x c k" . counsel-yank-pop)
-           ("C-x c r" . counsel-rg)
-           ("<f1> f" . counsel-describe-function)
-           ("<f1> v" . counsel-describe-variable)
-           ("<f1> l" . counsel-load-library)
-           ("<f2> i" . counsel-info-lookup-symbol)
-           ("<f2> u" . counsel-unicode-char)
-           ("C-x C-r" . counsel-recentf)))
-#+end_src
-
-*** Ivy rich
-
-#+begin_src emacs-lisp
-  (use-package ivy-rich
-    :after ivy
-    :config (ivy-rich-mode 1))
-#+end_src
-
-*** Counsel projectile
-
-#+begin_src emacs-lisp
-  (use-package counsel-projectile
-    :bind
-    ("C-x v" . counsel-projectile)
-    ("C-x c p" . counsel-projectile-rg))
-#+end_src
-
-** LSP
-
-Language Server Protocol for Emacs.
-
-#+begin_src emacs-lisp
-  (use-package lsp-mode
-    :commands (lsp lsp-deferred)
-    :custom ((lsp-auto-guess-root t)
-             (lsp-file-watch-threshold 8000)
-             (lsp-file-watch-ignored
-              (-concat
-               '("\\.asdf" "[/\\\\]\\.elixir_ls$"
-                 "[/\\\\]deps$" "[/\\\\]_build$")
-               lsp-file-watch-ignored))
-             (lsp-rust-server 'rust-analyzer)
-             (lsp-idle-delay 0.500)
-             (lsp-completion-provider 'capf)
-             (lsp-keep-workspace-alive nil))
-    :hook ((lsp-mode . lsp-enable-which-key-integration)
-           (prog-mode . lsp-deferred)))
-#+end_src
-
-*** LSP UI
-
-#+begin_src emacs-lisp
-  (use-package lsp-ui
-    :commands lsp-ui-mode
-    :custom ((lsp-ui-doc-include-signature t)
-             (lsp-ui-doc-enable nil)
-             (lsp-ui-peek-enable nil)
-             (lsp-ui-sideline-enable nil)))
-#+end_src
-
-*** Ivy LSP
-
-#+begin_src emacs-lisp
-  (use-package lsp-ivy
-    :commands lsp-ivy-workspace-symbol)
-#+end_src
-
-** Magit
-
-Magic git client!
-
-#+begin_src emacs-lisp
-  (use-package magit
-    :if (executable-find "git")
-    :init
-    (setq magit-completing-read-function 'ivy-completing-read)
-    :bind ("C-x g" . magit-status))
-#+end_src
-
-*** Git gutter
-
-#+begin_src emacs-lisp
-  (use-package git-gutter-fringe
-    :config (global-git-gutter-mode))
-#+end_src
-
-** Multiple cursors
-
-#+begin_src emacs-lisp
-  (use-package multiple-cursors
-    :bind
-    ("C-S-c C-S-c" . mc/edit-lines)
-    ("M-n" . mc/mark-next-like-this)
-    ("M-p" . mc/mark-previous-like-this)
-    ("C-c x" . mc/mark-all-like-this))
-#+end_src
-
-** Nov
-Ebook reader
-
-#+begin_src emacs-lisp
-  (use-package nov
-    :mode ("\\.epub$" . nov-mode))
-#+end_src
-
-** Password Store
-Pass extension
-
-#+begin_src emacs-lisp
-  (use-package password-store)
-#+end_src
-
-** Polymode
-#+begin_src emacs-lisp
-  (use-package polymode
-    :mode ("\\.ex$" . poly-elixir-web-mode)
-    :config (progn
-              ;; Elixir + web
-              (define-hostmode poly-elixir-hostmode :mode 'elixir-mode)
-              (define-innermode poly-liveview-expr-elixir-innermode
-                :mode 'web-mode
-                :head-matcher (rx line-start (* space) "~L" (= 3 (char "\"'")) line-end)
-                :tail-matcher (rx line-start (* space) (= 3 (char "\"'")) line-end)
-                :head-mode 'host
-                :tail-mode 'host
-                :allow-nested nil
-                :keep-in-mode 'host
-                :fallback-mode 'host)
-              (define-polymode poly-elixir-web-mode
-                :hostmode 'poly-elixir-hostmode
-                :innermodes '(poly-liveview-expr-elixir-innermode))
-              (setq web-mode-engines-alist '("elixir" . "\\.ex\\'"))))
-#+end_src
-
-** Projectile
-
-Project managment.
-
-#+begin_src emacs-lisp
-  (use-package projectile
-    :custom
-    ((projectile-known-projects-file
-      (expand-file-name "projectile-bookmarks.eld" temp-dir))
-     (projectile-completion-system 'ivy)
-     (projectile-globally-ignored-directories
-      '("node_modules" ".git" ".svn" "deps" "_build")))
-    :bind-keymap ("C-c p" . projectile-command-map)
-    :bind (("C-," . projectile-find-file))
-    :config (projectile-mode +1))
-#+end_src
-
-*** Projectile ripgrep
-
-#+begin_src emacs-lisp
-  (use-package projectile-ripgrep
-    :after projectile)
-#+end_src
-
-** Quickrun
-
-Quickrun buffer.
-
-#+begin_src emacs-lisp
-  (use-package quickrun
-    :bind (([f5] . quickrun)))
-#+end_src
-
-** Ripgrep
-
-#+begin_src emacs-lisp
-  (use-package ripgrep)
-#+end_src
-
-** Smartparens
-
-Smart parentheses
-
-#+begin_src emacs-lisp
-  (use-package smartparens
-    :config (smartparens-global-mode))
-#+end_src
-
-** Smex
-
-Command history
-
-#+begin_src emacs-lisp
-  (use-package smex)
-#+end_src
-
-** Shell pop
-
-#+begin_src emacs-lisp
-  (use-package shell-pop
-    :config (custom-set-variables
-             '(shell-pop-shell-type (quote ("ansi-term" "*ansi-term*" (lambda nil (ansi-term shell-pop-term-shell)))))
-             '(shell-pop-universal-key "<f7>")
-             '(shell-pop-window-size 30)
-             '(shell-pop-full-span t)
-             '(shell-pop-window-position "bottom")))
-#+end_src
-
-** Try
-
-Try out packages in emacs without installing them
-
-#+begin_src emacs-lisp
-  (use-package try)
-#+end_src
-
-** Undo tree
-
-#+begin_src emacs-lisp
-  (use-package undo-tree
-    :init
-    ;; Remember undo history
-    (setq
-     undo-tree-auto-save-history nil
-     undo-tree-history-directory-alist `(("." . ,(concat temp-dir "/undo/"))))
-    :config
-    (global-undo-tree-mode 1))
-#+end_src
-
-** VLF
-
-View large files
-
-#+begin_src emacs-lisp
-  (use-package vlf
-    :config (require 'vlf-setup))
-#+end_src
-** Wich key
-
-#+begin_src emacs-lisp
-  (use-package which-key
-    :config
-    (which-key-mode))
-#+end_src
-** Xclip
-
-#+begin_src emacs-lisp
-  (use-package xclip
-    :if (executable-find "xclip")
-    :config (xclip-mode))
-#+end_src
-** Yasnippet
-
-Snippets in emacs
-
-#+begin_src emacs-lisp
-  (use-package yasnippet
-    :init (setq yas-snippet-dirs (append
-                                  yas-snippet-dirs
-                                  (list
-                                   (concat user-emacs-directory "snippets/"))))
-    :config
-    (yas-global-mode 1))
-#+end_src
-
-Yasnippet snippet pack
-
-#+begin_src emacs-lisp
-  (use-package yasnippet-snippets
-    :after (yas-global-mode))
 #+end_src
