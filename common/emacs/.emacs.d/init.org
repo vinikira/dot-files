@@ -858,19 +858,20 @@ Counsel, a collection of Ivy-enhanced versions of common Emacs commands.
 Language Server Protocol for Emacs.
 
 #+begin_src emacs-lisp
+  (defconst vs/lsp-ignore-files
+    '("\\.asdf" "[/\\\\]\\.elixir_ls$"
+      "[/\\\\]deps$" "[/\\\\]_build$"))
+
   (use-package lsp-mode
     :commands (lsp lsp-deferred)
-    :init (setq lsp-auto-guess-root t
-                lsp-file-watch-threshold 8000
-                lsp-file-watch-ignored
-                (-concat
-                 '("\\.asdf" "[/\\\\]\\.elixir_ls$"
-                   "[/\\\\]deps$" "[/\\\\]_build$")
-                 lsp-file-watch-ignored)
-                lsp-rust-server 'rust-analyzer
-                lsp-idle-delay 0.500
-                lsp-completion-provider 'capf
-                lsp-keep-workspace-alive nil)
+    :config (setq lsp-auto-guess-root t
+                  lsp-file-watch-threshold 8000
+                  lsp-file-watch-ignored
+                  (-concat vs/lsp-ignore-files
+                   lsp-file-watch-ignored)
+                  lsp-rust-server 'rust-analyzer
+                  lsp-idle-delay 0.500
+                  lsp-keep-workspace-alive nil)
     :hook ((lsp-mode . lsp-enable-which-key-integration)
            (prog-mode . lsp-deferred)))
 #+end_src
@@ -1079,12 +1080,13 @@ Snippets in emacs
 
 #+begin_src emacs-lisp
   (use-package yasnippet
-    :init (setq yas-snippet-dirs (append
-                                  yas-snippet-dirs
-                                  (list
-                                   (concat user-emacs-directory "snippets/"))))
     :config
-    (yas-global-mode 1))
+    (progn
+      (setq yas-snippet-dirs (append
+                              yas-snippet-dirs
+                              (list
+                               (concat user-emacs-directory "snippets/"))))
+      (yas-global-mode 1)))
 #+end_src
 
 Yasnippet snippet pack
