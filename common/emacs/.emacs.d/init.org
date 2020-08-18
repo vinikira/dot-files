@@ -505,19 +505,50 @@ Code completion for emacs
 
 #+begin_src emacs-lisp
   (use-package company
+    :commands (company-complete-common company-manual-begin company-grab-line)
     :init
-    (setq company-dabbrev-downcase 0
-          company-idle-delay 0)
+    (setq company-idle-delay 0.25
+          company-minimum-prefix-length 2
+          company-tooltip-limit 14
+          company-tooltip-align-annotations t
+          company-require-match 'never
+          company-global-modes '(not erc-mode message-mode help-mode gud-mode)
+          company-frontends '(company-pseudo-tooltip-frontend
+                              company-echo-metadata-frontend)
+
+          ;; Buffer-local backends will be computed when loading a major mode, so
+          ;; only specify a global default here.
+          company-backends '(company-capf)
+
+          ;; These auto-complete the current selection when
+          ;; `company-auto-complete-chars' is typed. This is too magical. We
+          ;; already have the much more explicit RET and TAB.
+          company-auto-complete nil
+          company-auto-complete-chars nil
+
+          ;; Only search the current buffer for `company-dabbrev' (a backend that
+          ;; suggests text your open buffers). This prevents Company from causing
+          ;; lag once you have a lot of buffers open.
+          company-dabbrev-other-buffers nil
+          ;; Make `company-dabbrev' fully case-sensitive, to improve UX with
+          ;; domain-specific words with particular casing.
+          company-dabbrev-ignore-case nil
+          company-dabbrev-downcase nil)
     :bind (("C-." . company-complete))
     :config (global-company-mode 1))
 #+end_src
 
 *** Company Quickhelp
-
 #+begin_src emacs-lisp
   (use-package company-quickhelp
     :after company
     :config (company-quickhelp-mode 1))
+#+end_src
+
+*** Company Box
+#+begin_src emacs-lisp
+  (use-package company-box
+    :hook (company-mode . company-box-mode))
 #+end_src
 
 ** CSV
