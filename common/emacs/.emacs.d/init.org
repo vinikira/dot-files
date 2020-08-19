@@ -1224,6 +1224,11 @@ Yasnippet snippet pack
     :mode ("\\.elm$")
     :config (add-to-list 'company-backends 'company-elm))
 #+end_src
+
+** Golang
+#+begin_src emacs-lisp
+  (use-package go-mode)
+#+end_src
 ** Graphql
 #+begin_src emacs-lisp :results output
   (use-package graphql-mode
