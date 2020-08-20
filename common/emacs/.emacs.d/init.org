@@ -1460,6 +1460,7 @@ Org mode latest version.
                         (sql . t)
                         (elixir . t)
                         (ruby . t)
+                        (dot . t)
                         (latex . t)))))
     (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append))
 #+end_src
