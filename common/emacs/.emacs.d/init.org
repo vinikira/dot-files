@@ -1227,7 +1227,8 @@ Yasnippet snippet pack
 
 ** Golang
 #+begin_src emacs-lisp
-  (use-package go-mode)
+  (use-package go-mode
+    :mode ("\\.go$"))
 #+end_src
 ** Graphql
 #+begin_src emacs-lisp :results output
