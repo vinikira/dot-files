@@ -1509,6 +1509,12 @@ Org mode latest version.
     (setq org-hide-leading-stars t))
 #+end_src
 
+*** Org Download
+#+begin_src emacs-lisp
+  (use-package org-download
+    :hook (dired-mode . org-download-enable))
+#+end_src
+
 *** Org + Reveal.js
 
 #+begin_src emacs-lisp
