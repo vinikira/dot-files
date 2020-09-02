@@ -1553,6 +1553,10 @@ Export Org file to Epub file.
 #+begin_src emacs-lisp
   (use-package ox-epub)
 #+end_src
+*** Org Pandoc
+#+begin_src emacs-lisp
+  (use-package ox-pandoc)
+#+end_src
 *** Latex
 
 Abntex2 class
