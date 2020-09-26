@@ -731,136 +731,6 @@ Redis client
   (use-package eredis)
 #+end_src
 
-** Evil
-#+begin_src emacs-lisp
-  (use-package evil
-    :bind (:map evil-insert-state-map
-                ("C-g" . 'evil-force-normal-state)
-                ("C-e" . 'end-of-line))
-    :config (progn
-              ;; Set Emacs state as initial state for a handful of modes.
-              ;; This includes Dired, Xref, shell-related modes and list modes.
-              (evil-set-initial-state 'tabulated-list-mode 'emacs)
-              (evil-set-initial-state 'comint-mode 'emacs)
-              (evil-set-initial-state 'compilation-mode 'emacs)
-              (evil-set-initial-state 'special-mode 'emacs)
-              (evil-set-initial-state 'dired-mode 'emacs)
-              (evil-mode 1)))
-#+end_src
-
-*** evil leader
-#+begin_src emacs-lisp
-  (use-package evil-leader
-    :config (progn
-              (evil-leader/set-leader "<SPC>")
-
-              ;; Global
-              (evil-leader/set-key
-               ;; file stuff
-               "ff" 'find-file
-               "fv" 'find-alternate-file
-               "fw" 'write-file
-               ;; bookmark stuff
-               "boj" 'bookmark-jump
-               "bo4j" 'bookmark-jump-other-window
-               "bo5j" 'bookmark-jump-other-frame
-               "bos" 'bookmark-set
-               "bol" 'bookmark-bmenu-list
-               ;; buffer stuff
-               "bb" 'switch-to-buffer
-               "b4b" 'switch-buffer-other-window
-               "b5b" 'switch-to-buffer-other-frame
-               "bs" 'save-buffer
-               "bk" 'kill-buffer
-               "bl" 'ibuffer
-               ;; window stuff
-               "1" 'delete-other-windows
-               "2" 'vs/split-window-below-and-switch
-               "3" 'vs/split-window-right-and-switch
-               "52" 'make-frame-command
-               "50" 'delete-frame
-               "0" 'delete-window
-               ;; Dired stuff
-               "dj" 'dired-jump
-               "d4j" 'dired-jump-other-window
-               ;; Docker
-               "dd" 'docker
-               "dcl" 'docker-compose-logs
-               ;; Magit
-               "gg" 'magit-status
-               "gb" 'magit-blame
-               "gc" 'magit-branch-or-checkout
-               "gf" 'magit-fetch-all-prune
-               "gm" 'magit-commit
-               "g!" 'magit-git-command
-               "g$" 'magit-process-buffer
-               "gz" 'magit-stash
-               "gl" 'magit-log
-               "gp" 'magit-push
-               "gx" 'magit-reset
-               ;; command map
-               "p" 'projectile-command-map
-               ;; extensions
-               ";" 'avy-goto-char
-               "x" 'counsel-M-x
-               "o" 'ace-window)
-
-              ;; Elixir stuff
-              (evil-leader/set-key-for-mode
-               'elixir-mode
-               "=b" 'lsp-format-buffer
-               "=r" 'lsp-format-region
-               "mf" 'elixir-format
-               "mgb" 'xref-pop-marker-stack
-               "mgi" 'lsp-ui-peek-find-implementation
-               "mgd" 'lsp-ui-peek-find-definitions
-               "mta" 'exunit-verify-all
-               "mtA" 'exunit-verify-all-in-umbrella
-               "mts" 'exunit-verify-single
-               "mtv" 'exunit-verify
-               "mtr" 'exunit-rerun)
-
-              ;; Java stuff
-              (evil-leader/set-key-for-mode
-               'java-mode
-               "=b" 'lsp-format-buffer
-               "=r" 'lsp-format-region
-               "mgb" 'xref-pop-marker-stack
-               "mgi" 'lsp-ui-peek-find-implementation
-               "mgd" 'lsp-ui-peek-find-definitions
-               "mai" 'lsp-java-add-import
-               "maum" 'lsp-java-add-unimplemented-methods
-               "mca" 'lsp-execute-code-action
-               "mcr" 'lsp-rename)
-              (global-evil-leader-mode 1)))
-#+end_src
-
-*** evil goggles
-#+begin_src emacs-lisp
-  (use-package evil-goggles
-    :config
-    (evil-goggles-mode)
-    (evil-goggles-use-diff-faces))
-#+end_src
-
-*** evil surround
-#+begin_src emacs-lisp
-  (use-package evil-surround
-    :config
-    (global-evil-surround-mode 1))
-#+end_src
-
-*** org evil
-#+begin_src emacs-lisp
-  (use-package evil-org
-    :after org
-    :hook ((org-mode . (lambda ()
-                         (evil-org-mode))))
-    :config (progn
-              (require 'evil-org-agenda)
-              (evil-org-agenda-set-keys)))
-#+end_src
-
 ** Flycheck
 
 Syntax checker for emacs.
@@ -1228,7 +1098,6 @@ Yasnippet snippet pack
 
 #+begin_src emacs-lisp
   (use-package elixir-mode
-    :after (evil-leader)
     :mode ("\\.ex$" "\\.exs$" "mix.lock")
     :hook ((elixir-mode . emmet-mode)))
 #+end_src
@@ -1295,7 +1164,6 @@ Yasnippet snippet pack
 
   (use-package java-mode
     :ensure nil
-    :after (evil-leader)
     :mode ("\\.java$")
     :config (progn
               (c-set-style "cc-mode")
