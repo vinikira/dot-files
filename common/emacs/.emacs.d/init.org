@@ -283,12 +283,10 @@ it is not tangled along with the rest!
     (interactive "P")
     (let ((selected-mode (completing-read
                           "Scratch buffer with mode: "
-                          '("js2-mode"
-                            "json-mode"
-                            "xml-mode"
-                            "org-mode"
-                            "sql-mode"
-                            "lisp-interaction-mode"))))
+                          (->> auto-mode-alist
+                               (-filter (-compose 'not 'listp 'cdr))
+                               (-map (-compose 'symbol-name 'cdr))
+                               (delete-dups)))))
       (when open-new-frame
         (select-frame
          (make-frame)))
