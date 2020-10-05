@@ -802,6 +802,8 @@ Language Server Protocol for Emacs.
     '("\\.asdf" "[/\\\\]\\.elixir_ls$"
       "[/\\\\]deps$" "[/\\\\]_build$"))
 
+  (setq lsp-keymap-prefix "H-l")
+
   (use-package lsp-mode
     :commands (lsp lsp-deferred)
     :config (setq lsp-auto-guess-root t
