@@ -810,9 +810,10 @@ Language Server Protocol for Emacs.
                   lsp-file-watch-threshold 8000
                   lsp-file-watch-ignored
                   (-concat vs/lsp-ignore-files
-                   lsp-file-watch-ignored)
+                           lsp-file-watch-ignored)
                   lsp-rust-server 'rust-analyzer
                   lsp-idle-delay 0.500
+                  lsp-modeline-diagnostics-scope :project
                   lsp-keep-workspace-alive nil)
     :hook ((lsp-mode . lsp-enable-which-key-integration)
            (prog-mode . lsp-deferred)))
@@ -823,6 +824,9 @@ Language Server Protocol for Emacs.
 #+begin_src emacs-lisp
   (use-package lsp-ui
     :commands lsp-ui-mode
+    :bind (:map lsp-ui-mode-map
+                ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
+                ([remap xref-find-references] . lsp-ui-peek-find-references))
     :custom ((lsp-ui-doc-include-signature t)
              (lsp-ui-doc-enable nil)
              (lsp-ui-peek-enable nil)
