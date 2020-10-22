@@ -806,6 +806,8 @@ Language Server Protocol for Emacs.
 
   (use-package lsp-mode
     :commands (lsp lsp-deferred)
+    :bind (:map lsp-mode-map
+                ("M-RET" . lsp-execute-code-action))
     :config (setq lsp-auto-guess-root t
                   lsp-file-watch-threshold 8000
                   lsp-file-watch-ignored
