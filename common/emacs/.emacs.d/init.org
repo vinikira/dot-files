@@ -1008,6 +1008,27 @@ View large files
   (use-package vlf
     :config (require 'vlf-setup))
 #+end_src
+** WCheck
+#+begin_src emacs-lisp
+  (use-package wcheck-mode
+    :init (setq wcheck-language-data
+                '(("en"
+                   (program . "/usr/bin/nuspell")
+                   (args "-l" "-d" "en_US" )
+                   (action-program . "/usr/bin/nuspell")
+                   (action-args "-a" "-d" "en_US")
+                   (action-parser . wcheck-parser-ispell-suggestions))
+                  ("pt-BR"
+                   (program . "/usr/bin/nuspell")
+                   (args "-l" "-d" "pt_BR")
+                   (action-program . "/usr/bin/nuspell")
+                   (action-args "-a" "-d" "pt_BR")
+                   (action-parser . wcheck-parser-ispell-suggestions))))
+    :bind (("C-c s c" . wcheck-mode)
+           ("C-c s l" . wcheck-change-language)
+           :map wcheck-mode-map
+           ("H-RET" . wcheck-actions)))
+#+end_src
 ** Wich key
 
 #+begin_src emacs-lisp
