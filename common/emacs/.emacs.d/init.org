@@ -1027,7 +1027,7 @@ View large files
     :bind (("C-c s c" . wcheck-mode)
            ("C-c s l" . wcheck-change-language)
            :map wcheck-mode-map
-           ("H-RET" . wcheck-actions)))
+           ("<H-return>" . wcheck-actions)))
 #+end_src
 ** Wich key
 
