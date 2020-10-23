@@ -278,6 +278,8 @@ it is not tangled along with the rest!
 
 ** Scratch Buffers
 #+begin_src emacs-lisp
+  (eval-when-compile (require 'dash))
+
   (defun vs/scratch-buffer (open-new-frame)
     "Open generic scratch buffer"
     (interactive "P")
