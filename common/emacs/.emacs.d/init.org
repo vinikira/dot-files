@@ -1193,6 +1193,12 @@ Yasnippet snippet pack
   (use-package lsp-haskell)
 #+end_src
 
+** HCL
+#+begin_src emacs-lisp
+  (use-package hcl-mode
+    :mode ("\\.hcl$" . hcl-mode))
+#+end_src
+
 ** Java
 #+begin_src emacs-lisp
   (use-package cc-mode)
