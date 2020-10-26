@@ -803,21 +803,20 @@ Language Server Protocol for Emacs.
     '("\\.asdf" "[/\\\\]\\.elixir_ls$"
       "[/\\\\]deps$" "[/\\\\]_build$"))
 
-  (setq lsp-keymap-prefix "H-l")
-
   (use-package lsp-mode
     :commands (lsp lsp-deferred)
     :bind (:map lsp-mode-map
                 ("M-RET" . lsp-execute-code-action))
-    :config (setq lsp-auto-guess-root t
-                  lsp-file-watch-threshold 8000
+    :init (setq lsp-auto-guess-root t
+                  lsp-keymap-prefix "H-l"
                   lsp-file-watch-ignored
                   (-concat vs/lsp-ignore-files
                            lsp-file-watch-ignored)
                   lsp-rust-server 'rust-analyzer
                   lsp-idle-delay 0.500
                   lsp-modeline-diagnostics-scope :project
-                  lsp-keep-workspace-alive nil)
+                  lsp-keep-workspace-alive nil
+                  lsp-completion-enable-additional-text-edit nil)
     :hook ((lsp-mode . lsp-enable-which-key-integration)
            (prog-mode . lsp-deferred)))
 #+end_src
@@ -831,8 +830,8 @@ Language Server Protocol for Emacs.
                 ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
                 ([remap xref-find-references] . lsp-ui-peek-find-references))
     :custom ((lsp-ui-doc-include-signature t)
+             (lsp-ui-doc-header t)
              (lsp-ui-doc-enable nil)
-             (lsp-ui-peek-enable nil)
              (lsp-ui-sideline-enable nil)))
 #+end_src
 
@@ -840,7 +839,9 @@ Language Server Protocol for Emacs.
 
 #+begin_src emacs-lisp
   (use-package lsp-ivy
-    :commands lsp-ivy-workspace-symbol)
+    :commands lsp-ivy-workspace-symbol
+    :bind (:map lsp-mode-map
+                ("H-l f" . lsp-ivy-workspace-symbol)))
 #+end_src
 
 ** Magit
