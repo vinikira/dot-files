@@ -378,6 +378,12 @@ it is not tangled along with the rest!
   (global-set-key (kbd "M-<left>") 'enlarge-window-horizontally)
   (global-set-key (kbd "M-<right>") 'shrink-window-horizontally)
 #+end_src
+** Maximize and minimize window
+#+begin_src emacs-lisp
+  (global-set-key (kbd "H-=") 'maximize-window)
+  (global-set-key (kbd "H--") 'minimize-window)
+  (global-set-key (kbd "H-0") 'balance-windows)
+#+end_src
 ** Split and switch
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-x 2") 'vs/split-window-below-and-switch)
