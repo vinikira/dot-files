@@ -371,10 +371,6 @@ it is not tangled along with the rest!
   (global-set-key (kbd "<C-mouse-4>") 'scroll-down-command)
   (global-set-key (kbd "<C-mouse-5>") 'scroll-up-command)
 #+end_src
-** Remap search forward
-#+begin_src emacs-lisp
-  (global-set-key (kbd "C-x s") 'isearch-forward)
-#+end_src
 ** Resize Windows
 #+begin_src emacs-lisp
   (global-set-key (kbd "M-<down>") 'enlarge-window)
@@ -748,7 +744,7 @@ Swiper, an Ivy-enhanced alternative to isearch.
 #+begin_src emacs-lisp
   (use-package ivy
     :defer 0.1
-    :bind ("C-s" . swiper)
+    :bind ("C-x s" . swiper)
     :init (setq ivy-use-virtual-buffers t)
     :config (ivy-mode 1))
 #+end_src
