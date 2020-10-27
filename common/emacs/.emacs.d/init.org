@@ -1511,7 +1511,7 @@ Source code highlight with Minted package.
       (setq org-plantuml-jar-path plantuml-target
             plantuml-jar-path plantuml-target
             plantuml-output-type "svg"
-            plantuml-default-exec-mode 'jar))))
+            plantuml-default-mode 'jar))))
 #+end_src
 *** Flycheck plantuml
 #+begin_src emacs-lisp
