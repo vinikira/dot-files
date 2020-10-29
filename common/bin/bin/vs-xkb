@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+
+echo "Reseting XKB options"
+dconf reset /org/gnome/desktop/input-sources/xkb-options
+echo "Setting XKB option"
+dconf write /org/gnome/desktop/input-sources/xkb-options "['shift:both_capslock', 'terminate:ctrl_alt_bksp', 'ctrl:swapcaps_hyper']"
