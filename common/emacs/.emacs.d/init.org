@@ -624,14 +624,16 @@ Debugger Adapter Protocol for Emacs
   (use-package dap-mode
     :bind (:map dap-mode-map
                 (("<f12>" . dap-debug)
-                 ("S-<f12>" . dap-hydra)))
+                 ("S-<f12>" . dap-hydra)
+                 ("<f9>" . dap-breakpoint-toggle)))
     :hook ((after-init . dap-auto-configure-mode)
            (python-mode . (lambda () (require 'dap-python)))
            (java-mode . (lambda () (require 'dap-java)))
            ((c-mode c++-mode) . (lambda () (require 'dap-lldb)))
            (php-mode . (lambda () (require 'dap-php)))
            (elixir-mode . (lambda () (require 'dap-elixir)))
-           ((js-mode js2-mode typescript-mode) . (lambda () (require 'dap-chrome)))
+           ((js-mode js2-mode typescript-mode rjsx-mode)
+            . (lambda () (require 'dap-chrome)))
            (rust-mode . (lambda () (require 'dap-gdb-lldb)))))
 #+end_src
 
@@ -639,34 +641,6 @@ Debugger Adapter Protocol for Emacs
 
 #+begin_src emacs-lisp
   (use-package posframe)
-#+end_src
-
-*** activate minor modes when stepping through code
-
-#+begin_src emacs-lisp
-  ;; -*- lexical-binding: t -*-
-  (define-minor-mode +dap-running-session-mode
-    "A mode for adding keybindings to running sessions"
-    nil
-    nil
-    (make-sparse-keymap)
-    (when +dap-running-session-mode
-      (let ((session-at-creation (dap--cur-active-session-or-die)))
-        (add-hook 'dap-terminated-hook
-                  (lambda (session)
-                    (when (eq session session-at-creation)
-                      (+dap-running-session-mode -1)))))))
-
-  ;; Activate this minor mode when dap is initialized
-  (add-hook 'dap-session-created-hook '+dap-running-session-mode)
-
-  ;; Activate this minor mode when hitting a breakpoint in another file
-  (add-hook 'dap-stopped-hook '+dap-running-session-mode)
-
-  ;; Activate this minor mode when stepping into code in another file
-  (add-hook 'dap-stack-frame-changed-hook (lambda (session)
-                                            (when (dap--session-running session)
-                                              (+dap-running-session-mode 1))))
 #+end_src
 
 ** Delight
@@ -1201,7 +1175,12 @@ Yasnippet snippet pack
 *** LSP Java
 #+begin_src emacs-lisp
   (use-package lsp-java
-    :after lsp)
+    :after (lsp-mode)
+    :bind (:map java-mode-map
+                ("C-c , v" . dap-java-run-test-class)
+                ("C-c , s" . dap-java-run-test-method)
+                ("C-c , D" . dap-java-debug-test-class)
+                ("C-c , d" . dap-java-debug-test-method)))
 #+end_src
 
 ** JavaScript
