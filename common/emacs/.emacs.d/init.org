@@ -104,13 +104,15 @@ it is not tangled along with the rest!
 *** UTF-8
 
 #+begin_src emacs-lisp
-      (set-charset-priority 'unicode)
-      (set-terminal-coding-system  'utf-8)   ; pretty
-      (set-keyboard-coding-system  'utf-8)   ; pretty
-      (set-selection-coding-system 'utf-8)   ; please
-      (prefer-coding-system        'utf-8)   ; with sugar on top
-      (setq default-process-coding-system '(utf-8-unix . utf-8-unix)
-            locale-coding-system          'utf-8)
+  (customize-set-variable default-process-coding-system '(utf-8-unix . utf-8-unix))
+  (customize-set-variable 'locale-coding-system 'utf-8)
+  (set-charset-priority 'unicode)
+  (set-terminal-coding-system 'utf-8)
+  (set-keyboard-coding-system 'utf-8)
+  (set-selection-coding-system 'utf-8)
+  (prefer-coding-system 'utf-8)
+  (set-language-environment "UTF-8")
+  (set-default-coding-systems 'utf-8)
 #+end_src
 
 *** Variables
