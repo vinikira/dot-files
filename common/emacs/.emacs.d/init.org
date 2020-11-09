@@ -1438,20 +1438,20 @@ Source code highlight with Minted package.
 ** PlantUML
 #+begin_src emacs-lisp
   (use-package plantuml-mode
-    :mode ("\\.plantuml\\'" . plantuml-mode)
+    :mode (("\\.plantuml\\'" . plantuml-mode))
     :config
     (let ((plantuml-directory (expand-file-name (concat user-emacs-directory "private/")))
-        (plantuml-link "http://sourceforge.net/projects/plantuml/files/plantuml.jar/download"))
-    (let ((plantuml-target (concat plantuml-directory "plantuml.jar")))
-      (if (not (file-exists-p plantuml-target))
-          (progn (message "Downloading plantuml.jar")
-                 (shell-command
-                  (mapconcat 'identity (list "wget" plantuml-link "-O" plantuml-target) " "))
-                 (kill-buffer "*Shell Command Output*")))
-      (setq org-plantuml-jar-path plantuml-target
-            plantuml-jar-path plantuml-target
-            plantuml-output-type "svg"
-            plantuml-default-mode 'jar))))
+          (plantuml-link "http://sourceforge.net/projects/plantuml/files/plantuml.jar/download"))
+      (let ((plantuml-target (concat plantuml-directory "plantuml.jar")))
+        (if (not (file-exists-p plantuml-target))
+            (progn (message "Downloading plantuml.jar")
+                   (shell-command
+                    (mapconcat 'identity (list "wget" plantuml-link "-O" plantuml-target) " "))
+                   (kill-buffer "*Shell Command Output*")))
+        (customize-set-variable 'org-plantuml-jar-path plantuml-target)
+        (customize-set-variable 'plantuml-jar-path plantuml-target)
+        (customize-set-variable 'plantuml-output-type "svg")
+        (customize-set-variable 'plantuml-default-exec-mode 'jar))))
 #+end_src
 *** Flycheck plantuml
 #+begin_src emacs-lisp
