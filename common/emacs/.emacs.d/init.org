@@ -104,7 +104,7 @@ it is not tangled along with the rest!
 *** UTF-8
 
 #+begin_src emacs-lisp
-  (customize-set-variable default-process-coding-system '(utf-8-unix . utf-8-unix))
+  (customize-set-variable 'default-process-coding-system '(utf-8-unix . utf-8-unix))
   (customize-set-variable 'locale-coding-system 'utf-8)
   (set-charset-priority 'unicode)
   (set-terminal-coding-system 'utf-8)
