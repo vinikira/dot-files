@@ -1281,16 +1281,18 @@ My Org capture templates.
 
 #+begin_src emacs-lisp
   (defconst vs/org-capture-templates
-    '(("t" "todo" entry (file org-default-notes-file)
-       "* TODO %?\n%u\n%a\n" :clock-in t :clock-resume t)
-      ("m" "Meeting" entry (file org-default-notes-file)
-       "* MEETING with %? :MEETING:\n%t" :clock-in t :clock-resume t)
-      ("d" "Diary" entry (file+datetree (concat vs/org-directory "diary.org"))
-       "* %?\n%U\n" :clock-in t :clock-resume t)
-      ("i" "Idea" entry (file org-default-notes-file)
-       "* %? :IDEA: \n%t" :clock-in t :clock-resume t)
-      ("n" "Next Task" entry (file+headline org-default-notes-file "Tasks")
-       "** NEXT %? \nDEADLINE: %t")))
+    '(("t" "TODO menu")
+      ("tp" "TODO personal" entry (file+headline "personal.org" "Tasks")
+       "* TODO %?\nSCHEDULED: ^%^t\n%u\n%a\n")
+      ("tw" "TODO work" entry (file+headline "work.org" "Tasks")
+       "* TODO %?\nSCHEDULED: %^t\n%u\n%a\n")
+      ("m" "Meetings menu")
+      ("mp" "Meeting personal" entry (file+headline "personal.org" "Meetings")
+       "* MEETING with %? :MEETING:\nSCHEDULED: %^t")
+      ("mw" "Meeting work" entry (file+headline "work.org" "Meetings")
+       "* MEETING with %? :MEETING:\nSCHEDULED: %^t")
+      ("n" "Note" entry (file org-default-notes-file)
+       "* %? \n%t")))
 #+end_src
 
 My Org structure templates.
@@ -1333,7 +1335,10 @@ Org mode latest version.
                 org-babel-sh-command "bash"
                 org-capture-templates vs/org-capture-templates
                 org-structure-template-alist vs/org-structure-template-alist
-                org-use-speed-commands t)
+                org-use-speed-commands t
+                org-refile-use-outline-path t
+                org-outline-path-complete-in-steps nil
+                org-refile-targets '((org-agenda-files :maxlevel . 9)))
     :config (org-babel-do-load-languages
              'org-babel-load-languages
              (org-babel-do-load-languages
@@ -1354,7 +1359,6 @@ Org mode latest version.
 #+end_src
 
 *** Org Bullets
-
 #+begin_src emacs-lisp
   (use-package org-bullets
     :hook ((org-mode . org-bullets-mode))
@@ -1369,7 +1373,6 @@ Org mode latest version.
 #+end_src
 
 *** Org + Reveal.js
-
 #+begin_src emacs-lisp
   (use-package org-re-reveal
     :init (setq org-re-reveal-root "https://cdn.jsdelivr.net/reveal.js/latest"
@@ -1382,14 +1385,15 @@ Org mode latest version.
     :after org
     :config (define-key org-mode-map (kbd "C-c C-r") verb-command-map))
 #+end_src
-*** Org Babel Async
 
+*** Org Babel Async
 Turn code evaluation async.
 
 #+begin_src emacs-lisp
   (use-package ob-async
     :init (setq ob-async-no-async-languages-alist '("ipython")))
 #+end_src
+
 *** Org notify
 #+begin_src emacs-lisp
   (require 'org-notify)
@@ -1400,18 +1404,20 @@ Turn code evaluation async.
                   '(:time "1h" :period "15m" :duration 25 :actions -notify/window)
                   '(:time "2h" :period "30m" :duration 25 :actions -notify/window))
 #+end_src
+
 *** Org Epub
 Export Org file to Epub file.
 
 #+begin_src emacs-lisp
   (use-package ox-epub)
 #+end_src
+
 *** Org Pandoc
 #+begin_src emacs-lisp
   (use-package ox-pandoc)
 #+end_src
-*** Latex
 
+*** Latex
 Abntex2 class
 
 #+begin_src emacs-lisp
