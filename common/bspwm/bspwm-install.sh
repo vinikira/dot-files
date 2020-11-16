@@ -1,5 +1,5 @@
 #!/bin/bash
-yaourt -S bspwm \
+yay -S bspwm \
        sxhkd \
        rofi \
        rofi-dmenu \

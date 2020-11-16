@@ -1,6 +1,6 @@
 #! /bin/sh
-#Auto start commands
-export PATH=$HOME/.bin:/usr/local/bin:$PATH
+# Auto start commands
+export PATH=/usr/local/bin:$PATH
 export QT_QPA_PLATFORMTHEME="qt5ct"
 sxhkd &
 pkill compton; compton --config "$HOME/.config/compton.conf" -b &
@@ -40,7 +40,5 @@ bspc wm --adopt-orphans
 
 sh $HOME/.bin/detect-monitors &
 
-#auto start applications
-dropbox &
-megasync &
+# auto start applications
 redshift &
