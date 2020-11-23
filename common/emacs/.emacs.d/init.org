@@ -1394,7 +1394,7 @@ Turn code evaluation async.
     :init (setq ob-async-no-async-languages-alist '("ipython")))
 #+end_src
 
-*** Org notify
+*** Org Notify
 #+begin_src emacs-lisp
   (require 'org-notify)
   (org-notify-start 60)
@@ -1415,6 +1415,11 @@ Export Org file to Epub file.
 *** Org Pandoc
 #+begin_src emacs-lisp
   (use-package ox-pandoc)
+#+end_src
+
+*** Org Jira
+#+begin_src emacs-lisp
+  (use-package ox-jira)
 #+end_src
 
 *** Latex
