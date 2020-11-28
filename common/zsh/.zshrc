@@ -97,4 +97,5 @@ export ELIXIR_EDITOR="emacsclient -n +__LINE__ __FILE__"
 alias start_minidlna='minidlnad -f $HOME/.config/minidlna/minidlna.conf -P $HOME/.config/minidlna/minidlna.pid'
 alias clojurer='rlwrap clojure'
 alias ec='emacsclient -cn'
+alias et='emacsclient -t'
 alias e='emacsclient -n'
