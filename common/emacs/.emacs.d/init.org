@@ -242,28 +242,6 @@ it is not tangled along with the rest!
 
 ** Format buffers stuff
 
-*** StandardJS
-
-#+begin_src emacs-lisp
-  (defun vs/format-standardjs-buffer (&optional begin end)
-    "Formart js buffer according standardjs, BEGIN region and END region."
-    (interactive "r")
-    (let ((temp-point (point)))
-      (when (executable-find "standard")
-        (call-shell-region
-         (if (region-active-p) begin (point-min))
-         (if (region-active-p) end (point-max))
-         "standard --stdin --fix"
-         t
-         (current-buffer))
-        (goto-char (point-min))
-        (when (search-forward "standard:" nil t)
-          (beginning-of-line)
-          (delete-region (point) (point-max)))
-        (goto-char temp-point))))
-
-#+end_src
-
 *** XML
 
 #+begin_src emacs-lisp
