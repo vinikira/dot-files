@@ -384,7 +384,7 @@ it is not tangled along with the rest!
 #+end_src
 ** Duplicate Line
 #+begin_src emacs-lisp
-  (global-set-key (kbd "C-c C-d") 'vs/duplicate-current-line)
+  (global-set-key (kbd "H-d") 'vs/duplicate-current-line)
 #+end_src
 ** Hippie Expand
 
