@@ -426,9 +426,9 @@ My custom themes
                             mode-line-mule-info
                             mode-line-modified
                             mode-line-remote
-                            "  "
+                            " ⌚ "
                             (:eval (format-time-string "%H:%M"))
-                            "  "
+                            " ☰ "
                             "%l:%c"
                             " · "
                             (:eval (propertized-buffer-identification "%b"))
@@ -544,7 +544,7 @@ Code completion for emacs
 #+end_src
 
 *** Company Box
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package company-box
     :hook (company-mode . company-box-mode))
 #+end_src
@@ -1372,7 +1372,7 @@ Turn code evaluation async.
     :init (setq ob-async-no-async-languages-alist '("ipython")))
 #+end_src
 
-*** Org notify
+*** Org Notify
 #+begin_src emacs-lisp
   (require 'org-notify)
   (org-notify-start 60)
@@ -1393,6 +1393,11 @@ Export Org file to Epub file.
 *** Org Pandoc
 #+begin_src emacs-lisp
   (use-package ox-pandoc)
+#+end_src
+
+*** Org Jira
+#+begin_src emacs-lisp
+  (use-package ox-jira)
 #+end_src
 
 *** Latex
