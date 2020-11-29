@@ -906,18 +906,6 @@ Command history
   (use-package smex)
 #+end_src
 
-** Shell pop
-
-#+begin_src emacs-lisp
-  (use-package shell-pop
-    :config (custom-set-variables
-             '(shell-pop-shell-type (quote ("ansi-term" "*ansi-term*" (lambda nil (ansi-term shell-pop-term-shell)))))
-             '(shell-pop-universal-key "<f7>")
-             '(shell-pop-window-size 30)
-             '(shell-pop-full-span t)
-             '(shell-pop-window-position "bottom")))
-#+end_src
-
 ** Try
 
 Try out packages in emacs without installing them
@@ -947,6 +935,12 @@ View large files
   (use-package vlf
     :config (require 'vlf-setup))
 #+end_src
+** VTerm
+#+begin_src emacs-lisp
+  (use-package vterm
+    :bind ("<f7>" . vterm-other-window))
+#+end_src
+
 ** Wich key
 
 #+begin_src emacs-lisp
