@@ -584,7 +584,7 @@ Debugger Adapter Protocol for Emacs
                 (("<f12>" . dap-debug)
                  ("S-<f12>" . dap-hydra)
                  ("<f9>" . dap-breakpoint-toggle)))
-    :hook ((after-init . dap-auto-configure-mode)
+    :hook ((lsp-mode . dap-auto-configure-mode)
            (python-mode . (lambda () (require 'dap-python)))
            (java-mode . (lambda () (require 'dap-java)))
            ((c-mode c++-mode) . (lambda () (require 'dap-lldb)))
@@ -745,16 +745,15 @@ Language Server Protocol for Emacs.
     :commands (lsp lsp-deferred)
     :bind (:map lsp-mode-map
                 ("M-RET" . lsp-execute-code-action))
-    :init (setq lsp-auto-guess-root t
-                  lsp-keymap-prefix "H-l"
-                  lsp-file-watch-ignored
-                  (-concat vs/lsp-ignore-files
-                           lsp-file-watch-ignored)
-                  lsp-rust-server 'rust-analyzer
-                  lsp-idle-delay 0.500
-                  lsp-modeline-diagnostics-scope :project
-                  lsp-keep-workspace-alive nil
-                  lsp-completion-enable-additional-text-edit nil)
+    :init (progn (customize-set-variable 'lsp-auto-guess-root t)
+                 (customize-set-variable 'lsp-keymap-prefix "H-l")
+                 (customize-set-variable 'lsp-file-watch-ignored
+                                         '(-concat vs/lsp-ignore-files))
+                 (customize-set-variable 'lsp-rust-server 'rust-analyzer)
+                 (customize-set-variable 'lsp-idle-delay 0.500)
+                 (customize-set-variable 'lsp-modeline-diagnostics-scope :project)
+                 (customize-set-variable 'lsp-keep-workspace-alive nil)
+                 (customize-set-variable 'lsp-completion-enable-additional-text-edit nil))
     :hook ((lsp-mode . lsp-enable-which-key-integration)
            (prog-mode . lsp-deferred)))
 #+end_src
