@@ -340,6 +340,11 @@ it is not tangled along with the rest!
 #+end_src
 
 * Keybindings
+** Dired
+#+begin_src emacs-lisp
+  (define-key dired-mode-map (kbd "e") 'dired-create-empty-file)
+#+end_src
+
 ** Ibuffer
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-x C-b") 'ibuffer)
