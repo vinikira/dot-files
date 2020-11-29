@@ -592,7 +592,8 @@ Debugger Adapter Protocol for Emacs
 *** posframe
 
 #+begin_src emacs-lisp
-  (use-package posframe)
+  (use-package posframe
+    :hook (dap-mode))
 #+end_src
 
 ** Delight
@@ -1015,10 +1016,11 @@ Yasnippet snippet pack
     :init (setq dart-format-on-save t))
 #+end_src
 
-*** lsp Dart
+*** LSP Dart
 
 #+begin_src emacs-lisp
-  (use-package lsp-dart)
+  (use-package lsp-dart
+    :hook (dart-mode))
 #+end_src
 
 ** Docker
@@ -1447,6 +1449,7 @@ Source code highlight with Minted package.
 *** LSP Python MS
 #+begin_src emacs-lisp
   (use-package lsp-python-ms
+    :hook (python-mode)
     :custom ((lsp-python-ms-auto-install-server t)))
 #+end_src
 
