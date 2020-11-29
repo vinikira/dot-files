@@ -1194,12 +1194,12 @@ Run Mocha tests.
 ** Lisp
 #+begin_src emacs-lisp
   (use-package slime
-    :mode
-    ("\\.lisp$" . slime-mode)
-    :init
-    (setq inferior-lisp-program "/usr/bin/sbcl"
-          slime-net-coding-system 'utf-8-unix
-          slime1-contribs '(slime-fancy)))
+    :if (executable-find "sbcl")
+    :mode ("\\.lisp$" . slime-mode)
+    :init (progn
+           (customize-set-variable 'inferior-lisp-program "/usr/bin/sbcl")
+           (customize-set-variable 'slime-net-coding-system 'utf-8-unix)
+           (customize-set-variable 'slime1-contribs '(slime-fancy))))
 
 #+end_src
 ** LaTeX
