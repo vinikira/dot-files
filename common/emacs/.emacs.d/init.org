@@ -343,6 +343,8 @@ it is not tangled along with the rest!
 ** Dired
 #+begin_src emacs-lisp
   (define-key dired-mode-map (kbd "e") 'dired-create-empty-file)
+
+  (define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file)
 #+end_src
 
 ** Ibuffer
