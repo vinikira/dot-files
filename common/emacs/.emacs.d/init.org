@@ -543,12 +543,6 @@ Code completion for emacs
     :config (company-quickhelp-mode 1))
 #+end_src
 
-*** Company Box
-#+begin_src emacs-lisp :tangle no
-  (use-package company-box
-    :hook (company-mode . company-box-mode))
-#+end_src
-
 ** CSV
 #+begin_src emacs-lisp
   (use-package csv-mode
