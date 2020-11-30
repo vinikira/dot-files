@@ -1386,7 +1386,8 @@ Turn code evaluation async.
 
 *** Org Notify
 #+begin_src emacs-lisp
-  (use-package 'org-notify
+  (use-package org-notify
+    :ensure nil
     :config
     (org-notify-start 60)
 
