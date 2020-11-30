@@ -517,7 +517,9 @@ Code completion for emacs
 
 #+begin_src emacs-lisp
   (use-package company
-    :commands (company-complete-common company-manual-begin company-grab-line)
+    :commands (company-complete-common
+               company-manual-begin
+               global-company-mode company-grab-line)
     :init
     (setq company-idle-delay 0.25
           company-minimum-prefix-length 2
@@ -553,6 +555,7 @@ Code completion for emacs
 *** Company Quickhelp
 #+begin_src emacs-lisp
   (use-package company-quickhelp
+    :commands (company-quickhelp-mode)
     :after company
     :config (company-quickhelp-mode 1))
 #+end_src
@@ -757,7 +760,7 @@ Language Server Protocol for Emacs.
     :init (progn (customize-set-variable 'lsp-auto-guess-root t)
                  (customize-set-variable 'lsp-keymap-prefix "H-l")
                  (customize-set-variable 'lsp-file-watch-ignored
-                                         '(-concat vs/lsp-ignore-files))
+                                         '(-concat vs/lsp-ignore-files lsp-file-watch-ignored))
                  (customize-set-variable 'lsp-rust-server 'rust-analyzer)
                  (customize-set-variable 'lsp-idle-delay 0.500)
                  (customize-set-variable 'lsp-modeline-diagnostics-scope :project)
@@ -839,6 +842,12 @@ Pass extension
 #+begin_src emacs-lisp
   (use-package polymode
     :mode ("\\.ex$" . poly-elixir-web-mode)
+    :commands (pm-host-chunkmode
+              pm-inner-chunkmode
+              pm--config-name pm--get-keylist.keymap-from-parent
+              pm-polymode pm-initialize
+              pm-base-buffer pm-turn-polymode-off
+              pm--run-derived-mode-hooks)
     :config (progn
               ;; Elixir + web
               (define-hostmode poly-elixir-hostmode :mode 'elixir-mode)
@@ -1172,6 +1181,7 @@ Yasnippet snippet pack
 #+begin_src emacs-lisp
   (use-package js2-refactor
     :after (js2-mode)
+    :commands (js2r-add-keybindings-with-prefix)
     :hook ((js2-mode . js2-refactor-mode))
     :bind (:map js2-mode-map
                 ("C-k" . js2r-kill))
