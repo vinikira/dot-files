@@ -202,7 +202,12 @@ it is not tangled along with the rest!
   (add-hook 'text-mode-hook 'auto-fill-mode)
   (add-hook 'compilation-filter-hook
             #'vs/colorize-compilation)
+  ;; enable dired-find-alternate-file
+  (add-hook 'window-setup-hook
+            (lambda ()
+              (put 'dired-find-alternate-file 'disabled nil)))
 #+end_src
+
 *** Remap yes-no
 #+begin_src emacs-lisp
   (fset 'yes-or-no-p 'y-or-n-p)
@@ -342,9 +347,11 @@ it is not tangled along with the rest!
 * Keybindings
 ** Dired
 #+begin_src emacs-lisp
-  (define-key dired-mode-map (kbd "e") 'dired-create-empty-file)
-
-  (define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file)
+  (eval-after-load
+      'dired
+    '(progn
+       (define-key dired-mode-map (kbd "e") 'dired-create-empty-file)
+       (define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file)))
 #+end_src
 
 ** Ibuffer
