@@ -595,7 +595,7 @@ Debugger Adapter Protocol for Emacs
                 (("<f12>" . dap-debug)
                  ("S-<f12>" . dap-hydra)
                  ("<f9>" . dap-breakpoint-toggle)))
-    :hook ((lsp-mode . dap-auto-configure-mode)
+    :hook ((after-init . dap-auto-configure-mode)
            (python-mode . (lambda () (require 'dap-python)))
            (java-mode . (lambda () (require 'dap-java)))
            ((c-mode c++-mode) . (lambda () (require 'dap-lldb)))
@@ -609,8 +609,7 @@ Debugger Adapter Protocol for Emacs
 *** posframe
 
 #+begin_src emacs-lisp
-  (use-package posframe
-    :hook (dap-mode))
+  (use-package posframe)
 #+end_src
 
 ** Delight
@@ -757,10 +756,10 @@ Language Server Protocol for Emacs.
     :commands (lsp lsp-deferred)
     :bind (:map lsp-mode-map
                 ("M-RET" . lsp-execute-code-action))
-    :init (progn (customize-set-variable 'lsp-auto-guess-root t)
+    :config (progn (customize-set-variable 'lsp-auto-guess-root t)
                  (customize-set-variable 'lsp-keymap-prefix "H-l")
                  (customize-set-variable 'lsp-file-watch-ignored
-                                         '(-concat vs/lsp-ignore-files lsp-file-watch-ignored))
+                                         (-concat vs/lsp-ignore-files lsp-file-watch-ignored))
                  (customize-set-variable 'lsp-rust-server 'rust-analyzer)
                  (customize-set-variable 'lsp-idle-delay 0.500)
                  (customize-set-variable 'lsp-modeline-diagnostics-scope :project)
@@ -1387,13 +1386,14 @@ Turn code evaluation async.
 
 *** Org Notify
 #+begin_src emacs-lisp
-  (require 'org-notify)
-  (org-notify-start 60)
+  (use-package 'org-notify
+    :config
+    (org-notify-start 60)
 
-  (org-notify-add 'default
-                  '(:time "10m" :period "2m" :duration 25 :actions -notify/window)
-                  '(:time "1h" :period "15m" :duration 25 :actions -notify/window)
-                  '(:time "2h" :period "30m" :duration 25 :actions -notify/window))
+    (org-notify-add 'default
+                    '(:time "10m" :period "2m" :duration 25 :actions -notify/window)
+                    '(:time "1h" :period "15m" :duration 25 :actions -notify/window)
+                    '(:time "2h" :period "30m" :duration 25 :actions -notify/window)))
 #+end_src
 
 *** Org Epub
