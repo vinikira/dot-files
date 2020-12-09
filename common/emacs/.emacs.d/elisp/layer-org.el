@@ -111,25 +111,27 @@
 (straight-use-package 'verb)
 
 (with-eval-after-load 'org
-  (define-key org-mode-map (kbd "C-c C-r") 'verb-command-map))
+  (require 'verb)
+  (define-key org-mode-map (kbd "C-c C-r") verb-command-map))
 ;; =============================================================================
 
 ;; Org Babel Async
 ;; =============================================================================
 ;; Turn code evaluation async.
 (straight-use-package 'ob-async)
-(customize-set-variable 'ob-async-no-async-languages-alist '("ipython"))
-;; =============================================================================
 
-;; Org Epub
-;; =============================================================================
-;; Export Org file to Epub file.
-(straight-use-package 'ox-epub)
+(with-eval-after-load 'ob
+  (require 'ob-async)
+  (customize-set-variable 'ob-async-no-async-languages-alist '("ipython")))
+
 ;; =============================================================================
 
 ;; Org Pandoc
 ;; =============================================================================
 (straight-use-package 'ox-pandoc)
+
+(with-eval-after-load 'ox
+  (require 'ox-pandoc))
 ;; =============================================================================
 
 ;; Org Notify
