@@ -88,7 +88,8 @@
 ;; Plantuml Mode
 ;; =============================================================================
 (straight-use-package 'plantuml-mode)
-(add-to-list 'auto-mode-alist '("\\.plantuml\\'" . plantuml-mode))
+(straight-use-package 'flycheck-plantuml)
+(add-to-list 'auto-mode-alist '("\\.plantuml$|\\.puml$'" . plantuml-mode))
 
 (customize-set-variable 'plantuml-output-type "svg")
 (customize-set-variable 'plantuml-default-exec-mode 'jar)
@@ -97,14 +98,16 @@
   (let* ((plantuml-directory private-dir)
 	 (plantuml-link
 	  "http://sourceforge.net/projects/plantuml/files/plantuml.jar/download")
-	 (plantuml-target (concat plantuml-directory "plantuml.jar")))
+	 (plantuml-target (concat plantuml-directory "/plantuml.jar")))
     (if (not (file-exists-p plantuml-target))
 	(progn (message "Downloading plantuml.jar")
 	       (shell-command
 		(format "wget %s -O %s" plantuml-link plantuml-target))
 	       (kill-buffer "*Shell Command Output*")))
     (customize-set-variable 'org-plantuml-jar-path plantuml-target)
-    (customize-set-variable 'plantuml-jar-path plantuml-target)))
+    (customize-set-variable 'plantuml-jar-path plantuml-target))
+  (require 'flycheck-plantuml)
+  (flycheck-plantuml-setup))
 ;; =============================================================================
 
 ;; TOML Mode
