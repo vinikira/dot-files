@@ -1,3 +1,7 @@
+;;; base-functions.el --- Custom functions -*- lexical-binding: t -*-
+;;; Commentary:
+;;; Code:
+
 (defun vs/split-window-below-and-switch ()
   "Split the window horizontally, then switch to the new pane."
   (interactive)
@@ -67,4 +71,4 @@
    (concat "printf %s \"$(" cmd ")\"")))
 
 (provide 'base-functions)
-;;; functions.el ends here
+;;; base-functions.el ends here
