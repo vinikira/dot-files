@@ -163,6 +163,12 @@
 ;; =============================================================================
 (straight-use-package 'smartparens)
 
+(with-eval-after-load 'smartparens
+  (define-key smartparens-mode-map (kbd "C-)") 'sp-forward-slurp-sexp)
+  (define-key smartparens-mode-map (kbd "C-}") 'sp-forward-barf-sexp)
+  (define-key smartparens-mode-map (kbd "C-(") 'sp-backward-slurp-sexp)
+  (define-key smartparens-mode-map (kbd "C-{") 'sp-backward-barf-sexp))
+
 (smartparens-global-mode t)
 ;; =============================================================================
 
