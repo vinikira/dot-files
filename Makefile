@@ -1,12 +1,15 @@
+GIT_DIR = $$HOME/git
+SUMMON_DIR := ${GIT_DIR}/summon
+
 all: install_summon summon
 
 clean:
-	rm -rf ~/git/summon
+	rm -rf ${SUMMON_DIR}
 
 install_summon:
-	git clone https://gitlab.com/semente/summon $$HOME/git/summon; \
-	cd $$HOME/git/summon; \
-	chmod 755 $$HOME/git/summon/summon.sh; \
+	mkdir -p ${GIT_DIR}
+	if [ ! -d "${SUMMON_DIR}" ]; then git clone https://gitlab.com/semente/summon ${SUMMON_DIR}; fi
+	chmod 755 ${SUMMON_DIR}/summon.sh
 
 summon:
-	sh ~/git/summon/summon.sh
+	sh ${SUMMON_DIR}/summon.sh $(workspace)
