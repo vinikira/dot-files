@@ -1,0 +1,9 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: emacs lisp mode config block
+# key: mco
+# group: emacs-lisp-mode
+# --
+;; ${1:mode name}
+;; =============================================================================
+   $0
+;; =============================================================================

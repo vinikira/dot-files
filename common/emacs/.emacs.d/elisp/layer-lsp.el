@@ -22,6 +22,7 @@
 (customize-set-variable 'lsp-modeline-diagnostics-scope :project)
 (customize-set-variable 'lsp-keep-workspace-alive nil)
 (customize-set-variable 'lsp-completion-enable-additional-text-edit nil)
+(customize-set-variable 'lsp-lens-enable t)
 
 (add-hook 'lsp-mode-hook 'lsp-enable-which-key-integration)
 (add-hook 'prog-mode-hook 'lsp-deferred)
@@ -31,7 +32,7 @@
 ;; ============================================================================
 (straight-use-package 'lsp-ivy)
 
-(with-eval-after-load 'lsp
+(with-eval-after-load 'lsp-mode
   (define-key lsp-mode-map (kbd "H-l f") 'lsp-ivy-workspace-symbol))
 ;; =============================================================================
 
