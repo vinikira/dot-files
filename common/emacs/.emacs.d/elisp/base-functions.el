@@ -28,12 +28,14 @@
       (goto-char curr-point))))
 
 (defun sudo-edit (&optional arg)
+  "Edit file with sudo permission.  ARG."
   (interactive "p")
   (if (or arg (not buffer-file-name))
       (find-file (concat "/sudo:root@localhost:" (read-file-name "File: ")))
     (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
 
 (defun vs/indent-buffer ()
+  "Indent whole buffer."
   (interactive)
   (indent-region (point-min) (point-max)))
 
@@ -69,6 +71,30 @@
   "Execute shell CMD and remove newline of output."
   (shell-command-to-string
    (concat "printf %s \"$(" cmd ")\"")))
+
+(defun vs/json-to-etf (&optional begin _end)
+  "Transform JSON to Elixir Term Format.  Use BEGIN and END as region."
+  (interactive "r")
+  (save-excursion
+	(let ((min (if (region-active-p) begin (point-min))))
+	  (goto-char min)
+	  (while (re-search-forward ":")
+		(replace-match " =>"))
+	  (goto-char min)
+	  (while (re-search-forward "{")
+		(replace-match "%{")))))
+
+(defun vs/etf-to-json (&optional begin _end)
+  "Transform Elixir Term Format to JSON.  Use BEGIN and END as region."
+  (interactive "r")
+  (save-excursion
+    (let ((min (if (region-active-p) begin (point-min))))
+	  (goto-char min)
+	  (while (re-search-forward " =>")
+		(replace-match ":"))
+	  (goto-char min)
+	  (while (re-search-forward "%{")
+		(replace-match "{")))))
 
 (provide 'base-functions)
 ;;; base-functions.el ends here
