@@ -1,6 +1,9 @@
 ;;; base-global-keys.el --- Global Keybindings -*- lexical-binding: t -*-
 ;;; Commentary:
 ;;; Code:
+
+;; Set keys
+;; =============================================================================
 (with-eval-after-load 'dired
   (define-key dired-mode-map (kbd "e") 'dired-create-empty-file)
   (define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file))
@@ -16,6 +19,13 @@
 (global-set-key (kbd "M-S-<down>") 'vs/move-line-down)
 (global-set-key (kbd "H-d") 'vs/duplicate-current-line)
 (global-set-key (kbd "M-/") 'hippie-expand)
+;; =============================================================================
+
+;; Unset keys
+;; =============================================================================
+(global-unset-key (kbd "C-z"))
+(global-unset-key (kbd "C-x C-z"))
+;; =============================================================================
 
 (provide 'base-global-keys)
 ;; global-keybindings.el ends here
