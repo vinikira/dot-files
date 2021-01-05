@@ -72,28 +72,28 @@
   (shell-command-to-string
    (concat "printf %s \"$(" cmd ")\"")))
 
-(defun vs/json-to-etf (&optional begin _end)
+(defun vs/json-to-etf (&optional begin end)
   "Transform JSON to Elixir Term Format.  Use BEGIN and END as region."
   (interactive "r")
   (save-excursion
 	(let ((min (if (region-active-p) begin (point-min))))
 	  (goto-char min)
-	  (while (re-search-forward ":")
+	  (while (re-search-forward ":" end t)
 		(replace-match " =>"))
 	  (goto-char min)
-	  (while (re-search-forward "{")
+	  (while (re-search-forward "{" end t)
 		(replace-match "%{")))))
 
-(defun vs/etf-to-json (&optional begin _end)
+(defun vs/etf-to-json (&optional begin end)
   "Transform Elixir Term Format to JSON.  Use BEGIN and END as region."
   (interactive "r")
   (save-excursion
     (let ((min (if (region-active-p) begin (point-min))))
 	  (goto-char min)
-	  (while (re-search-forward " =>")
+	  (while (re-search-forward " =>" end t)
 		(replace-match ":"))
 	  (goto-char min)
-	  (while (re-search-forward "%{")
+	  (while (re-search-forward "%{" end t)
 		(replace-match "{")))))
 
 (provide 'base-functions)
