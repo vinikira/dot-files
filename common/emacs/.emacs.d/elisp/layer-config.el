@@ -57,6 +57,15 @@
 (add-to-list 'auto-mode-alist '("\\.graphql$|\\.gql$" . graphql-mode))
 ;; =============================================================================
 
+;; Graphviz
+;; =============================================================================
+(straight-use-package 'graphviz-dot-mode)
+(require 'company-graphviz-dot)
+
+(customize-set-variable 'graphviz-dot-indent-width 4)
+;; =============================================================================
+
+
 ;; HashiCorp Configuration Language
 ;; =============================================================================
 (straight-use-package 'hcl-mode)
