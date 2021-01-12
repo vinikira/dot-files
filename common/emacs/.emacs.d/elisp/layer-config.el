@@ -60,7 +60,9 @@
 ;; Graphviz
 ;; =============================================================================
 (straight-use-package 'graphviz-dot-mode)
-(require 'company-graphviz-dot)
+
+(with-eval-after-load 'graphviz-dot-mode
+  (require 'company-graphviz-dot))
 
 (customize-set-variable 'graphviz-dot-indent-width 4)
 ;; =============================================================================
