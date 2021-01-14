@@ -110,6 +110,7 @@ vterm_printf(){
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias start_minidlna='minidlnad -f $HOME/.config/minidlna/minidlna.conf -P $HOME/.config/minidlna/minidlna.pid'
 alias clojurer='rlwrap clojure'
+alias sbcl='rlwrap sbcl'
 alias ec='emacsclient -cn'
 alias et='emacsclient -t'
 alias e='emacsclient -n'
