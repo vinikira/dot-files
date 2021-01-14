@@ -8,9 +8,9 @@
 
 (add-to-list 'auto-mode-alist '("\\.cl$|\\.lisp$" . slime-mode))
 
-(customize-set-variable 'inferior-lisp-program "/usr/bin/sbcl")
-(customize-set-variable 'slime-net-coding-system 'utf-8-unix)
+(customize-set-variable 'inferior-lisp-program "sbcl")
 (customize-set-variable 'slime1-contribs '(slime-fancy))
+(customize-set-variable 'slime-net-coding-system 'utf-8-unix)
 ;; =============================================================================
 
 (provide 'lang-lisp)
