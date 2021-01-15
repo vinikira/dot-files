@@ -76,25 +76,34 @@
   "Transform JSON to Elixir Term Format.  Use BEGIN and END as region."
   (interactive "r")
   (save-excursion
-	(let ((min (if (region-active-p) begin (point-min))))
-	  (goto-char min)
-	  (while (re-search-forward ":" end t)
-		(replace-match " =>"))
-	  (goto-char min)
-	  (while (re-search-forward "{" end t)
-		(replace-match "%{")))))
+    (let ((min (if (region-active-p) begin (point-min))))
+      (goto-char min)
+      (while (re-search-forward ":" end t)
+	(replace-match " =>"))
+      (goto-char min)
+      (while (re-search-forward "{" end t)
+	(replace-match "%{")))))
 
 (defun vs/etf-to-json (&optional begin end)
   "Transform Elixir Term Format to JSON.  Use BEGIN and END as region."
   (interactive "r")
   (save-excursion
     (let ((min (if (region-active-p) begin (point-min))))
-	  (goto-char min)
-	  (while (re-search-forward " =>" end t)
-		(replace-match ":"))
-	  (goto-char min)
-	  (while (re-search-forward "%{" end t)
-		(replace-match "{")))))
+      (goto-char min)
+      (while (re-search-forward " =>" end t)
+	(replace-match ":"))
+      (goto-char min)
+      (while (re-search-forward "%{" end t)
+	(replace-match "{")))))
+
+(defun vs/scratch-buffer ()
+  (interactive)
+  (let ((selected-mode
+	 (completing-read "Select mode: "
+			  (seq-uniq (mapcar #'cdr auto-mode-alist)))))
+    (switch-to-buffer
+     (get-buffer-create (format "*%s-scratch*" selected-mode)))
+    (funcall (intern selected-mode))))
 
 (provide 'base-functions)
 ;;; base-functions.el ends here
