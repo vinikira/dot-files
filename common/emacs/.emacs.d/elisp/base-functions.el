@@ -96,11 +96,14 @@
       (while (re-search-forward "%{" end t)
 	(replace-match "{")))))
 
-(defun vs/scratch-buffer ()
-  (interactive)
-  (let ((selected-mode
-	 (completing-read "Select mode: "
-			  (seq-uniq (mapcar #'cdr auto-mode-alist)))))
+(defun vs/scratch-buffer (new-frame)
+  "Create a scratch with selected mode.If NEW-FRAME is t, opens it in new frame."
+  (interactive "P")
+  (let* ((modes (seq-uniq (mapcar #'cdr auto-mode-alist)))
+	(selected-mode
+	 (completing-read "Select mode: " modes)))
+    (when new-frame
+      (select-frame (make-frame)))
     (switch-to-buffer
      (get-buffer-create (format "*%s-scratch*" selected-mode)))
     (funcall (intern selected-mode))))
