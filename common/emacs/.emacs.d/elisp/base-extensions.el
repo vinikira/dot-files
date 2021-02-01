@@ -64,7 +64,8 @@
 ;; =============================================================================
 (straight-use-package 'dumb-jump)
 (require 'xref)
-(add-to-list 'xref-backend-functions #'dumb-jump-xref-activate)
+(add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
+
 ;; =============================================================================
 
 ;; Editor config
