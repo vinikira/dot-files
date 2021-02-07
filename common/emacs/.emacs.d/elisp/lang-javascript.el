@@ -4,7 +4,7 @@
 
 ;; JS Mode
 ;; =============================================================================
-(add-hook 'javascript-mode-hook 'js-jsx-enable)
+(add-hook 'javascript-mode-hook #'js-jsx-enable)
 ;; =============================================================================
 
 ;; TypeScript Mode
@@ -20,7 +20,7 @@
 
 (customize-set-variable 'mocha-reporter "spec")
 
-(with-eval-after-load 'js
+(with-eval-after-load 'js-mode
    (define-key js-mode-map (kbd "C-c , v") 'mocha-test-project))
 ;; =============================================================================
 

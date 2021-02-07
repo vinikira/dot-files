@@ -53,5 +53,7 @@
 (straight-use-package
  '(ob-elixir :type git :host github :repo "lambdart/ob-elixir"))
 ;; =============================================================================
+
 (provide 'lang-elixir)
+
 ;;; lang-elixir.el ends here

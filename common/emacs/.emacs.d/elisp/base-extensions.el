@@ -7,7 +7,6 @@
 ;; All the Icons
 ;; =============================================================================
 (straight-use-package 'all-the-icons)
-
 ;; =============================================================================
 
 ;; Company mode
@@ -45,52 +44,56 @@
 (customize-set-variable 'company-dabbrev-ignore-case nil)
 (customize-set-variable 'company-dabbrev-downcase nil)
 
-(global-set-key (kbd "C-.") 'company-complete)
+(global-set-key (kbd "C-.") #'company-complete)
 
-(global-company-mode 1)
+(add-hook 'after-init-hook #'global-company-mode)
 ;; =============================================================================
 
 ;; Diff HL
 ;; =============================================================================
 (straight-use-package 'diff-hl)
 
-(add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
-(add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
+(add-hook 'magit-pre-refresh-hook #'diff-hl-magit-pre-refresh)
+(add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh)
 
-(global-diff-hl-mode)
+(add-hook 'projectile-after-switch-project-hook #'diff-hl-mode)
 ;; =============================================================================
 
 ;; Dump jump
 ;; =============================================================================
 (straight-use-package 'dumb-jump)
-(require 'xref)
-(add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
 
+(with-eval-after-load 'xref
+  (require 'xref)
+  (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
 ;; =============================================================================
 
 ;; Editor config
 ;; =============================================================================
 (straight-use-package 'editorconfig)
-(editorconfig-mode 1)
+(add-hook 'after-init-hook #'editorconfig-mode)
 ;; =============================================================================
 
 ;; Exec Path From Shell
 ;; =============================================================================
 (straight-use-package 'exec-path-from-shell)
+
 (when (daemonp)
-  (exec-path-from-shell-initialize))
+  (add-hook 'after-init-hook #'exec-path-from-shell-initialize))
 ;; =============================================================================
 
 ;; Flycheck
 ;; =============================================================================
 (straight-use-package 'flycheck)
 
-(global-flycheck-mode 1)
+(add-hook 'prog-mode-hook #'flycheck-mode)
 ;; =============================================================================
 
 ;; Iedit
 ;; =============================================================================
 (straight-use-package 'iedit)
+
+(global-set-key (kbd "C-;") #'iedit-mode)
 ;; =============================================================================
 
 ;; Impostman
@@ -108,23 +111,23 @@
 (ivy-mode 1)
 (counsel-mode 1)
 
-(global-set-key (kbd "C-x s") 'swiper)
+(global-set-key (kbd "C-x s") #'swiper)
 ;; =============================================================================
 
 ;; Magit
 ;; =============================================================================
 (straight-use-package 'magit)
 
-(global-set-key (kbd "C-x g") 'magit-status)
+(global-set-key (kbd "C-x g") #'magit-status)
 ;;=============================================================================
 
 ;; Multiple cursors
 ;; =============================================================================
 (straight-use-package 'multiple-cursors)
 
-(global-set-key (kbd "M-n") 'mc/mark-next-like-this)
-(global-set-key (kbd "M-p") 'mc/mark-previous-like-this)
-(global-set-key (kbd "C-c x") 'mc/mark-all-like-this)
+(global-set-key (kbd "M-n") #'mc/mark-next-like-this)
+(global-set-key (kbd "M-p") #'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c x") #'mc/mark-all-like-this)
 ;; =============================================================================
 
 ;; Password store
@@ -140,12 +143,9 @@
 			(expand-file-name "projectile-bookmarks.eld" temp-dir))
 
 (customize-set-variable 'projectile-globally-ignored-directories
-			'("node_modules" ".git" ".svn" "deps" "_build"))
+			'("node_modules" ".git" ".svn" "deps" "_build" ".elixir_ls"))
 
-(with-eval-after-load 'projectile
-  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
-
-(projectile-mode 1)
+(global-set-key (kbd "C-c p") #'projectile-command-map)
 ;; =============================================================================
 
 ;; Dashboard
@@ -160,8 +160,8 @@
 (customize-set-variable 'dashboard-set-heading-icons t)
 (customize-set-variable 'dashboard-startup-banner 'logo)
 (customize-set-variable 'dashboard-center-content t)
-(customize-set-variable 'initial-buffer-choice
-			(lambda () (get-buffer "*dashboard*")))
+;; (customize-set-variable 'initial-buffer-choice
+;; 			(lambda () (get-buffer "*dashboard*")))
 
 (dashboard-setup-startup-hook)
 ;; =============================================================================
@@ -181,7 +181,7 @@
   (define-key smartparens-mode-map (kbd "C-(") 'sp-backward-slurp-sexp)
   (define-key smartparens-mode-map (kbd "C-{") 'sp-backward-barf-sexp))
 
-(smartparens-global-mode t)
+(add-hook 'prog-mode #'smartparens-mode)
 ;; =============================================================================
 
 ;; Smex
@@ -196,7 +196,7 @@
 (customize-set-variable 'undo-tree-history-directory-alist
 			`(("." . ,(concat temp-dir "/undo/"))))
 
-(global-undo-tree-mode 1)
+(add-hook 'after-init-hook #'global-undo-tree-mode)
 ;; =============================================================================
 
 ;; View Large Files
@@ -207,19 +207,19 @@
 ;; VTerm
 ;; =============================================================================
 (straight-use-package 'vterm)
-(global-set-key (kbd "<f7>") 'vterm-other-window)
+(global-set-key (kbd "<f7>") #'vterm-other-window)
 ;; =============================================================================
 
 ;; Wich Key
 ;; =============================================================================
 (straight-use-package 'which-key)
-(which-key-mode)
+(add-hook 'after-init-hook #'which-key-mode)
 ;; =============================================================================
 
 ;; XClip
 ;; =============================================================================
 (straight-use-package 'xclip)
-(xclip-mode)
+(add-hook 'after-init-hook #'xclip-mode)
 ;; =============================================================================
 
 ;; Yasnippet
@@ -228,13 +228,9 @@
 (straight-use-package 'yasnippet-snippets)
 
 (with-eval-after-load 'yasnippet
-  (customize-set-variable
-   'yas-snippet-dirs (append
-		      yas-snippet-dirs
-		      (list
-		       (concat user-emacs-directory "snippets/")))))
+  (add-to-list 'yas-snippet-dirs (concat user-emacs-directory "snippets/")))
 
-(yas-global-mode 1)
+(add-hook 'after-init-hook #'yas-global-mode)
 ;; =============================================================================
 
 (provide 'base-extensions)

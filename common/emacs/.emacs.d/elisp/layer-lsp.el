@@ -11,7 +11,8 @@
     "[/\\\\]deps$" "[/\\\\]_build$"))
 
 (with-eval-after-load 'lsp-mode
-  (define-key lsp-mode-map (kbd "M-RET") 'lsp-execute-code-action)
+  (define-key lsp-mode-map (kbd "M-RET") #'lsp-execute-code-action)
+  (define-key lsp-mode-map (kbd "C-c C-f") #'lsp-format-buffer)
   (customize-set-variable 'lsp-file-watch-ignored
                           (append vs/lsp-ignore-files lsp-file-watch-ignored)))
 
@@ -24,8 +25,8 @@
 (customize-set-variable 'lsp-completion-enable-additional-text-edit nil)
 (customize-set-variable 'lsp-lens-enable t)
 
-(add-hook 'lsp-mode-hook 'lsp-enable-which-key-integration)
-(add-hook 'prog-mode-hook 'lsp-deferred)
+(add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
+(add-hook 'prog-mode-hook #'lsp-deferred)
 ;; =============================================================================
 
 ;; LSP Ivy
@@ -33,7 +34,7 @@
 (straight-use-package 'lsp-ivy)
 
 (with-eval-after-load 'lsp-mode
-  (define-key lsp-mode-map (kbd "H-l f") 'lsp-ivy-workspace-symbol))
+  (define-key lsp-mode-map (kbd "H-l f") #'lsp-ivy-workspace-symbol))
 ;; =============================================================================
 
 ;; LSP UI
@@ -50,22 +51,22 @@
 ;; =============================================================================
 (straight-use-package 'dap-mode)
 
-(with-eval-after-load 'dap-mode
-  (define-key dap-mode-map (kbd "<f12>") 'dap-debug)
-  (define-key dap-mode-map (kbd "S-<f12>") 'dap-debug-hydra)
-  (define-key dap-mode-map (kbd "<f9>") 'dap-breakpoint-toggle))
+(global-set-key (kbd "<f12>") #'dap-debug)
 
-(add-hook 'lsp-mode-hook 'dap-auto-configure-mode)
-(add-hook 'python-mode-hook (lambda () (require 'dap-python)))
-(add-hook 'java-mode-hook (lambda () (require 'dap-java)))
-(add-hook 'c-mode-hook (lambda () (require 'dap-lldb)))
-(add-hook 'c++-mode-hook (lambda () (require 'dap-lldb)))
-(add-hook 'php-mode-hook (lambda () (require 'dap-php)))
-(add-hook 'elixir-mode-hook (lambda () (require 'dap-elixir)))
-(add-hook 'js-mode-hook (lambda () (require 'dap-chrome)))
-(add-hook 'typescript-mode-hook (lambda () (require 'dap-chrome)))
-(add-hook 'rjsx-mode-hook (lambda () (require 'dap-chrome)))
-(add-hook 'rust-mode-hook (lambda () (require 'dap-gdb-lldb)))
+(with-eval-after-load 'dap-mode
+  (define-key dap-mode-map (kbd "S-<f12>") #'dap-debug-hydra)
+  (define-key dap-mode-map (kbd "<f9>") #'dap-breakpoint-toggle)
+  (add-hook 'lsp-mode-hook #'dap-auto-configure-mode)
+  (add-hook 'python-mode-hook (lambda () (require 'dap-python)))
+  (add-hook 'java-mode-hook (lambda () (require 'dap-java)))
+  (add-hook 'c-mode-hook (lambda () (require 'dap-lldb)))
+  (add-hook 'c++-mode-hook (lambda () (require 'dap-lldb)))
+  (add-hook 'php-mode-hook (lambda () (require 'dap-php)))
+  (add-hook 'elixir-mode-hook (lambda () (require 'dap-elixir)))
+  (add-hook 'js-mode-hook (lambda () (require 'dap-chrome)))
+  (add-hook 'typescript-mode-hook (lambda () (require 'dap-chrome)))
+  (add-hook 'rjsx-mode-hook (lambda () (require 'dap-chrome)))
+  (add-hook 'rust-mode-hook (lambda () (require 'dap-gdb-lldb))))
 
 ;; =============================================================================
 

@@ -9,8 +9,8 @@
 
 (customize-set-variable 'auctex-latexmk-inherit-TeX-PDF-mode t)
 
-(add-hook 'tex-mode-hook 'flyspell-mode)
-(add-hook 'auctex-mode-hook 'auctex-latexmk-setup)
+(add-hook 'tex-mode-hook #'flyspell-mode)
+(add-hook 'auctex-mode-hook #'auctex-latexmk-setup)
 ;; =============================================================================
 
 ;; Epub mode

@@ -20,7 +20,7 @@
 
 (add-to-list 'auto-mode-alist '("\\.csv$" . csv-mode))
 
-(add-hook 'csv-mode-hook 'csv-align-mode)
+(add-hook 'csv-mode-hook #'csv-align-mode)
 ;; =============================================================================
 
 ;; Ansible
@@ -33,10 +33,10 @@
 (add-hook 'yaml-mode-hook 'company-ansible)
 
 (with-eval-after-load 'ansible
-  (define-key ansible-key-map (kbd "C-c C-d") 'ansible-doc))
+  (define-key ansible-key-map (kbd "C-c C-d") #'ansible-doc))
 
 (with-eval-after-load 'ansible-doc
-  (define-key ansible-doc-module-mode-map (kbd "C-c C-d") 'ansible-doc))
+  (define-key ansible-doc-module-mode-map (kbd "C-c C-d") #'ansible-doc))
 ;; =============================================================================
 
 ;; Docker
@@ -48,7 +48,7 @@
 
 (add-to-list 'auto-mode-alist '("\\Dockerfile$" . dockerfile-mode))
 
-(global-set-key (kbd "C-c d") 'docker)
+(global-set-key (kbd "C-c d") #'docker)
 ;; =============================================================================
 
 ;; GraphQL
@@ -62,11 +62,10 @@
 (straight-use-package 'graphviz-dot-mode)
 
 (with-eval-after-load 'graphviz-dot-mode
-  (require 'company-graphviz-dot))
+  (require 'company-graphviz-dot)
+  (customize-set-variable 'graphviz-dot-indent-width 4))
 
-(customize-set-variable 'graphviz-dot-indent-width 4)
 ;; =============================================================================
-
 
 ;; HashiCorp Configuration Language
 ;; =============================================================================
@@ -86,10 +85,10 @@
 (customize-set-variable 'markdown-command
 			"pandoc --from markdown --to html --ascii")
 
-(add-hook 'markdown-mode-hook 'markdownfmt-enable-on-save)
+(add-hook 'markdown-mode-hook #'markdownfmt-enable-on-save)
 
 (with-eval-after-load 'markdown-mode
-  (define-key markdown-mode-map (kbd "C-c C-f") 'markdownfmt-format-buffer))
+  (define-key markdown-mode-map (kbd "C-c C-f") #'markdownfmt-format-buffer))
 ;; =============================================================================
 
 ;; Nginx

@@ -109,4 +109,5 @@
     (funcall (intern selected-mode))))
 
 (provide 'base-functions)
+
 ;;; base-functions.el ends here

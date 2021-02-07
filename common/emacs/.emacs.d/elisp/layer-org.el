@@ -39,16 +39,16 @@
     ("s" . "src")
     ("v" . "verse")))
 
-(add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
-(add-hook 'org-mode-hook 'toggle-word-wrap)
-(add-hook 'org-mode-hook 'org-indent-mode)
-(add-hook 'org-mode-hook 'turn-on-visual-line-mode)
-(add-hook 'org-mode-hook '(lambda () (display-line-numbers-mode -1)))
-(add-hook 'org-mode-hook 'auto-fill-mode)
+(add-hook 'org-babel-after-execute-hook #'org-display-inline-images 'append)
+(add-hook 'org-mode-hook #'toggle-word-wrap)
+(add-hook 'org-mode-hook #'org-indent-mode)
+(add-hook 'org-mode-hook #'turn-on-visual-line-mode)
+(add-hook 'org-mode-hook (lambda () (display-line-numbers-mode -1)))
+(add-hook 'org-mode-hook #'auto-fill-mode)
 
-(global-set-key (kbd "C-c l") 'org-store-link)
-(global-set-key (kbd "C-c a") 'org-agenda)
-(global-set-key (kbd "C-c c") 'org-capture)
+(global-set-key (kbd "C-c l") #'org-store-link)
+(global-set-key (kbd "C-c a") #'org-agenda)
+(global-set-key (kbd "C-c c") #'org-capture)
 
 (customize-set-variable 'org-directory vs/org-directory)
 (customize-set-variable 'org-default-notes-file (concat org-directory "notes.org"))
@@ -65,27 +65,26 @@
 (customize-set-variable 'org-outline-path-complete-in-steps nil)
 (customize-set-variable 'org-refile-targets '((org-agenda-files :maxlevel . 9)))
 
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((emacs-lisp . t)
-   (python . t)
-   (js . t)
-   (shell . t)
-   (plantuml . t)
-   (sql . t)
-   (elixir . t)
-   (ruby . t)
-   (dot . t)
-   (latex . t)))
+(with-eval-after-load 'org-mode
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     (python . t)
+     (js . t)
+     (shell . t)
+     (plantuml . t)
+     (sql . t)
+     (elixir . t)
+     (ruby . t)
+     (dot . t)
+     (latex . t))))
 ;; =============================================================================
 
 ;; Org Bullets
 ;; =============================================================================
 (straight-use-package 'org-bullets)
 
-(add-hook 'org-mode-hook (lambda ()
-			   (require 'org-bullets)
-			   (org-bullets-mode 1)))
+(add-hook 'org-mode-hook #'org-bullets-mode)
 
 (customize-set-variable 'org-hide-leading-stars t)
 ;; =============================================================================
@@ -94,16 +93,14 @@
 ;; =============================================================================
 (straight-use-package 'org-download)
 
-(add-hook 'dired-mode-hook 'org-download-enable)
+(add-hook 'dired-mode-hook #'org-download-enable)
 ;; =============================================================================
 
 ;; Org Present
 ;; ============================================================================
 (straight-use-package 'org-present)
 
-(autoload 'org-present "org-present" nil t)
-
-(with-eval-after-load "org-present"
+(with-eval-after-load 'org-present
   (add-hook 'org-present-mode-hook
             (lambda ()
               (org-present-big)
@@ -131,7 +128,7 @@
 ;; =============================================================================
 (straight-use-package 'verb)
 
-(with-eval-after-load 'org
+(with-eval-after-load 'org-mode
   (require 'verb)
   (define-key org-mode-map (kbd "C-c C-r") verb-command-map))
 ;; =============================================================================
@@ -157,7 +154,7 @@
 
 ;; Org Notify
 ;; =============================================================================
-(with-eval-after-load 'org
+(with-eval-after-load 'org-mode
   (require 'org-notify)
   (org-notify-start 60)
 

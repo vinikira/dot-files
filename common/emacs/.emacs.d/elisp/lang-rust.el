@@ -13,14 +13,14 @@
 ;; =============================================================================
 (straight-use-package 'flycheck-rust)
 
-(add-hook 'rust-mode-hook 'flycheck-rust-setup)
+(add-hook 'rust-mode-hook #'flycheck-rust-setup)
 ;; =============================================================================
 
 ;; Cargo
 ;; =============================================================================
 (straight-use-package 'cargo)
 
-(add-hook 'rust-mode-hook 'cargo-minor-mode)
+(add-hook 'rust-mode-hook #'cargo-minor-mode)
 ;; =============================================================================
 
 (provide 'lang-rust)

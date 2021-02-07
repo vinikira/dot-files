@@ -16,10 +16,10 @@
   (set (make-local-variable 'company-backends)
        '((company-css company-web-html company-files))))
 
-(add-hook 'web-mode-hook 'vs/--web-mode-hook)
+(add-hook 'web-mode-hook #'vs/--web-mode-hook)
 
 (with-eval-after-load 'web-mode
-  (define-key web-mode-map (kbd "C-c o b") 'browse-url-of-file))
+  (define-key web-mode-map (kbd "C-c o b") #'browse-url-of-file))
 
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.njk?\\'" . web-mode))
@@ -41,14 +41,13 @@
 
 (customize-set-variable 'emmet-move-cursor-between-quotes t)
 
-(add-hook 'web-mode-hook 'emmet-mode)
-(add-hook 'vue-mode-hook 'emmet-mode)
-(add-hook 'rjsx-mode-hook 'emmet-mode)
-(add-hook 'rjsx-minor-mode-hook 'emmet-mode)
+(add-hook 'web-mode-hook #'emmet-mode)
+(add-hook 'vue-mode-hook #'emmet-mode)
+(add-hook 'js-mode #'emmet-mode)
 
 (with-eval-after-load 'web-mode
-  (define-key web-mode-map (kbd "C-c [") 'emmet-prev-edit-point)
-  (define-key web-mode-map (kbd "C-c ]") 'emmet-next-edit-point))
+  (define-key web-mode-map (kbd "C-c [") #'emmet-prev-edit-point)
+  (define-key web-mode-map (kbd "C-c ]") #'emmet-next-edit-point))
 ;; =============================================================================
 
 ;; CSS Mode
@@ -60,24 +59,22 @@
   (set (make-local-variable 'company-backends)
        '((company-css company-dabbrev-code company-files))))
 
-(add-hook 'css-mode-hook 'vs/--css-mode-hook)
+(add-hook 'css-mode-hook #'vs/--css-mode-hook)
 ;; =============================================================================
 
 ;; Company web
 ;; =============================================================================
 (straight-use-package 'company-web)
+
+(with-eval-after-load 'web-mode
+  (require 'company-web-html)
+  (define-key web-mode-map (kbd "C-.") #'company-web-html))
 ;; =============================================================================
 
 ;; Pug Mode
 ;; =============================================================================
 (straight-use-package 'pug-mode)
 (add-to-list 'auto-mode-alist '("\\.pug?\\'" . pug-mode))
-;; =============================================================================
-
-;; React Mode
-;; =============================================================================
-(straight-use-package 'rjsx-mode)
-(add-to-list 'auto-mode-alist '("\\.jsx$" . rjsx-mode))
 ;; =============================================================================
 
 ;; Vue Mode
