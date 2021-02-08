@@ -32,6 +32,28 @@
    (vc-mode vc-mode)))
 ;; =============================================================================
 
+;; Side windows
+;; =============================================================================
+(customize-set-variable 'display-buffer-alist
+			'(("\\(vterm\\|\\*vterm\\*\\|\\*e?shell\\*\\)"
+			   (display-buffer-in-side-window)
+			   (window-height . 0.25)
+			   (side . bottom)
+			   (slot . -1))
+			  ("\\(*exunit-compilation*\\|*compilation*\\)"
+			   (display-buffer-in-side-window)
+			   (window-height . 0.25)
+			   (side . bottom)
+			   (slot . 0))
+			  ("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\)\\*"
+			   (display-buffer-in-side-window)
+			   (window-height . 0.25)
+			   (side . bottom)
+			   (slot . 1)
+			   (window-parameters . ((no-other-window . t))))))
+
+;; =============================================================================
+
 (provide 'base-appearance)
 
 ;;; base-appearance.el ends here

@@ -20,6 +20,7 @@
 (global-set-key (kbd "H-d") #'vs/duplicate-current-line)
 (global-set-key (kbd "M-/") #'hippie-expand)
 (global-set-key (kbd "C-c s b") #'vs/scratch-buffer)
+(global-set-key (kbd "<f8>") #'window-toggle-side-windows)
 ;; =============================================================================
 
 ;; Unset keys
