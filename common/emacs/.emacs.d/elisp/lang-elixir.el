@@ -50,8 +50,7 @@
 
 ;; Org Babel Elixir
 ;; =============================================================================
-(straight-use-package
- '(ob-elixir :type git :host github :repo "lambdart/ob-elixir"))
+(straight-use-package 'ob-elixir)
 ;; =============================================================================
 
 (provide 'lang-elixir)
