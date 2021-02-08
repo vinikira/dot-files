@@ -56,7 +56,7 @@
 (add-hook 'magit-pre-refresh-hook #'diff-hl-magit-pre-refresh)
 (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh)
 
-(add-hook 'projectile-after-switch-project-hook #'diff-hl-mode)
+(add-hook 'after-init-hook #'global-diff-hl-mode)
 ;; =============================================================================
 
 ;; Dump jump
