@@ -14,11 +14,11 @@
 (straight-use-package 'exunit)
 
 (with-eval-after-load 'elixir-mode
-  (define-key elixir-mode-map (kbd "C-c , a") 'exunit-verify-all)
-  (define-key elixir-mode-map (kbd "C-c , A") 'exunit-verify-all-in-umbrella)
-  (define-key elixir-mode-map (kbd "C-c , s") 'exunit-verify-single)
-  (define-key elixir-mode-map (kbd "C-c , v") 'exunit-verify)
-  (define-key elixir-mode-map (kbd "C-c , r") 'exunit-rerun))
+  (define-key elixir-mode-map (kbd "C-c , a") #'exunit-verify-all)
+  (define-key elixir-mode-map (kbd "C-c , A") #'exunit-verify-all-in-umbrella)
+  (define-key elixir-mode-map (kbd "C-c , s") #'exunit-verify-single)
+  (define-key elixir-mode-map (kbd "C-c , v") #'exunit-verify)
+  (define-key elixir-mode-map (kbd "C-c , r") #'exunit-rerun))
 
 ;; =============================================================================
 
