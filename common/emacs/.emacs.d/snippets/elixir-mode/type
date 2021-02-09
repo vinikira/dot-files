@@ -1,0 +1,8 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: elixir self type annotation
+# key: type
+# group: elixir
+# --
+@type t :: %__MODULE__{
+      $1
+}
