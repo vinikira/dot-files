@@ -1,4 +1,4 @@
-n;;; layer-org.el --- Org mode Layer -*- lexical-binding: t -*-
+;;; layer-org.el --- Org mode Layer -*- lexical-binding: t -*-
 ;;; Commentary:
 ;;; Code:
 
