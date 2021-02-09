@@ -35,23 +35,34 @@
 ;; Side windows
 ;; =============================================================================
 (customize-set-variable 'display-buffer-alist
-			'(("\\(vterm\\|\\*vterm\\*\\|\\*e?shell\\*\\)"
-			   (display-buffer-in-side-window)
-			   (window-height . 0.25)
-			   (side . bottom)
-			   (slot . -1))
-			  ("\\(*exunit-compilation*\\|*compilation*\\)"
-			   (display-buffer-in-side-window)
-			   (window-height . 0.25)
-			   (side . bottom)
-			   (slot . 0))
-			  ("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\)\\*"
-			   (display-buffer-in-side-window)
-			   (window-height . 0.25)
-			   (side . bottom)
-			   (slot . 1)
-			   (window-parameters . ((no-other-window . t))))))
+						'(("\\(vterm\\|\\*vterm\\*\\|\\*e?shell\\*\\)"
+						   (display-buffer-in-side-window)
+						   (window-height . 0.25)
+						   (side . bottom)
+						   (slot . -1))
+						  ("\\(*exunit-compilation*\\|*compilation*\\)"
+						   (display-buffer-in-side-window)
+						   (window-height . 0.25)
+						   (side . bottom)
+						   (slot . 0))
+						  ("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\)\\*"
+						   (display-buffer-in-side-window)
+						   (window-height . 0.25)
+						   (side . bottom)
+						   (slot . 1)
+						   (window-parameters . ((no-other-window . t))))))
 
+;; =============================================================================
+
+;; Tab bar mode
+;; =============================================================================
+(defun vs/--tab-bar-name ()
+  "Custom function to generate tab bar names."
+  (if vc-mode
+	  (projectile-project-name)
+	(tab-bar-tab-name-current)))
+
+(customize-set-variable 'tab-bar-tab-name-function #'vs/--tab-bar-name)
 ;; =============================================================================
 
 (provide 'base-appearance)
