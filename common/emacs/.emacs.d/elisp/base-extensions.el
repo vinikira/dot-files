@@ -181,7 +181,7 @@
   (define-key smartparens-mode-map (kbd "C-(") 'sp-backward-slurp-sexp)
   (define-key smartparens-mode-map (kbd "C-{") 'sp-backward-barf-sexp))
 
-(add-hook 'prog-mode #'smartparens-mode)
+(add-hook 'prog-mode-hook #'smartparens-mode)
 ;; =============================================================================
 
 ;; Smex
