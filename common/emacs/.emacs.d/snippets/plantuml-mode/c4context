@@ -4,7 +4,7 @@
 # C4 model context diagram
 # --
 @startuml
-!include https://raw.githubusercontent.com/adrianvlupu/C4-PlantUML/latest/C4_Context.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
 
 /'
 ' macros: Person, Person_Ext, System, System_Ext, SystemDb, SystemDb_Ext,
