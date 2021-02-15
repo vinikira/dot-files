@@ -66,7 +66,6 @@
 (customize-set-variable 'org-refile-targets '((org-agenda-files :maxlevel . 9)))
 
 (with-eval-after-load 'org
-  (message "Config org babel")
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((emacs-lisp . t)
