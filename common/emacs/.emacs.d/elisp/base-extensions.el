@@ -160,8 +160,8 @@
 (customize-set-variable 'dashboard-set-heading-icons t)
 (customize-set-variable 'dashboard-startup-banner 'logo)
 (customize-set-variable 'dashboard-center-content t)
-;; (customize-set-variable 'initial-buffer-choice
-;; 			(lambda () (get-buffer "*dashboard*")))
+(customize-set-variable 'initial-buffer-choice
+ 			(lambda () (get-buffer "*dashboard*")))
 
 (dashboard-setup-startup-hook)
 ;; =============================================================================
@@ -180,6 +180,9 @@
   (define-key smartparens-mode-map (kbd "C-}") 'sp-forward-barf-sexp)
   (define-key smartparens-mode-map (kbd "C-(") 'sp-backward-slurp-sexp)
   (define-key smartparens-mode-map (kbd "C-{") 'sp-backward-barf-sexp))
+
+(with-eval-after-load 'prog-mode
+  (require 'smartparens-config))
 
 (add-hook 'prog-mode-hook #'smartparens-mode)
 ;; =============================================================================
