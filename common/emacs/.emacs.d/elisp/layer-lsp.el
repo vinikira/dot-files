@@ -26,7 +26,15 @@
 (customize-set-variable 'lsp-lens-enable t)
 
 (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
-(add-hook 'prog-mode-hook #'lsp-deferred)
+(add-hook 'elixir-mode-hook #'lsp-deferred)
+(add-hook 'js-mode-hook #'lsp-deferred)
+(add-hook 'typescript-mode-hook #'lsp-deferred)
+(add-hook 'java-mode-hook #'lsp-deferred)
+(add-hook 'go-mode-hook #'lsp-deferred)
+(add-hook 'dart-mode-hook #'lsp-deferred)
+(add-hook 'rust-mode-hook #'lsp-deferred)
+(add-hook 'kotlin-mode-hook #'lsp-deferred)
+(add-hook 'python-mode-hook #'lsp-deferred)
 ;; =============================================================================
 
 ;; LSP Ivy
