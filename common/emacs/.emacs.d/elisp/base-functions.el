@@ -108,6 +108,19 @@
      (get-buffer-create (format "*%s-scratch*" selected-mode)))
     (funcall (intern selected-mode))))
 
+(defun vs/verb-graphql (rs)
+  "Transform verb RS to graphql request."
+  (require 'json)
+  (let* ((before-body (oref rs body))
+		 (splited-body (split-string before-body "\n\n"))
+		 (query (nth 0 splited-body))
+		 (variables (nth 1 splited-body))
+		 (json-object-type 'alist)
+		 (parsed-variables (if variables (json-parse-string variables) '()))
+		 (new-body (json-encode `((query . ,query) (variables . ,parsed-variables)))))
+	(oset rs body new-body)
+	rs))
+
 (provide 'base-functions)
 
 ;;; base-functions.el ends here
