@@ -4,23 +4,9 @@
 
 ;; Rust Mode
 ;; =============================================================================
-(straight-use-package 'rust-mode)
-(customize-set-variable 'rust-format-on-save t)
-(customize-set-variable 'company-tooltip-align-annotations t)
-;; =============================================================================
-
-;; Flycheck Rust
-;; =============================================================================
-(straight-use-package 'flycheck-rust)
-
-(add-hook 'rust-mode-hook #'flycheck-rust-setup)
-;; =============================================================================
-
-;; Cargo
-;; =============================================================================
-(straight-use-package 'cargo)
-
-(add-hook 'rust-mode-hook #'cargo-minor-mode)
+(straight-use-package 'rustic)
+;; (customize-set-variable 'rust-format-on-save t)
+;; (customize-set-variable 'company-tooltip-align-annotations t)
 ;; =============================================================================
 
 (provide 'lang-rust)
