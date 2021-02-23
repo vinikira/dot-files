@@ -58,7 +58,7 @@
 ;; =============================================================================
 (defun vs/--tab-bar-name ()
   "Custom function to generate tab bar names."
-  (if vc-mode
+  (if (not (equal (projectile-project-name) "-"))
 	  (projectile-project-name)
 	(tab-bar-tab-name-current)))
 
