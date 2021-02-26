@@ -20,7 +20,7 @@
    mode-line-remote
    " ⌚ "
    (:eval (format-time-string "%H:%M"))
-   " ☰ "
+   "  "
    "%l:%c"
    " · "
    (:eval (propertized-buffer-identification "%b"))
@@ -28,7 +28,7 @@
    "("
    mode-name
    ")"
-   (:eval (when vc-mode (concat " » " (projectile-project-name) " ")))
+   (:eval (when vc-mode (concat "  " (projectile-project-name) " ")))
    (vc-mode vc-mode)))
 ;; =============================================================================
 
