@@ -100,8 +100,8 @@
   "Create a scratch with selected mode.If NEW-FRAME is t, opens it in new frame."
   (interactive "P")
   (let* ((modes (seq-uniq (mapcar #'cdr auto-mode-alist)))
-	(selected-mode
-	 (completing-read "Select mode: " modes)))
+	 (selected-mode
+	  (completing-read "Select mode: " modes)))
     (when new-frame
       (select-frame (make-frame)))
     (switch-to-buffer
@@ -112,14 +112,14 @@
   "Transform verb RS to graphql request."
   (require 'json)
   (let* ((before-body (oref rs body))
-		 (splited-body (split-string before-body "\n\n"))
-		 (query (nth 0 splited-body))
-		 (variables (nth 1 splited-body))
-		 (json-object-type 'alist)
-		 (parsed-variables (if variables (json-parse-string variables) '()))
-		 (new-body (json-encode `((query . ,query) (variables . ,parsed-variables)))))
-	(oset rs body new-body)
-	rs))
+	 (splited-body (split-string before-body "\n\n"))
+	 (query (nth 0 splited-body))
+	 (variables (nth 1 splited-body))
+	 (json-object-type 'alist)
+	 (parsed-variables (if variables (json-parse-string variables) '()))
+	 (new-body (json-encode `((query . ,query) (variables . ,parsed-variables)))))
+    (oset rs body new-body)
+    rs))
 
 (provide 'base-functions)
 
