@@ -112,11 +112,11 @@
     (ansi-color-apply-on-region
      compilation-filter-start (point))))
 
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
-(add-hook 'prog-mode-hook 'vs/--line-numbers)
-(add-hook 'text-mode-hook 'vs/--line-numbers)
-(add-hook 'prog-mode-hook 'vs/--font-lock)
-(add-hook 'text-mode-hook 'auto-fill-mode)
+(add-hook 'before-save-hook #'delete-trailing-whitespace)
+(add-hook 'prog-mode-hook #'vs/--line-numbers)
+(add-hook 'text-mode-hook #'vs/--line-numbers)
+(add-hook 'prog-mode-hook #'vs/--font-lock)
+(add-hook 'text-mode-hook #'auto-fill-mode)
 (add-hook 'compilation-filter-hook
           #'vs/--colorize-compilation)
 
