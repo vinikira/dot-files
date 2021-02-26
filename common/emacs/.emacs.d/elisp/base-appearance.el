@@ -65,6 +65,17 @@
 (customize-set-variable 'tab-bar-tab-name-function #'vs/--tab-bar-name)
 ;; =============================================================================
 
+;; Mouse smooth scrolling
+;; =============================================================================
+;; https://www.emacswiki.org/emacs/SmoothScrolling
+;; scroll one line at a time (less "jumpy" than defaults)
+(customize-set-variable 'mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
+
+(customize-set-variable 'mouse-wheel-follow-mouse t) ;; scroll window under mouse
+
+(customize-set-variable 'scroll-step 1) ;; keyboard scroll one line at a time
+;; =============================================================================
+
 (provide 'base-appearance)
 
 ;;; base-appearance.el ends here
