@@ -26,10 +26,18 @@
    (:eval (propertized-buffer-identification "%b"))
    " · "
    "("
+   (:eval (all-the-icons-icon-for-mode major-mode))
+   " "
    mode-name
    ")"
-   (:eval (when vc-mode (concat "  " (projectile-project-name) " ")))
+   (:eval (when vc-mode
+	    (concat " "
+		    (all-the-icons-icon-for-dir (projectile-project-root))
+		    " "
+		    (projectile-project-name)
+		    " ")))
    (vc-mode vc-mode)))
+
 ;; =============================================================================
 
 ;; Side windows
