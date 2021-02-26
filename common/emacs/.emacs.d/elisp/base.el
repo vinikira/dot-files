@@ -88,12 +88,6 @@
 (customize-set-variable 'read-process-output-max (* 1024 1024))
 (fset 'yes-or-no-p 'y-or-n-p)
 (windmove-default-keybindings)
-;; desktop save
-(customize-set-variable 'desktop-restore-frames t)
-(customize-set-variable 'desktop-restore-reuses-frames t)
-(customize-set-variable 'desktop-restore-forces-onscreen 'all)
-(customize-set-variable 'desktop-restore-eager 16)
-(customize-set-variable 'desktop-auto-save-time 16)
 ;; =============================================================================
 
 ;; Hooks
