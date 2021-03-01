@@ -64,7 +64,6 @@
 (with-eval-after-load 'dap-mode
   (define-key dap-mode-map (kbd "S-<f12>") #'dap-debug-hydra)
   (define-key dap-mode-map (kbd "<f9>") #'dap-breakpoint-toggle)
-  (add-hook 'lsp-mode-hook #'dap-auto-configure-mode)
   (add-hook 'python-mode-hook (lambda () (require 'dap-python)))
   (add-hook 'java-mode-hook (lambda () (require 'dap-java)))
   (add-hook 'c-mode-hook (lambda () (require 'dap-lldb)))
