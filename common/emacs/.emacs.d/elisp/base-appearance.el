@@ -71,6 +71,9 @@
     (tab-bar-tab-name-current)))
 
 (customize-set-variable 'tab-bar-tab-name-function #'vs/--tab-bar-name)
+
+(set-face-attribute 'tab-bar-tab nil :family "JetBrains Mono")
+(set-face-attribute 'tab-bar-tab-inactive nil :family "JetBrains Mono")
 ;; =============================================================================
 
 (provide 'base-appearance)
