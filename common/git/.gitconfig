@@ -3,3 +3,6 @@
 [user]
 	email = vinicius.simoes95@gmail.com
 	name = Vinícius Simões
+
+[init]
+	defaultBranch = main
