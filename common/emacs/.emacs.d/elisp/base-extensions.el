@@ -12,6 +12,7 @@
 ;; Company mode
 ;; =============================================================================
 (straight-use-package 'company)
+(straight-use-package 'company-posframe)
 (straight-use-package 'company-quickhelp)
 
 (customize-set-variable 'company-idle-delay 0.25)
@@ -43,6 +44,10 @@
 ;; domain-specific words with particular casing.
 (customize-set-variable 'company-dabbrev-ignore-case nil)
 (customize-set-variable 'company-dabbrev-downcase nil)
+
+(with-eval-after-load 'company-mode
+  (company-posframe-mode)
+  (company-quickhelp-mode))
 
 (global-set-key (kbd "C-.") #'company-complete)
 
