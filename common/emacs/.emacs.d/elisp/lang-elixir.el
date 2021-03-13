@@ -24,13 +24,15 @@
 
 ;; Inf Elixir
 ;; =============================================================================
-(straight-use-package
- '(inf-elixir :type git :host github :repo "J3RN/inf-elixir" :branch "master"))
+;; (straight-use-package
+;;  '(inf-elixir :type git :host github :repo "J3RN/inf-elixir" :branch "master"))
 
-(with-eval-after-load 'elixir-mode
-  (define-key elixir-mode-map (kbd "C-x C-e") #'inf-elixir-send-line)
-  (define-key elixir-mode-map (kbd "C-M-x") #'inf-elixir-send-region)
-  (define-key elixir-mode-map (kbd "C-S-M-x") #'inf-elixir-send-buffer))
+;; (with-eval-after-load 'elixir-mode
+;;   (define-key elixir-mode-map (kbd "C-x C-e") #'inf-elixir-send-line)
+;;   (define-key elixir-mode-map (kbd "C-M-x") #'inf-elixir-send-region)
+;;   (define-key elixir-mode-map (kbd "C-S-M-x") #'inf-elixir-send-buffer))
+
+(add-to-list 'load-path "/home/vsimoes/git/inf-elixir.el/")
 ;; =============================================================================
 
 ;; Poly mode for ~L sigil

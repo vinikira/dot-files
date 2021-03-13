@@ -12,7 +12,7 @@
 ;; Company mode
 ;; =============================================================================
 (straight-use-package 'company)
-(straight-use-package 'company-posframe)
+(straight-use-package 'company-box)
 (straight-use-package 'company-quickhelp)
 
 (customize-set-variable 'company-idle-delay 0.25)
@@ -45,12 +45,10 @@
 (customize-set-variable 'company-dabbrev-ignore-case nil)
 (customize-set-variable 'company-dabbrev-downcase nil)
 
-(with-eval-after-load 'company-mode
-  (company-posframe-mode)
-  (company-quickhelp-mode))
-
 (global-set-key (kbd "C-.") #'company-complete)
 
+(add-hook 'company-mode-hook #'company-box-mode)
+(add-hook 'company-mode-hook #'company-quickhelp-mode)
 (add-hook 'after-init-hook #'global-company-mode)
 ;; =============================================================================
 

@@ -13,17 +13,16 @@
 (with-eval-after-load 'lsp-mode
   (define-key lsp-mode-map (kbd "M-RET") #'lsp-execute-code-action)
   (define-key lsp-mode-map (kbd "C-c C-f") #'lsp-format-buffer)
-  (customize-set-variable 'lsp-file-watch-ignored
-                          (append vs/lsp-ignore-files lsp-file-watch-ignored)))
-
-(customize-set-variable 'lsp-auto-guess-root t)
-(customize-set-variable 'lsp-keymap-prefix "H-l")
-(customize-set-variable 'lsp-rust-server 'rust-analyzer)
-(customize-set-variable 'lsp-idle-delay 0.500)
-(customize-set-variable 'lsp-modeline-diagnostics-scope :project)
-(customize-set-variable 'lsp-keep-workspace-alive nil)
-(customize-set-variable 'lsp-completion-enable-additional-text-edit nil)
-(customize-set-variable 'lsp-lens-enable t)
+  (customize-set-variable 'lsp-file-watch-ignored-directories
+                          (append vs/lsp-ignore-files lsp-file-watch-ignored-directories))
+  (customize-set-variable 'lsp-auto-guess-root t)
+  (customize-set-variable 'lsp-keymap-prefix "H-l")
+  (customize-set-variable 'lsp-rust-server 'rust-analyzer)
+  (customize-set-variable 'lsp-idle-delay 0.500)
+  (customize-set-variable 'lsp-modeline-diagnostics-scope :project)
+  (customize-set-variable 'lsp-keep-workspace-alive nil)
+  (customize-set-variable 'lsp-completion-enable-additional-text-edit nil)
+  (customize-set-variable 'lsp-lens-enable t))
 
 (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
 (add-hook 'elixir-mode-hook #'lsp-deferred)
