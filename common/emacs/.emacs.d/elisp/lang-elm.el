@@ -7,8 +7,6 @@
 (straight-use-package 'elm-mode)
 
 (add-to-list 'auto-mode-alist '("\\.elm$" . elm-mode))
-
-(add-to-list 'company-backends #'company-elm)
 ;; =============================================================================
 
 (provide 'lang-elm)
