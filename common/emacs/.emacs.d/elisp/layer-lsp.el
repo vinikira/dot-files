@@ -17,8 +17,6 @@
                           (append vs/lsp-ignore-files lsp-file-watch-ignored-directories))
   (customize-set-variable 'lsp-auto-guess-root t)
   (customize-set-variable 'lsp-keymap-prefix "H-l")
-  (customize-set-variable 'lsp-rust-server 'rust-analyzer)
-  (customize-set-variable 'lsp-idle-delay 0.500)
   (customize-set-variable 'lsp-modeline-diagnostics-scope :project)
   (customize-set-variable 'lsp-keep-workspace-alive nil)
   (customize-set-variable 'lsp-completion-enable-additional-text-edit nil)
