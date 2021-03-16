@@ -64,20 +64,19 @@
 (customize-set-variable 'display-buffer-alist
 			'(("\\(vterm\\|\\*vterm\\*\\|\\*e?shell\\*\\)"
 			   (display-buffer-in-side-window)
-			   (window-height . 0.25)
+			   (window-height . 0.30)
 			   (side . bottom)
 			   (slot . -1))
-			  ("\\(*exunit-compilation*\\|*compilation*\\)"
+			  ("\\*compilation\\*"
 			   (display-buffer-in-side-window)
-			   (window-height . 0.25)
+			   (window-height . 0.30)
 			   (side . bottom)
 			   (slot . 0))
-			  ("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\)\\*"
+			  ("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\|Help\\)\\*"
 			   (display-buffer-in-side-window)
-			   (window-height . 0.25)
+			   (window-height . 0.30)
 			   (side . bottom)
-			   (slot . 1)
-			   (window-parameters . ((no-other-window . t))))))
+			   (slot . 1))))
 
 ;; =============================================================================
 
