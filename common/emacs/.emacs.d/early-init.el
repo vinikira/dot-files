@@ -13,15 +13,4 @@
 ;; larger than the system default.
 (setq frame-inhibit-implied-resize t)
 
-;; Frame face
-(defconst vs/frame-alist
-  '((font . "JetBrainsMono-11:width=regular:weight=regular")
-    (scroll-bar . 0)
-    (menu-bar-lines . 0)
-    (vertical-scroll-bars)
-    (height . 60)
-    (width . 95)
-    (alpha . 100)))
-
-(setq-default default-frame-alist vs/frame-alist)
 ;;; early-init.el ends here
