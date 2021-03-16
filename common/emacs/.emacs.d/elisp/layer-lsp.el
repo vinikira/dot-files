@@ -14,14 +14,19 @@
   (customize-set-variable 'lsp-file-watch-ignored-directories
                           (append vs/lsp-ignore-files lsp-file-watch-ignored-directories))
   (define-key lsp-mode-map (kbd "M-RET") #'lsp-execute-code-action)
-  (define-key lsp-mode-map (kbd "C-c C-f") #'lsp-format-buffer))
+  (define-key lsp-mode-map (kbd "C-c C-f") #'lsp-format-buffer)
+  (define-key lsp-mode-map (kbd "C-c C-d") #'lsp-ui-doc-show)
+  (define-key lsp-mode-map (kbd "C-c C-r") #'lsp-rename)
+  (define-key lsp-mode-map (kbd "C-c C-g") #'lsp-find-references))
 
 (customize-set-variable 'lsp-auto-guess-root t)
 (customize-set-variable 'lsp-keymap-prefix "H-l")
 (customize-set-variable 'lsp-modeline-diagnostics-scope :project)
 (customize-set-variable 'lsp-keep-workspace-alive nil)
-(customize-set-variable 'lsp-completion-enable-additional-text-edit nil)
-(customize-set-variable 'lsp-lens-enable t)
+(customize-set-variable 'lsp-signature-render-documentation nil)
+(customize-set-variable 'lsp-headerline-breadcrumb-enable nil)
+(customize-set-variable 'lsp-enable-links nil)
+(customize-set-variable 'lsp-log-io nil)
 
 (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
 (add-hook 'elixir-mode-hook #'lsp-deferred)
@@ -48,7 +53,6 @@
 (straight-use-package 'lsp-ui)
 
 (customize-set-variable 'lsp-ui-doc-include-signature t)
-(customize-set-variable 'lsp-ui-doc-header t)
 (customize-set-variable 'lsp-ui-doc-enable nil)
 (customize-set-variable 'lsp-ui-sideline-enable nil)
 ;; =============================================================================
