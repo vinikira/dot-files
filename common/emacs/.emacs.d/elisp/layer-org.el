@@ -4,7 +4,7 @@
 
 ;; Org mode latest version.
 ;; =============================================================================
-(straight-use-package 'org-plus-contrib)
+(straight-use-package '(org-plus-contrib :includes org))
 
 ;; Defining where the Org files will be stored.
 (defconst vs/org-directory
