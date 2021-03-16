@@ -23,7 +23,20 @@
     ("mw" "Meeting work" entry (file+headline "work.org" "Meetings")
      "* MEETING with %? :MEETING:\nSCHEDULED: %^t")
     ("n" "Note" entry (file org-default-notes-file)
-     "* %? \n%t")))
+     "* %? \n%t")
+    ("c" "Contacts" entry (file "contacts.org")
+     "* %(org-contacts-template-name)
+:PROPERTIES:
+:EMAIL: %(org-contacts-template-email)
+:PHONE:
+:ALIAS:
+:NICKNAME:
+:IGNORE:
+:ICON:
+:NOTE:
+:ADDRESS:
+:BIRTHDAY:
+:END:")))
 
 ;; My Org structure templates.
 (defconst vs/org-structure-template-alist
@@ -163,6 +176,12 @@
    '(:time "10m" :period "2m" :duration 25 :actions -notify/window)
    '(:time "1h" :period "15m" :duration 25 :actions -notify/window)
    '(:time "2h" :period "30m" :duration 25 :actions -notify/window)))
+;; =============================================================================
+
+;; Org contacts
+;; =============================================================================
+(with-eval-after-load 'org
+  (require 'org-contacts))
 ;; =============================================================================
 
 ;; Latex
