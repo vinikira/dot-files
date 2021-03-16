@@ -24,7 +24,10 @@
      "* MEETING with %? :MEETING:\nSCHEDULED: %^t")
     ("n" "Note" entry (file org-default-notes-file)
      "* %? \n%t")
-    ("c" "Contacts" entry (file "contacts.org")
+    ("j" "Journal Entry" entry (file+datetree "journal.org")
+     "* Event: %?\n\n  %i\n\n  From: %a"
+     :empty-lines 1)
+    ("c" "New Contact" entry (file "contacts.org")
      "* %(org-contacts-template-name)
 :PROPERTIES:
 :EMAIL: %(org-contacts-template-email)
