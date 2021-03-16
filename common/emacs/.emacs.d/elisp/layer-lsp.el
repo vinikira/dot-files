@@ -11,11 +11,11 @@
     "[/\\\\]deps$" "[/\\\\]_build$"))
 
 (with-eval-after-load 'lsp-mode
+  (customize-set-variable 'lsp-file-watch-ignored-directories
+                          (append vs/lsp-ignore-files lsp-file-watch-ignored-directories))
   (define-key lsp-mode-map (kbd "M-RET") #'lsp-execute-code-action)
   (define-key lsp-mode-map (kbd "C-c C-f") #'lsp-format-buffer))
 
-(customize-set-variable 'lsp-file-watch-ignored-directories
-                        (append vs/lsp-ignore-files lsp-file-watch-ignored-directories))
 (customize-set-variable 'lsp-auto-guess-root t)
 (customize-set-variable 'lsp-keymap-prefix "H-l")
 (customize-set-variable 'lsp-modeline-diagnostics-scope :project)
