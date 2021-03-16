@@ -2,6 +2,11 @@
 ;;; Commentary:
 ;;; Code:
 
+;; Font Family
+;; =============================================================================
+(defconst vs/font-family "JetBrainsMono")
+;; =============================================================================
+
 ;; Theme
 ;; =============================================================================
 (straight-use-package 'dracula-theme)
@@ -12,7 +17,7 @@
 ;; Frame face
 ;; =============================================================================
 (defconst vs/frame-alist
-  '((font . "JetBrainsMono-11:width=regular:weight=regular")
+  '((font . (format "%s-11:width=regular:weight=regular" vs/font-family))
     (scroll-bar . 0)
     (menu-bar-lines . 0)
     (vertical-scroll-bars)
@@ -86,8 +91,8 @@
 
 (customize-set-variable 'tab-bar-tab-name-function #'vs/--tab-bar-name)
 
-(set-face-attribute 'tab-bar-tab nil :family "JetBrains Mono")
-(set-face-attribute 'tab-bar-tab-inactive nil :family "JetBrains Mono")
+(set-face-attribute 'tab-bar-tab nil :family vs/font-family)
+(set-face-attribute 'tab-bar-tab-inactive nil :family vs/font-family)
 ;; =============================================================================
 
 (provide 'base-appearance)
