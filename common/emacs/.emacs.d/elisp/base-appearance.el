@@ -17,7 +17,7 @@
 ;; Frame face
 ;; =============================================================================
 (defconst vs/frame-alist
-  '((font . (format "%s-11:width=regular:weight=regular" vs/font-family))
+  `((font . ,(format "%s-11:width=regular:weight=regular" vs/font-family))
     (scroll-bar . 0)
     (menu-bar-lines . 0)
     (vertical-scroll-bars)
