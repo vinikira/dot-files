@@ -22,7 +22,7 @@
 ;; =============================================================================
 (straight-use-package 'lsp-java)
 
-(with-eval-after-load 'java-mode
+(with-eval-after-load 'lsp-java
   (define-key java-mode-map (kbd "C-c , v") #'dap-java-run-test-class)
   (define-key java-mode-map (kbd "C-c , s") #'dap-java-run-test-method)
   (define-key java-mode-map (kbd "C-c , D") #'dap-java-debug-test-class)
