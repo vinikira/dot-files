@@ -84,14 +84,16 @@
 ;; =============================================================================
 (defun vs/--tab-bar-name ()
   "Custom function to generate tab bar names."
-  (if (not (equal (projectile-project-name) "-"))
-      (projectile-project-name)
-    (tab-bar-tab-name-current)))
+  (let ((project-name (projectile-project-name)))
+    (if (string= "-" project-name)
+	(tab-bar-tab-name-current)
+      project-name)))
 
+(customize-set-variable 'tab-bar-mode t)
+(customize-set-variable 'tab-bar-show nil)
 (customize-set-variable 'tab-bar-tab-name-function #'vs/--tab-bar-name)
 
-(set-face-attribute 'tab-bar-tab nil :family vs/font-family)
-(set-face-attribute 'tab-bar-tab-inactive nil :family vs/font-family)
+(global-set-key (kbd "H-t") #'tab-bar-select-tab-by-name)
 ;; =============================================================================
 
 (provide 'base-appearance)
