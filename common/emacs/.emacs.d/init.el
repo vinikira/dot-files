@@ -50,6 +50,7 @@
 (require 'base-extensions)
 (require 'layer-web)
 (require 'lang-clojure)
+(require 'lang-crystal)
 (require 'lang-csharp)
 (require 'lang-dart)
 (require 'lang-elixir)
