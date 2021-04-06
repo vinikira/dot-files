@@ -3,9 +3,12 @@
 ;;; Code:
 
 ;; Fonts Families
-;; More information: http://ergoemacs.org/emacs/emacs_list_and_set_font.html
 ;; =============================================================================
-(defconst vs/font-family "JetBrainsMono")
+(defconst vs/font-family
+  (cond
+   ((member "JetBrains Mono" (font-family-list)) "JetBrains Mono")
+   ((member "DejaVu Sans Mono" (font-family-list)) "DejaVu Sans Mono")))
+
 (defconst vs/emoji-font-family
   (cond
    ((member "Noto Color Emoji" (font-family-list)) "Noto Color Emoji")
@@ -16,6 +19,7 @@
 ;; =============================================================================
 
 ;; Font emoji setup
+;; More information: http://ergoemacs.org/emacs/emacs_list_and_set_font.html
 ;; =============================================================================
 (set-fontset-font t '(#x1f300 . #x1fad0) vs/emoji-font-family)
 ;; =============================================================================
