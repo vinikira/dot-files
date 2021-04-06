@@ -2,9 +2,22 @@
 ;;; Commentary:
 ;;; Code:
 
-;; Font Family
+;; Fonts Families
+;; More information: http://ergoemacs.org/emacs/emacs_list_and_set_font.html
 ;; =============================================================================
 (defconst vs/font-family "JetBrainsMono")
+(defconst vs/emoji-font-family
+  (cond
+   ((member "Noto Color Emoji" (font-family-list)) "Noto Color Emoji")
+   ((member "Noto Emoji" (font-family-list)) "Noto Emoji")
+   ((member "Segoe UI Emoji" (font-family-list)) "Segoe UI Emoji")
+   ((member "Symbola" (font-family-list)) "Symbola")
+   ((member "Apple Color Emoji" (font-family-list)) "Apple Color Emoji")))
+;; =============================================================================
+
+;; Font emoji setup
+;; =============================================================================
+(set-fontset-font t '(#x1f300 . #x1fad0) vs/emoji-font-family)
 ;; =============================================================================
 
 ;; Theme
