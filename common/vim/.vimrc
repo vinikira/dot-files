@@ -4,8 +4,6 @@ let mapleader="<space>"
 syntax on
 let g:javascript_plugin_jsdoc = 1
 set term=screen-256color
-set foldmethod=syntax
-set background=dark
 set cursorline
 " Desabilitar backups:
 set nobackup
@@ -46,8 +44,8 @@ set incsearch
 nmap <silent> <C-C> :silent noh<CR>
 
 "Plugs------------------------------------------------------
-if empty(glob('~/.config/nvim/autoload/plug.vim'))
-  silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   autocmd VimEnter * PlugInstall
 endif
@@ -57,11 +55,11 @@ call plug#begin('~/.vim/plugged')
 Plug 'scrooloose/nerdtree'
 Plug 'bling/vim-airline'
 Plug 'scrooloose/nerdcommenter'
-Plug 'joshdick/onedark.vim'
+Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'sheerun/vim-polyglot'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'elixir-editors/vim-elixir'
 call plug#end()
-
 
 "-------------------------------------------------------------
 
@@ -90,4 +88,4 @@ if (has("termguicolors"))
     set termguicolors
 endif
 
-colorscheme onedark
+colorscheme dracula
