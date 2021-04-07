@@ -5,7 +5,7 @@
 ;; Fonts Families
 ;; =============================================================================
 (defvar vs/font-family "JetBrains Mono")
-(defvar vs/emoji-font-family "Noto Color Font")
+(defvar vs/emoji-font-family "Noto Color Emoji")
 ;; =============================================================================
 
 ;; Emoji font setup
@@ -13,7 +13,7 @@
 ;; =============================================================================
 (defun vs/--setup-emoji-font (&rest _frame)
   "Set fontset emoji font for the FRAME."
-  (set-fontset-font t '(#x1f300 . #x1fad0) vs/emoji-font-family))
+  (set-fontset-font t 'symbol vs/emoji-font-family))
 
 (unless (daemonp) (vs/--setup-emoji-font))
 
