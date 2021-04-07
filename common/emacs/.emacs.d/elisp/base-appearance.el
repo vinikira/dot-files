@@ -4,24 +4,20 @@
 
 ;; Fonts Families
 ;; =============================================================================
-(defconst vs/font-family
-  (cond
-   ((member "JetBrains Mono" (font-family-list)) "JetBrains Mono")
-   ((member "DejaVu Sans Mono" (font-family-list)) "DejaVu Sans Mono")))
-
-(defconst vs/emoji-font-family
-  (cond
-   ((member "Noto Color Emoji" (font-family-list)) "Noto Color Emoji")
-   ((member "Noto Emoji" (font-family-list)) "Noto Emoji")
-   ((member "Segoe UI Emoji" (font-family-list)) "Segoe UI Emoji")
-   ((member "Symbola" (font-family-list)) "Symbola")
-   ((member "Apple Color Emoji" (font-family-list)) "Apple Color Emoji")))
+(defvar vs/font-family "JetBrains Mono")
+(defvar vs/emoji-font-family "Noto Color Font")
 ;; =============================================================================
 
-;; Font emoji setup
+;; Emoji font setup
 ;; More information: http://ergoemacs.org/emacs/emacs_list_and_set_font.html
 ;; =============================================================================
-(set-fontset-font t '(#x1f300 . #x1fad0) vs/emoji-font-family)
+(defun vs/--setup-emoji-font (&rest _frame)
+  "Set fontset emoji font for the FRAME."
+  (set-fontset-font t '(#x1f300 . #x1fad0) vs/emoji-font-family))
+
+(unless (daemonp) (vs/--setup-emoji-font))
+
+(advice-add 'server-create-window-system-frame :after 'vs/--setup-emoji-font)
 ;; =============================================================================
 
 ;; Theme
@@ -33,7 +29,7 @@
 
 ;; Frame face
 ;; =============================================================================
-(defconst vs/frame-alist
+(defvar vs/frame-alist
   `((font . ,(format "%s-11:width=regular:weight=regular" vs/font-family))
     (scroll-bar . 0)
     (menu-bar-lines . 0)
