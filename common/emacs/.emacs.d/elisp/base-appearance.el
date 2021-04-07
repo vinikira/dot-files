@@ -46,7 +46,26 @@
 ;; =============================================================================
 
 ;; Modeline
+;; See more: https://github.com/domtronn/all-the-icons.el/wiki/Mode-Line
 ;; =============================================================================
+(defun vs/--custom-modeline-git-vc ()
+  "Define the custom icons for vc mode."
+  (let ((branch (mapconcat 'concat (cdr (split-string vc-mode "[:-]")) "-")))
+    (concat
+     (propertize (format "%s" (all-the-icons-alltheicon "git")) 'face `(:height 1.2) 'display '(raise -0.1))
+     " git "
+     (propertize (format "%s" (all-the-icons-octicon "git-branch"))
+                 'face `(:height 1.3 :family ,(all-the-icons-octicon-family))
+                 'display '(raise -0.1))
+     (propertize (format " %s" branch) 'face `(:height 1.0)))))
+
+(defun vs/--custom-modeline-mode-icon ()
+  "Define the icon for current major mode."
+  (format "%s"
+	  (propertize (all-the-icons-icon-for-mode major-mode)
+                      'help-echo (format "Major-mode: `%s`" major-mode)
+                      'face `(:height 1.2 :family ,(all-the-icons-icon-family-for-buffer)))))
+
 (customize-set-variable
  'mode-line-format
  '("%e"
@@ -54,25 +73,20 @@
    mode-line-mule-info
    mode-line-modified
    mode-line-remote
-   " ⌚ "
+   " 🕘 "
    (:eval (format-time-string "%H:%M"))
-   "  "
+   " 📝 "
    "%l:%c"
    " · "
    (:eval (propertized-buffer-identification "%b"))
    " · "
    "("
-   (:eval (all-the-icons-icon-for-mode major-mode))
+   (:eval (vs/--custom-modeline-mode-icon))
    " "
    mode-name
    ")"
-   (:eval (when vc-mode
-	    (concat " "
-		    (all-the-icons-icon-for-dir (projectile-project-root))
-		    " "
-		    (projectile-project-name)
-		    " ")))
-   (vc-mode vc-mode)))
+   " · "
+   (:eval (when vc-mode (vs/--custom-modeline-git-vc)))))
 
 ;; =============================================================================
 
