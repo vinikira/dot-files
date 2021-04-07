@@ -22,6 +22,8 @@
 
 ;; Theme
 ;; =============================================================================
+(declare-function straight-use-package "ext:straight")
+
 (straight-use-package 'dracula-theme)
 
 (load-theme 'dracula t)
@@ -44,6 +46,12 @@
 ;; Modeline
 ;; See more: https://github.com/domtronn/all-the-icons.el/wiki/Mode-Line
 ;; =============================================================================
+(declare-function all-the-icons-alltheicon "ext:all-the-icons")
+(declare-function all-the-icons-octicon "ext:all-the-icons")
+(declare-function all-the-icons-octicon-family "ext:all-the-icons")
+(declare-function all-the-icons-icon-for-mode "ext:all-the-icons")
+(declare-function all-the-icons-icon-family-for-buffer "ext:all-the-icons")
+
 (defun vs/--custom-modeline-git-vc ()
   "Define the custom icons for vc mode."
   (let ((branch (mapconcat 'concat (cdr (split-string vc-mode "[:-]")) "-")))
@@ -109,6 +117,8 @@
 
 ;; Tab bar mode
 ;; =============================================================================
+(declare-function projectile-project-name "ext:projectile")
+
 (defun vs/--tab-bar-name ()
   "Custom function to generate tab bar names."
   (let ((project-name (projectile-project-name)))

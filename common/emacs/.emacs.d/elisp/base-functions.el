@@ -108,9 +108,12 @@
      (get-buffer-create (format "*%s-scratch*" selected-mode)))
     (funcall (intern selected-mode))))
 
+(declare-function oref "eieio")
+(declare-function oset "eieio")
+(declare-function json-encode "json")
+
 (defun vs/verb-graphql (rs)
   "Transform verb RS to graphql request."
-  (require 'json)
   (let* ((before-body (oref rs body))
 	 (splited-body (split-string before-body "\n\n"))
 	 (query (nth 0 splited-body))
