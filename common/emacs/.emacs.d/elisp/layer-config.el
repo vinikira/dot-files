@@ -11,14 +11,11 @@
 ;; YAML
 ;; =============================================================================
 (straight-use-package 'yaml-mode)
-(add-to-list 'auto-mode-alist '("\\.yaml|.yml$" . yaml-mode))
 ;; =============================================================================
 
 ;; CSV
 ;; =============================================================================
 (straight-use-package 'csv-mode)
-
-(add-to-list 'auto-mode-alist '("\\.csv$" . csv-mode))
 
 (add-hook 'csv-mode-hook #'csv-align-mode)
 ;; =============================================================================
@@ -78,12 +75,10 @@
 (straight-use-package 'markdown-mode)
 (straight-use-package 'markdownfmt)
 
-(add-to-list 'auto-mode-alist '("README\\.md\\'" . gfm-mode))
-(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
-(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("README\\.md$" . gfm-mode))
 
 (customize-set-variable 'markdown-command
-			"pandoc --from markdown --to html --ascii")
+                        "pandoc --from markdown --to html --ascii")
 
 (add-hook 'markdown-mode-hook #'markdownfmt-enable-on-save)
 
@@ -100,21 +95,21 @@
 ;; =============================================================================
 (straight-use-package 'plantuml-mode)
 (straight-use-package 'flycheck-plantuml)
-(add-to-list 'auto-mode-alist '("\\.plantuml$|\\.puml$'" . plantuml-mode))
+(add-to-list 'auto-mode-alist '("\\.plantuml$\\|\\.puml$" . plantuml-mode))
 
 (customize-set-variable 'plantuml-output-type "svg")
 (customize-set-variable 'plantuml-default-exec-mode 'jar)
 
 (with-eval-after-load 'plantuml-mode
   (let* ((plantuml-directory private-dir)
-	 (plantuml-link
-	  "http://sourceforge.net/projects/plantuml/files/plantuml.jar/download")
-	 (plantuml-target (concat plantuml-directory "/plantuml.jar")))
+         (plantuml-link
+          "http://sourceforge.net/projects/plantuml/files/plantuml.jar/download")
+         (plantuml-target (concat plantuml-directory "/plantuml.jar")))
     (if (not (file-exists-p plantuml-target))
-	(progn (message "Downloading plantuml.jar")
-	       (shell-command
-		(format "wget %s -O %s" plantuml-link plantuml-target))
-	       (kill-buffer "*Shell Command Output*")))
+        (progn (message "Downloading plantuml.jar")
+               (shell-command
+                (format "wget %s -O %s" plantuml-link plantuml-target))
+               (kill-buffer "*Shell Command Output*")))
     (customize-set-variable 'org-plantuml-jar-path plantuml-target)
     (customize-set-variable 'plantuml-jar-path plantuml-target))
   (require 'flycheck-plantuml)
@@ -124,13 +119,11 @@
 ;; Protobuf mode
 ;; =============================================================================
 (straight-use-package 'protobuf-mode)
-(add-to-list 'auto-mode-alist '("\\.proto$" . protobuf-mode))
 ;; =============================================================================
 
 ;; TOML Mode
 ;; =============================================================================
 (straight-use-package 'toml-mode)
-(add-to-list 'auto-mode-alist '("\\.toml$" . toml-mode))
 ;; =============================================================================
 
 (provide 'layer-config)
