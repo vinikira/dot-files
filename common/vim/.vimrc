@@ -1,29 +1,26 @@
-"map leader
+" Map leader
 let mapleader="<space>"
-"My settings
+
+" My settings
 syntax on
 let g:javascript_plugin_jsdoc = 1
-set term=screen-256color
 set cursorline
-" Desabilitar backups:
 set nobackup
 set noswapfile
 set nowritebackup
-" Clipboard do sistema:
 set clipboard=unnamed
-" Tabs por espaços:
 set expandtab
 set shiftwidth=4
 set tabstop=4
-" Indentação:
 filetype plugin indent on
 set autoindent
-" Régua, quebra e número de linhas:
 set linebreak
 set number
 set relativenumber
 set ruler
-" auto complete tags
+set mouse=a
+
+" Pair parens
 ino " ""<left>
 ino ' ''<left>
 ino ( ()<left>
@@ -31,16 +28,19 @@ ino [ []<left>
 ino { {}<left>
 ino {<CR> {<CR>}<ESC>O
 
-" Navegação entre abas:
+" Tabs navigation
 map <C-Tab> :tabnext<CR>
 map <S-Tab> :tabprevious<CR>
-" Salvar
+
+" Save with leader
 nmap <silent> <C-S> :silent w<CR>
-" Busca
+
+" Search settings
 set hlsearch
 set ignorecase
 set incsearch
-" Limpar os resultados destacados:
+
+" Clean highlighted search results 
 nmap <silent> <C-C> :silent noh<CR>
 
 "Plugs------------------------------------------------------
@@ -63,7 +63,7 @@ call plug#end()
 
 "-------------------------------------------------------------
 
-"NerdTree configs--------------------------------------------
+" NerdTree configs--------------------------------------------
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
@@ -73,16 +73,17 @@ autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in
 map <C-n> :NERDTreeToggle<CR>
 "------------------------------------------------------------
 
-"AirLine Configs---------------------------------------------
+" AirLine Configs--------------------------------------------
 let g:airline#extensions#tabline#enabled = 1
 "------------------------------------------------------------
 
-"js beautify
+" JS Beautify------------------------------------------------
 autocmd FileType javascript vnoremap <buffer>  <c-f> :call RangeJsBeautify()<cr>
 autocmd FileType json vnoremap <buffer> <c-f> :call RangeJsonBeautify()<cr>
 autocmd FileType jsx vnoremap <buffer> <c-f> :call RangeJsxBeautify()<cr>
 autocmd FileType html vnoremap <buffer> <c-f> :call RangeHtmlBeautify()<cr>
 autocmd FileType css vnoremap <buffer> <c-f> :call RangeCSSBeautify()<cr>
+"-------------------------------------------------------------
 
 if (has("termguicolors"))
     set termguicolors
