@@ -35,40 +35,16 @@
 (byte-recompile-directory (concat user-emacs-directory "elisp") 0)
 ;; =============================================================================
 
-;; Expand Load Path
+;; Expand load-path with my elisp directory
 ;; =============================================================================
 (add-to-list 'load-path (concat user-emacs-directory "elisp"))
 ;; =============================================================================
 
-;; Customization Layers
+;; Load customization layers
 ;; =============================================================================
-(require 'base)
-(require 'base-functions)
-(require 'base-global-keys)
-(require 'base-appearance)
-(require 'layer-org)
-(require 'base-extensions)
-(require 'layer-web)
-(require 'lang-clojure)
-(require 'lang-crystal)
-(require 'lang-csharp)
-(require 'lang-dart)
-(require 'lang-elixir)
-(require 'lang-elm)
-(require 'lang-erlang)
-(require 'lang-go)
-(require 'lang-groovy)
-(require 'lang-haskell)
-(require 'lang-java)
-(require 'lang-javascript)
-(require 'lang-kotlin)
-(require 'lang-lisp)
-(require 'lang-python)
-(require 'lang-rust)
-(require 'layer-config)
-(require 'layer-web)
-(require 'layer-lsp)
-(require 'layer-writer)
+(cl-loop for file in (reverse (directory-files-recursively
+                               (concat user-emacs-directory "elisp") "\\.el$"))
+         do (load (file-name-sans-extension file)))
 ;; =============================================================================
 
 ;;; init.el ends here
