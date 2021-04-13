@@ -30,4 +30,4 @@
 ;; =============================================================================
 
 (provide 'base-global-keys)
-;; global-keybindings.el ends here
+;;; base-global-keys.el ends here

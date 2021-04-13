@@ -21,11 +21,11 @@
 (customize-set-variable 'company-tooltip-align-annotations t)
 (customize-set-variable 'company-require-match 'never)
 (customize-set-variable 'company-global-modes
-			'(not erc-mode message-mode help-mode gud-mode))
+                        '(not erc-mode message-mode help-mode gud-mode))
 (customize-set-variable 'company-frontends '(company-pseudo-tooltip-frontend))
 (customize-set-variable 'company-echo-metadata-frontend
-			'(company-pseudo-tooltip-frontend
-			  company-echo-metadata-frontend))
+                        '(company-pseudo-tooltip-frontend
+                          company-echo-metadata-frontend))
 ;; Buffer-local backends will be computed when loading a major mode, so
 ;; only specify a global default here.
 (customize-set-variable 'company-backends '(company-capf))
@@ -143,12 +143,14 @@
 (straight-use-package 'projectile)
 
 (customize-set-variable 'projectile-known-projects-file
-			(expand-file-name "projectile-bookmarks.eld" temp-dir))
+                        (expand-file-name "projectile-bookmarks.eld" temp-dir))
 
 (customize-set-variable 'projectile-globally-ignored-directories
-			'("node_modules" ".git" ".svn" "deps" "_build" ".elixir_ls"))
+                        '("node_modules" ".git" ".svn" "deps" "_build" ".elixir_ls"))
 
-(global-set-key (kbd "C-c p") #'projectile-command-map)
+(projectile-mode)
+
+(define-key projectile-mode-map (kbd "C-c p") #'projectile-command-map)
 ;; =============================================================================
 
 ;; Dashboard
@@ -156,15 +158,15 @@
 (straight-use-package 'dashboard)
 
 (customize-set-variable 'dashboard-items '((recents  . 5)
-					   (projects . 5)
-					   (bookmarks . 5)
-					   (agenda . 5)))
+                                           (projects . 5)
+                                           (bookmarks . 5)
+                                           (agenda . 5)))
 (customize-set-variable 'dashboard-set-file-icons t)
 (customize-set-variable 'dashboard-set-heading-icons t)
 (customize-set-variable 'dashboard-startup-banner 'logo)
 (customize-set-variable 'dashboard-center-content t)
 (customize-set-variable 'initial-buffer-choice
- 			(lambda () (get-buffer "*dashboard*")))
+                        (lambda () (get-buffer "*dashboard*")))
 
 (dashboard-setup-startup-hook)
 ;; =============================================================================
@@ -181,13 +183,12 @@
 (straight-use-package 'smartparens)
 
 (with-eval-after-load 'smartparens
+  (with-eval-after-load 'prog-mode
+    (require 'smartparens-config))
   (define-key smartparens-mode-map (kbd "C-)") 'sp-forward-slurp-sexp)
   (define-key smartparens-mode-map (kbd "C-}") 'sp-forward-barf-sexp)
   (define-key smartparens-mode-map (kbd "C-(") 'sp-backward-slurp-sexp)
   (define-key smartparens-mode-map (kbd "C-{") 'sp-backward-barf-sexp))
-
-(with-eval-after-load 'prog-mode
-  (require 'smartparens-config))
 
 (add-hook 'prog-mode-hook #'smartparens-mode)
 ;; =============================================================================
@@ -202,7 +203,7 @@
 (straight-use-package 'undo-tree)
 (customize-set-variable 'undo-tree-auto-save-history nil)
 (customize-set-variable 'undo-tree-history-directory-alist
-			`(("." . ,(concat temp-dir "/undo/"))))
+                        `(("." . ,(concat temp-dir "/undo/"))))
 
 (add-hook 'after-init-hook #'global-undo-tree-mode)
 ;; =============================================================================

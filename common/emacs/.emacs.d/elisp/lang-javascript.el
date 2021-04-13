@@ -10,8 +10,6 @@
 ;; TypeScript Mode
 ;; =============================================================================
 (straight-use-package 'typescript-mode)
-
-(add-to-list 'auto-mode-alist '("\\.ts$" . typescript-mode))
 ;; =============================================================================
 
 ;; Mocha

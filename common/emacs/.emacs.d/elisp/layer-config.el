@@ -5,7 +5,6 @@
 ;; JSON
 ;; =============================================================================
 (straight-use-package 'json-mode)
-(add-to-list 'auto-mode-alist '("\\.json$" . json-mode))
 ;; =============================================================================
 
 ;; YAML
@@ -43,15 +42,12 @@
 (straight-use-package 'docker)
 (straight-use-package 'docker-tramp)
 
-(add-to-list 'auto-mode-alist '("\\Dockerfile$" . dockerfile-mode))
-
 (global-set-key (kbd "C-c d") #'docker)
 ;; =============================================================================
 
 ;; GraphQL
 ;; =============================================================================
 (straight-use-package 'graphql-mode)
-(add-to-list 'auto-mode-alist '("\\.graphql$|\\.gql$" . graphql-mode))
 ;; =============================================================================
 
 ;; Graphviz
@@ -59,15 +55,12 @@
 (straight-use-package 'graphviz-dot-mode)
 
 (with-eval-after-load 'graphviz-dot-mode
-  (require 'company-graphviz-dot)
   (customize-set-variable 'graphviz-dot-indent-width 4))
-
 ;; =============================================================================
 
 ;; HashiCorp Configuration Language
 ;; =============================================================================
 (straight-use-package 'hcl-mode)
-(add-to-list 'auto-mode-alist '("\\.hcl$|\\.tf$" . hcl-mode))
 ;; =============================================================================
 
 ;; Markdown
@@ -95,7 +88,6 @@
 ;; =============================================================================
 (straight-use-package 'plantuml-mode)
 (straight-use-package 'flycheck-plantuml)
-(add-to-list 'auto-mode-alist '("\\.plantuml$\\|\\.puml$" . plantuml-mode))
 
 (customize-set-variable 'plantuml-output-type "svg")
 (customize-set-variable 'plantuml-default-exec-mode 'jar)

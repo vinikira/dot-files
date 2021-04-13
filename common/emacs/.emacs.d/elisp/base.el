@@ -104,10 +104,9 @@
           1 font-lock-warning-face t))))
 
 ;; Enable ANSI colors on compilation mode
-(require 'ansi-color)
-
 (defun vs/--colorize-compilation ()
   "Colorize from `compilation-filter-start' to `point'."
+  (require 'ansi-color)
   (let ((inhibit-read-only t))
     (ansi-color-apply-on-region
      compilation-filter-start (point))))
@@ -143,7 +142,6 @@
 
 ;; Server
 ;; =============================================================================
-(require 'server)
 (when (and (fboundp 'server-running-p)
            (not (server-running-p)))
   (server-start))

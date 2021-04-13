@@ -7,8 +7,6 @@
 (straight-use-package 'dart-mode)
 
 (customize-set-variable 'dart-format-on-save t)
-
-(add-to-list 'auto-mode-alist '("\\.dart$" . dart-mode))
 ;; =============================================================================
 
 ;; LSP Dart

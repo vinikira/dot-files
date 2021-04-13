@@ -5,8 +5,6 @@
 ;; Kotlin Mode
 ;; =============================================================================
 (straight-use-package 'kotlin-mode)
-
-(add-to-list 'auto-mode-alist '("\\.kt$" . kotlin-mode))
 ;; =============================================================================
 
 (provide 'lang-kotlin)

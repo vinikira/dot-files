@@ -6,7 +6,7 @@
 ;; =============================================================================
 (straight-use-package 'elixir-mode)
 
-(add-to-list 'auto-mode-alist '("\\.mix.lock$" . elixir-mode))
+(add-to-list 'auto-mode-alist '("\\mix.lock$" . elixir-mode))
 ;; =============================================================================
 
 ;; Ex Unit
