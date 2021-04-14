@@ -186,8 +186,8 @@
   (with-eval-after-load 'prog-mode
     (require 'smartparens-config))
   (define-key smartparens-mode-map (kbd "C-)") 'sp-forward-slurp-sexp)
-  (define-key smartparens-mode-map (kbd "C-}") 'sp-forward-barf-sexp)
-  (define-key smartparens-mode-map (kbd "C-(") 'sp-backward-slurp-sexp)
+  (define-key smartparens-mode-map (kbd "C-(") 'sp-forward-barf-sexp)
+  (define-key smartparens-mode-map (kbd "C-{") 'sp-backward-slurp-sexp)
   (define-key smartparens-mode-map (kbd "C-{") 'sp-backward-barf-sexp))
 
 (add-hook 'prog-mode-hook #'smartparens-mode)
