@@ -79,6 +79,8 @@
    mode-line-remote
    " 🕘 "
    (:eval (format-time-string "%H:%M"))
+   " 🗓 "
+   (:eval (format-time-string "%Y-%m-%d"))
    " 📝 "
    "%l:%c"
    " · "
