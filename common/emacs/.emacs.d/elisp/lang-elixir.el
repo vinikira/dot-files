@@ -6,6 +6,9 @@
 ;; =============================================================================
 (straight-use-package 'elixir-mode)
 
+(with-eval-after-load 'elixir-mode
+    (define-key elixir-mode-map (kbd "C-c C-f") #'elixir-format))
+
 (add-to-list 'auto-mode-alist '("\\mix.lock$" . elixir-mode))
 ;; =============================================================================
 
