@@ -124,6 +124,11 @@
     (oset rs body new-body)
     rs))
 
+(defun vs/verb-remove-body-newlines (rs)
+  "Remove body newlines from RS."
+  (oset rs body (replace-regexp-in-string "\n" "" (oref rs body)))
+  rs)
+
 (provide 'base-functions)
 
 ;;; base-functions.el ends here
