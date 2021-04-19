@@ -15,7 +15,7 @@
                           (append vs/lsp-ignore-files lsp-file-watch-ignored-directories))
   (define-key lsp-mode-map (kbd "M-RET") #'lsp-execute-code-action)
   (define-key lsp-mode-map (kbd "C-c C-f") #'lsp-format-buffer)
-  (define-key lsp-mode-map (kbd "C-c C-d") #'lsp-ui-doc-show)
+  (define-key lsp-mode-map (kbd "C-c C-d") #'lsp-describe-thing-at-point)
   (define-key lsp-mode-map (kbd "C-c C-r") #'lsp-rename)
   (define-key lsp-mode-map (kbd "C-c C-g") #'lsp-find-references))
 
