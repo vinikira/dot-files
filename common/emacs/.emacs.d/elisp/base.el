@@ -88,6 +88,7 @@
 (customize-set-variable 'read-process-output-max (* 1024 1024))
 (fset 'yes-or-no-p 'y-or-n-p)
 (windmove-default-keybindings)
+(customize-set-variable 'compilation-scroll-output t)
 ;; =============================================================================
 
 ;; Hooks
