@@ -23,10 +23,8 @@
 ;; =============================================================================
 (straight-use-package 'ansible)
 (straight-use-package 'ansible-doc)
-(straight-use-package 'company-ansible)
 
 (add-hook 'yaml-mode-hook 'ansible)
-(add-hook 'yaml-mode-hook 'company-ansible)
 
 (with-eval-after-load 'ansible
   (define-key ansible-key-map (kbd "C-c C-d") #'ansible-doc))

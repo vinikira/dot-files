@@ -40,14 +40,6 @@
 (add-hook 'python-mode-hook #'lsp-deferred)
 ;; =============================================================================
 
-;; LSP Ivy
-;; ============================================================================
-(straight-use-package 'lsp-ivy)
-
-(with-eval-after-load 'lsp-mode
-  (define-key lsp-mode-map (kbd "H-l f") #'lsp-ivy-workspace-symbol))
-;; =============================================================================
-
 ;; LSP UI
 ;; =============================================================================
 (straight-use-package 'lsp-ui)
@@ -76,7 +68,6 @@
   (add-hook 'typescript-mode-hook (lambda () (require 'dap-chrome)))
   (add-hook 'rjsx-mode-hook (lambda () (require 'dap-chrome)))
   (add-hook 'rust-mode-hook (lambda () (require 'dap-gdb-lldb))))
-
 ;; =============================================================================
 
 (provide 'layer-lsp)

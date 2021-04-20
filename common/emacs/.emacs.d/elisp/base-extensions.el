@@ -4,61 +4,23 @@
 
 ;;; Code:
 
+(declare-function straight-use-package "ext:straight")
+
 ;; All the Icons
 ;; =============================================================================
 (straight-use-package 'all-the-icons)
-;; =============================================================================
-
-;; Company mode
-;; =============================================================================
-(straight-use-package 'company)
-(straight-use-package 'company-box)
-(straight-use-package 'company-quickhelp)
-
-(customize-set-variable 'company-idle-delay 0.25)
-(customize-set-variable 'company-minimum-prefix-length 2)
-(customize-set-variable 'company-tooltip-limit 14)
-(customize-set-variable 'company-tooltip-align-annotations t)
-(customize-set-variable 'company-require-match 'never)
-(customize-set-variable 'company-global-modes
-                        '(not erc-mode message-mode help-mode gud-mode))
-(customize-set-variable 'company-frontends '(company-pseudo-tooltip-frontend))
-(customize-set-variable 'company-echo-metadata-frontend
-                        '(company-pseudo-tooltip-frontend
-                          company-echo-metadata-frontend))
-;; Buffer-local backends will be computed when loading a major mode, so
-;; only specify a global default here.
-(customize-set-variable 'company-backends '(company-capf))
-
-;; These auto-complete the current selection when
-;; `company-auto-complete-chars' is typed. This is too magical. We
-;; already have the much more explicit RET and TAB.
-(customize-set-variable 'company-auto-commit nil)
-(customize-set-variable 'company-auto-commit-chars nil)
-
-;; Only search the current buffer for `company-dabbrev' (a backend that
-;; suggests text your open buffers). This prevents Company from causing
-;; lag once you have a lot of buffers open.
-(customize-set-variable 'company-dabbrev-other-buffers nil)
-;; Make `company-dabbrev' fully case-sensitive, to improve UX with
-;; domain-specific words with particular casing.
-(customize-set-variable 'company-dabbrev-ignore-case nil)
-(customize-set-variable 'company-dabbrev-downcase nil)
-
-(global-set-key (kbd "C-.") #'company-complete)
-
-(add-hook 'company-mode-hook #'company-box-mode)
-(add-hook 'company-mode-hook #'company-quickhelp-mode)
-(add-hook 'after-init-hook #'global-company-mode)
 ;; =============================================================================
 
 ;; Diff HL
 ;; =============================================================================
 (straight-use-package 'diff-hl)
 
+(declare-function diff-hl-magit-pre-refresh "ext:diff-hl")
+(declare-function diff-hl-magit-post-refresh "ext:diff-hl")
+(declare-function global-diff-hl-mode "ext:diff-hl")
+
 (add-hook 'magit-pre-refresh-hook #'diff-hl-magit-pre-refresh)
 (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh)
-
 (add-hook 'after-init-hook #'global-diff-hl-mode)
 ;; =============================================================================
 
@@ -67,19 +29,54 @@
 (straight-use-package 'dumb-jump)
 
 (with-eval-after-load 'xref
-  (require 'xref)
+  (declare-function dumb-jump-xref-activate "ext:dumb-jump")
   (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
 ;; =============================================================================
 
 ;; Editor config
 ;; =============================================================================
 (straight-use-package 'editorconfig)
+
+(declare-function editorconfig-mode "ext:editorconfig")
+
 (add-hook 'after-init-hook #'editorconfig-mode)
+;; =============================================================================
+
+;; Embark
+;; =============================================================================
+(straight-use-package 'embark)
+
+(declare-function embark-act "ext:embark")
+(declare-function embark-bindings "ext:embark")
+(declare-function embark-act "ext:embark")
+
+(global-set-key (kbd "M-o") #'embark-act)
+(global-set-key (kbd "C-h B") #'embark-bindings)
+
+(with-eval-after-load 'embark
+  (declare-function embark-prefix-help-command "ext:embark")
+  (declare-function which-key--show-keymap "ext:wich-key")
+  (declare-function which-key--hide-popup-ignore-command "ext:wich-key")
+
+  (customize-set-variable 'prefix-help-command #'embark-prefix-help-command)
+  (customize-set-variable 'embark-action-indicator
+                          (lambda (map _target)
+                            (which-key--show-keymap "Embark" map nil nil 'no-paging)
+                            #'which-key--hide-popup-ignore-command))
+  (customize-set-variable 'embark-become-indicator 'embark-action-indicator)
+
+  ;; Hide the mode line of the Embark live/completions buffers
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                 nil
+                 (window-parameters (mode-line-format . none)))))
 ;; =============================================================================
 
 ;; Exec Path From Shell
 ;; =============================================================================
 (straight-use-package 'exec-path-from-shell)
+
+(declare-function exec-path-from-shell-initialize "ext:exec-path-from-shell")
 
 (when (daemonp)
   (add-hook 'after-init-hook #'exec-path-from-shell-initialize))
@@ -89,12 +86,16 @@
 ;; =============================================================================
 (straight-use-package 'flycheck)
 
+(declare-function flycheck-mode "ext:flycheck")
+
 (add-hook 'prog-mode-hook #'flycheck-mode)
 ;; =============================================================================
 
 ;; Iedit
 ;; =============================================================================
 (straight-use-package 'iedit)
+
+(declare-function iedit-mode "ext:iedit")
 
 (global-set-key (kbd "C-;") #'iedit-mode)
 ;; =============================================================================
@@ -105,28 +106,35 @@
  '(impostman :type git :host github :repo "flashcode/impostman" :branch "main"))
 ;; =============================================================================
 
-;; Ivy + Counsel + Swiper
-;; =============================================================================
-(straight-use-package 'counsel)
-
-(customize-set-variable 'ivy-use-virtual-buffers t)
-
-(ivy-mode 1)
-(counsel-mode 1)
-
-(global-set-key (kbd "C-x s") #'swiper)
-;; =============================================================================
-
 ;; Magit
 ;; =============================================================================
 (straight-use-package 'magit)
 
+(declare-function magit-status "ext:magit-status")
+
 (global-set-key (kbd "C-x g") #'magit-status)
-;;=============================================================================
+;; =============================================================================
+
+;; Marginalia
+;; =============================================================================
+(straight-use-package 'marginalia)
+
+(declare-function marginalia-mode "ext:marginalia")
+(declare-function marginalia-cycle "ext:marginalia")
+
+(with-eval-after-load 'marginalia
+  (define-key minibuffer-local-map (kbd "M-A") #'marginalia-cycle))
+
+(marginalia-mode)
+;; =============================================================================
 
 ;; Multiple cursors
 ;; =============================================================================
 (straight-use-package 'multiple-cursors)
+
+(declare-function mc/mark-next-like-this "ext:mc-mark-more")
+(declare-function mc/mark-previous-like-this "ext:mc-mark-more")
+(declare-function mc/mark-all-like-this "ext:mc-mark-more")
 
 (global-set-key (kbd "M-n") #'mc/mark-next-like-this)
 (global-set-key (kbd "M-p") #'mc/mark-previous-like-this)
@@ -142,20 +150,29 @@
 ;; =============================================================================
 (straight-use-package 'projectile)
 
-(customize-set-variable 'projectile-known-projects-file
-                        (expand-file-name "projectile-bookmarks.eld" temp-dir))
+(declare-function projectile-mode "ext:projectile")
 
-(customize-set-variable 'projectile-globally-ignored-directories
-                        '("node_modules" ".git" ".svn" "deps" "_build" ".elixir_ls"))
+(with-eval-after-load 'projectile
+  (declare-function projectile-command-map "ext:projectile")
+
+  (when (boundp 'temp-dir)
+    (customize-set-variable 'projectile-known-projects-file
+                            (expand-file-name "projectile-bookmarks.eld" temp-dir)))
+
+  (customize-set-variable 'projectile-globally-ignored-directories
+                          '("node_modules" ".git" ".svn" "deps" "_build" ".elixir_ls"))
+
+  (when (and (boundp 'projectile-mode-map))
+    (define-key projectile-mode-map (kbd "C-c p") #'projectile-command-map)))
 
 (projectile-mode)
-
-(define-key projectile-mode-map (kbd "C-c p") #'projectile-command-map)
 ;; =============================================================================
 
 ;; Dashboard
 ;; =============================================================================
 (straight-use-package 'dashboard)
+
+(declare-function dashboard-setup-startup-hook "ext:dashboard")
 
 (customize-set-variable 'dashboard-items '((recents  . 5)
                                            (projects . 5)
@@ -175,20 +192,45 @@
 ;; =============================================================================
 (straight-use-package 'rg)
 
+(declare-function rg-menu "ext:rg-menu")
+
 (global-set-key (kbd "C-c r") #'rg-menu)
+;; =============================================================================
+
+;; Selectrum
+;; =============================================================================
+(straight-use-package 'selectrum)
+(straight-use-package 'selectrum-prescient)
+
+(declare-function selectrum-prescient-mode "ext:selectrum-prescient")
+(declare-function prescient-persist-mode "ext:prescient")
+(declare-function selectrum-mode "ext:selectrum")
+
+(selectrum-prescient-mode +1)
+(prescient-persist-mode +1)
+(selectrum-mode +1)
 ;; =============================================================================
 
 ;; Smartparens
 ;; =============================================================================
 (straight-use-package 'smartparens)
 
+(declare-function smartparens-mode "ext:smartparens")
+
 (with-eval-after-load 'smartparens
+  (declare-function sp-forward-slurp-sexp "ext:smartparens")
+  (declare-function sp-forward-barf-sexp "ext:smartparens")
+  (declare-function sp-backward-slurp-sexp "ext:smartparens")
+  (declare-function sp-backward-barf-sexp "ext:smartparens")
+
   (with-eval-after-load 'prog-mode
     (require 'smartparens-config))
-  (define-key smartparens-mode-map (kbd "C-)") 'sp-forward-slurp-sexp)
-  (define-key smartparens-mode-map (kbd "C-(") 'sp-forward-barf-sexp)
-  (define-key smartparens-mode-map (kbd "C-{") 'sp-backward-slurp-sexp)
-  (define-key smartparens-mode-map (kbd "C-{") 'sp-backward-barf-sexp))
+
+  (when (boundp 'smartparens-mode-map)
+    (define-key smartparens-mode-map (kbd "C-)") #'sp-forward-slurp-sexp)
+    (define-key smartparens-mode-map (kbd "C-(") #'sp-forward-barf-sexp)
+    (define-key smartparens-mode-map (kbd "C-{") #'sp-backward-slurp-sexp)
+    (define-key smartparens-mode-map (kbd "C-{") #'sp-backward-barf-sexp)))
 
 (add-hook 'prog-mode-hook #'smartparens-mode)
 ;; =============================================================================
@@ -201,9 +243,14 @@
 ;; Undo tree
 ;; =============================================================================
 (straight-use-package 'undo-tree)
+
+(declare-function global-undo-tree-mode "ext:undo-tree")
+
 (customize-set-variable 'undo-tree-auto-save-history nil)
-(customize-set-variable 'undo-tree-history-directory-alist
-                        `(("." . ,(concat temp-dir "/undo/"))))
+
+(when (boundp 'temp-dir)
+  (customize-set-variable 'undo-tree-history-directory-alist
+                          `(("." . ,(concat temp-dir "/undo/")))))
 
 (add-hook 'after-init-hook #'global-undo-tree-mode)
 ;; =============================================================================
@@ -216,18 +263,27 @@
 ;; VTerm
 ;; =============================================================================
 (straight-use-package 'vterm)
+
+(declare-function vterm-other-window "ext:vterm")
+
 (global-set-key (kbd "<f7>") #'vterm-other-window)
 ;; =============================================================================
 
 ;; Wich Key
 ;; =============================================================================
 (straight-use-package 'which-key)
+
+(declare-function which-key-mode "ext:which-key")
+
 (add-hook 'after-init-hook #'which-key-mode)
 ;; =============================================================================
 
 ;; XClip
 ;; =============================================================================
 (straight-use-package 'xclip)
+
+(declare-function xclip-mode "ext:xclip")
+
 (add-hook 'after-init-hook #'xclip-mode)
 ;; =============================================================================
 
@@ -236,8 +292,11 @@
 (straight-use-package 'yasnippet)
 (straight-use-package 'yasnippet-snippets)
 
+(declare-function yas-global-mode "ext:yasnippet")
+
 (with-eval-after-load 'yasnippet
-  (add-to-list 'yas-snippet-dirs (concat user-emacs-directory "snippets/")))
+  (when (boundp 'yas-snippet-dirs)
+    (add-to-list 'yas-snippet-dirs (concat user-emacs-directory "snippets/"))))
 
 (add-hook 'after-init-hook #'yas-global-mode)
 ;; =============================================================================

@@ -11,13 +11,6 @@
 (customize-set-variable 'web-mode-code-indent-offset 2)
 (customize-set-variable 'web-mode-enable-current-element-highlight t)
 
-(defun vs/--web-mode-hook ()
-  "Hook for `web-mode' config for company-backends."
-  (set (make-local-variable 'company-backends)
-       '((company-css company-web-html company-files))))
-
-(add-hook 'web-mode-hook #'vs/--web-mode-hook)
-
 (with-eval-after-load 'web-mode
   (define-key web-mode-map (kbd "C-c o b") #'browse-url-of-file))
 
@@ -53,22 +46,6 @@
 ;; CSS Mode
 ;; =============================================================================
 (straight-use-package 'css-mode)
-
-(defun vs/--css-mode-hook ()
-  "Add company-css to company-backends."
-  (set (make-local-variable 'company-backends)
-       '((company-css company-dabbrev-code company-files))))
-
-(add-hook 'css-mode-hook #'vs/--css-mode-hook)
-;; =============================================================================
-
-;; Company web
-;; =============================================================================
-(straight-use-package 'company-web)
-
-(with-eval-after-load 'web-mode
-  (require 'company-web-html)
-  (define-key web-mode-map (kbd "C-.") #'company-web-html))
 ;; =============================================================================
 
 ;; Pug Mode
