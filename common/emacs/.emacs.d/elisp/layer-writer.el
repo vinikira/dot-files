@@ -2,12 +2,16 @@
 ;;; Commentary:
 ;;; Code:
 
+(declare-function straight-use-package "ext:straight")
+
 ;; LaTeX
 ;; =============================================================================
 (straight-use-package 'auctex)
 (straight-use-package 'auctex-latexmk)
 
 (customize-set-variable 'auctex-latexmk-inherit-TeX-PDF-mode t)
+
+(declare-function auctex-latexmk-setup "ext:auctex-latexmk")
 
 (add-hook 'tex-mode-hook #'flyspell-mode)
 (add-hook 'auctex-mode-hook #'auctex-latexmk-setup)

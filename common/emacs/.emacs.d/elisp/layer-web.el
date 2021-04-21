@@ -2,6 +2,8 @@
 ;;; Commentary:
 ;;; Code:
 
+(declare-function straight-use-package "ext:straight")
+
 ;; Web Mode
 ;; =============================================================================
 (straight-use-package 'web-mode)
@@ -12,7 +14,8 @@
 (customize-set-variable 'web-mode-enable-current-element-highlight t)
 
 (with-eval-after-load 'web-mode
-  (define-key web-mode-map (kbd "C-c o b") #'browse-url-of-file))
+  (when (boundp 'web-mode-map)
+    (define-key web-mode-map (kbd "C-c o b") #'browse-url-of-file)))
 
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.njk?\\'" . web-mode))
@@ -34,13 +37,19 @@
 
 (customize-set-variable 'emmet-move-cursor-between-quotes t)
 
+(declare-function emmet-mode "ext:emmet-mode")
+
 (add-hook 'web-mode-hook #'emmet-mode)
 (add-hook 'vue-mode-hook #'emmet-mode)
 (add-hook 'js-mode #'emmet-mode)
 
 (with-eval-after-load 'web-mode
-  (define-key web-mode-map (kbd "C-c [") #'emmet-prev-edit-point)
-  (define-key web-mode-map (kbd "C-c ]") #'emmet-next-edit-point))
+  (declare-function emmet-prev-edit-point "ext:emmet-mode")
+  (declare-function emmet-next-edit-point "ext:emmet-mode")
+
+  (when (boundp 'web-mode-map)
+    (define-key web-mode-map (kbd "C-c [") #'emmet-prev-edit-point)
+    (define-key web-mode-map (kbd "C-c ]") #'emmet-next-edit-point)))
 ;; =============================================================================
 
 ;; CSS Mode

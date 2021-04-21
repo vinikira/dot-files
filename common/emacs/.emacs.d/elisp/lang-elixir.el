@@ -2,12 +2,17 @@
 ;;; Commentary:
 ;;; Code:
 
+(declare-function straight-use-package "ext:straight")
+
 ;; Elixir mode
 ;; =============================================================================
 (straight-use-package 'elixir-mode)
 
 (with-eval-after-load 'elixir-mode
-    (define-key elixir-mode-map (kbd "C-c C-f") #'elixir-format))
+  (declare-function elixir-format "ext:elixir-format")
+
+  (when (boundp 'elixir-mode-map)
+    (define-key elixir-mode-map (kbd "C-c C-f") #'elixir-format)))
 
 (add-to-list 'auto-mode-alist '("\\mix.lock$" . elixir-mode))
 ;; =============================================================================
@@ -17,12 +22,18 @@
 (straight-use-package 'exunit)
 
 (with-eval-after-load 'elixir-mode
-  (define-key elixir-mode-map (kbd "C-c , a") #'exunit-verify-all)
-  (define-key elixir-mode-map (kbd "C-c , A") #'exunit-verify-all-in-umbrella)
-  (define-key elixir-mode-map (kbd "C-c , s") #'exunit-verify-single)
-  (define-key elixir-mode-map (kbd "C-c , v") #'exunit-verify)
-  (define-key elixir-mode-map (kbd "C-c , r") #'exunit-rerun))
+  (declare-function exunit-verify-all "ext:exunit")
+  (declare-function exunit-verify-all-in-umbrella "ext:exunit")
+  (declare-function exunit-verify-single "ext:exunit")
+  (declare-function exunit-verify "ext:exunit")
+  (declare-function exunit-rerun "ext:exunit")
 
+  (when (boundp 'elixir-mode-map)
+    (define-key elixir-mode-map (kbd "C-c , a") #'exunit-verify-all)
+    (define-key elixir-mode-map (kbd "C-c , A") #'exunit-verify-all-in-umbrella)
+    (define-key elixir-mode-map (kbd "C-c , s") #'exunit-verify-single)
+    (define-key elixir-mode-map (kbd "C-c , v") #'exunit-verify)
+    (define-key elixir-mode-map (kbd "C-c , r") #'exunit-rerun)))
 ;; =============================================================================
 
 ;; Inf Elixir

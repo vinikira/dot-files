@@ -5,8 +5,20 @@
 ;; Set keys
 ;; =============================================================================
 (with-eval-after-load 'dired
-  (define-key dired-mode-map (kbd "e") #'dired-create-empty-file)
-  (define-key dired-mode-map (kbd "RET") #'dired-find-alternate-file))
+  (declare-function dired-create-empty-file "dired-aux")
+  (declare-function dired-find-alternate-file "dired")
+
+  (when (boundp 'dired-mode-map)
+    (define-key dired-mode-map (kbd "e") #'dired-create-empty-file)
+    (define-key dired-mode-map (kbd "RET") #'dired-find-alternate-file)))
+
+(declare-function vs/indent-buffer "base-functions")
+(declare-function vs/split-window-below-and-switch "base-functions")
+(declare-function vs/split-window-right-and-switch "base-functions")
+(declare-function vs/move-line-up "base-functions")
+(declare-function vs/move-line-down "base-functions")
+(declare-function vs/duplicate-current-line "base-functions")
+(declare-function vs/scratch-buffer "base-functions")
 
 (global-set-key (kbd "C-x C-b") #'ibuffer)
 (global-set-key (kbd "C-c i") #'vs/indent-buffer)

@@ -107,10 +107,12 @@
 ;; Enable ANSI colors on compilation mode
 (defun vs/--colorize-compilation ()
   "Colorize from `compilation-filter-start' to `point'."
-  (require 'ansi-color)
+  (declare-function ansi-color-apply-on-region "ansi-color")
+  (autoload 'ansi-color-apply-on-region "ansi-color")
   (let ((inhibit-read-only t))
-    (ansi-color-apply-on-region
-     compilation-filter-start (point))))
+    (when (boundp 'compilation-filter-start)
+      (ansi-color-apply-on-region
+       compilation-filter-start (point)))))
 
 (add-hook 'before-save-hook #'delete-trailing-whitespace)
 (add-hook 'prog-mode-hook #'vs/--line-numbers)

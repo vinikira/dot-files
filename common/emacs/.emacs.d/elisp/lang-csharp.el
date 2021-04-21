@@ -2,6 +2,8 @@
 ;;; Commentary:
 ;;; Code:
 
+(declare-function straight-use-package "ext:straight")
+
 ;; CSharp mode
 ;; =============================================================================
 (straight-use-package 'csharp-mode)

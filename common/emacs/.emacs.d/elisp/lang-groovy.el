@@ -2,6 +2,8 @@
 ;;; Commentary:
 ;;; Code:
 
+(declare-function straight-use-package "ext:straight")
+
 ;; Groovy mode
 ;; =============================================================================
 (straight-use-package 'groovy-mode)

@@ -2,6 +2,8 @@
 ;;; Commentary:
 ;;; Code:
 
+(declare-function straight-use-package "ext:straight")
+
 ;; JSON
 ;; =============================================================================
 (straight-use-package 'json-mode)
@@ -16,6 +18,8 @@
 ;; =============================================================================
 (straight-use-package 'csv-mode)
 
+(declare-function csv-align-mode "ext:csv-mode")
+
 (add-hook 'csv-mode-hook #'csv-align-mode)
 ;; =============================================================================
 
@@ -26,11 +30,15 @@
 
 (add-hook 'yaml-mode-hook 'ansible)
 
+(declare-function ansible-doc "ext:ansible-doc")
+
 (with-eval-after-load 'ansible
-  (define-key ansible-key-map (kbd "C-c C-d") #'ansible-doc))
+  (when (boundp 'ansible-key-map)
+    (define-key ansible-key-map (kbd "C-c C-d") #'ansible-doc)))
 
 (with-eval-after-load 'ansible-doc
-  (define-key ansible-doc-module-mode-map (kbd "C-c C-d") #'ansible-doc))
+  (when (boundp 'ansible-doc-module-mode-map)
+    (define-key ansible-doc-module-mode-map (kbd "C-c C-d") #'ansible-doc)))
 ;; =============================================================================
 
 ;; Docker
@@ -39,6 +47,8 @@
 (straight-use-package 'docker-compose-mode)
 (straight-use-package 'docker)
 (straight-use-package 'docker-tramp)
+
+(declare-function docker "ext:docker")
 
 (global-set-key (kbd "C-c d") #'docker)
 ;; =============================================================================
@@ -71,10 +81,15 @@
 (customize-set-variable 'markdown-command
                         "pandoc --from markdown --to html --ascii")
 
+(declare-function markdownfmt-enable-on-save "ext:markdownfmt")
+
 (add-hook 'markdown-mode-hook #'markdownfmt-enable-on-save)
+(add-hook 'gfm-mode #'markdownfmt-enable-on-save)
 
 (with-eval-after-load 'markdown-mode
-  (define-key markdown-mode-map (kbd "C-c C-f") #'markdownfmt-format-buffer))
+  (declare-function markdownfmt-format-buffer "ext:markdownfmt")
+  (when (boundp 'markdown-mode-map)
+    (define-key markdown-mode-map (kbd "C-c C-f") #'markdownfmt-format-buffer)))
 ;; =============================================================================
 
 ;; Nginx
@@ -91,7 +106,8 @@
 (customize-set-variable 'plantuml-default-exec-mode 'jar)
 
 (with-eval-after-load 'plantuml-mode
-  (let* ((plantuml-directory private-dir)
+  (declare-function flycheck-plantuml-setup "ext:flycheck-plantuml")
+  (let* ((plantuml-directory (if (boundp 'private-dir) private-dir "/tmp"))
          (plantuml-link
           "http://sourceforge.net/projects/plantuml/files/plantuml.jar/download")
          (plantuml-target (concat plantuml-directory "/plantuml.jar")))
@@ -102,7 +118,6 @@
                (kill-buffer "*Shell Command Output*")))
     (customize-set-variable 'org-plantuml-jar-path plantuml-target)
     (customize-set-variable 'plantuml-jar-path plantuml-target))
-  (require 'flycheck-plantuml)
   (flycheck-plantuml-setup))
 ;; =============================================================================
 

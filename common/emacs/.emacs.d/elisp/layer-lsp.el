@@ -2,6 +2,8 @@
 ;;; Commentary:
 ;;; Code:
 
+(declare-function straight-use-package "ext:straight")
+
 ;; LSP Mode
 ;; =============================================================================
 (straight-use-package 'lsp-mode)
@@ -11,13 +13,21 @@
     "[/\\\\]deps$" "[/\\\\]_build$"))
 
 (with-eval-after-load 'lsp-mode
-  (customize-set-variable 'lsp-file-watch-ignored-directories
-                          (append vs/lsp-ignore-files lsp-file-watch-ignored-directories))
-  (define-key lsp-mode-map (kbd "M-RET") #'lsp-execute-code-action)
-  (define-key lsp-mode-map (kbd "C-c C-f") #'lsp-format-buffer)
-  (define-key lsp-mode-map (kbd "C-c C-d") #'lsp-describe-thing-at-point)
-  (define-key lsp-mode-map (kbd "C-c C-r") #'lsp-rename)
-  (define-key lsp-mode-map (kbd "C-c C-g") #'lsp-find-references))
+  (declare-function lsp-execute-code-action "ext:lsp-mode")
+  (declare-function lsp-format-buffer "ext:lsp-mode")
+  (declare-function lsp-describe-thing-at-point "ext:lsp-mode")
+  (declare-function lsp-rename "ext:lsp-mode")
+  (declare-function lsp-find-references "ext:lsp-mode")
+
+  (when (boundp 'lsp-file-watch-ignored-directories)
+    (customize-set-variable 'lsp-file-watch-ignored-directories
+                            (append vs/lsp-ignore-files lsp-file-watch-ignored-directories)))
+  (when (boundp 'lsp-mode-map)
+    (define-key lsp-mode-map (kbd "M-RET") #'lsp-execute-code-action)
+    (define-key lsp-mode-map (kbd "C-c C-f") #'lsp-format-buffer)
+    (define-key lsp-mode-map (kbd "C-c C-d") #'lsp-describe-thing-at-point)
+    (define-key lsp-mode-map (kbd "C-c C-r") #'lsp-rename)
+    (define-key lsp-mode-map (kbd "C-c C-g") #'lsp-find-references)))
 
 (customize-set-variable 'lsp-auto-guess-root t)
 (customize-set-variable 'lsp-keymap-prefix "H-l")
@@ -27,6 +37,9 @@
 (customize-set-variable 'lsp-headerline-breadcrumb-enable nil)
 (customize-set-variable 'lsp-enable-links nil)
 (customize-set-variable 'lsp-log-io nil)
+
+(declare-function lsp-deferred "ext:lsp-mode")
+(declare-function lsp-enable-which-key-integration "ext:lsp-mode")
 
 (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
 (add-hook 'elixir-mode-hook #'lsp-deferred)
@@ -53,11 +66,18 @@
 ;; =============================================================================
 (straight-use-package 'dap-mode)
 
+(declare-function dap-debug "ext:dap-mode")
+
 (global-set-key (kbd "<f12>") #'dap-debug)
 
 (with-eval-after-load 'dap-mode
-  (define-key dap-mode-map (kbd "S-<f12>") #'dap-debug-hydra)
-  (define-key dap-mode-map (kbd "<f9>") #'dap-breakpoint-toggle)
+  (declare-function dap-hydra "ext:dap-hydra")
+  (declare-function dap-breakpoint-toggle "ext:dap-mode")
+
+  (when (boundp 'dap-mode-map)
+    (define-key dap-mode-map (kbd "S-<f12>") #'dap-hydra)
+    (define-key dap-mode-map (kbd "<f9>") #'dap-breakpoint-toggle))
+
   (add-hook 'python-mode-hook (lambda () (require 'dap-python)))
   (add-hook 'java-mode-hook (lambda () (require 'dap-java)))
   (add-hook 'c-mode-hook (lambda () (require 'dap-lldb)))

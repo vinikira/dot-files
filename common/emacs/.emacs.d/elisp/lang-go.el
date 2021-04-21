@@ -2,6 +2,8 @@
 ;;; Commentary:
 ;;; Code:
 
+(declare-function straight-use-package "ext:straight")
+
 ;; Go mode
 ;; =============================================================================
 (straight-use-package 'go-mode)

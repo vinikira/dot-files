@@ -2,6 +2,8 @@
 ;;; Commentary:
 ;;; Code:
 
+(declare-function straight-use-package "ext:straight")
+
 ;; Org mode latest version.
 ;; =============================================================================
 (straight-use-package '(org-plus-contrib :includes (org)))
@@ -55,6 +57,10 @@
     ("s" . "src")
     ("v" . "verse")))
 
+(declare-function org-display-inline-images "org")
+(declare-function org-indent-mode "org-indent")
+(declare-function org-store-link "ol")
+
 (add-hook 'org-babel-after-execute-hook #'org-display-inline-images 'append)
 (add-hook 'org-mode-hook #'toggle-word-wrap)
 (add-hook 'org-mode-hook #'org-indent-mode)
@@ -67,9 +73,12 @@
 (global-set-key (kbd "C-c c") #'org-capture)
 
 (customize-set-variable 'org-directory vs/org-directory)
-(customize-set-variable 'org-default-notes-file (concat org-directory "notes.org"))
-(customize-set-variable 'org-agenda-files (list (concat org-directory "work.org")
-						(concat org-directory "personal.org")))
+
+(when (boundp 'org-directory)
+  (customize-set-variable 'org-default-notes-file (concat org-directory "notes.org"))
+  (customize-set-variable 'org-agenda-files (list (concat org-directory "work.org")
+                                                  (concat org-directory "personal.org"))))
+
 (customize-set-variable 'org-confirm-babel-evaluate nil)
 (customize-set-variable 'org-src-fontify-natively t)
 (customize-set-variable 'org-log-done 'time)
@@ -100,6 +109,8 @@
 ;; =============================================================================
 (straight-use-package 'org-bullets)
 
+(declare-function org-bullets-mode "ext:org-bullets")
+
 (add-hook 'org-mode-hook #'org-bullets-mode)
 
 (customize-set-variable 'org-hide-leading-stars t)
@@ -109,6 +120,8 @@
 ;; =============================================================================
 (straight-use-package 'org-download)
 
+(declare-function org-download-enable "ext:org-download")
+
 (add-hook 'dired-mode-hook #'org-download-enable)
 ;; =============================================================================
 
@@ -116,19 +129,28 @@
 ;; ============================================================================
 (straight-use-package 'org-present)
 
-(with-eval-after-load 'org-present
-  (add-hook 'org-present-mode-hook
-            (lambda ()
-              (org-present-big)
-              (org-display-inline-images)
-              (org-present-hide-cursor)
-              (org-present-read-only)))
-  (add-hook 'org-present-mode-quit-hook
-            (lambda ()
-              (org-present-small)
-              (org-remove-inline-images)
-              (org-present-show-cursor)
-              (org-present-read-write))))
+(declare-function org-present-big "ext:org-present")
+(declare-function org-present-hide-cursor "ext:org-present")
+(declare-function org-present-read-only "ext:org-present")
+(declare-function org-present-small "ext:org-present")
+(declare-function org-present-show-cursor "ext:org-present")
+(declare-function org-present-read-write "ext:org-present")
+
+(declare-function org-remove-inline-images "org")
+
+(add-hook 'org-present-mode-hook
+          (lambda ()
+            (org-present-big)
+            (org-display-inline-images)
+            (org-present-hide-cursor)
+            (org-present-read-only)))
+
+(add-hook 'org-present-mode-quit-hook
+          (lambda ()
+            (org-present-small)
+            (org-remove-inline-images)
+            (org-present-show-cursor)
+            (org-present-read-write)))
 ;; =============================================================================
 
 ;; Org + Reveal.js
@@ -136,7 +158,7 @@
 (straight-use-package 'org-re-reveal)
 
 (customize-set-variable 'org-re-reveal-root
-			"https://cdn.jsdelivr.net/reveal.js/latest")
+                        "https://cdn.jsdelivr.net/reveal.js/latest")
 (customize-set-variable 'org-reveal-mathjax t)
 ;; =============================================================================
 
@@ -145,8 +167,9 @@
 (straight-use-package 'verb)
 
 (with-eval-after-load 'org
-  (require 'verb)
-  (define-key org-mode-map (kbd "C-c C-r") verb-command-map))
+  (when (and (boundp 'org-mode-map)
+             (boundp 'verb-command-map))
+    (define-key org-mode-map (kbd "C-c C-r") verb-command-map)))
 ;; =============================================================================
 
 ;; Org Babel Async
@@ -171,7 +194,12 @@
 ;; Org Notify
 ;; =============================================================================
 (with-eval-after-load 'org
-  (require 'org-notify)
+  (autoload 'org-notify-start "org-notify")
+  (autoload 'org-notify-add "org-notify")
+
+  (declare-function org-notify-start "org-notify")
+  (declare-function org-notify-add "org-notify")
+
   (org-notify-start 60)
 
   (org-notify-add
@@ -191,17 +219,18 @@
 ;; =============================================================================
 ;; Abntex2 class
 (with-eval-after-load 'ox-latex
-  (add-to-list 'org-latex-classes
-	       '("abntex2"
-		 "\\documentclass{abntex2}
+  (when (boundp 'org-latex-classes)
+    (add-to-list 'org-latex-classes
+                 '("abntex2"
+                   "\\documentclass{abntex2}
                     [NO-DEFAULT-PACKAGES]
                     [EXTRA]"
-		 ("\\section{%s}" . "\\section*{%s}")
-		 ("\\subsection{%s}" . "\\subsection*{%s}")
-		 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-		 ("\\paragraph{%s}" . "\\paragraph*{%s}")
-		 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")
-		 ("\\maketitle" . "\\imprimircapa"))))
+                   ("\\section{%s}" . "\\section*{%s}")
+                   ("\\subsection{%s}" . "\\subsection*{%s}")
+                   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                   ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                   ("\\subparagraph{%s}" . "\\subparagraph*{%s}")
+                   ("\\maketitle" . "\\imprimircapa")))))
 
 ;; Source code highlight with Minted package.
 (customize-set-variable 'org-latex-listings 'minted)

@@ -2,6 +2,8 @@
 ;;; Commentary:
 ;;; Code:
 
+(declare-function straight-use-package "ext:straight")
+
 ;; Elm mode
 ;; =============================================================================
 (straight-use-package 'elm-mode)

@@ -1,7 +1,8 @@
-
 ;;; lang-erlang.el --- Erlang Layer -*- lexical-binding: t -*-
 ;;; Commentary:
 ;;; Code:
+
+(declare-function straight-use-package "ext:straight")
 
 ;; Erlang Mode
 ;; ========================================================================================

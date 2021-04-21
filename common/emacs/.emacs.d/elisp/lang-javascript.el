@@ -2,8 +2,12 @@
 ;;; Commentary:
 ;;; Code:
 
+(declare-function straight-use-package "ext:straight")
+
 ;; JS Mode
 ;; =============================================================================
+(declare-function js-jsx-enable "js")
+
 (add-hook 'javascript-mode-hook #'js-jsx-enable)
 ;; =============================================================================
 
@@ -19,7 +23,9 @@
 (customize-set-variable 'mocha-reporter "spec")
 
 (with-eval-after-load 'js-mode
-   (define-key js-mode-map (kbd "C-c , v") 'mocha-test-project))
+  (declare-function mocha-test-project "ext:mocha")
+  (when (boundp 'js-mode-map)
+    (define-key js-mode-map (kbd "C-c , v") #'mocha-test-project)))
 ;; =============================================================================
 
 (provide 'lang-javascript)

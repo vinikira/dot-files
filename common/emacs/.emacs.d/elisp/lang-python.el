@@ -2,6 +2,8 @@
 ;;; Commentary:
 ;;; Code:
 
+(declare-function straight-use-package "ext:straight")
+
 ;; Python Mode
 ;; =============================================================================
 (customize-set-variable 'python-shell-interpreter "ipython")

@@ -2,6 +2,8 @@
 ;;; Commentary:
 ;;; Code:
 
+(declare-function straight-use-package "ext:straight")
+
 ;; Dart Mode
 ;; =============================================================================
 (straight-use-package 'dart-mode)

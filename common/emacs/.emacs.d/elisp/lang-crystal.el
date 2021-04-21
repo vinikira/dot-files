@@ -6,6 +6,8 @@
 
 ;;; Code:
 
+(declare-function straight-use-package "ext:straight")
+
 ;; Crystal mode
 ;; =============================================================================
 (straight-use-package 'crystal-mode)

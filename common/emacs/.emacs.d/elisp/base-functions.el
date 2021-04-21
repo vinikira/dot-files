@@ -34,6 +34,7 @@
       (find-file (concat "/sudo:root@localhost:" (read-file-name "File: ")))
     (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
 
+;;;###autoload
 (defun vs/indent-buffer ()
   "Indent whole buffer."
   (interactive)
