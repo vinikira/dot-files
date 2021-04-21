@@ -33,6 +33,7 @@
 (global-set-key (kbd "M-/") #'hippie-expand)
 (global-set-key (kbd "C-c s b") #'vs/scratch-buffer)
 (global-set-key (kbd "<f8>") #'window-toggle-side-windows)
+(global-set-key (kbd "C-.") #'completion-at-point)
 ;; =============================================================================
 
 ;; Unset keys
