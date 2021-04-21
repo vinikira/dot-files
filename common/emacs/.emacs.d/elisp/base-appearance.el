@@ -66,7 +66,7 @@
 (defun vs/--custom-modeline-mode-icon ()
   "Define the icon for current major mode."
   (format "%s"
-	  (propertize (all-the-icons-icon-for-mode major-mode)
+          (propertize (all-the-icons-icon-for-mode major-mode)
                       'help-echo (format "Major-mode: `%s`" major-mode)
                       'face `(:height 1.2 :family ,(all-the-icons-icon-family-for-buffer)))))
 
@@ -99,21 +99,21 @@
 ;; Side windows
 ;; =============================================================================
 (customize-set-variable 'display-buffer-alist
-			'(("\\(vterm\\|\\*vterm\\*\\|\\*e?shell\\*\\)"
-			   (display-buffer-in-side-window)
-			   (window-height . 0.30)
-			   (side . bottom)
-			   (slot . -1))
-			  ("\\*compilation\\*"
-			   (display-buffer-in-side-window)
-			   (window-height . 0.30)
-			   (side . bottom)
-			   (slot . 0))
-			  ("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\|Help\\)\\*"
-			   (display-buffer-in-side-window)
-			   (window-height . 0.30)
-			   (side . bottom)
-			   (slot . 1))))
+                        '(("\\(vterm\\|\\*vterm\\*\\|\\*e?shell\\*\\)"
+                           (display-buffer-in-side-window)
+                           (window-height . 0.30)
+                           (side . bottom)
+                           (slot . -1))
+                          ("\\*compilation\\*"
+                           (display-buffer-in-side-window)
+                           (window-height . 0.30)
+                           (side . bottom)
+                           (slot . 0))
+                          ("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\|Help\\)\\*"
+                           (display-buffer-in-side-window)
+                           (window-height . 0.30)
+                           (side . bottom)
+                           (slot . 1))))
 
 ;; =============================================================================
 
@@ -125,7 +125,7 @@
   "Custom function to generate tab bar names."
   (let ((project-name (projectile-project-name)))
     (if (string= "-" project-name)
-	(tab-bar-tab-name-current)
+        (tab-bar-tab-name-current)
       project-name)))
 
 (customize-set-variable 'tab-bar-mode t)
