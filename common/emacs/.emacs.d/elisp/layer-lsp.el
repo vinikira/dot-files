@@ -37,6 +37,7 @@
 (customize-set-variable 'lsp-headerline-breadcrumb-enable nil)
 (customize-set-variable 'lsp-enable-links nil)
 (customize-set-variable 'lsp-log-io nil)
+(customize-set-variable 'lsp-completion-provider :none)
 
 (declare-function lsp-deferred "ext:lsp-mode")
 (declare-function lsp-enable-which-key-integration "ext:lsp-mode")
