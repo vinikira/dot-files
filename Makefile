@@ -1,6 +1,8 @@
 GIT_DIR = $$HOME/git
 SUMMON_DIR := ${GIT_DIR}/summon
 
+.PHONY=all clean install_summon summon
+
 all: install_summon summon
 
 clean:
@@ -12,4 +14,4 @@ install_summon:
 	chmod 755 ${SUMMON_DIR}/summon.sh
 
 summon:
-	sh ${SUMMON_DIR}/summon.sh $(workspace)
+	bash ${SUMMON_DIR}/summon.sh $(workspace)
