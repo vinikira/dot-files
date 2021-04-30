@@ -4,20 +4,35 @@
 
 ;; Fonts Families
 ;; =============================================================================
-(defvar vs/font-family "JetBrains Mono")
+(defvar vs/monospace-font-family "JetBrains Mono")
+(defvar vs/monospace-serif-font-family "Noto Mono")
+(defvar vs/sans-font-family "Noto Sans")
 (defvar vs/emoji-font-family "Noto Color Emoji")
-;; =============================================================================
 
-;; Emoji font setup
-;; More information: http://ergoemacs.org/emacs/emacs_list_and_set_font.html
-;; =============================================================================
-(defun vs/--setup-emoji-font (&rest _frame)
-  "Set fontset emoji font for the FRAME."
-  (set-fontset-font t 'symbol vs/emoji-font-family))
+(defun vs/--safe-set-font (face font &optional height)
+  "Set FONT to FACE if is installed.
+If HEIGHT is non nil use it to set font heigth."
+  (if (member font (font-family-list))
+      (set-face-attribute face nil :family font :height (or height 100))
+    (message "Font %s not installed!" font)))
 
-(unless (daemonp) (vs/--setup-emoji-font))
+(defun vs/--safe-set-fontset (face font &optional add)
+  "Set FONT as a fontset to FACE if is installed.
+See `set-fontset-font' for ADD."
+  (if (member font (font-family-list))
+      (set-fontset-font t face font nil add)
+    (message "Font %s not installed!" font)))
 
-(advice-add 'server-create-window-system-frame :after 'vs/--setup-emoji-font)
+(defun vs/--setup-fonts ()
+  "Setup my fonts."
+  (vs/--safe-set-font 'default vs/monospace-font-family 130)
+  (vs/--safe-set-font 'fixed-pitch-serif vs/monospace-serif-font-family)
+  (vs/--safe-set-font 'variable-pitch vs/sans-font-family)
+  (vs/--safe-set-fontset 'symbol vs/emoji-font-family 'append))
+
+(if (daemonp)
+    (add-hook 'server-after-make-frame-hook #'vs/--setup-fonts)
+  (vs/--setup-fonts))
 ;; =============================================================================
 
 ;; Theme
@@ -32,12 +47,11 @@
 ;; Frame face
 ;; =============================================================================
 (defvar vs/frame-alist
-  `((font . ,(format "%s-11:width=regular:weight=regular" vs/font-family))
-    (scroll-bar . 0)
+  `((scroll-bar . 0)
     (menu-bar-lines . 0)
-    (vertical-scroll-bars)
-    (height . 60)
-    (width . 95)
+    (tool-bar-lines . 0)
+    (vertical-scroll-bars . nil)
+    (fullscreen . maximized)
     (alpha . 100)))
 
 (setq-default default-frame-alist vs/frame-alist)
