@@ -80,11 +80,6 @@
 			`((".*" ,(concat temp-dir "/backup/") t)))
 (customize-set-variable 'bookmark-save-flag t)
 (customize-set-variable 'bookmark-default-file (concat temp-dir "/bookmarks"))
-;; Decrease GC back
-(add-hook 'after-init-hook
-	  (lambda ()
-	    (customize-set-variable 'gc-cons-threshold (* 2 1000 1000))))
-;; increase the amount of data which Emacs reads from the process
 (customize-set-variable 'read-process-output-max (* 1024 1024))
 (fset 'yes-or-no-p 'y-or-n-p)
 (windmove-default-keybindings)

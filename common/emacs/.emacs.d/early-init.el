@@ -2,8 +2,18 @@
 ;;; Commentary:
 ;;; Code:
 
+(let ((gc-cp gc-cons-percentage)
+      (fha file-name-handler-alist))
+  (add-hook 'after-init-hook
+            (lambda ()
+              (setq gc-cons-threshold (* 2 1000 1000) ;; 2MB
+                    gc-cons-percentage gc-cp
+                    file-name-handler-alist fha))))
+
 ;; Disable garbage collection on startup
-(setq gc-cons-threshold most-positive-fixnum)
+(setq gc-cons-threshold most-positive-fixnum
+      gc-cons-percentage 0.8
+      file-name-handler-alist nil)
 
 ;; Disable package.el
 (setq package-enable-at-startup nil)
