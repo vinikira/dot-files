@@ -42,36 +42,6 @@
 (add-hook 'after-init-hook #'editorconfig-mode)
 ;; =============================================================================
 
-;; Embark
-;; =============================================================================
-(straight-use-package 'embark)
-
-(declare-function embark-act "ext:embark")
-(declare-function embark-bindings "ext:embark")
-(declare-function embark-act "ext:embark")
-
-(global-set-key (kbd "M-o") #'embark-act)
-(global-set-key (kbd "C-h B") #'embark-bindings)
-
-(with-eval-after-load 'embark
-  (declare-function embark-prefix-help-command "ext:embark")
-  (declare-function which-key--show-keymap "ext:wich-key")
-  (declare-function which-key--hide-popup-ignore-command "ext:wich-key")
-
-  (customize-set-variable 'prefix-help-command #'embark-prefix-help-command)
-  (customize-set-variable 'embark-action-indicator
-                          (lambda (map _target)
-                            (which-key--show-keymap "Embark" map nil nil 'no-paging)
-                            #'which-key--hide-popup-ignore-command))
-  (customize-set-variable 'embark-become-indicator 'embark-action-indicator)
-
-  ;; Hide the mode line of the Embark live/completions buffers
-  (add-to-list 'display-buffer-alist
-               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
-                 nil
-                 (window-parameters (mode-line-format . none)))))
-;; =============================================================================
-
 ;; Exec Path From Shell
 ;; =============================================================================
 (straight-use-package 'exec-path-from-shell)
@@ -89,6 +59,11 @@
 (declare-function flycheck-mode "ext:flycheck")
 
 (add-hook 'prog-mode-hook #'flycheck-mode)
+
+(with-eval-after-load 'flycheck-mode
+  (declare-function consult-flycheck "ext:consult-flycheck")
+  (when (boundp 'flycheck-command-map)
+    (define-key flycheck-command-map (kbd "!") #'consult-flycheck)))
 ;; =============================================================================
 
 ;; Iedit
@@ -113,19 +88,6 @@
 (declare-function magit-status "ext:magit-status")
 
 (global-set-key (kbd "C-x g") #'magit-status)
-;; =============================================================================
-
-;; Marginalia
-;; =============================================================================
-(straight-use-package 'marginalia)
-
-(declare-function marginalia-mode "ext:marginalia")
-(declare-function marginalia-cycle "ext:marginalia")
-
-(with-eval-after-load 'marginalia
-  (define-key minibuffer-local-map (kbd "M-A") #'marginalia-cycle))
-
-(marginalia-mode)
 ;; =============================================================================
 
 ;; Multiple cursors
@@ -195,20 +157,6 @@
 (declare-function rg-menu "ext:rg-menu")
 
 (global-set-key (kbd "C-c r") #'rg-menu)
-;; =============================================================================
-
-;; Selectrum
-;; =============================================================================
-(straight-use-package 'selectrum)
-(straight-use-package 'selectrum-prescient)
-
-(declare-function selectrum-prescient-mode "ext:selectrum-prescient")
-(declare-function prescient-persist-mode "ext:prescient")
-(declare-function selectrum-mode "ext:selectrum")
-
-(selectrum-prescient-mode +1)
-(prescient-persist-mode +1)
-(selectrum-mode +1)
 ;; =============================================================================
 
 ;; Smartparens
