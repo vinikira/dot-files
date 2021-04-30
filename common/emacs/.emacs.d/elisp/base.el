@@ -131,9 +131,7 @@
 
 ;; Disable vanilla modes
 ;; =============================================================================
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
+(blink-cursor-mode -1)
 (customize-set-variable 'inhibit-startup-screen t)
 (customize-set-variable 'inhibit-splash-screen t)
 ;; =============================================================================
