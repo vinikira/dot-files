@@ -141,6 +141,29 @@
                     for free = (file-size-human-readable free)
                     concat (format "%s: %s + %s = %s\n" type used free total))))
 
+(defun vs/nxml-where (&optional copy)
+  "Display the hierarchy of XML elements the point is on as a path.
+If COPY is non-nil, copy to the clipboard."
+  (interactive "p")
+  (let ((path nil)
+        (formated-path nil))
+    (save-excursion
+      (save-restriction
+        (widen)
+        (while (and (< (point-min) (point)) ;; Doesn't error if point is at beginning of buffer
+                    (condition-case nil
+                        (progn
+                          (nxml-backward-up-element) ; always returns nil
+                          t)
+                      (error nil)))
+          (setq path (cons (xmltok-start-tag-local-name) path)))
+        (setq formated-path (format "/%s" (mapconcat 'identity path "/")))
+        (if (called-interactively-p t)
+            (message formated-path)
+          (princ formated-path))
+        (when (and copy formated-path)
+          (kill-new formated-path))))))
+
 (provide 'base-functions)
 
 ;;; base-functions.el ends here
