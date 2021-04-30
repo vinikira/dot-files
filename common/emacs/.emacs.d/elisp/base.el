@@ -28,7 +28,7 @@
 ;; UTF-8
 ;; =============================================================================
 (customize-set-variable 'default-process-coding-system
-			'(utf-8-unix . utf-8-unix))
+                        '(utf-8-unix . utf-8-unix))
 (customize-set-variable 'locale-coding-system 'utf-8)
 (set-charset-priority 'unicode)
 (set-terminal-coding-system 'utf-8)
@@ -50,20 +50,20 @@
 (customize-set-variable 'ring-bell-function 'ignore)
 ;; http://ergoemacs.org/emacs/emacs_stop_cursor_enter_prompt.html
 (customize-set-variable 'minibuffer-prompt-properties
-			'(read-only
-			  t
-			  point-entered
-			  minibuffer-avoid-prompt
-			  face minibuffer-prompt))
+                        '(read-only
+                          t
+                          point-entered
+                          minibuffer-avoid-prompt
+                          face minibuffer-prompt))
 ;; Disable non selected window highlight
 (customize-set-variable 'cursor-in-non-selected-windows nil)
 (customize-set-variable 'highlight-nonselected-windows nil)
 ;; PATH
 (customize-set-variable 'exec-path (append
-				    exec-path
-				    `("/usr/local/bin/"
-				      ,(expand-file-name "~/.local/bin")
-				      ,(expand-file-name "~/.asdf/shims"))))
+                                    exec-path
+                                    `("/usr/local/bin/"
+                                      ,(expand-file-name "~/.local/bin")
+                                      ,(expand-file-name "~/.asdf/shims"))))
 (customize-set-variable 'inhibit-startup-message t)
 (customize-set-variable 'fringes-outside-margins t)
 (customize-set-variable 'select-enable-clipboard t)
@@ -75,15 +75,17 @@
 (customize-set-variable 'auto-save-list-file-name (concat temp-dir "/autosave"))
 (customize-set-variable 'create-lockfiles nil)
 (customize-set-variable 'backup-directory-alist
-			`((".*" . ,(concat temp-dir "/backup/"))))
+                        `((".*" . ,(concat temp-dir "/backup/"))))
 (customize-set-variable 'auto-save-file-name-transforms
-			`((".*" ,(concat temp-dir "/backup/") t)))
+                        `((".*" ,(concat temp-dir "/backup/") t)))
 (customize-set-variable 'bookmark-save-flag t)
 (customize-set-variable 'bookmark-default-file (concat temp-dir "/bookmarks"))
 (customize-set-variable 'read-process-output-max (* 1024 1024))
+(customize-set-variable 'compilation-scroll-output t)
+(customize-set-variable 'indent-tabs-mode nil)
+
 (fset 'yes-or-no-p 'y-or-n-p)
 (windmove-default-keybindings)
-(customize-set-variable 'compilation-scroll-output t)
 ;; =============================================================================
 
 ;; Hooks
