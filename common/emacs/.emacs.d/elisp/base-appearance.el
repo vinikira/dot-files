@@ -4,7 +4,7 @@
 
 ;; Fonts Families
 ;; =============================================================================
-(defvar vs/monospace-font-family "JetBrains Mono")
+(defvar vs/monospace-font-family "JetBrains Mono-10")
 (defvar vs/monospace-serif-font-family "Noto Mono")
 (defvar vs/sans-font-family "Noto Sans")
 (defvar vs/emoji-font-family "Noto Color Emoji")
