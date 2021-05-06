@@ -4,7 +4,7 @@
 
 ;; Fonts Families
 ;; =============================================================================
-(defvar vs/monospace-font-family "JetBrains Mono-10")
+(defvar vs/monospace-font-family "JetBrains Mono")
 (defvar vs/monospace-serif-font-family "Noto Mono")
 (defvar vs/sans-font-family "Noto Sans")
 (defvar vs/emoji-font-family "Noto Color Emoji")
@@ -25,7 +25,7 @@ See `set-fontset-font' for ADD."
 
 (defun vs/--setup-fonts ()
   "Setup my fonts."
-  (vs/--safe-set-font 'default vs/monospace-font-family 130)
+  (vs/--safe-set-font 'default vs/monospace-font-family 100)
   (vs/--safe-set-font 'fixed-pitch-serif vs/monospace-serif-font-family)
   (vs/--safe-set-font 'variable-pitch vs/sans-font-family)
   (vs/--safe-set-fontset 'symbol vs/emoji-font-family 'append))
