@@ -42,6 +42,18 @@
 (add-hook 'after-init-hook #'editorconfig-mode)
 ;; =============================================================================
 
+;; Emacs everywhere
+;; =============================================================================
+(straight-use-package 'emacs-everywhere)
+(customize-set-variable
+ 'emacs-everywhere-frame-parameters '((name . "emacs-everywhere")
+                                      (width . 80)
+                                      (height . 12)
+                                      (menu-bar-lines . 0)
+                                      (tool-bar-lines . 0)
+                                      (vertical-scroll-bars . nil)))
+;; =============================================================================
+
 ;; Exec Path From Shell
 ;; =============================================================================
 (straight-use-package 'exec-path-from-shell)
