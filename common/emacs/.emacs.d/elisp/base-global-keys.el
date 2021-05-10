@@ -43,9 +43,11 @@
 ;; =============================================================================
 (with-eval-after-load 'nxml-mode
   (declare-function vs/format-xml-buffer "base-functions")
+  (declare-function vs/nxml-where "base-functions")
+
   (when (boundp 'nxml-mode-map)
-    (message "foi")
-    (define-key nxml-mode-map (kbd "C-c C-f") #'vs/format-xml-buffer)))
+    (define-key nxml-mode-map (kbd "C-c C-f") #'vs/format-xml-buffer)
+    (define-key nxml-mode-map (kbd "C-c C-w") #'vs/nxml-where)))
 ;; =============================================================================
 
 ;; Unset keys
