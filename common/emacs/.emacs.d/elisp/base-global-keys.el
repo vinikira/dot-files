@@ -2,16 +2,8 @@
 ;;; Commentary:
 ;;; Code:
 
-;; Set keys
+;; Global keys
 ;; =============================================================================
-(with-eval-after-load 'dired
-  (declare-function dired-create-empty-file "dired-aux")
-  (declare-function dired-find-alternate-file "dired")
-
-  (when (boundp 'dired-mode-map)
-    (define-key dired-mode-map (kbd "e") #'dired-create-empty-file)
-    (define-key dired-mode-map (kbd "RET") #'dired-find-alternate-file)))
-
 (declare-function vs/indent-buffer "base-functions")
 (declare-function vs/split-window-below-and-switch "base-functions")
 (declare-function vs/split-window-right-and-switch "base-functions")
@@ -34,6 +26,26 @@
 (global-set-key (kbd "C-c s b") #'vs/scratch-buffer)
 (global-set-key (kbd "<f8>") #'window-toggle-side-windows)
 (global-set-key (kbd "C-.") #'completion-at-point)
+;; =============================================================================
+
+;; Dired mode
+;; =============================================================================
+(with-eval-after-load 'dired
+  (declare-function dired-create-empty-file "dired-aux")
+  (declare-function dired-find-alternate-file "dired")
+
+  (when (boundp 'dired-mode-map)
+    (define-key dired-mode-map (kbd "e") #'dired-create-empty-file)
+    (define-key dired-mode-map (kbd "RET") #'dired-find-alternate-file)))
+;; =============================================================================
+
+;; Nxml mode
+;; =============================================================================
+(with-eval-after-load 'nxml-mode
+  (declare-function vs/format-xml-buffer "base-functions")
+  (when (boundp 'nxml-mode-map)
+    (message "foi")
+    (define-key nxml-mode-map (kbd "C-c C-f") #'vs/format-xml-buffer)))
 ;; =============================================================================
 
 ;; Unset keys
