@@ -23,6 +23,15 @@
 (add-to-list 'auto-mode-alist '("\\.epub$" . nov-mode))
 ;; =============================================================================
 
+;; Dark Room mode
+;; =============================================================================
+(straight-use-package 'darkroom)
+
+(declare-function darkroom-tentative-mode "ext:darkroom")
+
+(global-set-key (kbd "<f6>") #'darkroom-tentative-mode)
+;; =============================================================================
+
 (provide 'layer-writer)
 
 ;;; layer-writer.el ends here
