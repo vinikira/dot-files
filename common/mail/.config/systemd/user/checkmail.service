@@ -1,0 +1,6 @@
+[Unit]
+Description=check mail
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/checkmail.sh
