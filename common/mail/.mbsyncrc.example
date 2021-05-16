@@ -1,0 +1,18 @@
+IMAPStore NAME-remote
+Host IMAP_HOST
+SSLType IMAPS
+User USER
+PassCmd "pass show ACCOUNT"
+
+MaildirStore NAME-local
+Path ~/mail/NAME
+Inbox ~/mail/NAME/INBOX
+Subfolders Verbatim
+
+Channel NAME
+Far :NAME-remote:
+Near :NAME-local:
+Create Both
+Expunge Both
+Patterns *
+SyncState *

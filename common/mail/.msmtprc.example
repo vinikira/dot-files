@@ -1,0 +1,15 @@
+defaults
+auth           on
+tls            on
+logfile ~/msmtp.log
+
+account NAME
+host HOST
+tls on
+auth on
+from USER
+user USER
+passwordeval pass show ACCOUNT
+port 587
+
+account default : NAME

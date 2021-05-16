@@ -1,0 +1,8 @@
+[Unit]
+Description=check mail
+RefuseManualStart=no
+RefuseManualStop=yes
+
+[Service]
+Type=oneshot
+Exec=$HOME/.local/bin/checkmail.sh
