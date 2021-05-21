@@ -89,6 +89,9 @@ export KERL_BUILD_DOCS="yes"
 # custom file
 [ -f $HOME/.custom ] && source $HOME/.custom
 
+# direnv
+(( $+commands[direnv] )) && eval "$(direnv hook zsh)"
+
 # vterm integration
 vterm_printf(){
     if [ -n "$TMUX" ]; then
