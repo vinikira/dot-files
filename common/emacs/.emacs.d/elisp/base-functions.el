@@ -34,7 +34,6 @@
       (find-file (concat "/sudo:root@localhost:" (read-file-name "File: ")))
     (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
 
-;;;###autoload
 (defun vs/indent-buffer ()
   "Indent whole buffer."
   (interactive)
@@ -69,9 +68,9 @@
         (decf n)))))
 
 (defun vs/sh-cmd-to-string (cmd)
-  "Execute shell CMD and remove newline of output."
-  (shell-command-to-string
-   (concat "printf %s \"$(" cmd ")\"")))
+  "Execute shell CMD and remove unnecessary newline of output."
+  (string-trim
+   (shell-command-to-string cmd)))
 
 (defun vs/json-to-etf (&optional begin end)
   "Transform JSON to Elixir Term Format.  Use BEGIN and END as region."
