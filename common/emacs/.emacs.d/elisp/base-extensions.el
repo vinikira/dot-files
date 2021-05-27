@@ -171,6 +171,15 @@
 (global-set-key (kbd "C-c r") #'rg-menu)
 ;; =============================================================================
 
+;; Rainbow mode
+;; =============================================================================
+(straight-use-package 'rainbow-mode)
+
+(declare-function rainbow-mode "ext:rainbow-mode")
+
+(add-hook 'prog-mode-hook #'rainbow-mode)
+;; =============================================================================
+
 ;; Smartparens
 ;; =============================================================================
 (straight-use-package 'smartparens)

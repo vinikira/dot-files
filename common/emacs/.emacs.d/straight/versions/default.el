@@ -113,6 +113,7 @@
  ("projectile" . "4126799d94b6a9a4db22976d2dd6625323221359")
  ("protobuf" . "dd69a484c01291c8c844ae31dc6aff4525b4a9a2")
  ("queue" . "130c2d656cd5d7376552272fab9e50a7c37d0c4a")
+ ("rainbow-mode" . "949166cc0146bc9fabf74ce70c1c4a097f4cffd4")
  ("rg.el" . "10e64887c224002572e1f1e19c74453cba606c3f")
  ("rustic" . "ed68fd3bb410869e1a4ce3943b5913ea88d9b509")
  ("s.el" . "3a5166c81ac9e50eaccf5490c5c632f93452287e")
