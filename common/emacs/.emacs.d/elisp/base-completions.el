@@ -10,7 +10,8 @@
 
 (declare-function selectrum-mode "ext:selectrum")
 
-(set-face-background 'selectrum-current-candidate "#44475a")
+(with-eval-after-load 'selectrum
+  (set-face-background 'selectrum-current-candidate "#44475a"))
 
 (selectrum-mode +1)
 ;; =============================================================================
