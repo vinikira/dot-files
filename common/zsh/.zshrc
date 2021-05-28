@@ -86,6 +86,9 @@ export KERL_BUILD_DOCS="yes"
 
 [ -f $HOME/.asdf/completions/asdf.bash ] && source $HOME/.asdf/completions/asdf.bash
 
+# Nix package manager
+if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then . $HOME/.nix-profile/etc/profile.d/nix.sh; fi
+
 # custom file
 [ -f $HOME/.custom ] && source $HOME/.custom
 
