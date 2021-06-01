@@ -4,7 +4,7 @@ Description=Check mail every five minutes
 [Timer]
 Persistent=false
 OnBootSec=2min
-OnUnitActiveSec=5min
+OnUnitActiveSec=15min
 Unit=checkmail.service
 
 [Install]
