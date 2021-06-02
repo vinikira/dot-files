@@ -6,7 +6,11 @@
 
 ;; Org mode latest version.
 ;; =============================================================================
-(straight-use-package '(org-plus-contrib :includes (org)))
+(straight-use-package '(org-contrib :type git
+                                    :includes (org org-contacts org-notify)
+                                    :host nil
+                                    :repo "https://git.sr.ht/~bzg/org-contrib"
+                                    :files (:defaults "lisp/*.el")))
 
 ;; Defining where the Org files will be stored.
 (defconst vs/org-directory
@@ -194,11 +198,10 @@
 ;; Org Notify
 ;; =============================================================================
 (with-eval-after-load 'org
-  (autoload 'org-notify-start "org-notify")
-  (autoload 'org-notify-add "org-notify")
+  (require 'org-notify)
 
-  (declare-function org-notify-start "org-notify")
-  (declare-function org-notify-add "org-notify")
+  (declare-function org-notify-start "ext:org-notify")
+  (declare-function org-notify-add "ext:org-notify")
 
   (org-notify-start 60)
 
