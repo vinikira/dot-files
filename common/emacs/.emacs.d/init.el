@@ -18,6 +18,7 @@
 ;; =============================================================================
 (defvar bootstrap-version)
 (customize-set-variable 'straight-check-for-modifications '(check-on-save find-when-checking))
+(customize-set-variable 'straight-vc-git-default-clone-depth 1)
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
       (bootstrap-version 5))
