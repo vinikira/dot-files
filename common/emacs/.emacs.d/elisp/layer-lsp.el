@@ -93,7 +93,8 @@
 
 ;; Consult LSP
 ;; =============================================================================
-(straight-use-package 'consult-lsp)
+(straight-use-package
+ '(consult-lsp :type git :host github :branch "main" :repo "gagbo/consult-lsp"))
 ;; =============================================================================
 
 (provide 'layer-lsp)
