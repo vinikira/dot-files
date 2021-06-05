@@ -124,3 +124,4 @@ alias ec='emacsclient -cn -e "(progn (raise-frame) (x-focus-frame (selected-fram
 alias et='emacsclient -t'
 alias e='emacsclient -n'
 alias ee='emacsclient --eval "(emacs-everywhere)"'
+alias livebook='docker run -p 8080:8080 livebook/livebook'
