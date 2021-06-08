@@ -79,7 +79,7 @@
 (add-to-list 'auto-mode-alist '("README\\.md$" . gfm-mode))
 
 (customize-set-variable 'markdown-command
-                        "pandoc --from markdown --to html --ascii")
+                        "pandoc --quiet -f gfm -s")
 
 (declare-function markdownfmt-enable-on-save "ext:markdownfmt")
 
