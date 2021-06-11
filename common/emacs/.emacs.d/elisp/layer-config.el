@@ -23,24 +23,6 @@
 (add-hook 'csv-mode-hook #'csv-align-mode)
 ;; =============================================================================
 
-;; Ansible
-;; =============================================================================
-(straight-use-package 'ansible)
-(straight-use-package 'ansible-doc)
-
-(add-hook 'yaml-mode-hook 'ansible)
-
-(declare-function ansible-doc "ext:ansible-doc")
-
-(with-eval-after-load 'ansible
-  (when (boundp 'ansible-key-map)
-    (define-key ansible-key-map (kbd "C-c C-d") #'ansible-doc)))
-
-(with-eval-after-load 'ansible-doc
-  (when (boundp 'ansible-doc-module-mode-map)
-    (define-key ansible-doc-module-mode-map (kbd "C-c C-d") #'ansible-doc)))
-;; =============================================================================
-
 ;; Docker
 ;; =============================================================================
 (straight-use-package 'dockerfile-mode)
