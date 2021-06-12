@@ -14,14 +14,14 @@
 If HEIGHT is non nil use it to set font heigth."
   (if (member font (font-family-list))
       (set-face-attribute face nil :family font :height (or height 100))
-    (message "Font %s not installed!" font)))
+    (message "[set-font] Font %s not installed!" font)))
 
 (defun vs/--safe-set-fontset (face font &optional add)
   "Set FONT as a fontset to FACE if is installed.
 See `set-fontset-font' for ADD."
   (if (member font (font-family-list))
       (set-fontset-font t face font nil add)
-    (message "Font %s not installed!" font)))
+    (message "[set-fontset] Font %s not installed!" font)))
 
 (defun vs/--setup-fonts ()
   "Setup my fonts."
@@ -29,10 +29,6 @@ See `set-fontset-font' for ADD."
   (vs/--safe-set-font 'fixed-pitch-serif vs/monospace-serif-font-family)
   (vs/--safe-set-font 'variable-pitch vs/sans-font-family)
   (vs/--safe-set-fontset 'symbol vs/emoji-font-family 'append))
-
-(if (daemonp)
-    (add-hook 'server-after-make-frame-hook #'vs/--setup-fonts)
-  (vs/--setup-fonts))
 ;; =============================================================================
 
 ;; Theme
@@ -41,10 +37,12 @@ See `set-fontset-font' for ADD."
 
 (straight-use-package 'dracula-theme)
 
-(load-theme 'dracula t)
+(defun vs/--setup-theme ()
+  "Configure theme."
+  (load-theme 'dracula t))
 ;; =============================================================================
 
-;; Frame face
+;; Setup frame
 ;; =============================================================================
 (defvar vs/frame-alist
   `((scroll-bar . 0)
@@ -55,6 +53,15 @@ See `set-fontset-font' for ADD."
     (alpha . 100)))
 
 (setq-default default-frame-alist vs/frame-alist)
+
+(defun vs/--setup-frame ()
+  "Configure frames."
+  (vs/--setup-fonts)
+  (vs/--setup-theme))
+
+(if (daemonp)
+    (add-hook 'server-after-make-frame-hook #'vs/--setup-frame)
+  (vs/--setup-frame))
 ;; =============================================================================
 
 ;; Modeline
