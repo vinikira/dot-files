@@ -95,9 +95,8 @@
          (plantuml-target (concat plantuml-directory "/plantuml.jar")))
     (if (not (file-exists-p plantuml-target))
         (progn (message "Downloading plantuml.jar")
-               (shell-command
-                (format "wget %s -O %s" plantuml-link plantuml-target))
-               (kill-buffer "*Shell Command Output*")))
+               (async-shell-command
+                (format "wget %s -O %s" plantuml-link plantuml-target))))
     (customize-set-variable 'org-plantuml-jar-path plantuml-target)
     (customize-set-variable 'plantuml-jar-path plantuml-target))
   (flycheck-plantuml-setup))
