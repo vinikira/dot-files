@@ -150,8 +150,10 @@ See `set-fontset-font' for ADD."
       project-name)))
 
 (customize-set-variable 'tab-bar-mode t)
-(customize-set-variable 'tab-bar-show nil)
 (customize-set-variable 'tab-bar-tab-name-function #'vs/--tab-bar-name)
+(customize-set-variable 'tab-bar-new-tab-choice "*scratch*")
+(customize-set-variable 'tab-bar-close-button-show nil)
+(customize-set-variable 'tab-bar-new-button-show nil)
 
 (global-set-key (kbd "H-t") #'tab-bar-select-tab-by-name)
 ;; =============================================================================
