@@ -12,8 +12,12 @@
 (customize-set-variable 'sqlformat-args '("-s2" "-g" "-u1"))
 
 (declare-function sqlformat-on-save-mode "ext:sqlformat")
+(declare-function sqlformat "ext:sqlformat")
 
 (add-hook 'sql-mode-hook #'sqlformat-on-save-mode)
+
+(when (boundp 'sql-mode-map)
+  (define-key sql-mode-map (kbd "C-c C-f") #'sqlformat))
 ;; =============================================================================
 
 (provide 'lang-sql)
