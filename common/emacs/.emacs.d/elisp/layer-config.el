@@ -84,7 +84,7 @@
 (straight-use-package 'plantuml-mode)
 (straight-use-package 'flycheck-plantuml)
 
-(customize-set-variable 'plantuml-output-type "svg")
+(customize-set-variable 'plantuml-output-type "png")
 (customize-set-variable 'plantuml-default-exec-mode 'jar)
 
 (with-eval-after-load 'plantuml-mode
