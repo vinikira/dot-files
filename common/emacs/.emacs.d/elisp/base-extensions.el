@@ -169,6 +169,8 @@
 (declare-function rg-menu "ext:rg-menu")
 
 (global-set-key (kbd "C-c r") #'rg-menu)
+
+(customize-set-variable 'rg-command-line-flags '("--hidden"))
 ;; =============================================================================
 
 ;; Rainbow mode
