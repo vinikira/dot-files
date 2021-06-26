@@ -16,8 +16,9 @@
 
 (add-hook 'sql-mode-hook #'sqlformat-on-save-mode)
 
-(when (boundp 'sql-mode-map)
-  (define-key sql-mode-map (kbd "C-c C-f") #'sqlformat))
+(with-eval-after-load 'sql
+  (when (boundp 'sql-mode-map)
+    (define-key sql-mode-map (kbd "C-c C-f") #'sqlformat)))
 ;; =============================================================================
 
 (provide 'lang-sql)
