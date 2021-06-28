@@ -1,5 +1,5 @@
-GIT_DIR = $$HOME/git
-SUMMON_DIR := ${GIT_DIR}/summon
+GIT_DIR = $$HOME/git/
+SUMMON_DIR := ${GIT_DIR}gitlab/semente/summon
 
 .PHONY=all clean install_summon summon
 
