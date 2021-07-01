@@ -158,6 +158,9 @@
 (define-key isearch-mode-map (kbd "M-e") #'consult-isearch)
 (define-key isearch-mode-map (kbd "M-s e") #'consult-isearch)
 (define-key isearch-mode-map (kbd "M-s l") #'consult-line)
+
+(autoload 'projectile-project-root "projectile")
+(customize-set-variable 'consult-project-root-function #'projectile-project-root)
 ;; =============================================================================
 
 (provide 'base-completions)
