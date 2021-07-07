@@ -125,7 +125,7 @@ See `set-fontset-font' for ADD."
                            (window-height . 0.30)
                            (side . bottom)
                            (slot . -1))
-                          ("\\*compilation\\*"
+                          ("\\*.*compilation.*\\*"
                            (display-buffer-in-side-window)
                            (window-height . 0.30)
                            (side . bottom)
