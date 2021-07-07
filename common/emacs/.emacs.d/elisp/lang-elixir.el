@@ -47,24 +47,23 @@
   (declare-function exunit-project-root "ext:exunit")
   (declare-function s-join "ext:s")
 
-  (eval-when-compile
-    (defvar exunit-environment)
-    (defvar exunit-mix-test-default-options)
-    (defun vs/exunit-compile (orig-fun &rest args)
-      "Apply ARGS to ORIG-FUN if vs/use-exunit-custom is nil."
-      (if vs/use-exunit-custom
-          (let* ((directory (cadr args))
-                 (default-directory (or directory (exunit-project-root)))
-                 (compilation-environment exunit-environment)
-                 (args (car args)))
-            (ignore default-directory) ;; avoiding unused lexical variable warning
-            (ignore compilation-environment) ;; avoiding unused lexical variable warning
-            (exunit-do-compile
-             (format vs/exunit-custom-mix-cmd
-                     (s-join " " (append exunit-mix-test-default-options args)))))
-        (apply orig-fun args))))
+  (defvar exunit-environment)
+  (defvar exunit-mix-test-default-options)
 
-  (advice-add 'exunit-compile :around #'vs/exunit-compile))
+  (advice-add 'exunit-compile :around
+              (lambda (orig-fun &rest args)
+                "Apply ARGS to ORIG-FUN if vs/use-exunit-custom is nil."
+                (if vs/use-exunit-custom
+                    (let* ((directory (cadr args))
+                           (default-directory (or directory (exunit-project-root)))
+                           (compilation-environment exunit-environment)
+                           (args (car args)))
+                      (ignore default-directory) ;; avoiding unused lexical variable warning
+                      (ignore compilation-environment) ;; avoiding unused lexical variable warning
+                      (exunit-do-compile
+                       (format vs/exunit-custom-mix-cmd
+                               (s-join " " (append exunit-mix-test-default-options args)))))
+                  (apply orig-fun args)))))
 ;; =============================================================================
 
 ;; Inf Elixir
