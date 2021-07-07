@@ -67,15 +67,16 @@
 ;; Flycheck
 ;; =============================================================================
 (straight-use-package 'flycheck)
+(straight-use-package 'consult-flycheck)
 
-(declare-function flycheck-mode "ext:flycheck")
+(declare-function 'flycheck-mode "flycheck")
 
-(add-hook 'prog-mode-hook #'flycheck-mode)
+(add-hook 'prog-mode-hook 'flycheck-mode)
 
 (with-eval-after-load 'flycheck-mode
-  (declare-function consult-flycheck "ext:consult-flycheck")
+  (declare-function 'consult-flycheck "consult-flycheck")
   (when (boundp 'flycheck-command-map)
-    (define-key flycheck-command-map (kbd "!") #'consult-flycheck)))
+    (define-key flycheck-command-map (kbd "!") 'consult-flycheck)))
 ;; =============================================================================
 
 ;; Iedit
