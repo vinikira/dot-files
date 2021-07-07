@@ -33,13 +33,9 @@ See `set-fontset-font' for ADD."
 
 ;; Theme
 ;; =============================================================================
-(declare-function straight-use-package "ext:straight")
-
-(straight-use-package 'dracula-theme)
-
 (defun vs/--setup-theme ()
   "Configure theme."
-  (load-theme 'dracula t))
+  (load-theme 'modus-vivendi t))
 ;; =============================================================================
 
 ;; Setup frame
