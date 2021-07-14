@@ -53,6 +53,7 @@
  ("exunit.el" . "5bb115f3270cfe29d36286da889f0ee5bba03cfd")
  ("f.el" . "50af874cd19042f17c8686813d52569b1025c76a")
  ("flycheck" . "f8c679fff349850c80541a31de50009c3c15d4c9")
+ ("flycheck-clj-kondo" . "a558bda44c4cb65b69fa53df233e8941ebd195c5")
  ("flycheck-plantuml" . "183be89e1dbba0b38237dd198dff600e0790309d")
  ("gnu-elpa-mirror" . "bd355379a3143beb3514948685791096c3c5f750")
  ("go-mode.el" . "34974346d1f74fa835d745514c9fe9afccce8dae")
