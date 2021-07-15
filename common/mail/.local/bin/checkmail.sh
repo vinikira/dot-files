@@ -11,8 +11,8 @@ then
 
     if [ $COUNT_MAIL != '0' ]
     then
-        notify-send -a emacsclient -i emacs \
-                    -i /usr/share/icons/Adwaita/64x64/status/mail-unread-symbolic.symbolic.png \
+        notify-send -a notmuch-emacs-client-mua \
+                    -i emblem-mail \
                     "You have $COUNT_MAIL unread emails!"
     fi
 

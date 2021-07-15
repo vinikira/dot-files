@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=Notmuch (emacs client interface)
+GenericName=Email Client
+Comment=Emacs based email client
+Exec=notmuch-emacs-mua --client --auto-daemon --create-frame --hello %u
+MimeType=x-scheme-handler/mailto;
+Icon=emblem-mail
+Terminal=false
+Type=Application
+Categories=Network;Email;
+Keywords=Mail;E-mail;Email;
+X-Desktop-File-Install-Version=0.26
