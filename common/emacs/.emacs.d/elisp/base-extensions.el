@@ -129,6 +129,8 @@
 
 (with-eval-after-load 'projectile
   (declare-function projectile-command-map "ext:projectile")
+  (declare-function projectile-compilation-buffer-name "ext:projectile")
+  (declare-function projectile-current-project-buffer-p "ext:projectile")
 
   (when (boundp 'temp-dir)
     (customize-set-variable 'projectile-known-projects-file
@@ -136,6 +138,12 @@
 
   (customize-set-variable 'projectile-globally-ignored-directories
                           '("node_modules" ".git" ".svn" "deps" "_build" ".elixir_ls"))
+
+  (customize-set-variable 'compilation-buffer-name-function
+                          #'projectile-compilation-buffer-name)
+
+  (customize-set-variable 'compilation-save-buffers-predicate
+                          #'projectile-current-project-buffer-p)
 
   (when (and (boundp 'projectile-mode-map))
     (define-key projectile-mode-map (kbd "C-c p") #'projectile-command-map)))
