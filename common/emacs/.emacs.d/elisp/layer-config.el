@@ -44,8 +44,7 @@
 ;; =============================================================================
 (straight-use-package 'graphviz-dot-mode)
 
-(with-eval-after-load 'graphviz-dot-mode
-  (customize-set-variable 'graphviz-dot-indent-width 4))
+(customize-set-variable 'graphviz-dot-indent-width 4)
 ;; =============================================================================
 
 ;; HashiCorp Configuration Language

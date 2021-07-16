@@ -79,10 +79,10 @@
     (let ((min (if (region-active-p) begin (point-min))))
       (goto-char min)
       (while (re-search-forward ":" end t)
-	(replace-match " =>"))
+        (replace-match " =>"))
       (goto-char min)
       (while (re-search-forward "{" end t)
-	(replace-match "%{")))))
+        (replace-match "%{")))))
 
 (defun vs/etf-to-json (&optional begin end)
   "Transform Elixir Term Format to JSON.  Use BEGIN and END as region."
@@ -91,17 +91,17 @@
     (let ((min (if (region-active-p) begin (point-min))))
       (goto-char min)
       (while (re-search-forward " =>" end t)
-	(replace-match ":"))
+        (replace-match ":"))
       (goto-char min)
       (while (re-search-forward "%{" end t)
-	(replace-match "{")))))
+        (replace-match "{")))))
 
 (defun vs/scratch-buffer (new-frame)
   "Create a scratch with selected mode.If NEW-FRAME is t, opens it in new frame."
   (interactive "P")
   (let* ((modes (seq-uniq (mapcar #'cdr auto-mode-alist)))
-	 (selected-mode
-	  (completing-read "Select mode: " modes)))
+         (selected-mode
+          (completing-read "Select mode: " modes)))
     (when new-frame
       (select-frame (make-frame)))
     (switch-to-buffer
@@ -115,12 +115,12 @@
 (defun vs/verb-graphql (rs)
   "Transform verb RS to graphql request."
   (let* ((before-body (oref rs body))
-	 (splited-body (split-string before-body "\n\n"))
-	 (query (nth 0 splited-body))
-	 (variables (nth 1 splited-body))
-	 (json-object-type 'alist)
-	 (parsed-variables (if variables (json-parse-string variables) '()))
-	 (new-body (json-encode `((query . ,query) (variables . ,parsed-variables)))))
+         (splited-body (split-string before-body "\n\n"))
+         (query (nth 0 splited-body))
+         (variables (nth 1 splited-body))
+         (json-object-type 'alist)
+         (parsed-variables (if variables (json-parse-string variables) '()))
+         (new-body (json-encode `((query . ,query) (variables . ,parsed-variables)))))
     (oset rs body new-body)
     rs))
 

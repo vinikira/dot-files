@@ -20,7 +20,6 @@
 
 (add-hook 'clojure-mode-hook
           (lambda () (require 'flycheck-clj-kondo)))
-
 ;; =============================================================================
 
 (provide 'lang-clojure)

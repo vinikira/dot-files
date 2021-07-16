@@ -61,10 +61,9 @@
 (declare-function marginalia-mode "ext:marginalia")
 (declare-function marginalia-cycle "ext:marginalia")
 
-(with-eval-after-load 'marginalia
-  (define-key minibuffer-local-map (kbd "M-A") #'marginalia-cycle))
-
 (marginalia-mode)
+
+(define-key minibuffer-local-map (kbd "M-A") #'marginalia-cycle)
 ;; =============================================================================
 
 ;; Consult - commands based on completing-read

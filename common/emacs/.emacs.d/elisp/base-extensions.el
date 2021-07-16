@@ -69,14 +69,14 @@
 (straight-use-package 'flycheck)
 (straight-use-package 'consult-flycheck)
 
-(declare-function 'flycheck-mode "flycheck")
+(declare-function flycheck-mode "ext:flycheck")
 
-(add-hook 'prog-mode-hook 'flycheck-mode)
+(add-hook 'prog-mode-hook #'flycheck-mode)
 
-(with-eval-after-load 'flycheck-mode
-  (declare-function 'consult-flycheck "consult-flycheck")
+(with-eval-after-load 'flycheck
+  (declare-function consult-flycheck "consult-flycheck")
   (when (boundp 'flycheck-command-map)
-    (define-key flycheck-command-map (kbd "!") 'consult-flycheck)))
+    (define-key flycheck-command-map (kbd "!") #'consult-flycheck)))
 ;; =============================================================================
 
 ;; Iedit
@@ -127,28 +127,27 @@
 
 (declare-function projectile-mode "ext:projectile")
 
-(with-eval-after-load 'projectile
-  (declare-function projectile-command-map "ext:projectile")
-  (declare-function projectile-compilation-buffer-name "ext:projectile")
-  (declare-function projectile-current-project-buffer-p "ext:projectile")
+(declare-function projectile-command-map "ext:projectile")
+(declare-function projectile-compilation-buffer-name "ext:projectile")
+(declare-function projectile-current-project-buffer-p "ext:projectile")
 
-  (when (boundp 'temp-dir)
-    (customize-set-variable 'projectile-known-projects-file
-                            (expand-file-name "projectile-bookmarks.eld" temp-dir)))
+(when (boundp 'temp-dir)
+  (customize-set-variable 'projectile-known-projects-file
+                          (expand-file-name "projectile-bookmarks.eld" temp-dir)))
 
-  (customize-set-variable 'projectile-globally-ignored-directories
-                          '("node_modules" ".git" ".svn" "deps" "_build" ".elixir_ls"))
+(customize-set-variable 'projectile-globally-ignored-directories
+                        '("node_modules" ".git" ".svn" "deps" "_build" ".elixir_ls"))
 
-  (customize-set-variable 'compilation-buffer-name-function
-                          #'projectile-compilation-buffer-name)
+(customize-set-variable 'compilation-buffer-name-function
+                        #'projectile-compilation-buffer-name)
 
-  (customize-set-variable 'compilation-save-buffers-predicate
-                          #'projectile-current-project-buffer-p)
-
-  (when (and (boundp 'projectile-mode-map))
-    (define-key projectile-mode-map (kbd "C-c p") #'projectile-command-map)))
+(customize-set-variable 'compilation-save-buffers-predicate
+                        #'projectile-current-project-buffer-p)
 
 (projectile-mode)
+
+(when (boundp 'projectile-mode-map)
+  (define-key projectile-mode-map (kbd "C-c p") #'projectile-command-map))
 ;; =============================================================================
 
 ;; Dashboard
@@ -203,8 +202,7 @@
   (declare-function sp-backward-slurp-sexp "ext:smartparens")
   (declare-function sp-backward-barf-sexp "ext:smartparens")
 
-  (with-eval-after-load 'prog-mode
-    (require 'smartparens-config))
+  (require 'smartparens-config)
 
   (when (boundp 'smartparens-mode-map)
     (define-key smartparens-mode-map (kbd "C-)") #'sp-forward-slurp-sexp)
@@ -274,11 +272,10 @@
 
 (declare-function yas-global-mode "ext:yasnippet")
 
-(with-eval-after-load 'yasnippet
-  (when (boundp 'yas-snippet-dirs)
-    (add-to-list 'yas-snippet-dirs (concat user-emacs-directory "snippets/"))))
+(yas-global-mode)
 
-(add-hook 'after-init-hook #'yas-global-mode)
+(when (boundp 'yas-snippet-dirs)
+    (add-to-list 'yas-snippet-dirs (concat user-emacs-directory "snippets/")))
 ;; =============================================================================
 
 (provide 'base-extensions)

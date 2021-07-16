@@ -22,7 +22,7 @@
 
 (customize-set-variable 'mocha-reporter "spec")
 
-(with-eval-after-load 'js-mode
+(with-eval-after-load 'js
   (declare-function mocha-test-project "ext:mocha")
   (when (boundp 'js-mode-map)
     (define-key js-mode-map (kbd "C-c , v") #'mocha-test-project)))
