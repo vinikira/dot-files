@@ -124,6 +124,7 @@
  ("sqlformat" . "0351dad6bec06a381484c0c95309d46a7a8acdb4")
  ("ssass-mode" . "96f557887ad97a0066a60c54f92b7234b8407016")
  ("straight.el" . "1e27b0590df77a5d478970ca58fd6606971692f5")
+ ("switch-window" . "2801d9b3a9d7bf0b64cd8b2f2e572124ed2ff9ad")
  ("tablist" . "faab7a035ef2258cc4ea2182f67e3aedab7e2af9")
  ("toml-mode.el" . "f6c61817b00f9c4a3cab1bae9c309e0fc45cdd06")
  ("transient" . "51e833e5152e9fdcdc1dbbf34ad2d4905bde1f69")

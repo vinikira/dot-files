@@ -218,6 +218,15 @@
 (straight-use-package 'smex)
 ;; =============================================================================
 
+;; Switch Window
+;; =============================================================================
+(straight-use-package 'switch-window)
+
+(declare-function switch-window "ext:switch-window")
+
+(global-set-key (kbd "C-x o") #'switch-window)
+;; =============================================================================
+
 ;; Undo tree
 ;; =============================================================================
 (straight-use-package 'undo-tree)
