@@ -83,6 +83,8 @@
 (customize-set-variable 'read-process-output-max (* 1024 1024))
 (customize-set-variable 'compilation-scroll-output t)
 (customize-set-variable 'indent-tabs-mode nil)
+(customize-set-variable 'mac-command-modifier 'meta)
+(customize-set-variable 'mac-option-modifier 'hyper)
 
 (fset 'yes-or-no-p 'y-or-n-p)
 (windmove-default-keybindings)

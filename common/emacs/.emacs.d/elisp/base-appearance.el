@@ -7,7 +7,9 @@
 (defvar vs/monospace-font-family "JetBrainsMono Nerd Font")
 (defvar vs/monospace-serif-font-family "Noto Mono")
 (defvar vs/sans-font-family "Noto Sans")
-(defvar vs/emoji-font-family "Noto Color Emoji")
+(defvar vs/emoji-font-family (cond
+                              ((eq system-type 'darwin) "Apple Color Emoji")
+                              (t "Noto Color Emoji")))
 
 (defun vs/--safe-set-font (face font &optional height)
   "Set FONT to FACE if is installed.
@@ -25,7 +27,8 @@ See `set-fontset-font' for ADD."
 
 (defun vs/--setup-fonts ()
   "Setup my fonts."
-  (vs/--safe-set-font 'default vs/monospace-font-family 100)
+  (cond ((eq system-type 'darwin) (vs/--safe-set-font 'default vs/monospace-font-family 120))
+        (t (vs/--safe-set-font 'default vs/monospace-font-family 100)))
   (vs/--safe-set-font 'fixed-pitch-serif vs/monospace-serif-font-family)
   (vs/--safe-set-font 'variable-pitch vs/sans-font-family)
   (vs/--safe-set-fontset 'symbol vs/emoji-font-family 'append))
