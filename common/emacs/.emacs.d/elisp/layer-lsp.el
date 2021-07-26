@@ -75,6 +75,9 @@
   (declare-function dap-hydra "ext:dap-hydra")
   (declare-function dap-breakpoint-toggle "ext:dap-mode")
 
+  (add-hook 'dap-stopped-hook
+          (lambda (_arg) (call-interactively #'dap-hydra)))
+
   (when (boundp 'dap-mode-map)
     (define-key dap-mode-map (kbd "S-<f12>") #'dap-hydra)
     (define-key dap-mode-map (kbd "<f9>") #'dap-breakpoint-toggle))
