@@ -4,6 +4,38 @@
 
 (declare-function straight-use-package "ext:straight")
 
+;; Toggle LSP per project
+;; =============================================================================
+(defvar vs/lsp-allowed-projects '()
+  "Projects that are allowed to use LSP in current session.")
+
+(declare-function projectile-project-root "ext:projectile")
+(declare-function projectile-project-buffers "ext:projectile")
+(declare-function projectile-buffers-with-file "ext:projectile")
+(declare-function lsp-deferred "ext:lsp-mode")
+(declare-function lsp-disconnect "ext:lsp-mode")
+
+(defun vs/toggle-lsp-for-current-project ()
+  "Enable/disable `lsp-mode' for current project."
+  (interactive)
+  (let ((disabled nil)
+	(current-project (projectile-project-root)))
+    (when (eq current-project nil)
+      (error "The current buffer is not part of any project"))
+    (if (member current-project vs/lsp-allowed-projects)
+	(progn
+	  (setq disabled t
+		vs/lsp-allowed-projects
+		(delete current-project vs/lsp-allowed-projects)))
+      (push current-project vs/lsp-allowed-projects))
+    (dolist (file (projectile-buffers-with-file (projectile-project-buffers)))
+      (with-current-buffer file
+	(if disabled
+	    (lsp-disconnect)
+          (lsp-deferred))))))
+;; =============================================================================
+
+
 ;; LSP Mode
 ;; =============================================================================
 (straight-use-package 'lsp-mode)
@@ -43,15 +75,10 @@
 (declare-function lsp-enable-which-key-integration "ext:lsp-mode")
 
 (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
-(add-hook 'elixir-mode-hook #'lsp-deferred)
-(add-hook 'js-mode-hook #'lsp-deferred)
-(add-hook 'typescript-mode-hook #'lsp-deferred)
-(add-hook 'java-mode-hook #'lsp-deferred)
-(add-hook 'go-mode-hook #'lsp-deferred)
-(add-hook 'dart-mode-hook #'lsp-deferred)
-(add-hook 'rust-mode-hook #'lsp-deferred)
-(add-hook 'kotlin-mode-hook #'lsp-deferred)
-(add-hook 'python-mode-hook #'lsp-deferred)
+(add-hook 'prog-mode-hook
+	  (lambda ()
+	    (when (member (projectile-project-root) vs/lsp-allowed-projects)
+	      (lsp-deferred))))
 ;; =============================================================================
 
 ;; LSP UI
