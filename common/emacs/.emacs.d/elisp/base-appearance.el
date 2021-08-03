@@ -90,29 +90,36 @@ See `set-fontset-font' for ADD."
                       'help-echo (format "Major-mode: `%s`" major-mode)
                       'face `(:height 1.2 :family ,(all-the-icons-icon-family-for-buffer)))))
 
-(customize-set-variable
- 'mode-line-format
- '("%e"
-   mode-line-front-space
-   mode-line-mule-info
-   mode-line-modified
-   mode-line-remote
-   " 🕘 "
-   (:eval (format-time-string "%H:%M"))
-   " 🗓 "
-   (:eval (format-time-string "%Y-%m-%d"))
-   " 📝 "
-   "%l:%c"
-   " · "
-   (:eval (propertized-buffer-identification "%b"))
-   " · "
-   "("
-   (:eval (vs/--custom-modeline-mode-icon))
-   " "
-   mode-name
-   ")"
-   " · "
-   (:eval (when vc-mode (vs/--custom-modeline-git-vc)))))
+(defvar vs/custom-modeline-format '("%e"
+                                      mode-line-front-space
+                                      mode-line-mule-info
+                                      mode-line-modified
+                                      mode-line-remote
+                                      " 🕘 "
+                                      (:eval (format-time-string "%H:%M"))
+                                      " 🗓 "
+                                      (:eval (format-time-string "%Y-%m-%d"))
+                                      " 📝 "
+                                      "%l:%c"
+                                      " · "
+                                      (:eval (propertized-buffer-identification "%b"))
+                                      " · "
+                                      "("
+                                      (:eval (vs/--custom-modeline-mode-icon))
+                                      " "
+                                      mode-name
+                                      ")"
+                                      " · "
+                                      (:eval (when vc-mode (vs/--custom-modeline-git-vc))))
+  "My custom modeline format.")
+
+;; When running on MacOS show the tab name on mode-line
+(when (eq system-type 'darwin)
+  (add-to-list 'vs/custom-modeline-format (propertize " · tab: " 'face 'bold) t)
+  (add-to-list 'vs/custom-modeline-format
+               '(:eval (propertize (cdr (assoc 'name (tab-bar--current-tab))) 'face 'bold)) t))
+
+(customize-set-variable 'mode-line-format vs/custom-modeline-format)
 
 ;; =============================================================================
 
