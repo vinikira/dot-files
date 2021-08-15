@@ -8,7 +8,6 @@ ExecStart=/usr/bin/env emacs --fg-daemon
 ExecStop=/usr/bin/env emacsclient --eval "(kill-emacs)"
 Environment=SSH_AUTH_SOCK=%t/keyring/ssh
 Restart=on-failure
-WorkingDirectory=/usr/lib/emacs/28.0.50/x86_64-pc-linux-gnu/
 
 [Install]
 WantedBy=default.target
