@@ -70,6 +70,7 @@
 ;; =============================================================================
 (straight-use-package 'consult)
 (straight-use-package 'embark-consult)
+(straight-use-package 'consult-dir)
 
 (declare-function consult-history "ext:consult")
 (declare-function consult-mode-command "ext:consult")
@@ -157,6 +158,15 @@
 
 (autoload 'projectile-project-root "projectile")
 (customize-set-variable 'consult-project-root-function #'projectile-project-root)
+
+;; consult dir
+(declare-function consult-dir "ext:consult-dir")
+(declare-function consult-dir-jump-file "ext:consult-dir")
+(global-set-key (kbd "C-x C-d") #'consult-dir)
+
+(when (boundp 'selectrum-minibuffer-map)
+  (define-key selectrum-minibuffer-map (kbd "C-x C-d") #'consult-dir)
+  (define-key selectrum-minibuffer-map (kbd "C-x C-j") #'consult-dir-jump-file))
 ;; =============================================================================
 
 (provide 'base-completions)
