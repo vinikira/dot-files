@@ -3,15 +3,14 @@ let mapleader="<space>"
 
 " My settings
 syntax on
-let g:javascript_plugin_jsdoc = 1
 set cursorline
 set nobackup
 set noswapfile
 set nowritebackup
 set clipboard=unnamed
 set expandtab
-set shiftwidth=4
-set tabstop=4
+set shiftwidth=2
+set tabstop=2
 filetype plugin indent on
 set autoindent
 set linebreak
@@ -76,14 +75,6 @@ map <C-n> :NERDTreeToggle<CR>
 " AirLine Configs--------------------------------------------
 let g:airline#extensions#tabline#enabled = 1
 "------------------------------------------------------------
-
-" JS Beautify------------------------------------------------
-autocmd FileType javascript vnoremap <buffer>  <c-f> :call RangeJsBeautify()<cr>
-autocmd FileType json vnoremap <buffer> <c-f> :call RangeJsonBeautify()<cr>
-autocmd FileType jsx vnoremap <buffer> <c-f> :call RangeJsxBeautify()<cr>
-autocmd FileType html vnoremap <buffer> <c-f> :call RangeHtmlBeautify()<cr>
-autocmd FileType css vnoremap <buffer> <c-f> :call RangeCSSBeautify()<cr>
-"-------------------------------------------------------------
 
 if (has("termguicolors"))
     set termguicolors
