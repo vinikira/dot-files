@@ -85,6 +85,7 @@
 (customize-set-variable 'indent-tabs-mode nil)
 (customize-set-variable 'mac-command-modifier 'meta)
 (customize-set-variable 'mac-option-modifier 'hyper)
+(customize-set-variable 'tab-always-indent 'complete)
 
 (fset 'yes-or-no-p 'y-or-n-p)
 (windmove-default-keybindings)
