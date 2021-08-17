@@ -69,38 +69,32 @@ See `set-fontset-font' for ADD."
 (declare-function all-the-icons-alltheicon "ext:all-the-icons")
 (declare-function all-the-icons-octicon "ext:all-the-icons")
 (declare-function all-the-icons-octicon-family "ext:all-the-icons")
-(declare-function all-the-icons-icon-for-mode "ext:all-the-icons")
-(declare-function all-the-icons-icon-family-for-buffer "ext:all-the-icons")
+(declare-function all-the-icons-icon-for-buffer "ext:all-the-icons")
 
 (defun vs/--custom-modeline-git-vc ()
   "Define the custom icons for vc mode."
   (let ((branch (mapconcat 'concat (cdr (split-string vc-mode "[:-]")) "-")))
     (concat
-     (propertize (format "%s" (all-the-icons-alltheicon "git")) 'face `(:height 1.2) 'display '(raise -0.1))
+     (propertize (format "%s" (all-the-icons-alltheicon "git")) 'face `(:height 1.2) 'display '(raise -0.01))
      " git "
      (propertize (format "%s" (all-the-icons-octicon "git-branch"))
                  'face `(:height 1.3 :family ,(all-the-icons-octicon-family))
-                 'display '(raise -0.1))
+                 'display '(raise -0.01))
      (propertize (format " %s" branch) 'face `(:height 1.0)))))
 
 (defun vs/--custom-modeline-mode-icon ()
   "Define the icon for current major mode."
-  (format "%s"
-          (propertize (all-the-icons-icon-for-mode major-mode)
-                      'help-echo (format "Major-mode: `%s`" major-mode)
-                      'face `(:height 1.2 :family ,(all-the-icons-icon-family-for-buffer)))))
+  (format "%s" (all-the-icons-icon-for-buffer)))
 
 (defvar vs/custom-modeline-format '("%e"
                                       mode-line-front-space
                                       mode-line-mule-info
+                                      mode-line-misc-info
                                       mode-line-modified
                                       mode-line-remote
-                                      " 🕘 "
-                                      (:eval (format-time-string "%H:%M"))
-                                      " 🗓 "
-                                      (:eval (format-time-string "%Y-%m-%d"))
-                                      " 📝 "
-                                      "%l:%c"
+                                      (:eval (format-time-string " 🕘 %H:%M"))
+                                      (:eval (format-time-string " 🗓 %Y-%m-%d"))
+                                      " 📝 %l:%c"
                                       " · "
                                       (:eval (propertized-buffer-identification "%b"))
                                       " · "
@@ -120,7 +114,6 @@ See `set-fontset-font' for ADD."
                '(:eval (propertize (cdr (assoc 'name (tab-bar--current-tab))) 'face 'bold)) t))
 
 (customize-set-variable 'mode-line-format vs/custom-modeline-format)
-
 ;; =============================================================================
 
 ;; Side windows
@@ -141,7 +134,6 @@ See `set-fontset-font' for ADD."
                            (window-height . 0.30)
                            (side . bottom)
                            (slot . 1))))
-
 ;; =============================================================================
 
 ;; Tab bar mode
