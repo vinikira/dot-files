@@ -2,13 +2,17 @@
 ;;; Commentary:
 ;;; Code:
 
+(defconst VS/IS-MACOS (eq system-type 'darwin))
+
 ;; Fonts Families
 ;; =============================================================================
-(defvar vs/monospace-font-family "JetBrainsMono Nerd Font")
+(defvar vs/monospace-font-family (cond
+                                  (VS/IS-MACOS "Iosevka Nerd Font Mono")
+                                  (t "Iosevka")))
 (defvar vs/monospace-serif-font-family "Noto Mono")
 (defvar vs/sans-font-family "Noto Sans")
 (defvar vs/emoji-font-family (cond
-                              ((eq system-type 'darwin) "Apple Color Emoji")
+                              (VS/IS-MACOS "Apple Color Emoji")
                               (t "Noto Color Emoji")))
 
 (defun vs/--safe-set-font (face font &optional height)
@@ -27,7 +31,7 @@ See `set-fontset-font' for ADD."
 
 (defun vs/--setup-fonts ()
   "Setup my fonts."
-  (cond ((eq system-type 'darwin) (vs/--safe-set-font 'default vs/monospace-font-family 120))
+  (cond (VS/IS-MACOS (vs/--safe-set-font 'default vs/monospace-font-family 170))
         (t (vs/--safe-set-font 'default vs/monospace-font-family 100)))
   (vs/--safe-set-font 'fixed-pitch-serif vs/monospace-serif-font-family)
   (vs/--safe-set-font 'variable-pitch vs/sans-font-family)
@@ -86,29 +90,30 @@ See `set-fontset-font' for ADD."
   "Define the icon for current major mode."
   (format "%s" (all-the-icons-icon-for-buffer)))
 
-(defvar vs/custom-modeline-format '("%e"
-                                      mode-line-front-space
-                                      mode-line-mule-info
-                                      mode-line-misc-info
-                                      mode-line-modified
-                                      mode-line-remote
-                                      (:eval (format-time-string " 🕘 %H:%M"))
-                                      (:eval (format-time-string " 🗓 %Y-%m-%d"))
-                                      " 📝 %l:%c"
-                                      " · "
-                                      (:eval (propertized-buffer-identification "%b"))
-                                      " · "
-                                      "("
-                                      (:eval (vs/--custom-modeline-mode-icon))
-                                      " "
-                                      mode-name
-                                      ")"
-                                      " · "
-                                      (:eval (when vc-mode (vs/--custom-modeline-git-vc))))
+(defvar vs/custom-modeline-format
+  '("%e"
+    mode-line-front-space
+    mode-line-mule-info
+    mode-line-misc-info
+    mode-line-modified
+    mode-line-remote
+    (:eval (format-time-string " 🕘 %H:%M"))
+    (:eval (format-time-string " 🗓 %Y-%m-%d"))
+    " 📝 %l:%c"
+    " · "
+    (:eval (propertized-buffer-identification "%b"))
+    " · "
+    "("
+    (:eval (vs/--custom-modeline-mode-icon))
+    " "
+    mode-name
+    ")"
+    " · "
+    (:eval (when vc-mode (vs/--custom-modeline-git-vc))))
   "My custom modeline format.")
 
 ;; When running on MacOS show the tab name on mode-line
-(when (eq system-type 'darwin)
+(when VS/IS-MACOS
   (add-to-list 'vs/custom-modeline-format (propertize " · tab: " 'face 'bold) t)
   (add-to-list 'vs/custom-modeline-format
                '(:eval (propertize (cdr (assoc 'name (tab-bar--current-tab))) 'face 'bold)) t))
