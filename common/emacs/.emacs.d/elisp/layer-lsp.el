@@ -19,19 +19,19 @@
   "Enable/disable `lsp-mode' for current project."
   (interactive)
   (let ((disabled nil)
-	(current-project (projectile-project-root)))
+        (current-project (projectile-project-root)))
     (when (eq current-project nil)
       (error "The current buffer is not part of any project"))
     (if (member current-project vs/lsp-allowed-projects)
-	(progn
-	  (setq disabled t
-		vs/lsp-allowed-projects
-		(delete current-project vs/lsp-allowed-projects)))
+        (progn
+          (setq disabled t
+                vs/lsp-allowed-projects
+                (delete current-project vs/lsp-allowed-projects)))
       (push current-project vs/lsp-allowed-projects))
     (dolist (file (projectile-buffers-with-file (projectile-project-buffers)))
       (with-current-buffer file
-	(if disabled
-	    (lsp-disconnect)
+        (if disabled
+            (lsp-disconnect)
           (lsp-deferred))))))
 ;; =============================================================================
 
@@ -76,9 +76,9 @@
 
 (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
 (add-hook 'prog-mode-hook
-	  (lambda ()
-	    (when (member (projectile-project-root) vs/lsp-allowed-projects)
-	      (lsp-deferred))))
+          (lambda ()
+            (when (member (projectile-project-root) vs/lsp-allowed-projects)
+              (lsp-deferred))))
 ;; =============================================================================
 
 ;; LSP UI

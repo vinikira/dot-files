@@ -32,18 +32,6 @@
 (global-set-key (kbd "<f6>") #'darkroom-tentative-mode)
 ;; =============================================================================
 
-;; LSP Grammarly
-;; =============================================================================
-(straight-use-package 'lsp-grammarly)
-
-(defun vs/enable-lsp-grammarly ()
-  "Enable lsp-grammarly."
-  (interactive)
-  (declare-function lsp-deferred "ext:lsp")
-  (require 'lsp-grammarly)
-  (lsp-deferred))
-;; =============================================================================
-
 (provide 'layer-writer)
 
 ;;; layer-writer.el ends here
