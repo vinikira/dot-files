@@ -69,9 +69,6 @@ export EDITOR="emacsclient -t"
 export VISUAL="emacsclient -c"
 export ELIXIR_EDITOR="emacsclient -n +__LINE__ __FILE__"
 
-# Erlang compile with docs
-export KERL_BUILD_DOCS="yes"
-
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
