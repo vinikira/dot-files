@@ -9,8 +9,12 @@
 (defvar vs/monospace-font-family (cond
                                   (VS/IS-MACOS "Iosevka Nerd Font Mono")
                                   (t "Iosevka")))
-(defvar vs/monospace-serif-font-family "Noto Mono")
-(defvar vs/sans-font-family "Noto Sans")
+(defvar vs/monospace-serif-font-family (cond
+                                        (VS/IS-MACOS "Iosevka Nerd Font Mono")
+                                        (t "Noto Mono")))
+(defvar vs/sans-font-family (cond
+                             (VS/IS-MACOS "Helvetica")
+                             (t "Noto Sans")))
 (defvar vs/emoji-font-family (cond
                               (VS/IS-MACOS "Apple Color Emoji")
                               (t "Noto Color Emoji")))
