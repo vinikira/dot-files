@@ -36,7 +36,7 @@ See `set-fontset-font' for ADD."
 (defun vs/--setup-fonts ()
   "Setup my fonts."
   (cond (VS/IS-MACOS (vs/--safe-set-font 'default vs/monospace-font-family 170))
-        (t (vs/--safe-set-font 'default vs/monospace-font-family 100)))
+        (t (vs/--safe-set-font 'default vs/monospace-font-family 120)))
   (vs/--safe-set-font 'fixed-pitch-serif vs/monospace-serif-font-family)
   (vs/--safe-set-font 'variable-pitch vs/sans-font-family)
   (vs/--safe-set-fontset 'symbol vs/emoji-font-family 'append))
