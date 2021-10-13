@@ -87,6 +87,7 @@
 (customize-set-variable 'mac-option-modifier 'hyper)
 (customize-set-variable 'tab-always-indent 'complete)
 (customize-set-variable 'dired-dwim-target t)
+(customize-set-variable 'scroll-conservatively 101)
 
 (fset 'yes-or-no-p 'y-or-n-p)
 (windmove-default-keybindings)
