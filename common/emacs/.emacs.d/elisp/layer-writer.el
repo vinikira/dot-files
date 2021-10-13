@@ -32,6 +32,34 @@
 (global-set-key (kbd "<f6>") #'darkroom-tentative-mode)
 ;; =============================================================================
 
+;; Langtool
+;; =============================================================================
+(straight-use-package 'langtool)
+
+(customize-set-variable 'langtool-default-language "en-US")
+
+(with-eval-after-load 'langtool
+  (declare-function find-lisp-find-files "find-lisp")
+  (require 'find-lisp)
+  (let* ((langtool-directory (if (boundp 'private-dir) private-dir "/tmp"))
+         (langtool-link
+          "https://languagetool.org/download/LanguageTool-stable.zip")
+         (langtool-zip (concat langtool-directory "/langtool.zip"))
+         (langtool-folder (concat langtool-directory "/langtool/")))
+    (if (not (file-exists-p langtool-folder))
+        (progn (message "Downloading langtool.zip")
+               (async-shell-command
+                (format "wget %s -O %s && unzip %s -d %s && rm %s"
+                        langtool-link
+                        langtool-zip
+                        langtool-zip
+                        langtool-folder
+                        langtool-zip))))
+    (customize-set-variable 'langtool-language-tool-jar
+                            (car (find-lisp-find-files
+                                  langtool-folder "languagetool-commandline.jar")))))
+;; =============================================================================
+
 (provide 'layer-writer)
 
 ;;; layer-writer.el ends here
