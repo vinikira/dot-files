@@ -9,12 +9,6 @@
 (defvar vs/monospace-font-family (cond
                                   (VS/IS-MACOS "Iosevka Nerd Font Mono")
                                   (t "Iosevka")))
-(defvar vs/monospace-serif-font-family (cond
-                                        (VS/IS-MACOS "Iosevka Nerd Font Mono")
-                                        (t "Noto Mono")))
-(defvar vs/sans-font-family (cond
-                             (VS/IS-MACOS "Helvetica")
-                             (t "Noto Sans")))
 (defvar vs/emoji-font-family (cond
                               (VS/IS-MACOS "Apple Color Emoji")
                               (t "Noto Color Emoji")))
@@ -24,21 +18,20 @@
 If HEIGHT is non nil use it to set font heigth."
   (if (member font (font-family-list))
       (set-face-attribute face nil :family font :height (or height 100))
-    (message "[set-font] Font %s not installed!" font)))
+    (message "[vs/--safe-set-font] Font %s not installed!" font)))
 
 (defun vs/--safe-set-fontset (face font &optional add)
   "Set FONT as a fontset to FACE if is installed.
 See `set-fontset-font' for ADD."
   (if (member font (font-family-list))
       (set-fontset-font t face font nil add)
-    (message "[set-fontset] Font %s not installed!" font)))
+    (message "[vs/--safe-set-fontset] Font %s not installed!" font)))
 
 (defun vs/--setup-fonts ()
   "Setup my fonts."
-  (cond (VS/IS-MACOS (vs/--safe-set-font 'default vs/monospace-font-family 170))
-        (t (vs/--safe-set-font 'default vs/monospace-font-family 120)))
-  (vs/--safe-set-font 'fixed-pitch-serif vs/monospace-serif-font-family)
-  (vs/--safe-set-font 'variable-pitch vs/sans-font-family)
+  (dolist (face '(default fixed-pitch))
+    (cond (VS/IS-MACOS (vs/--safe-set-font face vs/monospace-font-family 170))
+          (t (vs/--safe-set-font face vs/monospace-font-family 120))))
   (vs/--safe-set-fontset 'symbol vs/emoji-font-family 'append))
 ;; =============================================================================
 
