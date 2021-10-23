@@ -93,6 +93,7 @@
 (customize-set-variable 'org-refile-use-outline-path t)
 (customize-set-variable 'org-outline-path-complete-in-steps nil)
 (customize-set-variable 'org-refile-targets '((org-agenda-files :maxlevel . 9)))
+(customize-set-variable 'org-hide-emphasis-markers t)
 
 (with-eval-after-load 'org
   (org-babel-do-load-languages
