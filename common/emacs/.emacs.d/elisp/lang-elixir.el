@@ -103,6 +103,33 @@
 (straight-use-package 'ob-elixir)
 ;; =============================================================================
 
+;; Helpers
+;; =============================================================================
+(defun vs/json-to-etf (&optional begin end)
+  "Transform JSON to Elixir Term Format.  Use BEGIN and END as region."
+  (interactive "r")
+  (save-excursion
+    (let ((min (if (region-active-p) begin (point-min))))
+      (goto-char min)
+      (while (re-search-forward ":" end t)
+        (replace-match " =>"))
+      (goto-char min)
+      (while (re-search-forward "{" end t)
+        (replace-match "%{")))))
+
+(defun vs/etf-to-json (&optional begin end)
+  "Transform Elixir Term Format to JSON.  Use BEGIN and END as region."
+  (interactive "r")
+  (save-excursion
+    (let ((min (if (region-active-p) begin (point-min))))
+      (goto-char min)
+      (while (re-search-forward " =>" end t)
+        (replace-match ":"))
+      (goto-char min)
+      (while (re-search-forward "%{" end t)
+        (replace-match "{")))))
+;; =============================================================================
+
 (provide 'lang-elixir)
 
 ;;; lang-elixir.el ends here
