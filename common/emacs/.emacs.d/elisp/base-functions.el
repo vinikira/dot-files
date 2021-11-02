@@ -139,6 +139,23 @@ If COPY is non-nil, copy to the clipboard."
         (when (and copy formated-path)
           (kill-new formated-path))))))
 
+(defun vs/read-env-file (clean)
+  "Read dot env file and set envs in Emacs session.
+If CLEAN is provided, all variables listed on file will be
+cleared."
+  (interactive (list (y-or-n-p "Clean variables?")))
+  (let* ((file-path (format "%s.env" (or (vc-root-dir) "./")))
+         (file-contents (with-temp-buffer
+                          (insert-file-contents file-path)
+                          (buffer-string)))
+         (envs (mapcar (lambda (line)
+                         (split-string line "="))
+                       (split-string file-contents))))
+    (dolist (env-pair envs)
+      (setenv (car env-pair) (if clean
+                                 ""
+                               (cadr env-pair))))))
+
 (provide 'base-functions)
 
 ;;; base-functions.el ends here
