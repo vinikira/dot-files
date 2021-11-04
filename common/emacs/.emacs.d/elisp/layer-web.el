@@ -29,6 +29,7 @@
 (add-to-list 'auto-mode-alist '("\\.mjml\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.eex\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.leex\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.heex\\'" . web-mode))
 ;; =============================================================================
 
 ;; Emmet Mode
