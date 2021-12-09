@@ -27,13 +27,17 @@
   (declare-function exunit-verify-single "ext:exunit")
   (declare-function exunit-verify "ext:exunit")
   (declare-function exunit-rerun "ext:exunit")
+  (declare-function exunit-toggle-file-and-test "ext:exunit")
+  (declare-function exunit-toggle-file-and-test-other-window "ext:exunit")
 
   (when (boundp 'elixir-mode-map)
     (define-key elixir-mode-map (kbd "C-c , a") #'exunit-verify-all)
     (define-key elixir-mode-map (kbd "C-c , A") #'exunit-verify-all-in-umbrella)
     (define-key elixir-mode-map (kbd "C-c , s") #'exunit-verify-single)
     (define-key elixir-mode-map (kbd "C-c , v") #'exunit-verify)
-    (define-key elixir-mode-map (kbd "C-c , r") #'exunit-rerun)))
+    (define-key elixir-mode-map (kbd "C-c , r") #'exunit-rerun)
+    (define-key elixir-mode-map (kbd "C-c , t") #'exunit-toggle-file-and-test)
+    (define-key elixir-mode-map (kbd "C-c , T") #'exunit-toggle-file-and-test-other-window)))
 
 (defvar vs/use-exunit-custom nil
   "If true uses custom command stored in `vs/exunit-custom-mix-cmd'.")
