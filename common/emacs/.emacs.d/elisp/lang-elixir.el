@@ -128,6 +128,26 @@
       (goto-char min)
       (while (re-search-forward "%{" end t)
         (replace-match "{")))))
+
+(defun vs/elixir-map-atom-to-map-string (&optional begin end)
+  "Transform Elixir map atom to map string.  Use BEGIN and END as region."
+  (interactive "r")
+  (save-excursion
+    (let ((min (if (region-active-p) begin (point-min))))
+      (goto-char min)
+      (while (re-search-forward "\\([a-zA-z0-9]+\\): " end t)
+        (replace-match "\"\\1\" => "))
+      (goto-char min))))
+
+(defun vs/elixir-map-string-to-map-atom (&optional begin end)
+  "Transform Elixir map string to map atom.  Use BEGIN and END as region."
+  (interactive "r")
+  (save-excursion
+    (let ((min (if (region-active-p) begin (point-min))))
+      (goto-char min)
+      (while (re-search-forward "\"\\([a-zA-z0-9]+\\)\" => " end t)
+        (replace-match "\\1: "))
+      (goto-char min))))
 ;; =============================================================================
 
 (provide 'lang-elixir)
