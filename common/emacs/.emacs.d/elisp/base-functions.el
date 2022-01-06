@@ -156,6 +156,20 @@ cleared."
                                  ""
                                (cadr env-pair))))))
 
+(defun vs/update-git-repos (directory branch)
+  "Update git repos from DIRECTORY for given BRANCH."
+  (interactive (list (read-directory-name "Select the directory: ")
+                     (completing-read "Select the principal branch: "
+                                      '("master" "main"))))
+  (dolist (repo (directory-files directory))
+    (when (not (or (string= "." repo) (string= repo "..")))
+      (let* ((full-path (format "%s%s" directory repo))
+             (default-directory full-path))
+        (message "Updating repo: %s..." repo)
+        (vc-git-retrieve-tag full-path branch t)
+        (vc-git-pull nil)
+        (message "Done!")))))
+
 (provide 'base-functions)
 
 ;;; base-functions.el ends here
