@@ -38,6 +38,11 @@
 (byte-recompile-directory (concat user-emacs-directory "elisp") 0)
 ;; =============================================================================
 
+;; Site Lisp directory
+;; =============================================================================
+(add-to-list 'load-path (concat user-emacs-directory "site-lisp"))
+;; =============================================================================
+
 ;; Load customization layers
 ;; =============================================================================
 (cl-loop for file in (reverse (directory-files-recursively
