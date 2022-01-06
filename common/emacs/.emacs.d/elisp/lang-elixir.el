@@ -154,6 +154,15 @@
       (goto-char min))))
 ;; =============================================================================
 
+;; Refactor keymap
+;; =============================================================================
+(with-eval-after-load 'elixir-mode
+  (when (boundp 'elixir-mode-map)
+    (define-key elixir-mode-map (kbd "C-c . M") #'vs/elixir-map-string-to-map-atom)
+    (define-key elixir-mode-map (kbd "C-c . m") #'vs/elixir-map-atom-to-map-string)))
+;; =============================================================================
+
+
 (provide 'lang-elixir)
 
 ;;; lang-elixir.el ends here
