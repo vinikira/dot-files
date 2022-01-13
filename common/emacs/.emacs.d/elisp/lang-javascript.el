@@ -23,6 +23,8 @@
 (customize-set-variable 'mocha-reporter "spec")
 
 (with-eval-after-load 'js
+  (add-to-list 'auto-mode-alist '("\\.mjs$" . javascript-mode))
+
   (declare-function mocha-test-project "ext:mocha")
   (when (boundp 'js-mode-map)
     (define-key js-mode-map (kbd "C-c , v") #'mocha-test-project)))
