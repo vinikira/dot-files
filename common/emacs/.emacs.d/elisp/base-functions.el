@@ -170,6 +170,16 @@ cleared."
         (vc-git-pull nil)
         (message "Done!")))))
 
+(defun vs/generate-uid ()
+  "Generate an UID and insert at ponint."
+  (interactive)
+  (unless (executable-find "uuidgen")
+    (error "Could not find uuidgen executable"))
+  (let* ((uid (shell-command-to-string "uuidgen"))
+         (uid-downcased (downcase uid))
+         (uid-sanatized (replace-regexp-in-string "\n" "" uid-downcased)))
+    (insert uid-sanatized)))
+
 (provide 'base-functions)
 
 ;;; base-functions.el ends here
