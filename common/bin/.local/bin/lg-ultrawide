@@ -1,0 +1,25 @@
+#!/bin/sh
+
+if [[ "$XDG_SESSION_TYPE" == "x11" ]]; then
+    echo "Xorg session"
+    # to query connected output
+    # xrandr -q
+
+    if [[ "$1" == "60" ]]; then
+        # 60hz
+        # ./umc 2560 1080 60 --rbt
+        echo "Changing resolution: 2560x1080x59.98"
+        xrandr --newmode "2560x1080x59.98"  181.250000  2560 2608 2640 2720  1080 1083 1087 1111 +HSync -VSync
+        xrandr --addmode HDMI-2 2560x1080x59.98
+        xrandr --output HDMI-2 --mode 2560x1080x59.98
+    else
+        # 68hz
+        # ./umc 2560 1080 68 --rbt
+        echo "Changing resolution: 2560x1080x67.92"
+        xrandr --newmode "2560x1080x67.92"  206.000000  2560 2608 2640 2720  1080 1083 1087 1115  +HSync -VSync
+        xrandr --addmode HDMI-2 2560x1080x67.92
+        xrandr --output HDMI-2 --mode 2560x1080x67.92
+    fi
+else
+    echo "Wayland not supported yet."
+fi
