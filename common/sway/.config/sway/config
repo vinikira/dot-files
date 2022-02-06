@@ -20,7 +20,7 @@ set $term foot
 
 set $menu wofi
 
-set $locker swaylock
+set $locker swaylock -f -c 000000
 
 ### Output configuration
 #
@@ -32,8 +32,8 @@ output * bg ~/Pictures/wallpapers/633262.png fill
 #   output HDMI-A-1 resolution 1920x1080 position 1920,0
 #
 # You can get the names of your outputs by running: swaymsg -t get_outputs
+output 'Goldstar Company Ltd LG ULTRAWIDE 0x00000101' pos 2560,0 modeline 206.000000  2560 2608 2640 2720  1080 1083 1087 1115  +HSync -VSync
 
-output HDMI-A-2 modeline 206.000000  2560 2608 2640 2720  1080 1083 1087 1115  +HSync -VSync
 ### Idle configuration
 #
 # Example configuration:
@@ -46,6 +46,11 @@ output HDMI-A-2 modeline 206.000000  2560 2608 2640 2720  1080 1083 1087 1115  +
 # This will lock your screen after 300 seconds of inactivity, then turn off
 # your displays after another 300 seconds, and turn your screens back on when
 # resumed. It will also lock your screen before your computer goes to sleep.
+exec swayidle -w \
+    timeout 1200 $locker \
+    timeout 1300 'swaymsg "output * dpms off"' \
+    resume 'swaymsg "output * dpms on"' \
+    before-sleep $locker
 
 ### Input configuration
 #
@@ -292,11 +297,6 @@ bar {
 exec --no-startup-id blueman-applet
 exec pamac-tray
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
-exec swayidle -w \
-    timeout 1200 'swaylock' \
-    timeout 1300 'swaymsg "output * dpms off"' \
-    resume 'swaymsg "output * dpms on"' \
-    before-sleep 'swaylock'
 exec --no-startup-id /usr/bin/nm-applet --indicator
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 
