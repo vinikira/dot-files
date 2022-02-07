@@ -1,16 +1,16 @@
 {
     "modules-left": ["sway/workspaces", "sway/mode"],
     "modules-center": ["clock", "idle_inhibitor"],
-    "modules-right": ["tray", "memory", "cpu", "pulseaudio", "temperature", "battery", "custom/power", "custom/menu"],
+    "modules-right": ["tray", "network", "memory", "cpu", "temperature", "pulseaudio", "battery", "custom/power", "custom/menu"],
     "sway/mode": {
         "format": "<span style=\"italic\">{}</span>"
     },
     "network": {
-        "format-wifi": "{essid} ({signalStrength}%) ",
-        "format-ethernet": "{ifname} ",
+        "format-wifi": "({signalStrength}%) ",
+        "format-ethernet": "",
         "format-disconnected": "",
         "max-length": 50,
-        "on-click": "kitty -e 'nmtui'"
+        "on-click": "foot -e 'nmtui'"
     },
     "idle_inhibitor": {
         "format": "{icon}",
@@ -20,12 +20,13 @@
         }
     },
     "tray": {
-        "icon-size": 15,
+        "icon-size": 20,
         "spacing": 10
     },
     "clock": {
+        "format": "{:%Y-%m-%d %H:%M}",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-        "on-click": "gnome-calendar"
+        "on-click": "emacsclient -cn --eval '(calendar)'"
     },
     "cpu": {
         "format": "{usage}% "
