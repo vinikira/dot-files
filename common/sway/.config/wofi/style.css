@@ -2,12 +2,13 @@ window {
     margin: 5px;
     border: 0px solid #444444;
     background-color: rgba(0, 0, 0, 0.0);
-    font-family: SF Pro Text Regular;
+    font-family: Iosevka Term;
+    font-weight: bold;
 }
 
 @keyframes erscheinen {
     from {opacity: 0;}
-      to {opacity: 1;}
+    to {opacity: 1;}
 }
 
 #input {
@@ -25,13 +26,9 @@ window {
     background-color: rgba(68, 68, 68, 0.0);
 }
 
-/* #inner-box flowboxchild:nth-child(even) { */
-/*     background-color: #555555; */
-/* } */
-
 #outer-box {
     margin: 0px;
-    border: 0px solid rgb(203, 75, 22);
+    border: 0px solid rgba(0,43,51,0.85);
     background-color: rgba(0, 0, 0, 0.0);
 }
 
@@ -46,11 +43,10 @@ window {
 #text {
     margin: 1px;
     border: 0px solid #44AA44;
-    /* background-color: #444444; */
     color: #FFFFFF;
 }
 
 #selected {
     border: 0px solid #000000;
-    background-color: rgb(223, 74, 22);
+    background-color: rgba(0,43,51,0.85);
 }

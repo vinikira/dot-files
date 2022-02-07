@@ -1,7 +1,7 @@
 {
     "modules-left": ["sway/workspaces", "sway/mode"],
     "modules-center": ["clock", "idle_inhibitor"],
-    "modules-right": ["tray", "custom/scratchpad-indicator", "pulseaudio", "temperature", "battery", "custom/power", "custom/menu"],
+    "modules-right": ["tray", "memory", "cpu", "pulseaudio", "temperature", "battery", "custom/power", "custom/menu"],
     "sway/mode": {
         "format": "<span style=\"italic\">{}</span>"
     },
@@ -24,17 +24,15 @@
         "spacing": 10
     },
     "clock": {
-        // "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-        // "format-alt": "{:%Y-%m-%d}"
-		"on-click": "gnome-calendar"
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "on-click": "gnome-calendar"
     },
-    // "cpu": {
-    //     "format": "{usage}% ",
-    //     "tooltip": false
-    // },
-    // "memory": {
-    //     "format": "{}% "
-    // },
+    "cpu": {
+        "format": "{usage}% "
+    },
+    "memory": {
+        "format": "{}% "
+    },
     "temperature": {
         "hwmon-path": "/sys/class/hwmon/hwmon3/temp1_input",
         "critical-threshold": 82,
@@ -44,7 +42,7 @@
     },
     "battery": {
         "states": {
-            // "good": 95,
+            "good": 95,
             "warning": 20,
             "critical": 10
         },
@@ -56,7 +54,6 @@
         "format-icons": ["", "", "", "", ""]
     },
     "pulseaudio": {
-        // "scroll-step": 1, // %, can be a float
         "format": "{volume}% {icon} ",
         "format-bluetooth": "{volume}% {icon} {format_source}",
         "format-bluetooth-muted": " {icon} {format_source}",
@@ -74,26 +71,8 @@
         },
         "on-click": "pavucontrol"
     },
-	"custom/power": {
-		"format": "",
-		"on-click": "swaynag -t warning -m 'Power Menu Options' -b 'Logout' 'swaymsg exit' -b 'Restart' 'shutdown -r now' -b 'Shutdown'  'shutdown -h now' --background=#005566 --button-background=#009999 --button-border=#002b33 --border-bottom=#002b33"
-	},
-	// "custom/example_runscript_3 seconds": {
-	// 	"interval": 3,
-	// 	"exec": "/home/dg/.config/waybar/modules/menu_test.py",
-	// 	"format": "{}",
-	// },
-	// "custom/menu": {
-	// 	"format": "",
-	//  	"on-click": "/home/dg/.config/waybar/modules/menu_test.py",
-	// },
-    "custom/scratchpad-indicator": {
-        "format-text": "{}",
-        "return-type": "json",
-        "interval": 3,
-        "exec": "~/.local/bin/scratchpad-indicator 2> /dev/null",
-        "exec-if": "exit 0",
-        "on-click": "swaymsg 'scratchpad show'",
-        "on-click-right": "swaymsg 'move scratchpad'"
+    "custom/power": {
+        "format": "",
+        "on-click": "swaynag -t warning -m 'Power Menu Options' -b 'Logout' 'swaymsg exit' -b 'Restart' 'shutdown -r now' -b 'Shutdown'  'shutdown -h now' --background=#005566 --button-background=#009999 --button-border=#002b33 --border-bottom=#002b33"
     }
 }
