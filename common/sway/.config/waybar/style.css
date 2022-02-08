@@ -51,7 +51,8 @@ window#waybar {
 #mode,
 #custom-power,
 #custom-menu,
-#idle_inhibitor {
+#idle_inhibitor,
+#custom-mail {
     padding: 0 10px;
 }
 #mode {

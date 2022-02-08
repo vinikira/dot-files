@@ -1,7 +1,7 @@
 {
     "modules-left": ["sway/workspaces", "sway/mode"],
-    "modules-center": ["clock", "idle_inhibitor"],
-    "modules-right": ["tray", "network", "memory", "cpu", "temperature", "pulseaudio", "battery", "custom/power", "custom/menu"],
+    "modules-center": ["clock", "idle_inhibitor", "custom/mail"],
+    "modules-right": ["tray", "network", "pulseaudio", "battery", "custom/power", "custom/menu"],
     "sway/mode": {
         "format": "<span style=\"italic\">{}</span>"
     },
@@ -24,7 +24,7 @@
         "spacing": 10
     },
     "clock": {
-        "format": "{:%Y-%m-%d %H:%M}",
+        "format": "{:%d %b %H:%M}",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
         "on-click": "emacsclient -cn --eval '(calendar)'"
     },
@@ -75,5 +75,13 @@
     "custom/power": {
         "format": "",
         "on-click": "swaynag -t warning -m 'Power Menu Options' -b 'Logout' 'swaymsg exit' -b 'Restart' 'shutdown -r now' -b 'Shutdown'  'shutdown -h now' --background=#005566 --button-background=#009999 --button-border=#002b33 --border-bottom=#002b33"
+    },
+    "custom/mail": {
+        "format": "{} ✉",
+        "interval": 30,
+        "tooltip-format": "You have {} unread e-mail(s).",
+        "tooltip": true,
+        "exec": "notmuch count tag:unread",
+        "on-click": "notmuch-emacs-mua --client --auto-daemon --create-frame --hello"
     }
 }
