@@ -1,0 +1,6 @@
+[Unit]
+Description=backup org files
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/vsimoes-backup.sh

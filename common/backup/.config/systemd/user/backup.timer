@@ -1,0 +1,11 @@
+[Unit]
+Description=Make an backup every 60 minutes
+
+[Timer]
+Persistent=false
+OnBootSec=2min
+OnUnitActiveSec=60min
+Unit=backup.service
+
+[Install]
+WantedBy=timers.target
