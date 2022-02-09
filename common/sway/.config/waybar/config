@@ -77,7 +77,7 @@
         "on-click": "swaynag -t warning -m 'Power Menu Options' -b 'Logout' 'swaymsg exit' -b 'Restart' 'shutdown -r now' -b 'Shutdown'  'shutdown -h now' -b 'Suspend'  'swaylock -f -l --font=Iosevka -c 000000 && systemctl suspend' --background=#005566 --button-background=#009999 --button-border=#002b33 --border-bottom=#002b33"
     },
     "custom/mail": {
-        "format": "{} ✉",
+        "format": "{} ",
         "interval": 30,
         "tooltip-format": "You have {} unread e-mail(s).",
         "tooltip": true,
