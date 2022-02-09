@@ -88,6 +88,11 @@
 (customize-set-variable 'tab-always-indent 'complete)
 (customize-set-variable 'dired-dwim-target t)
 (customize-set-variable 'scroll-conservatively 101)
+(customize-set-variable 'show-trailing-whitespace t)
+(customize-set-variable 'indicate-empty-lines t)
+(customize-set-variable 'indicate-buffer-boundaries 'left)
+(customize-set-variable 'sentence-end-double-space nil)
+(customize-set-variable 'tab-width 4)
 
 (fset 'yes-or-no-p 'y-or-n-p)
 (windmove-default-keybindings)
@@ -134,6 +139,7 @@
 ;; =============================================================================
 (global-auto-revert-mode 1)
 (show-paren-mode 1)
+(column-number-mode 1)
 ;; =============================================================================
 
 ;; Disable vanilla modes

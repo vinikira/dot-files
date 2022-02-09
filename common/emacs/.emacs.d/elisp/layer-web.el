@@ -11,6 +11,7 @@
 (customize-set-variable 'web-mode-markup-indent-offset 2)
 (customize-set-variable 'web-mode-css-indent-offset 2)
 (customize-set-variable 'web-mode-code-indent-offset 2)
+(customize-set-variable 'css-indent-offset 2)
 (customize-set-variable 'web-mode-enable-current-element-highlight t)
 
 (with-eval-after-load 'web-mode
