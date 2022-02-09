@@ -1,7 +1,7 @@
 {
     "modules-left": ["sway/workspaces", "sway/mode"],
     "modules-center": ["clock", "idle_inhibitor", "custom/mail"],
-    "modules-right": ["tray", "network", "pulseaudio", "battery", "custom/power", "custom/menu"],
+    "modules-right": ["tray", "network", "pulseaudio", "battery", "custom/power"],
     "sway/mode": {
         "format": "<span style=\"italic\">{}</span>"
     },
@@ -74,7 +74,7 @@
     },
     "custom/power": {
         "format": "",
-        "on-click": "swaynag -t warning -m 'Power Menu Options' -b 'Logout' 'swaymsg exit' -b 'Restart' 'shutdown -r now' -b 'Shutdown'  'shutdown -h now' --background=#005566 --button-background=#009999 --button-border=#002b33 --border-bottom=#002b33"
+        "on-click": "swaynag -t warning -m 'Power Menu Options' -b 'Logout' 'swaymsg exit' -b 'Restart' 'shutdown -r now' -b 'Shutdown'  'shutdown -h now' -b 'Suspend'  'swaylock -f -l --font=Iosevka -c 000000 && systemctl suspend' --background=#005566 --button-background=#009999 --button-border=#002b33 --border-bottom=#002b33"
     },
     "custom/mail": {
         "format": "{} ✉",
