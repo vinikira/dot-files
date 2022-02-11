@@ -69,7 +69,9 @@ See `set-fontset-font' for ADD."
 ;; =============================================================================
 (declare-function all-the-icons-alltheicon "ext:all-the-icons")
 (declare-function all-the-icons-octicon "ext:all-the-icons")
+(declare-function all-the-icons-faicon "ext:all-the-icons")
 (declare-function all-the-icons-octicon-family "ext:all-the-icons")
+(declare-function all-the-icons-faicon-family "ext:all-the-icons")
 (declare-function all-the-icons-icon-for-buffer "ext:all-the-icons")
 
 (defun vs/--custom-modeline-git-vc ()
@@ -85,18 +87,40 @@ See `set-fontset-font' for ADD."
 
 (defun vs/--custom-modeline-mode-icon ()
   "Define the icon for current major mode."
-  (format "%s" (all-the-icons-icon-for-buffer)))
+  (propertize (format "%s" (all-the-icons-icon-for-buffer))
+               'face `(:height 1.1)
+               'display '(raise -0.01)))
+
+(defun vs/--custom-modeline-clock-calendar ()
+  "Define the mode for calendar and clock."
+  (concat
+   (propertize (format " %s" (all-the-icons-faicon "clock-o"))
+               'face `(:height 1.2 :family ,(all-the-icons-faicon-family))
+               'display '(raise -0.01))
+   (format-time-string " %H:%M")
+   (propertize (format " %s" (all-the-icons-faicon "calendar"))
+               'face `(:height 1.2 :family ,(all-the-icons-faicon-family))
+               'display '(raise -0.01))
+   (format-time-string " %Y-%m-%d")))
+
+(defun vs/--custom-modeline-line-column ()
+  "Define the mode for lines and columns."
+  (concat
+   (propertize (format " %s" (all-the-icons-faicon "code"))
+               'face `(:height 1.2 :family ,(all-the-icons-faicon-family))
+               'display '(raise -0.01))
+   " %l:%c"))
+
 
 (defvar vs/custom-modeline-format
-  '("%e"
+  `("%e"
     mode-line-front-space
     mode-line-mule-info
-    mode-line-misc-info
     mode-line-modified
     mode-line-remote
-    (:eval (format-time-string " 🕘 %H:%M"))
-    (:eval (format-time-string " 🗓 %Y-%m-%d"))
-    " 📝 %l:%c"
+    (:eval (vs/--custom-modeline-clock-calendar))
+    " · "
+    (:eval (vs/--custom-modeline-line-column))
     " · "
     (:eval (propertized-buffer-identification "%b"))
     " · "
@@ -106,14 +130,10 @@ See `set-fontset-font' for ADD."
     mode-name
     ")"
     " · "
-    (:eval (when vc-mode (vs/--custom-modeline-git-vc))))
+    (:eval (when vc-mode (vs/--custom-modeline-git-vc)))
+    " "
+    mode-line-misc-info)
   "My custom modeline format.")
-
-;; When running on MacOS show the tab name on mode-line
-(when VS/IS-MACOS
-  (add-to-list 'vs/custom-modeline-format (propertize " · tab: " 'face 'bold) t)
-  (add-to-list 'vs/custom-modeline-format
-               '(:eval (propertize (cdr (assoc 'name (tab-bar--current-tab))) 'face 'bold)) t))
 
 (customize-set-variable 'mode-line-format vs/custom-modeline-format)
 ;; =============================================================================
