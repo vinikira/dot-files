@@ -271,16 +271,17 @@ bindsym --to-code $mod+Shift+0 exec $locker && systemctl suspend
 # Applications
 bindsym --to-code XF86Launch1 exec $emacs
 
-mode "open-app" {
-    bindsym w exec librewolf
-    bindsym e exec $emacs
-    bindsym f exec thunar
+set $open_app Open app: (w) Web, (e) Emacs, (F) File browser
+mode "$open_app" {
+    bindsym w exec librewolf, mode "default"
+    bindsym e exec $emacs, mode "default"
+    bindsym f exec thunar, mode "default"
 
     Bindsym Return mode "default"
     bindsym Escape mode "default"
 }
 
-bindsym $mod+o mode "open-app"
+bindsym $mod+o mode "$open_app"
 
 # Move your focus around
 
