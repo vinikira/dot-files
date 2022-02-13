@@ -88,7 +88,6 @@
 (customize-set-variable 'tab-always-indent 'complete)
 (customize-set-variable 'dired-dwim-target t)
 (customize-set-variable 'scroll-conservatively 101)
-(customize-set-variable 'show-trailing-whitespace t)
 (customize-set-variable 'indicate-empty-lines t)
 (customize-set-variable 'indicate-buffer-boundaries 'left)
 (customize-set-variable 'sentence-end-double-space nil)
@@ -122,12 +121,19 @@
        compilation-filter-start (point)))))
 
 (add-hook 'before-save-hook #'delete-trailing-whitespace)
-(add-hook 'prog-mode-hook #'vs/--line-numbers)
-(add-hook 'text-mode-hook #'vs/--line-numbers)
-(add-hook 'prog-mode-hook #'vs/--font-lock)
-(add-hook 'text-mode-hook #'auto-fill-mode)
 (add-hook 'compilation-filter-hook
           #'vs/--colorize-compilation)
+(add-hook 'prog-mode-hook
+          (lambda ()
+            (setq-local show-trailing-whitespace t)
+            (vs/--line-numbers)
+            (vs/--font-lock)))
+(add-hook 'text-mode-hook
+          (lambda ()
+            (setq-local show-trailing-whitespace t)
+            (auto-fill-mode)
+            (vs/--line-numbers)
+            (vs/--font-lock)))
 
 ;; enable dired-find-alternate-file
 (add-hook 'window-setup-hook
