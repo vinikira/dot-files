@@ -92,9 +92,15 @@
 (customize-set-variable 'indicate-buffer-boundaries 'left)
 (customize-set-variable 'sentence-end-double-space nil)
 (customize-set-variable 'tab-width 4)
+(customize-set-variable 'global-auto-revert-non-file-buffers t)
+(customize-set-variable 'kill-do-not-save-duplicates t)
 
 (fset 'yes-or-no-p 'y-or-n-p)
 (windmove-default-keybindings)
+
+;; Better support for files with long lines
+(setq-default bidi-paragraph-direction 'left-to-right)
+(setq-default bidi-inhibit-bpa t)
 ;; =============================================================================
 
 ;; Hooks
@@ -147,6 +153,7 @@
 (show-paren-mode 1)
 (column-number-mode 1)
 (winner-mode 1)
+(global-so-long-mode 1)
 ;; =============================================================================
 
 ;; Disable vanilla modes
