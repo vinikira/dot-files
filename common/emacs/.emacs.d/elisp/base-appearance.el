@@ -74,22 +74,30 @@ See `set-fontset-font' for ADD."
 (declare-function all-the-icons-faicon-family "ext:all-the-icons")
 (declare-function all-the-icons-icon-for-buffer "ext:all-the-icons")
 
+(defconst vs/--modeline-separator " · "
+  "Mode line separator character.")
+
 (defun vs/--custom-modeline-git-vc ()
   "Define the custom icons for vc mode."
-  (let ((branch (mapconcat 'concat (cdr (split-string vc-mode "[:-]")) "-")))
-    (concat
-     (propertize (format "%s" (all-the-icons-alltheicon "git")) 'face `(:height 1.2) 'display '(raise -0.01))
-     " git "
-     (propertize (format "%s" (all-the-icons-octicon "git-branch"))
-                 'face `(:height 1.3 :family ,(all-the-icons-octicon-family))
-                 'display '(raise -0.01))
-     (propertize (format " %s" branch) 'face `(:height 1.0)))))
+  (if (not vc-mode)
+      (concat
+       "No VC"
+       vs/--modeline-separator)
+    (let ((branch (mapconcat 'concat (cdr (split-string vc-mode "[:-]")) "-")))
+      (concat
+       (propertize (format "%s" (all-the-icons-alltheicon "git")) 'face `(:height 1.2) 'display '(raise -0.01))
+       " git "
+       (propertize (format "%s" (all-the-icons-octicon "git-branch"))
+                   'face `(:height 1.3 :family ,(all-the-icons-octicon-family))
+                   'display '(raise -0.01))
+       (propertize (format " %s" branch) 'face `(:height 1.0))
+       vs/--modeline-separator))))
 
 (defun vs/--custom-modeline-mode-icon ()
   "Define the icon for current major mode."
   (propertize (format "%s" (all-the-icons-icon-for-buffer))
-               'face `(:height 1.1)
-               'display '(raise -0.01)))
+              'face `(:height 1.1)
+              'display '(raise -0.01)))
 
 (defun vs/--custom-modeline-clock-calendar ()
   "Define the mode for calendar and clock."
@@ -101,7 +109,8 @@ See `set-fontset-font' for ADD."
    (propertize (format " %s" (all-the-icons-faicon "calendar"))
                'face `(:height 1.2 :family ,(all-the-icons-faicon-family))
                'display '(raise -0.01))
-   (format-time-string " %Y-%m-%d")))
+   (format-time-string " %Y-%m-%d")
+   vs/--modeline-separator))
 
 (defun vs/--custom-modeline-line-column ()
   "Define the mode for lines and columns."
@@ -109,8 +118,18 @@ See `set-fontset-font' for ADD."
    (propertize (format " %s" (all-the-icons-faicon "code"))
                'face `(:height 1.2 :family ,(all-the-icons-faicon-family))
                'display '(raise -0.01))
-   " %l:%c"))
+   " %l:%c"
+   vs/--modeline-separator))
 
+(defun vs/--custom-modeline-mode-major-mode ()
+  "Define the mode line text for major modes."
+  (concat
+   "("
+   (vs/--custom-modeline-mode-icon)
+   " "
+   (format-mode-line mode-name)
+   ")"
+   vs/--modeline-separator))
 
 (defvar vs/custom-modeline-format
   `("%e"
@@ -118,20 +137,13 @@ See `set-fontset-font' for ADD."
     mode-line-mule-info
     mode-line-modified
     mode-line-remote
+    vs/--modeline-separator
     (:eval (vs/--custom-modeline-clock-calendar))
-    " · "
     (:eval (vs/--custom-modeline-line-column))
-    " · "
     (:eval (propertized-buffer-identification "%b"))
-    " · "
-    "("
-    (:eval (vs/--custom-modeline-mode-icon))
-    " "
-    mode-name
-    ")"
-    " · "
-    (:eval (when vc-mode (vs/--custom-modeline-git-vc)))
-    " "
+    vs/--modeline-separator
+    (:eval (vs/--custom-modeline-mode-major-mode))
+    (:eval (vs/--custom-modeline-git-vc))
     mode-line-misc-info)
   "My custom modeline format.")
 
