@@ -94,6 +94,8 @@
 (customize-set-variable 'tab-width 4)
 (customize-set-variable 'global-auto-revert-non-file-buffers t)
 (customize-set-variable 'kill-do-not-save-duplicates t)
+(customize-set-variable 'use-dialog-box t)
+(customize-set-variable 'global-auto-revert-non-file-buffers t)
 
 (fset 'yes-or-no-p 'y-or-n-p)
 (windmove-default-keybindings)
@@ -154,6 +156,8 @@
 (column-number-mode 1)
 (winner-mode 1)
 (global-so-long-mode 1)
+(savehist-mode 1)
+(recentf-mode 1)
 ;; =============================================================================
 
 ;; Disable vanilla modes
