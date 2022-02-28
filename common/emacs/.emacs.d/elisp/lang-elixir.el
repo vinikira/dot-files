@@ -76,32 +76,6 @@
  '(inf-elixir :type git :host github :repo "vinikira/inf-elixir.el" :branch "main"))
 ;; =============================================================================
 
-;; Poly mode for ~L sigil
-;; =============================================================================
-;; (straight-use-package 'polymode)
-
-;; (define-hostmode poly-elixir-hostmode :mode 'elixir-mode)
-
-;; (define-innermode poly-liveview-expr-elixir-innermode
-;;   :mode 'web-mode
-;;   :head-matcher (rx line-start (* space) "~L" (= 3 (char "\"'")) line-end)
-;;   :tail-matcher (rx line-start (* space) (= 3 (char "\"'")) line-end)
-;;   :head-mode 'host
-;;   :tail-mode 'host
-;;   :allow-nested nil
-;;   :keep-in-mode 'host
-;;   :fallback-mode 'host)
-
-;; (define-polymode poly-elixir-web-mode
-;;   :hostmode 'poly-elixir-hostmode
-;;   :innermodes '(poly-liveview-expr-elixir-innermode))
-
-;; (with-eval-after-load 'web-mode
-;;   (customize-set-variable 'web-mode-engines-alist '("elixir" . "\\.ex\\'")))
-
-;; (add-to-list 'auto-mode-alist '("\\.ex$" . poly-elixir-web-mode))
-;; =============================================================================
-
 ;; Org Babel Elixir
 ;; =============================================================================
 (straight-use-package 'ob-elixir)
@@ -162,6 +136,15 @@
     (define-key elixir-mode-map (kbd "C-c . m") #'vs/elixir-map-atom-to-map-string)))
 ;; =============================================================================
 
+;; LSP
+;; =============================================================================
+(declare-function vs/add-auto-lsp-server "layer-lsp.el")
+
+(vs/add-auto-lsp-server
+ 'elixir-mode
+ "https://github.com/elixir-lsp/elixir-ls/releases/download/v0.9.0/elixir-ls.zip"
+ "elixir-ls/language_server.sh")
+;; =============================================================================
 
 (provide 'lang-elixir)
 

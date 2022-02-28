@@ -10,13 +10,6 @@
 (customize-set-variable 'python-shell-interpreter-args "-i --simple-prompt")
 ;; =============================================================================
 
-;; LSP Python
-;; =============================================================================
-(straight-use-package 'lsp-python-ms)
-
-(customize-set-variable 'lsp-python-ms-auto-install-server t)
-;; =============================================================================
-
 (provide 'lang-python)
 
 ;;; lang-python.el ends here

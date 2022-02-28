@@ -32,6 +32,20 @@
     (define-key js-mode-map (kbd "C-c , v") #'mocha-test-project)))
 ;; =============================================================================
 
+;; LSP
+;; =============================================================================
+(declare-function vs/add-auto-lsp-server "layer-lsp.el")
+
+(cl-loop for mode in '(typescript-mode js-mode)
+         do
+         (vs/add-auto-lsp-server
+          mode
+          (lambda (_reinstall)
+            (async-shell-command
+             "npm install -g typescript-language-server typescript"
+             (get-buffer-create "*Install js/ts LSP*")))))
+;; =============================================================================
+
 (provide 'lang-javascript)
 
 ;;; lang-javascript.el ends here

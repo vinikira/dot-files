@@ -64,21 +64,6 @@
   (add-hook 'after-init-hook #'exec-path-from-shell-initialize))
 ;; =============================================================================
 
-;; Flycheck
-;; =============================================================================
-(straight-use-package 'flycheck)
-(straight-use-package 'consult-flycheck)
-
-(declare-function flycheck-mode "ext:flycheck")
-
-(add-hook 'prog-mode-hook #'flycheck-mode)
-
-(with-eval-after-load 'flycheck
-  (declare-function consult-flycheck "consult-flycheck")
-  (when (boundp 'flycheck-command-map)
-    (define-key flycheck-command-map (kbd "!") #'consult-flycheck)))
-;; =============================================================================
-
 ;; Iedit
 ;; =============================================================================
 (straight-use-package 'iedit)

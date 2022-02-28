@@ -14,12 +14,32 @@
 (straight-use-package 'cider)
 ;; =============================================================================
 
-;; Flycheck CLJ-Kondo
+;; Flymake Kondor
 ;; =============================================================================
-(straight-use-package 'flycheck-clj-kondo)
+(straight-use-package 'flymake-kondor)
 
-(add-hook 'clojure-mode-hook
-          (lambda () (require 'flycheck-clj-kondo)))
+(declare-function flymake-kondor-setup "ext:flymake-kondor")
+
+(add-hook 'clojure-mode-hook #'flymake-kondor-setup)
+;; =============================================================================
+
+;; LSP
+;; =============================================================================
+(defvar-local clojure-lsp-link
+  (cond
+   ((eq system-type 'darwin)
+    "https://github.com/clojure-lsp/clojure-lsp/releases/download/2022.02.23-12.12.12/clojure-lsp-native-macos-amd64.zip")
+   (t "https://github.com/clojure-lsp/clojure-lsp/releases/download/2022.02.23-12.12.12/clojure-lsp-native-static-linux-amd64.zip")))
+
+(defvar-local clojure-lsp-command
+  (cond
+   ((eq system-type 'darwin)
+    "clojure-lsp-native-macos-amd64/clojure-lsp")
+   (t "clojure-lsp-native-static-linux-amd64/clojure-lsp")))
+
+(declare-function vs/add-auto-lsp-server "layer-lsp.el")
+
+(vs/add-auto-lsp-server 'clojure-mode clojure-lsp-link clojure-lsp-command)
 ;; =============================================================================
 
 (provide 'lang-clojure)

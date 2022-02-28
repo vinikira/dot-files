@@ -81,13 +81,11 @@
 ;; Plantuml Mode
 ;; =============================================================================
 (straight-use-package 'plantuml-mode)
-(straight-use-package 'flycheck-plantuml)
 
 (customize-set-variable 'plantuml-output-type "png")
 (customize-set-variable 'plantuml-default-exec-mode 'jar)
 
 (with-eval-after-load 'plantuml-mode
-  (declare-function flycheck-plantuml-setup "ext:flycheck-plantuml")
   (let* ((plantuml-directory (if (boundp 'private-dir) private-dir "/tmp"))
          (plantuml-link
           "http://sourceforge.net/projects/plantuml/files/plantuml.jar/download")
@@ -97,8 +95,7 @@
                (async-shell-command
                 (format "wget %s -O %s" plantuml-link plantuml-target))))
     (customize-set-variable 'org-plantuml-jar-path plantuml-target)
-    (customize-set-variable 'plantuml-jar-path plantuml-target))
-  (flycheck-plantuml-setup))
+    (customize-set-variable 'plantuml-jar-path plantuml-target)))
 ;; =============================================================================
 
 ;; Protobuf mode
