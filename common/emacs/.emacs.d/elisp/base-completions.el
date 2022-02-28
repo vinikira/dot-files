@@ -3,25 +3,29 @@
 ;;; Code:
 
 (declare-function straight-use-package "ext:straight")
-
-;; Selectrum - incremental narrowing
+;
+;; Vertico
 ;; =============================================================================
-(straight-use-package 'selectrum)
+(straight-use-package 'vertico)
 
-(declare-function selectrum-mode "ext:selectrum")
+(customize-set-variable 'vertico-cycle t)
+(customize-set-variable 'enable-recursive-minibuffers t)
 
-(selectrum-mode +1)
+(vertico-mode)
+
+(with-eval-after-load 'vertico
+  (require 'vertico-directory "extensions/vertico-directory.el"))
+
+(define-key vertico-map (kbd "M-h") #'vertico-directory-up)
 ;; =============================================================================
 
-;; Prescient - Sorting and filtering
+;; Orderless
 ;; =============================================================================
-(straight-use-package 'selectrum-prescient)
+(straight-use-package 'orderless)
 
-(declare-function selectrum-prescient-mode "ext:selectrum-prescient")
-(declare-function prescient-persist-mode "ext:prescient")
-
-(selectrum-prescient-mode +1)
-(prescient-persist-mode +1)
+(customize-set-variable 'completion-styles '(orderless))
+(customize-set-variable 'completion-category-overrides '((file (styles . (partial-completion)))))
+(customize-set-variable 'completion-category-defaults nil)
 ;; =============================================================================
 
 ;; Embark - minibuffer actions
@@ -164,9 +168,14 @@
 (declare-function consult-dir-jump-file "ext:consult-dir")
 (global-set-key (kbd "C-x C-d") #'consult-dir)
 
-(when (boundp 'selectrum-minibuffer-map)
-  (define-key selectrum-minibuffer-map (kbd "C-x C-d") #'consult-dir)
-  (define-key selectrum-minibuffer-map (kbd "C-x C-j") #'consult-dir-jump-file))
+;; consult and vertico
+(when (and (boundp 'vertico-mode) vertico-mode)
+  (declare-function consult-completion-in-region "ext:consult")
+  (declare-function consult-completing-read-multiple "ext:consult")
+  (customize-set-variable 'completion-in-region-function
+                          #'consult-completion-in-region)
+  (advice-add #'completing-read-multiple
+              :override #'consult-completing-read-multiple))
 ;; =============================================================================
 
 (provide 'base-completions)
