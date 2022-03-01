@@ -15,6 +15,8 @@
     (define-key eglot-mode-map (kbd "C-c C-r") 'eglot-rename)
     (define-key eglot-mode-map (kbd "C-c C-o") 'eglot-code-action-organize-imports)
     (define-key eglot-mode-map (kbd "C-c C-d") 'eldoc)))
+
+(customize-set-variable 'eglot-autoshutdown t)
 ;; =============================================================================
 
 ;; Toggle LSP per project
