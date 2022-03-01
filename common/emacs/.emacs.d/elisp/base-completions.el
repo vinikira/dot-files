@@ -12,12 +12,15 @@
 (customize-set-variable 'vertico-cycle t)
 (customize-set-variable 'enable-recursive-minibuffers t)
 
+(declare-function vertico-mode "ext:vertico")
+
 (vertico-mode)
 
 (declare-function vertico-directory-up "ext:vertico-directory")
 (declare-function vertico-directory-tidy "ext:vertico-directory")
 
-(define-key vertico-map (kbd "M-h") #'vertico-directory-up)
+(when (boundp 'vertico-map)
+  (define-key vertico-map (kbd "M-h") #'vertico-directory-up))
 
 (add-hook 'rfn-eshadow-update-overlay-hook #'vertico-directory-tidy)
 ;; =============================================================================
@@ -123,6 +126,7 @@
 (declare-function consult-global-mark "ext:consult")
 (declare-function consult-imenu "ext:consult")
 (declare-function consult-project-imenu "ext:consult")
+(declare-function consult-flymake "ext:consult")
 
 (global-set-key (kbd "M-g e") #'consult-compile-error)
 (global-set-key (kbd "M-g g") #'consult-goto-line)
@@ -132,6 +136,7 @@
 (global-set-key (kbd "M-g k") #'consult-global-mark)
 (global-set-key (kbd "M-g i") #'consult-imenu)
 (global-set-key (kbd "M-g I") #'consult-project-imenu)
+(global-set-key (kbd "M-g !") #'consult-flymake)
 
 ;; M-s bindings (search-map)
 (declare-function consult-find "ext:consult")
