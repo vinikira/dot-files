@@ -3,20 +3,23 @@
 ;;; Code:
 
 (declare-function straight-use-package "ext:straight")
-;
 ;; Vertico
 ;; =============================================================================
-(straight-use-package 'vertico)
+(straight-use-package '(vertico
+                        :files (:defaults "extensions/*")
+                        :includes (vertico-directory)))
 
 (customize-set-variable 'vertico-cycle t)
 (customize-set-variable 'enable-recursive-minibuffers t)
 
 (vertico-mode)
 
-(with-eval-after-load 'vertico
-  (require 'vertico-directory "extensions/vertico-directory.el"))
+(declare-function vertico-directory-up "ext:vertico-directory")
+(declare-function vertico-directory-tidy "ext:vertico-directory")
 
 (define-key vertico-map (kbd "M-h") #'vertico-directory-up)
+
+(add-hook 'rfn-eshadow-update-overlay-hook #'vertico-directory-tidy)
 ;; =============================================================================
 
 ;; Orderless
