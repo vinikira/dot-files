@@ -26,16 +26,16 @@
 ;; LSP
 ;; =============================================================================
 (defvar-local clojure-lsp-link
-  (cond
-   ((eq system-type 'darwin)
-    "https://github.com/clojure-lsp/clojure-lsp/releases/download/2022.02.23-12.12.12/clojure-lsp-native-macos-amd64.zip")
-   (t "https://github.com/clojure-lsp/clojure-lsp/releases/download/2022.02.23-12.12.12/clojure-lsp-native-static-linux-amd64.zip")))
+  (concat "https://github.com/clojure-lsp/clojure-lsp/releases/latest/download/"
+          (cond
+           ((eq system-type 'darwin) "clojure-lsp-native-macos-amd64.zip")
+           (t "clojure-lsp-native-static-linux-amd64.zip"))))
 
 (defvar-local clojure-lsp-command
   (cond
    ((eq system-type 'darwin)
-    "clojure-lsp-native-macos-amd64/clojure-lsp")
-   (t "clojure-lsp-native-static-linux-amd64/clojure-lsp")))
+    '("clojure-lsp-native-macos-amd64/clojure-lsp"))
+   (t '("clojure-lsp-native-static-linux-amd64/clojure-lsp"))))
 
 (declare-function vs/add-auto-lsp-server "layer-lsp.el")
 

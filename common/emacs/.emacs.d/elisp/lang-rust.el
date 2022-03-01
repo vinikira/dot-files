@@ -14,16 +14,16 @@
 ;; LSP
 ;; =============================================================================
 (defvar-local rust-analyzer-link
-  (cond
-   ((eq system-type 'darwin)
-    "https://github.com/rust-analyzer/rust-analyzer/releases/download/2022-02-28/rust-analyzer-x86_64-apple-darwin.gz")
-   (t "https://github.com/rust-analyzer/rust-analyzer/releases/download/2022-02-28/rust-analyzer-x86_64-unknown-linux-musl.gz")))
+  (concat "https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/"
+          (cond
+           ((eq system-type 'darwin) "rust-analyzer-x86_64-apple-darwin.gz")
+           (t "rust-analyzer-x86_64-unknown-linux-musl.gz"))))
 
 (defvar-local rust-analyzer-command
-  (cond
-   ((eq system-type 'darwin)
-    "rust-analyzer-x86_64-apple-darwin")
-   (t "rust-analyzer-x86_64-unknown-linux-musl")))
+  (list (cond
+         ((eq system-type 'darwin)
+          "rust-analyzer-x86_64-apple-darwin")
+         (t "rust-analyzer-x86_64-unknown-linux-musl"))))
 
 (declare-function vs/add-auto-lsp-server "layer-lsp.el")
 
