@@ -26,6 +26,7 @@
 
 (declare-function eglot-shutdown "ext:eglot")
 (declare-function eglot "ext:eglot")
+(declare-function eglot-current-server "ext:eglot")
 (declare-function project--buffer-list "ext:project")
 (declare-function project-root "ext:project")
 
@@ -46,7 +47,8 @@
       (when (buffer-file-name buffer)
         (with-current-buffer buffer
           (if disabled
-              (call-interactively #'eglot-shutdown)
+              (when-let (server (eglot-current-server))
+                (eglot-shutdown server))
             (call-interactively #'eglot)))))))
 ;; =============================================================================
 
