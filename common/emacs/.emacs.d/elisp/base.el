@@ -134,6 +134,7 @@
 (add-hook 'prog-mode-hook
           (lambda ()
             (setq-local show-trailing-whitespace t)
+            (flymake-mode)
             (vs/--line-numbers)
             (vs/--font-lock)))
 (add-hook 'text-mode-hook
