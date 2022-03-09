@@ -8,7 +8,9 @@
 ;; =============================================================================
 (straight-use-package 'flymake-ruby)
 
-(add-hook 'ruby-mode-hook 'flymake-ruby-load)
+(declare-function flymake-ruby-load "ext:flymake-ruby")
+
+(add-hook 'ruby-mode-hook #'flymake-ruby-load)
 ;; =============================================================================
 
 (provide 'lang-ruby)
