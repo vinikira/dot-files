@@ -153,7 +153,7 @@ See `set-fontset-font' for ADD."
 ;; Side windows
 ;; =============================================================================
 (customize-set-variable 'display-buffer-alist
-                        '(("\\(vterm\\|\\*vterm\\*\\|\\*e?shell\\*\\)"
+                        '(("\\(\\*vterm\\*?\\|\\*?e?shell\\*\\)"
                            (display-buffer-in-side-window)
                            (window-height . 0.30)
                            (side . bottom)
