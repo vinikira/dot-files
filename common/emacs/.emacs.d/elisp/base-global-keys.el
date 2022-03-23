@@ -53,6 +53,15 @@
     (define-key nxml-mode-map (kbd "C-c C-w") #'vs/nxml-where)))
 ;; =============================================================================
 
+;; Project mode
+;; =============================================================================
+(with-eval-after-load 'project
+  (declare-function vs/vterm-in-project "base-functions")
+
+  (when (functionp 'project-shell)
+    (fset 'project-shell 'vs/vterm-in-project)))
+;; =============================================================================
+
 ;; Unset keys
 ;; =============================================================================
 (global-unset-key (kbd "C-z"))

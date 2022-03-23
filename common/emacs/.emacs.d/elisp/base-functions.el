@@ -182,6 +182,32 @@ cleared."
          (uid-sanatized (replace-regexp-in-string "\n" "" uid-downcased)))
     (insert uid-sanatized)))
 
+(defun vs/project-name ()
+  "Return the project name for current project."
+  (declare-function project-current "ext:project")
+  (when-let (dir (cdr (project-current)))
+    (if (string-match "/\\([^/]+\\)/\\'" dir)
+        (match-string 1 dir)
+      dir)))
+
+(defun vs/vterm-in-project ()
+  "Invoke `vterm' in the project's root.
+Switch to the project specific term buffer if it already exists."
+  (interactive)
+  (declare-function vterm "ext:vterm")
+  (declare-function project-root "ext:project")
+  (unless (project-current)
+    (error "File/buffer doesn't make part of an project"))
+  (when-let* ((project (project-current))
+              (default-directory (expand-file-name (project-root project)))
+              (project-name (vs/project-name))
+              (buffer-name (format "*vterm %s" project-name)))
+    (unless (buffer-live-p (get-buffer buffer-name))
+      (unless (require 'vterm nil 'noerror)
+        (error "Package 'vterm' is not available"))
+      (vterm buffer-name))
+    (switch-to-buffer buffer-name)))
+
 (provide 'base-functions)
 
 ;;; base-functions.el ends here
