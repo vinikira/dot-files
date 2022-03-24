@@ -201,7 +201,7 @@ Switch to the project specific term buffer if it already exists."
   (when-let* ((project (project-current))
               (default-directory (expand-file-name (project-root project)))
               (project-name (vs/project-name))
-              (buffer-name (format "*vterm %s" project-name)))
+              (buffer-name (format "*vterm %s*" project-name)))
     (unless (buffer-live-p (get-buffer buffer-name))
       (unless (require 'vterm nil 'noerror)
         (error "Package 'vterm' is not available"))
