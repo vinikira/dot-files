@@ -1,7 +1,7 @@
 {
     "modules-left": ["sway/workspaces", "sway/mode"],
     "modules-center": ["clock", "idle_inhibitor", "custom/mail"],
-    "modules-right": ["tray", "network", "pulseaudio", "battery", "custom/power"],
+    "modules-right": ["tray", "custom/pacman", "network", "pulseaudio", "battery", "custom/power"],
     "sway/mode": {
         "format": "<span style=\"italic\">{}</span>"
     },
@@ -83,5 +83,13 @@
         "tooltip": true,
         "exec": "notmuch count tag:unread",
         "on-click": "notmuch-emacs-mua --client --auto-daemon --create-frame --hello"
-    }
+    },
+    "custom/pacman": {
+        "format": " {}",
+        "interval": 3600,
+        "exec-if": "[ $(pamac checkupdates -q | wc -l) -gt 0 ]",
+        "exec": "pamac checkupdates -q | wc -l",
+        "on-click": "pamac-manager --updates; pkill -RTMIN+4 waybar",
+        "signal": 4
+    },
 }

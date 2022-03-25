@@ -52,7 +52,8 @@ window#waybar {
 #custom-power,
 #custom-menu,
 #idle_inhibitor,
-#custom-mail {
+#custom-mail,
+#custom-pacman {
     padding: 0 10px;
 }
 #mode {
