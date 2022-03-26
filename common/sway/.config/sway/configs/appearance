@@ -1,0 +1,22 @@
+# Font
+font pango: $font 11
+
+# Cursor
+seat seat0 xcursor_theme $cursor_theme
+
+# Borders
+default_border pixel 2
+# default_floating_border pixel 2
+hide_edge_borders none
+smart_borders on
+smart_gaps on
+gaps inner 2
+
+# GTK Theme
+
+exec_always {
+  gsettings set org.gnome.desktop.interface gtk-theme "$gtk_theme"
+  gsettings set org.gnome.desktop.interface icon-theme "$gtk_icon_theme"
+  gsettings set org.gnome.desktop.interface cursor-theme "$cursor_theme"
+  gsettings set org.gnome.desktop.interface font-name "$gui_font"
+}

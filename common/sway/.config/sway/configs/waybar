@@ -1,0 +1,4 @@
+bar {
+    id default
+    swaybar_command waybar
+}

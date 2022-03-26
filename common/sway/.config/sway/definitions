@@ -1,0 +1,34 @@
+set $mod Mod4
+set $left h
+set $down j
+set $up k
+set $right l
+
+set $term foot
+set $menu wofi
+
+set $font Iosevka Term
+set $gui_font Cantarell Regular 11
+set $cursor_theme Adwaita 24
+set $gtk_theme Adwaita-dark
+set $gtk_icon_theme Adwaita
+
+set $locker swaylock -f -l --font=$font -c 000000
+set $emacs emacsclient -cn -e "(progn (raise-frame) (x-focus-frame (selected-frame)))"
+set $browser /usr/bin/librewolf
+set $file_browser /usr/bin/thunar
+
+set $wallpaper ~/Pictures/wallpapers/633262.png
+
+# screenshot
+set $grim /usr/bin/grim
+
+set $screenshot_screen_clipboard $grim - | wl-copy && notify-send "Screenshot of whole screen saved to clipboard"
+set $screenshot_screen_file $grim ~/Pictures/screenshots/screenshot-"$(date +%s)".png && notify-send "Screenshot of whole screen saved to folder"
+
+set $screenshot_selection_clipboard $grim -g "$(slurp)" - | wl-copy && notify-send "Screenshot of selected region saved to clipboard"
+set $screenshot_selection_file $grim -g "$(slurp)" ~/Pictures/screenshots/screenshot-"$(date +%s)".png && notify-send "Screenshot of selected region saved to folder"
+
+set $screenshot_focused_window_clipboard $grim -g "$(swaymsg -t get_tree | jq -r '.. | select(.focused?) | .rect | "\(.x),\(.y) \(.width)x\(.height)"')" - | wl-copy && notify-send "Screenshot of active window saved to clipboard"
+
+set $screenshot_focused_window_file $grim -g "$(swaymsg -t get_tree | jq -r '.. | select(.focused?) | .rect | "\(.x),\(.y) \(.width)x\(.height)"')" ~/Pictures/screenshots/screenshot-"$(date +%s)".png && notify-send "Screenshot of active window saved to folder"

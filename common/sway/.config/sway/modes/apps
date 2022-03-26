@@ -1,0 +1,12 @@
+set $open_app "Open app: (w) Web, (e) Emacs, (F) File browser"
+
+mode $open_app {
+    bindsym w exec $browser, mode "default"
+    bindsym e exec $emacs, mode "default"
+    bindsym f exec $file_browser, mode "default"
+
+    Bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+bindsym $mod+o mode $open_app

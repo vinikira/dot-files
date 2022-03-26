@@ -1,0 +1,11 @@
+input "1452:591:BlitzWolf_KB1_Keyboard" {
+    xkb_layout us
+    xkb_variant intl
+    xkb_options ctrl:swapcaps_hyper
+}
+
+input "1:1:AT_Translated_Set_2_keyboard" {
+    xkb_layout br
+    xkb_variant thinkpad
+    xkb_options ctrl:swapcaps_hyper
+}
