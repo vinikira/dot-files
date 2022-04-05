@@ -25,10 +25,12 @@
 (global-set-key (kbd "M-/") #'hippie-expand)
 (global-set-key (kbd "C-c s b") #'vs/scratch-buffer)
 (global-set-key (kbd "<f8>") #'window-toggle-side-windows)
-(global-set-key [remap eval-last-sexp] 'pp-eval-last-sexp)
-(global-set-key (kbd "M-u") 'upcase-dwim)
-(global-set-key (kbd "M-l") 'downcase-dwim)
-(global-set-key (kbd "M-c") 'capitalize-dwim)
+(global-set-key [remap eval-last-sexp] #'pp-eval-last-sexp)
+(global-set-key (kbd "M-u") #'upcase-dwim)
+(global-set-key (kbd "M-l") #'downcase-dwim)
+(global-set-key (kbd "M-c") #'capitalize-dwim)
+(global-set-key (kbd "H-<tab>") #'tab-next)
+(global-set-key (kbd "H-S-<tab>") #'tab-previous)
 ;; =============================================================================
 
 ;; Dired mode
