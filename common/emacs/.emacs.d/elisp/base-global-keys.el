@@ -21,6 +21,7 @@
 (global-set-key (kbd "C-x 3") #'vs/split-window-right-and-switch)
 (global-set-key (kbd "M-S-<up>") #'vs/move-line-up)
 (global-set-key (kbd "M-S-<down>") #'vs/move-line-down)
+(global-set-key (kbd "M-D") #'vs/duplicate-current-line)
 (global-set-key (kbd "H-d") #'vs/duplicate-current-line)
 (global-set-key (kbd "M-/") #'hippie-expand)
 (global-set-key (kbd "C-c s b") #'vs/scratch-buffer)
