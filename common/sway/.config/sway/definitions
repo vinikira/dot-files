@@ -9,8 +9,9 @@ set $menu wofi
 
 set $font Iosevka Term
 set $gui_font Cantarell Regular 11
-set $cursor_theme Adwaita 24
-set $gtk_theme Adwaita-dark
+set $cursor_theme Adwaita
+set $cursor_size 24
+set $gtk_theme Adwaita
 set $gtk_icon_theme Adwaita
 
 set $locker swaylock -f -l --font=$font -c 000000
