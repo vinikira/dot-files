@@ -11,6 +11,17 @@
 (customize-set-variable 'dart-format-on-save t)
 ;; =============================================================================
 
+;; LSP
+;; =============================================================================
+(declare-function vs/add-auto-lsp-server "layer-lsp.el")
+
+(vs/add-auto-lsp-server
+ 'dart-mode
+ nil
+ '("dart" "language-server")
+ t)
+;; =============================================================================
+
 (provide 'lang-dart)
 
 ;;; lang-dart.el ends here
