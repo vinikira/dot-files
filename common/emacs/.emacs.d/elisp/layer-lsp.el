@@ -78,7 +78,7 @@ If REINSTALL is provided, it removes old directory and reinstall server."
       (vs/--download-lsp-server download-handler reinstall))
      (t (error "Unsupported download handler: %s" download-handler)))))
 
-(defun vs/add-auto-lsp-server (mode download-handler &optional command raw-command)
+(defun vs/add-auto-lsp-server (mode download-handler &optional command)
   "Set a language server DOWNLOAD-HANDLER for MODE.
 Optinally a custom COMMAND for execute the server."
   (add-to-list
@@ -87,7 +87,7 @@ Optinally a custom COMMAND for execute the server."
   (with-eval-after-load 'eglot
     (when (and (boundp 'eglot-server-programs) command)
       (let* ((server-program
-              (if (not raw-command)
+              (if (listp command)
                   (append
                    (vs/--command-lsp-context mode (car command))
                    (cdr command))
