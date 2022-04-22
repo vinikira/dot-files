@@ -13,6 +13,16 @@
 (add-hook 'ruby-mode-hook #'flymake-ruby-load)
 ;; =============================================================================
 
+;; RSpec mode
+;; =============================================================================
+(straight-use-package 'rspec-mode)
+
+(declare-function rspec-install-snippets "ext:rspec-mode")
+
+(eval-after-load 'rspec-mode
+ '(rspec-install-snippets))
+;; =============================================================================
+
 (provide 'lang-ruby)
 
 ;;; lang-ruby.el ends here
