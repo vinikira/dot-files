@@ -23,6 +23,16 @@
  '(rspec-install-snippets))
 ;; =============================================================================
 
+;; inf-ruby
+;; =============================================================================
+(straight-use-package 'inf-ruby)
+
+(declare-function inf-ruby-minor-mode "ext:inf-ruby")
+
+(add-hook 'ruby-mode-hook #'inf-ruby-minor-mode)
+;; =============================================================================
+
+
 (provide 'lang-ruby)
 
 ;;; lang-ruby.el ends here
