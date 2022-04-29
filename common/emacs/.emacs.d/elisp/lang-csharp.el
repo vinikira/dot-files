@@ -29,18 +29,18 @@
                                    (list "-s" vs/omnisharp-solution-file))))
 
 (declare-function vs/add-auto-lsp-server "layer-lsp.el")
-(declare-function vs/--command-lsp-context "layer-lsp.el")
+(declare-function vs/--wrap-lsp-context "layer-lsp.el")
 
 (vs/add-auto-lsp-server 'csharp-mode
-                        omnisharp-link
-                        (lambda (_interactive)
-                          (append
-                           (vs/--command-lsp-context 'csharp-mode "run")
-                           (list "-lsp")
-                           (when vs/omnisharp-solution-file
-                             (list
-                              "-s"
-                              (expand-file-name vs/omnisharp-solution-file))))))
+                        :download-url omnisharp-link
+                        :command-fn (lambda (_interactive)
+                                      (append
+                                       (vs/--wrap-lsp-context 'csharp-mode "run")
+                                       (list "-lsp")
+                                       (when vs/omnisharp-solution-file
+                                         (list
+                                          "-s"
+                                          (expand-file-name vs/omnisharp-solution-file))))))
 ;; =============================================================================
 
 (provide 'lang-csharp)

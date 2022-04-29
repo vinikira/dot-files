@@ -19,39 +19,6 @@
 (customize-set-variable 'eglot-autoshutdown t)
 ;; =============================================================================
 
-;; Toggle LSP per project
-;; =============================================================================
-(defvar vs/lsp-allowed-projects '()
-  "Projects that are allowed to use LSP in current session.")
-
-(declare-function eglot-shutdown "ext:eglot")
-(declare-function eglot "ext:eglot")
-(declare-function eglot-current-server "ext:eglot")
-(declare-function project--buffer-list "ext:project")
-(declare-function project-root "ext:project")
-
-(defun vs/toggle-lsp-for-current-project ()
-  "Enable/disable `eglot' for current project."
-  (interactive)
-  (let ((disabled nil)
-        (current-project (expand-file-name (project-root (project-current)))))
-    (when (eq current-project nil)
-      (error "The current buffer is not part of any project"))
-    (if (member current-project vs/lsp-allowed-projects)
-        (progn
-          (setq disabled t
-                vs/lsp-allowed-projects
-                (delete current-project vs/lsp-allowed-projects)))
-      (push current-project vs/lsp-allowed-projects))
-    (dolist (buffer (project--buffer-list (project-current)))
-      (when (buffer-file-name buffer)
-        (with-current-buffer buffer
-          (if disabled
-              (when-let (server (eglot-current-server))
-                (eglot-shutdown server))
-            (call-interactively #'eglot)))))))
-;; =============================================================================
-
 ;; Automatic download LSP servers
 ;; =============================================================================
 (defvar vs/--lsp-servers '()
@@ -69,49 +36,58 @@ If REINSTALL is provided, it removes old directory and reinstall server."
   (let ((download-handler
          (alist-get major-mode vs/--lsp-servers)))
     (unless download-handler
-      (error "Major mode (%s) doesn't support auto download yet"
-             major-mode))
-    (cond
-     ((functionp download-handler)
-      (funcall download-handler reinstall))
-     ((stringp download-handler)
-      (vs/--download-lsp-server download-handler reinstall))
-     (t (error "Unsupported download handler: %s" download-handler)))))
+      (user-error "Major mode (%s) doesn't support auto download yet"
+                  major-mode))
+    (pcase download-handler
+      (`(:download-url . ,url)
+       (vs/--download-lsp-server url reinstall))
+      (`(:download-fn . ,fn)
+       (funcall fn reinstall))
+      (_ (user-error "Unsupported download handler: %s" download-handler)))))
 
-(defun vs/add-auto-lsp-server (mode download-handler &optional command)
-  "Set a language server DOWNLOAD-HANDLER for MODE.
-Optinally a custom COMMAND for execute the server."
-  (add-to-list
-   'vs/--lsp-servers
-   `(,mode . ,download-handler))
+(defun vs/add-auto-lsp-server (mode &rest args)
+  "Set a language server settings provided by ARGS for MODE."
+  (when-let ((download-url (plist-get args :download-url)))
+    (add-to-list
+     'vs/--lsp-servers
+     `(,mode . (:download-url . ,download-url))))
+
+  (when-let ((download-fn (plist-get args :download-fn)))
+    (add-to-list
+     'vs/--lsp-servers
+     `(,mode . (:download-fn . ,download-fn))))
+
   (with-eval-after-load 'eglot
-    (when (and (boundp 'eglot-server-programs) command)
-      (let* ((server-program
-              (if (listp command)
-                  (append
-                   (vs/--command-lsp-context mode (car command))
-                   (cdr command))
-                command)))
+    (when-let* ((command (plist-get args :command))
+                (server-command (append
+                                 (vs/--wrap-lsp-context mode (car command))
+                                 (cdr command))))
+      (when (boundp 'eglot-server-programs)
         (add-to-list 'eglot-server-programs
-                     `(,mode . ,server-program))))))
+                     `(,mode . ,server-command))))
 
-(defun vs/--command-lsp-context (mode command)
-  "Evolve COMMAND for MODE in the LSP context."
+    (when-let ((command (plist-get args :command-fn)))
+      (when (boundp 'eglot-server-programs)
+        (add-to-list 'eglot-server-programs
+                     `(,mode . ,command))))))
+
+(defun vs/--wrap-lsp-context (mode command)
+  "Wrap COMMAND for MODE in the LSP context."
   (list (expand-file-name
          (concat vs/--lsp-install-dir
                  (symbol-name mode)
                  "/"
                  command))))
 
-(defun vs/--download-lsp-server (download-link reinstall)
-  "Download the LSP server to the cache directory using DOWNLOAD-LINK.
+(defun vs/--download-lsp-server (download-url reinstall)
+  "Download the LSP server to the cache directory using DOWNLOAD-URL.
 When REINSTALL is t deletes the current server directory."
   (declare-function dired-compress-file "ext:dired-aux")
   (let* ((server-directory (concat
                             vs/--lsp-install-dir
                             (symbol-name major-mode)))
          (default-directory server-directory)
-         (file-name (car (last (split-string download-link "/"))))
+         (file-name (car (last (split-string download-url "/"))))
          (file-path (concat server-directory "/" file-name)))
     (when reinstall
       (delete-directory server-directory t))
@@ -119,7 +95,7 @@ When REINSTALL is t deletes the current server directory."
         (progn
           (make-directory server-directory t)
           (message "Downloading LSP server for %s..." major-mode)
-          (url-copy-file download-link file-path)
+          (url-copy-file download-url file-path)
           (dired-compress-file file-path)
           (chmod file-path #o755))
       (message "Server already installed."))))

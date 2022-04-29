@@ -27,7 +27,9 @@
 
 (declare-function vs/add-auto-lsp-server "layer-lsp.el")
 
-(vs/add-auto-lsp-server 'rustic-mode rust-analyzer-link rust-analyzer-command)
+(vs/add-auto-lsp-server 'rustic-mode
+                        :download-url rust-analyzer-link
+                        :command rust-analyzer-command)
 ;; =============================================================================
 
 (provide 'lang-rust)

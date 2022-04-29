@@ -25,7 +25,7 @@
 
 (declare-function vs/add-auto-lsp-server "layer-lsp.el")
 
-(vs/add-auto-lsp-server 'zig-mode zls-link zls-command)
+(vs/add-auto-lsp-server 'zig-mode :download-url zls-link :command zls-command)
 ;; =============================================================================
 
 (provide 'lang-zig)

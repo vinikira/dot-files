@@ -39,7 +39,9 @@
 
 (declare-function vs/add-auto-lsp-server "layer-lsp.el")
 
-(vs/add-auto-lsp-server 'clojure-mode clojure-lsp-link clojure-lsp-command)
+(vs/add-auto-lsp-server 'clojure-mode
+                        :download-url clojure-lsp-link
+                        :command clojure-lsp-command)
 ;; =============================================================================
 
 (provide 'lang-clojure)

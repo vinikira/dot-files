@@ -17,8 +17,7 @@
 
 (vs/add-auto-lsp-server
  'dart-mode
- nil
- (lambda () (list "dart" "language-server")))
+ :command-fn (lambda () (list "dart" "language-server")))
 ;; =============================================================================
 
 (provide 'lang-dart)

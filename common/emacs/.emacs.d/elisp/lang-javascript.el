@@ -40,10 +40,10 @@
          do
          (vs/add-auto-lsp-server
           mode
-          (lambda (_reinstall)
-            (async-shell-command
-             "npm install -g typescript-language-server typescript"
-             (get-buffer-create "*Install js/ts LSP*")))))
+          :download-fn (lambda (_reinstall)
+                         (async-shell-command
+                          "npm install -g typescript-language-server typescript"
+                          (get-buffer-create "*Install js/ts LSP*")))))
 ;; =============================================================================
 
 (provide 'lang-javascript)

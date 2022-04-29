@@ -126,8 +126,8 @@
 
 (vs/add-auto-lsp-server
  'elixir-mode
- "https://github.com/elixir-lsp/elixir-ls/releases/latest/download/elixir-ls.zip"
- '("elixir-ls/language_server.sh"))
+ :download-url "https://github.com/elixir-lsp/elixir-ls/releases/latest/download/elixir-ls.zip"
+ :command '("elixir-ls/language_server.sh"))
 ;; =============================================================================
 (provide 'lang-elixir)
 
