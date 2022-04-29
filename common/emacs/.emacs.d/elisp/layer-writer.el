@@ -37,6 +37,19 @@
 (straight-use-package 'langtool)
 
 (customize-set-variable 'langtool-default-language "en-US")
+(customize-set-variable 'langtool-mother-tongue "pt-BR")
+
+(declare-function langtool-check "ext:langtool")
+(declare-function langtool-check-done "ext:langtool")
+(declare-function langtool-switch-default-language "ext:langtool")
+(declare-function langtool-show-message-at-point "ext:langtool")
+(declare-function langtool-correct-buffer "ext:langtool")
+
+(global-set-key (kbd "C-x w c") #'langtool-check)
+(global-set-key (kbd "C-x w d") #'langtool-check-done)
+(global-set-key (kbd "C-x w l") #'langtool-switch-default-language)
+(global-set-key (kbd "C-x w s") #'langtool-show-message-at-point)
+(global-set-key (kbd "C-x w b") #'langtool-correct-buffer)
 
 (with-eval-after-load 'langtool
   (declare-function find-lisp-find-files "find-lisp")
