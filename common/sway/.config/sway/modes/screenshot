@@ -1,15 +1,18 @@
-set $mode_screenshot " Region (r), Output (o) or Focused (f) + Shift for "
+set $mode_screenshot " Region (r), Output (o) or Focused (f) + Shift for   + Ctrl for ✎"
 
 mode $mode_screenshot {
     bindsym o mode "default", exec $screenshot_screen_clipboard
+    bindsym Ctrl+o mode "default", exec $screenshot_screen_edit
     bindsym Shift+o mode "default", exec $screenshot_screen_file
 
     # pick the region to screenshot
     bindsym r mode "default", exec $screenshot_selection_clipboard
+    bindsym Ctrl+r mode "default", exec $screenshot_selection_edit
     bindsym Shift+r mode "default", exec $screenshot_selection_file
 
     # pick the focused window
     bindsym f mode "default", exec $screenshot_focused_window_clipboard
+    bindsym Ctrl+f mode "default", exec $screenshot_focused_window_edit
     bindsym Shift+f mode "default", exec $screenshot_focused_window_file
 
     # Return to default mode.

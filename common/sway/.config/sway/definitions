@@ -25,11 +25,13 @@ set $wallpaper ~/Pictures/wallpapers/633262.png
 set $grim /usr/bin/grim
 
 set $screenshot_screen_clipboard $grim - | wl-copy && notify-send "Screenshot of whole screen saved to clipboard"
+set $screenshot_screen_edit $grim - | swappy -f -
 set $screenshot_screen_file $grim ~/Pictures/screenshots/screenshot-"$(date +%s)".png && notify-send "Screenshot of whole screen saved to folder"
 
 set $screenshot_selection_clipboard $grim -g "$(slurp)" - | wl-copy && notify-send "Screenshot of selected region saved to clipboard"
+set $screenshot_selection_edit $grim -g "$(slurp)" - | swappy -f -
 set $screenshot_selection_file $grim -g "$(slurp)" ~/Pictures/screenshots/screenshot-"$(date +%s)".png && notify-send "Screenshot of selected region saved to folder"
 
 set $screenshot_focused_window_clipboard $grim -g "$(swaymsg -t get_tree | jq -r '.. | select(.focused?) | .rect | "\(.x),\(.y) \(.width)x\(.height)"')" - | wl-copy && notify-send "Screenshot of active window saved to clipboard"
-
+set $screenshot_focused_window_edit $grim -g "$(swaymsg -t get_tree | jq -r '.. | select(.focused?) | .rect | "\(.x),\(.y) \(.width)x\(.height)"')" - | swappy -f -
 set $screenshot_focused_window_file $grim -g "$(swaymsg -t get_tree | jq -r '.. | select(.focused?) | .rect | "\(.x),\(.y) \(.width)x\(.height)"')" ~/Pictures/screenshots/screenshot-"$(date +%s)".png && notify-send "Screenshot of active window saved to folder"
