@@ -33,6 +33,11 @@
 (declare-function docker "ext:docker")
 
 (global-set-key (kbd "C-c d") #'docker)
+
+(when (eq system-type 'darwin)
+  (customize-set-variable 'docker-command "nerdctl.lima")
+  (customize-set-variable 'docker-compose-command "nerdctl.lima compose")
+  (customize-set-variable 'docker-tramp-docker-executable "nerdctl.lima"))
 ;; =============================================================================
 
 ;; GraphQL
