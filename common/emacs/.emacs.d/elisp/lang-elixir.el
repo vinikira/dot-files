@@ -77,7 +77,10 @@
         (replace-match " =>"))
       (goto-char min)
       (while (re-search-forward "{" end t)
-        (replace-match "%{")))))
+        (replace-match "%{"))
+      (goto-char min)
+      (while (re-search-forward "null" end t)
+        (replace-match "nil")))))
 
 (defun vs/etf-to-json (&optional begin end)
   "Transform Elixir Term Format to JSON.  Use BEGIN and END as region."
@@ -89,7 +92,10 @@
         (replace-match ":"))
       (goto-char min)
       (while (re-search-forward "%{" end t)
-        (replace-match "{")))))
+        (replace-match "{"))
+      (goto-char min)
+      (while (re-search-forward "nil" end t)
+        (replace-match "null")))))
 
 (defun vs/elixir-map-atom-to-map-string (&optional begin end)
   "Transform Elixir map atom to map string.  Use BEGIN and END as region."
