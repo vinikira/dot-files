@@ -71,51 +71,29 @@
   "Transform JSON to Elixir Term Format.  Use BEGIN and END as region."
   (interactive "r")
   (save-excursion
-    (let ((min (if (region-active-p) begin (point-min))))
-      (goto-char min)
-      (while (re-search-forward ":" end t)
-        (replace-match " =>"))
-      (goto-char min)
-      (while (re-search-forward "{" end t)
-        (replace-match "%{"))
-      (goto-char min)
-      (while (re-search-forward "null" end t)
-        (replace-match "nil")))))
+    (replace-regexp-in-region "\": " "\" => " begin end)
+    (replace-regexp-in-region "{" "%{" begin end)
+    (replace-regexp-in-region "null" "nil" begin end)))
 
 (defun vs/etf-to-json (&optional begin end)
   "Transform Elixir Term Format to JSON.  Use BEGIN and END as region."
   (interactive "r")
   (save-excursion
-    (let ((min (if (region-active-p) begin (point-min))))
-      (goto-char min)
-      (while (re-search-forward " =>" end t)
-        (replace-match ":"))
-      (goto-char min)
-      (while (re-search-forward "%{" end t)
-        (replace-match "{"))
-      (goto-char min)
-      (while (re-search-forward "nil" end t)
-        (replace-match "null")))))
+    (replace-regexp-in-region "\" => " "\": " begin end)
+    (replace-regexp-in-region "%{" "{" begin end)
+    (replace-regexp-in-region "nil" "null" begin end)))
 
 (defun vs/elixir-map-atom-to-map-string (&optional begin end)
   "Transform Elixir map atom to map string.  Use BEGIN and END as region."
   (interactive "r")
   (save-excursion
-    (let ((min (if (region-active-p) begin (point-min))))
-      (goto-char min)
-      (while (re-search-forward "\\([a-zA-z0-9]+\\): " end t)
-        (replace-match "\"\\1\" => "))
-      (goto-char min))))
+    (replace-regexp-in-region "\\([a-zA-z0-9]+\\): " "\"\\1\" => " begin end)))
 
 (defun vs/elixir-map-string-to-map-atom (&optional begin end)
   "Transform Elixir map string to map atom.  Use BEGIN and END as region."
   (interactive "r")
   (save-excursion
-    (let ((min (if (region-active-p) begin (point-min))))
-      (goto-char min)
-      (while (re-search-forward "\"\\([a-zA-z0-9]+\\)\" => " end t)
-        (replace-match "\\1: "))
-      (goto-char min))))
+    (replace-regexp-in-region "\"\\([a-zA-z0-9]+\\)\" =>" "\\1: " begin end)))
 ;; =============================================================================
 
 ;; Refactor keymap
