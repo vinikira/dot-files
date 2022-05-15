@@ -244,6 +244,57 @@
  '("latexmk -shell-escape -pdf -interaction=nonstopmode -file-line-error %f"))
 ;; =============================================================================
 
+;; Lite Clickup org integration
+;; =============================================================================
+(defcustom vs/org-clickup-token-entry nil
+  "Entry name on the password store to get the clickup token."
+  :type 'string
+  :group 'org
+  :safe t)
+
+(declare-function password-store-get "ext:password-store")
+(declare-function org-edit-headline "ext:org")
+(declare-function org-at-heading-p "ext:org")
+(declare-function org-entry-get-p "ext:org")
+(declare-function org-set-property "ext:org")
+
+(defun vs/org-fill-clickup-task ()
+  "Fill Clickup task."
+  (interactive)
+  (when-let* ((pt (point))
+              (task-id (and (org-at-heading-p)
+                            (org-entry-get pt "ClickupTaskId"))))
+    (let-alist (vs/org-clickup-get-task task-id)
+      (let ((headline (format "%s - %s" .id .name)))
+        (message "Updating %s" headline)
+        (org-edit-headline headline)
+        (cl-loop
+         for (property value)
+         on (list
+             "ClickupAssignee" (let-alist (nth 0 .assignees)
+                                 .username)
+             "ClickupCreated" .date_created
+             "ClickupTaskId" .id
+             "ClickupCreator" .creator.username
+             "ClickupStatus" .status.status
+             "ClickupDescription" .description)
+         by #'cddr
+         do (org-set-property property value))))))
+
+(defun vs/org-clickup-get-task (task-id)
+  "Get Clickup task associated to TASK-ID."
+  (let ((url-request-method "GET")
+        (url-address (format "https://api.clickup.com/api/v2/task/%s/" task-id))
+        (url-request-extra-headers `(("Authorization" .
+                                      ,(password-store-get vs/org-clickup-token-entry)))))
+    (with-current-buffer
+        (url-retrieve-synchronously url-address)
+      (json-parse-buffer :object-type 'alist
+                         :array-type 'list
+                         :null-object nil))))
+;; =============================================================================
+
+
 (provide 'layer-org)
 
 ;;; layer-org.el ends here
