@@ -1,15 +1,13 @@
+exec_always XDG_CURRENT_DESKTOP=sway systemctl --user import-environment XDG_SESSION_TYPE XDG_CURRENT_DESKTOP
+exec_always dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+exec_always --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+exec_always --no-startup-id export $(/usr/bin/gnome-keyring-daemon --start)
+
 exec swayidle -w \
     timeout 1200 $locker \
     timeout 1300 'swaymsg "output * dpms off"' \
     resume 'swaymsg "output * dpms on"' \
     before-sleep 'playerctl pause' \
     before-sleep $locker
-
-exec --no-startup-id blueman-applet
-exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
-exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
-
-exec_always --no-startup-id export $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
-exec_always XDG_CURRENT_DESKTOP=sway systemctl --user import-environment XDG_SESSION_TYPE XDG_CURRENT_DESKTOP
-exec_always --no-startup-id gnome-keyring-daemon --start
 exec_always --no-startup-id poweralertd
+exec --no-startup-id blueman-applet
