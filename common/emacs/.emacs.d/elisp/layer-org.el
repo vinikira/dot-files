@@ -250,7 +250,7 @@
   "Entry name on the password store to get the clickup token."
   :type 'string
   :group 'org
-  :safe t)
+  :safe #'stringp)
 
 (declare-function password-store-get "ext:password-store")
 (declare-function org-edit-headline "ext:org")
