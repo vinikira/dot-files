@@ -107,7 +107,7 @@ vterm_printf(){
 }
 
 # Erlang/Elixir flags
-export ERL_AFLAGS="-kernel -shell_history enabled"
+export ERL_AFLAGS="-kernel shell_history enabled"
 export KERL_BUILD_DOCS=yes
 export KERL_DOC_TARGETS=chunks
 
