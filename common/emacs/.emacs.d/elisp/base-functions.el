@@ -149,7 +149,9 @@ cleared."
                      (y-or-n-p "Clean variables?")))
   (let* ((file-contents (with-temp-buffer
                           (insert-file-contents file-path)
-                          (buffer-string)))
+                          (replace-regexp-in-string
+                           "export \\|\"\\|^\d*\n\\|^\#.+?\n" ""
+                           (buffer-string))))
          (envs (mapcar (lambda (line)
                          (split-string line "="))
                        (split-string file-contents))))
