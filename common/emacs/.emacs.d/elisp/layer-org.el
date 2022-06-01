@@ -256,6 +256,7 @@
 (declare-function org-edit-headline "ext:org")
 (declare-function org-at-heading-p "ext:org")
 (declare-function org-entry-get-p "ext:org")
+(declare-function org-heading-components "ext:org")
 (declare-function org-set-property "ext:org")
 
 (defun vs/org-fill-clickup-task ()
@@ -263,7 +264,9 @@
   (interactive)
   (when-let* ((pt (point))
               (task-id (and (org-at-heading-p)
-                            (org-entry-get pt "ClickupTaskId"))))
+                            (car (split-string
+                                  (nth 4 (org-heading-components))
+                                  " ")))))
     (let-alist (vs/org-clickup-get-task task-id)
       (let ((headline (format "%s - %s" .id .name)))
         (message "Updating %s" headline)
