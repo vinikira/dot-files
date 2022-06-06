@@ -60,7 +60,7 @@
 
 (declare-function exec-path-from-shell-initialize "ext:exec-path-from-shell")
 
-(when (daemonp)
+(when (or (daemonp) (memq window-system '(mac ns x)))
   (add-hook 'after-init-hook #'exec-path-from-shell-initialize))
 ;; =============================================================================
 
