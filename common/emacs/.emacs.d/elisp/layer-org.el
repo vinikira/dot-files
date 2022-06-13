@@ -7,14 +7,14 @@
 ;; Org mode latest version.
 ;; =============================================================================
 (straight-use-package '(org-contrib :type git
-                                    :includes (org org-contacts org-notify)
+                                    :includes (org)
                                     :host nil
                                     :repo "https://git.sr.ht/~bzg/org-contrib"
                                     :files (:defaults "lisp/*.el")))
 
 ;; Defining where the Org files will be stored.
 (defconst vs/org-directory
-  (if (file-directory-p "~/Sync/org/") "~/Sync/org/" "~/"))
+  (if (file-directory-p "~/Sync/org/") "~/Sync/org/" "~/org"))
 
 ;; My Org capture templates.
 (defconst vs/org-capture-templates
@@ -198,6 +198,8 @@
 
 ;; Org Notify
 ;; =============================================================================
+(straight-use-package 'org-notify)
+
 (with-eval-after-load 'org
   (require 'org-notify)
 
@@ -215,6 +217,8 @@
 
 ;; Org contacts
 ;; =============================================================================
+(straight-use-package 'org-contacts)
+
 (with-eval-after-load 'org
   (require 'org-contacts))
 ;; =============================================================================
