@@ -181,9 +181,7 @@
   (declare-function consult-completion-in-region "ext:consult")
   (declare-function consult-completing-read-multiple "ext:consult")
   (customize-set-variable 'completion-in-region-function
-                          #'consult-completion-in-region)
-  (advice-add #'completing-read-multiple
-              :override #'consult-completing-read-multiple))
+                          #'consult-completion-in-region))
 ;; =============================================================================
 
 (provide 'base-completions)
