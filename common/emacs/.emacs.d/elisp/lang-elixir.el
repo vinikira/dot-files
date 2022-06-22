@@ -101,7 +101,9 @@
 (with-eval-after-load 'elixir-mode
   (when (boundp 'elixir-mode-map)
     (define-key elixir-mode-map (kbd "C-c . M") #'vs/elixir-map-string-to-map-atom)
-    (define-key elixir-mode-map (kbd "C-c . m") #'vs/elixir-map-atom-to-map-string)))
+    (define-key elixir-mode-map (kbd "C-c . m") #'vs/elixir-map-atom-to-map-string)
+    (define-key elixir-mode-map (kbd "C-c . J") #'vs/etf-to-json)
+    (define-key elixir-mode-map (kbd "C-c . j") #'vs/json-to-etf)))
 ;; =============================================================================
 
 ;; LSP
@@ -113,6 +115,7 @@
  :download-url "https://github.com/elixir-lsp/elixir-ls/releases/latest/download/elixir-ls.zip"
  :command '("elixir-ls/language_server.sh"))
 ;; =============================================================================
+
 (provide 'lang-elixir)
 
 ;;; lang-elixir.el ends here
