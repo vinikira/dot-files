@@ -210,6 +210,11 @@ Switch to the project specific term buffer if it already exists."
       (vterm buffer-name))
     (switch-to-buffer buffer-name)))
 
+(defun vs/kill-ring-unfilled (begin end)
+  (interactive "r")
+  (let ((text (buffer-substring begin end)))
+    (kill-new (replace-regexp-in-string "\n" "" text))))
+
 (provide 'base-functions)
 
 ;;; base-functions.el ends here

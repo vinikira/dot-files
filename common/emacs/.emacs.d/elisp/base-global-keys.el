@@ -32,6 +32,7 @@
 (global-set-key (kbd "M-c") #'capitalize-dwim)
 (global-set-key (kbd "H-<tab>") #'tab-next)
 (global-set-key (kbd "H-S-<tab>") #'tab-previous)
+(global-set-key (kbd "M-W") #'vs/kill-ring-unfilled)
 ;; =============================================================================
 
 ;; Dired mode
