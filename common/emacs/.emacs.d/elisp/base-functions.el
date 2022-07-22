@@ -187,7 +187,7 @@ cleared."
 (defun vs/project-name ()
   "Return the project name for current project."
   (declare-function project-current "ext:project")
-  (when-let (dir (caddr (project-current)))
+  (when-let (dir (project-root (project-current)))
     (if (string-match "/\\([^/]+\\)/\\'" dir)
         (match-string 1 dir)
       dir)))
