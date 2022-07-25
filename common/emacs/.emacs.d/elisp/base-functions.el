@@ -2,16 +2,18 @@
 ;;; Commentary:
 ;;; Code:
 
-(defun vs/split-window-below-and-switch ()
-  "Split the window horizontally, then switch to the new pane."
+(defun vs/split-window-below-and-switch (&optional size)
+  "Split the window horizontally, then switch to the new pane.
+SIZE is the window size."
   (interactive)
-  (split-window-below)
+  (call-interactively #'split-window-below t (vector size))
   (other-window 1))
 
-(defun vs/split-window-right-and-switch ()
-  "Split the window vertically, then switch to the new pane."
+(defun vs/split-window-right-and-switch (&optional size)
+  "Split the window vertically, then switch to the new pane.
+SIZE is the window size."
   (interactive)
-  (split-window-right)
+  (call-interactively #'split-window-right t (vector size))
   (other-window 1))
 
 (defun vs/format-xml-buffer (&optional begin end)
