@@ -218,6 +218,11 @@ Switch to the project specific term buffer if it already exists."
   (let ((text (buffer-substring begin end)))
     (kill-new (replace-regexp-in-string "\n" "" text))))
 
+(defun vs/iso8601-now ()
+  "Insert an ISO8601 date time from now."
+  (interactive)
+  (insert (format-time-string "%FT%T.%3NZ")))
+
 (provide 'base-functions)
 
 ;;; base-functions.el ends here
