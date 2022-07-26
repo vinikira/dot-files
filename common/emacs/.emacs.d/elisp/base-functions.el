@@ -213,6 +213,7 @@ Switch to the project specific term buffer if it already exists."
     (switch-to-buffer buffer-name)))
 
 (defun vs/kill-ring-unfilled (begin end)
+  "Copy the contents of the region BEGIN and END, replace new lines and kill it."
   (interactive "r")
   (let ((text (buffer-substring begin end)))
     (kill-new (replace-regexp-in-string "\n" "" text))))
