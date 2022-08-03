@@ -63,11 +63,10 @@ SIZE is the window size."
     (let ((current-line (thing-at-point 'line)))
       (when (or (= 1 (forward-line 1)) (eq (point) (point-max)))
         (insert "\n"))
-
       ;; now insert as many time as requested
       (while (> n 0)
         (insert current-line)
-        (decf n)))))
+        (setq n (- n 1))))))
 
 (defun vs/sh-cmd-to-string (cmd)
   "Execute shell CMD and remove unnecessary newline of output."
@@ -216,7 +215,8 @@ Switch to the project specific term buffer if it already exists."
   "Copy the contents of the region BEGIN and END, replace new lines and kill it."
   (interactive "r")
   (let ((text (buffer-substring begin end)))
-    (kill-new (replace-regexp-in-string "\n" "" text))))
+    (kill-new (replace-regexp-in-string "\n" " " text))
+    (deactivate-mark)))
 
 (defun vs/iso8601-now ()
   "Insert an ISO8601 date time from now."
