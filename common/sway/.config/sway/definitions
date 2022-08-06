@@ -16,7 +16,7 @@ set $gtk_icon_theme Adwaita
 
 set $locker swaylock -f -l --font=$font -c 000000
 set $emacs emacsclient -cn -e "(progn (raise-frame) (x-focus-frame (selected-frame)))"
-set $browser /usr/bin/librewolf
+set $browser /usr/bin/firefox
 set $file_browser /usr/bin/thunar
 
 set $wallpaper ~/Pictures/wallpapers/633262.png
