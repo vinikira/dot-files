@@ -28,8 +28,10 @@
 (straight-use-package 'inf-ruby)
 
 (declare-function inf-ruby-minor-mode "ext:inf-ruby")
+(declare-function inf-ruby-switch-setup "ext:inf-ruby")
 
 (add-hook 'ruby-mode-hook #'inf-ruby-minor-mode)
+(add-hook 'ruby-mode-hook #'inf-ruby-switch-setup)
 ;; =============================================================================
 
 
