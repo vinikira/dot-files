@@ -116,6 +116,12 @@
  :command '("elixir-ls/language_server.sh"))
 ;; =============================================================================
 
+;; Flymake credo
+;; =============================================================================
+(straight-use-package
+   '(flymake-credo :type git :host github :repo "vinikira/flymake-credo" :branch "main"))
+;; =============================================================================
+
 (provide 'lang-elixir)
 
 ;;; lang-elixir.el ends here
