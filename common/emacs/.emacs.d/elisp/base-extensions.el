@@ -241,6 +241,18 @@
 (global-set-key (kbd "<f7>") #'vterm-other-window)
 ;; =============================================================================
 
+;; Tree Sitter
+;; =============================================================================
+(straight-use-package 'tree-sitter)
+(straight-use-package 'tree-sitter-langs)
+
+(declare-function tree-sitter-hl-mode "ext:tree-siter")
+(declare-function global-tree-sitter-mode "ext:tree-siter")
+
+(add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)
+(global-tree-sitter-mode)
+;; =============================================================================
+
 ;; Wich Key
 ;; =============================================================================
 (straight-use-package 'which-key)
