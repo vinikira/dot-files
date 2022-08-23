@@ -215,6 +215,24 @@
    '(:time "2h" :period "30m" :duration 25 :actions -notify/window)))
 ;; =============================================================================
 
+;; Org project
+;; =============================================================================
+(straight-use-package
+ '(org-project :type git :host github :repo "delehef/org-project"))
+
+(customize-set-variable 'org-project-todos-per-project t)
+
+(declare-function org-project-quick-capture "ext:org-project")
+(declare-function org-project-capture "ext:org-project")
+(declare-function org-project-open-todos "ext:org-project")
+
+(with-eval-after-load 'project
+  (when (boundp 'project-prefix-map)
+    (define-key project-prefix-map (kbd "t") #'org-project-quick-capture)
+    (define-key project-prefix-map (kbd "T") #'org-project-capture)
+    (define-key project-prefix-map (kbd "o") #'org-project-open-todos)))
+;; =============================================================================
+
 ;; Org contacts
 ;; =============================================================================
 (straight-use-package 'org-contacts)
