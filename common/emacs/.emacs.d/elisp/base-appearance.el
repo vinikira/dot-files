@@ -103,13 +103,19 @@ See `set-fontset-font' for ADD."
   "Define the mode for calendar and clock."
   (concat
    (propertize (format " %s" (all-the-icons-faicon "clock-o"))
-               'face `(:height 1.2 :family ,(all-the-icons-faicon-family))
+               'face `(:height 1.1 :family ,(all-the-icons-faicon-family))
                'display '(raise -0.01))
-   (format-time-string " %H:%M")
+   (propertize (format-time-string " %H:%M")
+               'face '(:height 0.9)
+               'mouse-face 'mode-line-highlight
+               'local-map (make-mode-line-mouse-map 'mouse-1 #'world-clock))
    (propertize (format " %s" (all-the-icons-faicon "calendar"))
-               'face `(:height 1.2 :family ,(all-the-icons-faicon-family))
+               'face `(:height 1.1 :family ,(all-the-icons-faicon-family))
                'display '(raise -0.01))
-   (format-time-string " %Y-%m-%d")
+   (propertize (format-time-string " %Y-%m-%d")
+               'face '(:height 0.9)
+               'mouse-face 'mode-line-highlight
+               'local-map (make-mode-line-mouse-map 'mouse-1 #'calendar))
    vs/--modeline-separator))
 
 (defun vs/--custom-modeline-line-column ()
