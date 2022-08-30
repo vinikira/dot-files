@@ -93,12 +93,6 @@ See `set-fontset-font' for ADD."
        (propertize (format " %s" branch) 'face `(:height 1.0))
        vs/--modeline-separator))))
 
-(defun vs/--custom-modeline-mode-icon ()
-  "Define the icon for current major mode."
-  (propertize (format "%s" (all-the-icons-icon-for-buffer))
-              'face `(:height 1.1)
-              'display '(raise -0.01)))
-
 (defun vs/--custom-modeline-clock-calendar ()
   "Define the mode for calendar and clock."
   (concat
@@ -130,11 +124,11 @@ See `set-fontset-font' for ADD."
 (defun vs/--custom-modeline-mode-major-mode ()
   "Define the mode line text for major modes."
   (concat
-   "("
-   (vs/--custom-modeline-mode-icon)
+   (propertize (format "%s" (all-the-icons-icon-for-buffer))
+               'face `(:height 1.1)
+               'display '(raise -0.01))
    " "
    (format-mode-line mode-name)
-   ")"
    vs/--modeline-separator))
 
 (defvar vs/custom-modeline-format
