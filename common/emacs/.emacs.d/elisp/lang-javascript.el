@@ -32,6 +32,17 @@
     (define-key js-mode-map (kbd "C-c , v") #'mocha-test-project)))
 ;; =============================================================================
 
+;; ESLint compilation mode
+;; =============================================================================
+(straight-use-package
+ '(eslint :type git :host github :repo "Fuco1/compile-eslint" :branch "master"))
+
+(with-eval-after-load 'js
+  (require 'compile-eslint)
+  (when (boundp 'compilation-error-regexp-alist)
+    (push 'eslint compilation-error-regexp-alist)))
+;; =============================================================================
+
 ;; LSP
 ;; =============================================================================
 (declare-function vs/add-auto-lsp-server "layer-lsp.el")
