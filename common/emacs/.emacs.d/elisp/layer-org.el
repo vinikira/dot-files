@@ -308,15 +308,16 @@
 
 (defun vs/org-clickup-get-task (task-id)
   "Get Clickup task associated to TASK-ID."
-  (let ((url-request-method "GET")
-        (url-address (format "https://api.clickup.com/api/v2/task/%s/" task-id))
-        (url-request-extra-headers `(("Authorization" .
-                                      ,(password-store-get vs/org-clickup-token-entry)))))
-    (with-current-buffer
-        (url-retrieve-synchronously url-address)
-      (json-parse-buffer :object-type 'alist
-                         :array-type 'list
-                         :null-object nil))))
+  (unless (executable-find "curl")
+    (error "CURL is missing."))
+  (let* ((url (format "https://api.clickup.com/api/v2/task/%s/" task-id))
+         (auth-header (format "Authorization: %s"
+                              (password-store-get vs/org-clickup-token-entry)))
+         (command (format "curl -s -H \"%s\" '%s'" auth-header url)))
+    (json-parse-string (shell-command-to-string command)
+                       :object-type 'alist
+                       :array-type 'list
+                       :null-object nil)))
 ;; =============================================================================
 
 
