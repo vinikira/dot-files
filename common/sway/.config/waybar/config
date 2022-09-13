@@ -26,7 +26,7 @@
     "clock": {
         "format": "{:%d %b %H:%M}",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-        "on-click": "emacsclient -cn --eval '(calendar)'"
+        "on-click": "emacsclient -cn --eval '(progn (calendar) (org-agenda-list))'"
     },
     "cpu": {
         "format": "{usage}% "
