@@ -10,7 +10,7 @@
         "format-ethernet": "",
         "format-disconnected": "",
         "max-length": 50,
-        "on-click": "foot -e 'nmtui'"
+        "on-click": "footclient -a floating_shell -e 'nmtui'"
     },
     "idle_inhibitor": {
         "format": "{icon}",
@@ -70,7 +70,7 @@
             "car": "",
             "default": ["", "", ""]
         },
-        "on-click": "pavucontrol"
+        "on-click": "footclient -a floating_shell pulsemixer"
     },
     "custom/power": {
         "format": "",

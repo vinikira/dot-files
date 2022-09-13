@@ -4,7 +4,8 @@ set $down j
 set $up k
 set $right l
 
-set $term foot
+set $term footclient
+set $term_flaot foot -a floating_shell
 set $menu wofi
 
 set $font Iosevka Term
@@ -14,7 +15,7 @@ set $cursor_size 24
 set $gtk_theme Adwaita
 set $gtk_icon_theme Adwaita
 
-set $locker swaylock -f -l --font=$font -c 000000
+set $locker 'swaylock --daemonize -l --font=$font -c 000000 --ignore-empty-password --show-failed-attempts'
 set $emacs emacsclient -cn -e "(progn (raise-frame) (x-focus-frame (selected-frame)))"
 set $browser /usr/bin/firefox
 set $file_browser /usr/bin/thunar
@@ -35,3 +36,15 @@ set $screenshot_selection_file $grim -g "$(slurp)" ~/Pictures/screenshots/screen
 set $screenshot_focused_window_clipboard $grim -g "$(swaymsg -t get_tree | jq -r '.. | select(.focused?) | .rect | "\(.x),\(.y) \(.width)x\(.height)"')" - | wl-copy && notify-send "Screenshot of active window saved to clipboard"
 set $screenshot_focused_window_edit $grim -g "$(swaymsg -t get_tree | jq -r '.. | select(.focused?) | .rect | "\(.x),\(.y) \(.width)x\(.height)"')" - | swappy -f -
 set $screenshot_focused_window_file $grim -g "$(swaymsg -t get_tree | jq -r '.. | select(.focused?) | .rect | "\(.x),\(.y) \(.width)x\(.height)"')" ~/Pictures/screenshots/screenshot-"$(date +%s)".png && notify-send "Screenshot of active window saved to folder"
+
+# Idle configuration
+set $idle swayidle -w \
+    timeout 60 'brightnessctl g > /tmp/brightness && brightnessctl s 10%' \
+    resume 'brightnessctl s $([ -f /tmp/brightness ] && cat /tmp/brightness || echo 100%)' \
+    timeout 120 $locker \
+    timeout 300 'swaymsg "output * dpms off"' \
+    timeout 15 'if pgrep -x swaylock; then swaymsg "output * dpms off"; fi' \
+    resume 'swaymsg "output * dpms on"' \
+    before-sleep 'playerctl pause' \
+    before-sleep $locker \
+    lock $locker
