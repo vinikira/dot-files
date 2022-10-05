@@ -32,7 +32,7 @@
 
 (declare-function docker "ext:docker")
 
-(global-set-key (kbd "C-c d") #'docker)
+(global-set-key (kbd "C-c C-d") #'docker)
 
 (when (eq system-type 'darwin)
   (customize-set-variable 'docker-command "nerdctl.lima")

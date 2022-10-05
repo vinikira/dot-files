@@ -122,6 +122,16 @@
    '(flymake-credo :type git :host github :repo "vinikira/flymake-credo" :branch "main"))
 ;; =============================================================================
 
+
+;; Mix.el
+;; =============================================================================
+(straight-use-package 'mix)
+
+(declare-function mix-minor-mode "ext:mix.el")
+
+(add-hook 'elixir-mode-hook #'mix-minor-mode)
+;; =============================================================================
+
 (provide 'lang-elixir)
 
 ;;; lang-elixir.el ends here
