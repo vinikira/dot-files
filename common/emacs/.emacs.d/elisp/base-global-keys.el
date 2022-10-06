@@ -11,6 +11,8 @@
 (declare-function vs/move-line-down "base-functions")
 (declare-function vs/duplicate-current-line "base-functions")
 (declare-function vs/scratch-buffer "base-functions")
+(declare-function vs/kill-ring-unfilled "base-functions")
+(declare-function vs/close-project-tab "base-functions")
 
 (global-set-key (kbd "C-x C-b") #'ibuffer)
 (global-set-key (kbd "C-c i") #'vs/indent-buffer)
@@ -33,6 +35,7 @@
 (global-set-key (kbd "H-<tab>") #'tab-next)
 (global-set-key (kbd "H-S-<tab>") #'tab-previous)
 (global-set-key (kbd "M-W") #'vs/kill-ring-unfilled)
+(global-set-key (kbd "C-x p K") #'vs/close-project-tab)
 ;; =============================================================================
 
 ;; Dired mode

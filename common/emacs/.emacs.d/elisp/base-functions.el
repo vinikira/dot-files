@@ -225,6 +225,15 @@ Switch to the project specific term buffer if it already exists."
   (interactive)
   (insert (format-time-string "%FT%T.%3NZ")))
 
+(defun vs/close-project-tab ()
+  "Closes the current project tab."
+  (interactive)
+  (unless (project-current)
+    (user-error "The current tab has no open projects"))
+  (project-kill-buffers)
+  (when (> (length (tab-bar-tabs)) 1)
+    (tab-bar-close-tab)))
+
 (provide 'base-functions)
 
 ;;; base-functions.el ends here
