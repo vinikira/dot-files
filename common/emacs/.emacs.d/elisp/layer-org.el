@@ -61,6 +61,43 @@
     ("s" . "src")
     ("v" . "verse")))
 
+;; Org Agenda Custom Commands
+(declare-function org-end-of-subtree "org")
+(declare-function org-get-priority "org")
+(declare-function org-entry-get "org")
+
+(defun vs/--org-skip-subtree-if-priority (priority)
+  "Skip an agenda subtree if it has a priority of PRIORITY.
+PRIORITY may be one of the characters ?A, ?B, or ?C."
+  (when (boundp 'org-lowest-priority)
+    (let ((subtree-end (save-excursion (org-end-of-subtree t)))
+          (pri-value (* 1000 (- org-lowest-priority priority)))
+          (pri-current (org-get-priority (thing-at-point 'line t))))
+      (if (= pri-value pri-current)
+          subtree-end
+        nil))))
+
+(defun vs/--org-skip-subtree-if-habit ()
+  "Skip an agenda entry if it has a STYLE property equal to \"habit\"."
+  (let ((subtree-end (save-excursion (org-end-of-subtree t))))
+    (if (string= (org-entry-get nil "STYLE") "habit")
+        subtree-end
+      nil)))
+
+(customize-set-variable
+ 'org-agenda-custom-commands
+ '(("c" "Complete agenda view"
+    ((tags "PRIORITY=\"A\""
+           ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+            (org-agenda-overriding-header "High-priority unfinished tasks:")))
+     (agenda "")
+     (alltodo ""
+              ((org-agenda-skip-function
+                '(or (vs/--org-skip-subtree-if-habit)
+                     (vs/--org-skip-subtree-if-priority ?A)
+                     (org-agenda-skip-if nil '(scheduled deadline))))
+               (org-agenda-overriding-header "ALL normal priority tasks:")))))))
+
 (declare-function org-display-inline-images "org")
 (declare-function org-indent-mode "org-indent")
 (declare-function org-store-link "ol")
