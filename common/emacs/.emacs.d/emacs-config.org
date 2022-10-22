@@ -8,10 +8,12 @@
 :header-args:emacs-lisp: :tangle ./early-init.el
 :END:
 
-Lexical binding please
+Adds the header to avoid warnings, also enables lexical binding.
 
 #+begin_src emacs-lisp
-  ;;; -*- lexical-binding: t; -*-
+  ;;; early-init.el --- Early init file -*- lexical-binding: t -*-
+  ;;; Commentary:
+  ;;; Code:
 #+end_src
 
 Increase temporarily the GC limits.
