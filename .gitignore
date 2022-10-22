@@ -6,3 +6,4 @@ id_rsa
 id_*_rsa
 pubring.gpg
 secring.gpg
+site-lisp-autoloads.el

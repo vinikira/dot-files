@@ -1,21 +1,59 @@
-;;; base-functions.el --- Custom functions -*- lexical-binding: t -*-
+;;; vs-lib.el --- Personal functions -*- lexical-binding: t -*-
+
+;; Author: Vinícius Simões
+;; Maintainer: Vinícius Simões
+;; Version: version
+;; Package-Requires: (dependencies)
+;; Homepage: homepage
+;; Keywords: keywords
+
+
+;; This file is not part of GNU Emacs
+
+;; This program is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+
 ;;; Commentary:
+
+;; commentary
+
 ;;; Code:
 
+(require 'cl-macs)
+(require 'eieio)
+(require 'json)
+(require 'nxml-mode)
+(require 'project)
+(require 'vc-git)
+
+;;;###autoload
 (defun vs/split-window-below-and-switch (&optional size)
   "Split the window horizontally, then switch to the new pane.
 SIZE is the window size."
   (interactive)
-  (call-interactively #'split-window-below t (vector size))
+  (call-interactively 'split-window-below t (vector size))
   (other-window 1))
 
+;;;###autoload
 (defun vs/split-window-right-and-switch (&optional size)
   "Split the window vertically, then switch to the new pane.
 SIZE is the window size."
   (interactive)
-  (call-interactively #'split-window-right t (vector size))
+  (call-interactively 'split-window-right t (vector size))
   (other-window 1))
 
+;;;###autoload
 (defun vs/format-xml-buffer (&optional begin end)
   "Format xml buffer using xmllint, BEGIN region and END region."
   (interactive "r")
@@ -29,6 +67,7 @@ SIZE is the window size."
        (current-buffer))
       (goto-char curr-point))))
 
+;;;###autoload
 (defun sudo-edit (&optional arg)
   "Edit file with sudo permission.  ARG."
   (interactive "p")
@@ -36,11 +75,13 @@ SIZE is the window size."
       (find-file (concat "/sudo:root@localhost:" (read-file-name "File: ")))
     (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
 
+;;;###autoload
 (defun vs/indent-buffer ()
   "Indent whole buffer."
   (interactive)
   (indent-region (point-min) (point-max)))
 
+;;;###autoload
 (defun vs/move-line-up ()
   "Move up the current line."
   (interactive)
@@ -48,6 +89,7 @@ SIZE is the window size."
   (forward-line -2)
   (indent-according-to-mode))
 
+;;;###autoload
 (defun vs/move-line-down ()
   "Move down the current line."
   (interactive)
@@ -56,6 +98,7 @@ SIZE is the window size."
   (forward-line -1)
   (indent-according-to-mode))
 
+;;;###autoload
 (defun vs/duplicate-current-line (&optional n)
   "Duplicate current line, make more than 1 copy given a N argument."
   (interactive "p")
@@ -68,15 +111,17 @@ SIZE is the window size."
         (insert current-line)
         (setq n (- n 1))))))
 
+;;;###autoload
 (defun vs/sh-cmd-to-string (cmd)
   "Execute shell CMD and remove unnecessary newline of output."
   (string-trim
    (shell-command-to-string cmd)))
 
+;;;###autoload
 (defun vs/scratch-buffer (new-frame)
   "Create a scratch with selected mode.If NEW-FRAME is t, opens it in new frame."
   (interactive "P")
-  (let* ((modes (seq-uniq (mapcar #'cdr auto-mode-alist)))
+  (let* ((modes (seq-uniq (mapcar 'cdr auto-mode-alist)))
          (selected-mode
           (completing-read "Select mode: " modes)))
     (when new-frame
@@ -85,10 +130,7 @@ SIZE is the window size."
      (get-buffer-create (format "*%s-scratch*" selected-mode)))
     (funcall (intern selected-mode))))
 
-(declare-function oref "eieio")
-(declare-function oset "eieio")
-(declare-function json-encode "json")
-
+;;;###autoload
 (defun vs/verb-graphql (rs)
   "Transform verb RS to graphql request."
   (let* ((before-body (oref rs body))
@@ -101,11 +143,13 @@ SIZE is the window size."
     (oset rs body new-body)
     rs))
 
+;;;###autoload
 (defun vs/verb-remove-body-newlines (rs)
   "Remove body newlines from RS."
   (oset rs body (replace-regexp-in-string "\n" "" (oref rs body)))
   rs)
 
+;;;###autoload
 (defun vs/garbage-collect ()
   "Run `garbage-collect' and print stats about memory usage."
   (interactive)
@@ -117,6 +161,7 @@ SIZE is the window size."
                     for free = (file-size-human-readable free)
                     concat (format "%s: %s + %s = %s\n" type used free total))))
 
+;;;###autoload
 (defun vs/nxml-where (&optional copy)
   "Display the hierarchy of XML elements the point is on as a path.
 If COPY is non-nil, copy to the clipboard."
@@ -140,6 +185,7 @@ If COPY is non-nil, copy to the clipboard."
         (when (and copy formated-path)
           (kill-new formated-path))))))
 
+;;;###autoload
 (defun vs/read-env-file (file-path clean)
   "Read dot env file from FILE-PATH and set envs in Emacs session.
 If CLEAN is provided, all variables listed on file will be
@@ -161,6 +207,7 @@ cleared."
                                  ""
                                (cadr env-pair))))))
 
+;;;###autoload
 (defun vs/update-git-repos (directory branch)
   "Update git repos from DIRECTORY for given BRANCH."
   (interactive (list (read-directory-name "Select the directory: ")
@@ -177,6 +224,7 @@ cleared."
                 (vc-git-pull nil)
                 (message "Done!"))))
 
+;;;###autoload
 (defun vs/generate-uid ()
   "Generate an UID and insert at ponint."
   (interactive)
@@ -187,20 +235,20 @@ cleared."
          (uid-sanatized (replace-regexp-in-string "\n" "" uid-downcased)))
     (insert uid-sanatized)))
 
+;;;###autoload
 (defun vs/project-name ()
   "Return the project name for current project."
-  (declare-function project-current "ext:project")
-  (when-let (dir (project-root (project-current)))
+  (when-let ((project (project-current))
+             (dir (project-root project)) )
     (if (string-match "/\\([^/]+\\)/\\'" dir)
         (match-string 1 dir)
       dir)))
 
+;;;###autoload
 (defun vs/vterm-in-project ()
   "Invoke `vterm' in the project's root.
 Switch to the project specific term buffer if it already exists."
   (interactive)
-  (declare-function vterm "ext:vterm")
-  (declare-function project-root "ext:project")
   (unless (project-current)
     (error "File/buffer doesn't make part of an project"))
   (when-let* ((project (project-current))
@@ -210,9 +258,11 @@ Switch to the project specific term buffer if it already exists."
     (unless (buffer-live-p (get-buffer buffer-name))
       (unless (require 'vterm nil 'noerror)
         (error "Package 'vterm' is not available"))
-      (vterm buffer-name))
+      (when (fboundp 'vterm)
+        (vterm buffer-name)))
     (switch-to-buffer buffer-name)))
 
+;;;###autoload
 (defun vs/kill-ring-unfilled (begin end)
   "Copy the contents of the region BEGIN and END, replace new lines and kill it."
   (interactive "r")
@@ -220,11 +270,13 @@ Switch to the project specific term buffer if it already exists."
     (kill-new (replace-regexp-in-string "\n" " " text))
     (deactivate-mark)))
 
+;;;###autoload
 (defun vs/iso8601-now ()
   "Insert an ISO8601 date time from now."
   (interactive)
   (insert (format-time-string "%FT%T.%3NZ")))
 
+;;;###autoload
 (defun vs/close-project-tab ()
   "Closes the current project tab."
   (interactive)
@@ -234,6 +286,6 @@ Switch to the project specific term buffer if it already exists."
   (when (> (length (tab-bar-tabs)) 1)
     (tab-bar-close-tab)))
 
-(provide 'base-functions)
+(provide 'vs-lib)
 
-;;; base-functions.el ends here
+;;; vs-lib.el ends here
