@@ -1086,12 +1086,10 @@ Hide the mode line of the Embark live/completions buffers
   (straight-use-package 'embark-consult)
   (straight-use-package 'consult-dir)
 
-
   (global-set-key (kbd "C-c h") 'consult-history)
   (global-set-key (kbd "C-c m") 'consult-mode-command)
   (global-set-key (kbd "C-c b") 'consult-bookmark)
   (global-set-key (kbd "C-c k") 'consult-kmacro)
-
 
   (global-set-key (kbd "C-x M-:") 'consult-complex-command)
   (global-set-key (kbd "C-x b") 'consult-buffer)
@@ -1453,7 +1451,6 @@ Elixir mode
   (straight-use-package 'elixir-mode)
 
   (with-eval-after-load 'elixir-mode
-
     (when (boundp 'elixir-mode-map)
       (define-key elixir-mode-map (kbd "C-c C-f") 'elixir-format)))
 
@@ -1545,7 +1542,6 @@ Mix.el
 
 #+begin_src emacs-lisp
   (straight-use-package 'mix)
-
 
   (add-hook 'elixir-mode-hook 'mix-minor-mode)
 #+end_src
@@ -1798,7 +1794,6 @@ Emmet Mode
   (straight-use-package 'emmet-mode)
 
   (customize-set-variable 'emmet-move-cursor-between-quotes t)
-
 
   (add-hook 'web-mode-hook 'emmet-mode)
   (add-hook 'vue-mode-hook 'emmet-mode)
