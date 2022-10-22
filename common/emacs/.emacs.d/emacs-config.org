@@ -5,7 +5,7 @@
 
 * Early init
 :PROPERTIES:
-:header-args:emacs-lisp: :tangle ./early-init.el
+:header-args:emacs-lisp: :tangle (expand-file-name "early-init.el" user-emacs-directory)
 :END:
 
 Adds the header to avoid warnings, also enables lexical binding.
@@ -72,7 +72,7 @@ fonts that are larger than the system default.
 #+end_src
 * Init
 :PROPERTIES:
-:header-args:emacs-lisp: :tangle ./init.el
+:header-args:emacs-lisp: :tangle (expand-file-name "init.el" user-emacs-directory)
 :END:
 
 Adds the header to avoid warnings, also enables lexical binding.

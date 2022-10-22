@@ -15,8 +15,14 @@ RM = rm -f
 # CC := -f batch-native-compile
 CC := -f batch-byte-compile
 
+# Emacs user directory
+EMACS_USER_DIR = $(HOME)/.emacs.d
+
 # Tangle script
-TANGLE_SCRIPT = tangle.el
+TANGLE_SCRIPT = ${EMACS_USER_DIR}/tangle.el
+
+# Emacslisp files to compile
+EL_FILES = ${EMACS_USER_DIR}/init.el ${EMACS_USER_DIR}/early-init.el $(wildcard ${EMACS_USER_DIR}/site-lisp/*.el)
 
 # default target
 all: site-lisp-autoloads tangle compile
@@ -25,16 +31,14 @@ all: site-lisp-autoloads tangle compile
 # the script will tangle the source code blocks from emacs-config.org
 # to compose the init.el and early-init.el final script
 tangle:
-	${EMACS} ${CC} ${TANGLE_SCRIPT}
 	${EMACS} -l ${TANGLE_SCRIPT} -f tangle-config
 
 site-lisp-autoloads:
-	${EMACS} ${CC} ${TANGLE_SCRIPT}
 	${EMACS} -l ${TANGLE_SCRIPT} -f generate-autoload-site-lisp
 
 # Compile init.el and early-init.el
 compile:
-	 ${EMACS} ${CC} init.el early-init.el
+	 ${EMACS} ${CC} ${EL_FILES}
 
 # Remove all byte compiled files
 clean:
