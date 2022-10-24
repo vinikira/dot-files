@@ -64,10 +64,19 @@
              "ClickupStatus" .status.status
              "ClickupDescription" .description)
          by 'cddr
-         do (org-set-property property value))))))
+         do (if (string= property "ClickupDescription")
+                (progn
+                  (org-end-of-subtree)
+                  (org-insert-heading)
+                  (org-demote)
+                  (insert "Description")
+                  (newline)
+                  (insert value))
+              (org-set-property property value)))))))
 
 (autoload 'password-store-get "password-store")
 
+;;;###autoload
 (defun clickup-org-get-task (task-id)
   "Get Clickup task associated to TASK-ID."
   (unless (executable-find "curl")
