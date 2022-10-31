@@ -1480,6 +1480,15 @@ Org Babel Elixir
   (straight-use-package 'ob-elixir)
 #+end_src
 
+Compile Credo
+
+#+begin_src emacs-lisp
+  (straight-use-package
+   '(compile-credo :type git :host github :repo "vinikira/compile-credo" :branch "main"))
+
+  (require 'compile-credo nil t)
+#+end_src
+
 Helpers
 
 #+begin_src emacs-lisp
