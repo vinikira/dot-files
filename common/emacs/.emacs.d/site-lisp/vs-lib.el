@@ -260,7 +260,7 @@ Switch to the project specific term buffer if it already exists."
         (error "Package 'vterm' is not available"))
       (when (fboundp 'vterm)
         (vterm buffer-name)))
-    (switch-to-buffer buffer-name)))
+    (pop-to-buffer-same-window buffer-name)))
 
 ;;;###autoload
 (defun vs/kill-ring-unfilled (begin end)
