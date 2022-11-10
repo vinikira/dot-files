@@ -249,6 +249,7 @@ Safe funcall
   (customize-set-variable 'kill-do-not-save-duplicates t)
   (customize-set-variable 'use-dialog-box t)
   (customize-set-variable 'global-auto-revert-non-file-buffers t)
+  (customize-set-variable 'ediff-window-setup-function 'ediff-setup-windows-plain)
 
   (fset 'yes-or-no-p 'y-or-n-p)
   (windmove-default-keybindings)
