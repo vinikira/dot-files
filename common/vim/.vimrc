@@ -236,5 +236,6 @@ endif
 colorscheme dracula
 
 nnoremap <c-t> :Rg<cr>
-nnoremap <c-p> :Files<cr>
+"nnoremap <c-p> :Files<cr>
+nnoremap <expr> <C-p> (len(system('git rev-parse')) ? ':Files' : ':GFiles --exclude-standard --others --cached')."\<cr>"
 
