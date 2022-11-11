@@ -55,7 +55,8 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.vim/plugged')
-
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'bling/vim-airline'
 Plug 'scrooloose/nerdcommenter'
@@ -233,3 +234,7 @@ if (has("termguicolors"))
 endif
 
 colorscheme dracula
+
+nnoremap <c-t> :Rg<cr>
+nnoremap <c-p> :Files<cr>
+
