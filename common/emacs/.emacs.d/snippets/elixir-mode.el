@@ -49,3 +49,15 @@
                        "defm"
                        "Inserts a defmodule template."
                        'elixir-tempo-tags)
+
+(tempo-define-template "elixir-mode-moduledoc"
+                       '("@moduledoc \"\"\"" > n p n "\"\"\"" >)
+                       "moddoc"
+                       "Inserts a module doc template."
+                       'elixir-tempo-tags)
+
+(tempo-define-template "elixir-mode-doc"
+                       '("@doc \"\"\"" > n p n "\"\"\"" >)
+                       "doc"
+                       "Inserts a doc template."
+                       'elixir-tempo-tags)
