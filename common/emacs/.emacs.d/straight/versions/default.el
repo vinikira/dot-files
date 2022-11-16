@@ -139,7 +139,5 @@
  ("xref" . "ae7a2a2e4b02e06bb4d6053085a83a646824e2bf")
  ("xterm-color" . "1a4012854c69a5cdaeb5a73d2ad705011892fca3")
  ("yaml-mode" . "9969207f60b69e42c573a63764faeb9caaccb2bf")
- ("yasnippet" . "5cbdbf0d2015540c59ed8ee0fcf4788effdf75b6")
- ("yasnippet-snippets" . "cd665c9cba4bab646f6d50ac098bee63573a4ca5")
  ("zig-mode" . "dbc648f5bca8f3b9ca2cc7827f326f5530115144"))
 :gamma

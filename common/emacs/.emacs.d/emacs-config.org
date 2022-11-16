@@ -641,6 +641,40 @@ Turn code evaluation async.
     (require 'org-contacts))
 #+end_src
 
+** Tempo mode
+Built in mode to define snippets.
+
+Snippets dir
+
+#+begin_src emacs-lisp
+  (defvar vs/snippets-dir (expand-file-name "snippets" user-emacs-directory))
+#+end_src
+
+Require tempo mode
+
+#+begin_src emacs-lisp
+  (require 'tempo)
+#+end_src
+
+Global keys for tempo mode
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "M-]") 'tempo-forward-mark)
+  (global-set-key (kbd "M-[") 'tempo-backward-mark)
+  (global-set-key (kbd "S-<tab>") 'tempo-complete-tag)
+#+end_src
+
+Function to read the snippets from the =snippets-dir=.
+
+#+begin_src emacs-lisp
+  (defmacro vs/load-snippets (mode)
+    "Load snippets for MODE."
+    `(with-eval-after-load ,mode
+      (message "[%s] loading snippets..." ,mode)
+      (load (format "%s/%s.el" vs/snippets-dir ,mode))
+      (message "[%s] snippets loaded!" ,mode)))
+#+end_src
+
 ** Third part Extensions
 *** All the icons
 #+begin_src emacs-lisp
@@ -835,17 +869,6 @@ Turn code evaluation async.
 
   (add-hook 'after-init-hook 'xclip-mode)
 #+end_src
-*** Yasnippet
-#+begin_src emacs-lisp
-  (straight-use-package 'yasnippet)
-  (straight-use-package 'yasnippet-snippets)
-
-  (safe-funcall 'yas-global-mode 1)
-
-  (when (boundp 'yas-snippet-dirs)
-    (add-to-list 'yas-snippet-dirs (concat user-emacs-directory "snippets/")))
-#+end_src
-
 ** Appearence
 *** Fonts Families
 #+begin_src emacs-lisp
@@ -1557,6 +1580,23 @@ Mix.el
 
   (add-hook 'elixir-mode-hook 'mix-minor-mode)
 #+end_src
+
+Snippets
+
+#+begin_src emacs-lisp
+  (defvar elixir-tempo-tags nil
+    "Tempo tags for Elixir mode")
+
+  (add-hook 'elixir-mode-hook (lambda ()
+                           (tempo-use-tag-list 'elixir-tempo-tags)))
+#+end_src
+
+Loading snippets
+
+#+begin_src emacs-lisp
+  (vs/load-snippets 'elixir-mode)
+#+end_src
+
 *** Elm
 Elm mode
 #+begin_src emacs-lisp
@@ -1691,6 +1731,25 @@ LSP
                             "npm install -g typescript-language-server typescript"
                             (get-buffer-create "*Install js/ts LSP*")))))
 #+end_src
+
+Snippets
+
+#+begin_src emacs-lisp
+  (defvar javascript-tempo-tags nil
+    "Tempo tags for JS/TS mode.")
+
+  (add-hook 'js-mode-hook (lambda ()
+                            (tempo-use-tag-list 'javascript-tempo-tags)))
+  (add-hook 'typescript-mode-hook (lambda ()
+                                    (tempo-use-tag-list 'javascript-tempo-tags)))
+#+end_src
+
+Loading snippets
+
+#+begin_src emacs-lisp
+  (vs/load-snippets 'js-mode)
+#+end_src
+
 *** Kotlin
 Kotlin Mode
 
@@ -1867,8 +1926,8 @@ LSP
   (defvar-local zls-command
     (list (cond
            ((eq system-type 'darwin)
-            "x86_64-macos/zls")
-           (t "x86_64-linux/zls"))))
+            "x86_64-macos/bin/zls")
+           (t "x86_64-linux/bin/zls"))))
 
   (vs/add-auto-lsp-server 'zig-mode :download-url zls-link :command zls-command)
 #+end_src
@@ -1891,7 +1950,7 @@ LSP
   (add-hook 'csv-mode-hook 'csv-align-mode)
 #+end_src
 
-***  GraphQL
+*** GraphQL
 #+begin_src emacs-lisp
   (straight-use-package 'graphql-mode)
 #+end_src
@@ -1954,6 +2013,22 @@ LSP
                   (format "wget %s -O %s" plantuml-link plantuml-target))))
       (customize-set-variable 'org-plantuml-jar-path plantuml-target)
       (customize-set-variable 'plantuml-jar-path plantuml-target)))
+#+end_src
+
+Creating a tag table for =plantuml-mode=.
+
+#+begin_src emacs-lisp
+  (defvar plantuml-tempo-tags nil
+    "Tempo tags for Plantuml mode")
+
+  (add-hook 'plantuml-mode-hook (lambda ()
+                                  (tempo-use-tag-list 'plantuml-tempo-tags)))
+#+end_src
+
+Loading snippets
+
+#+begin_src emacs-lisp
+  (vs/load-snippets 'plantuml-mode)
 #+end_src
 
 *** Protobuf mode

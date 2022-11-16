@@ -1,9 +1,0 @@
-# -*- mode: snippet -*-
-# name: tb
-# key: tb
-# Table ER
-# --
-Table(${1:table_name}, "$1\n(${2:description}") {
-primary_key(${3:primary_key}) INTEGER
-${0}
-}
