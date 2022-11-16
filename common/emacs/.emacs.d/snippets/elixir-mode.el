@@ -19,7 +19,7 @@
                        'elixir-tempo-tags)
 
 (tempo-define-template "elixir-mode-defdelegate"
-                       '("defdelegate " p ", to: " p " as: " p )
+                       '("defdelegate " p ", to: " p ", as: " p )
                        "defdelegate"
                        "Inserts a defdelegate template"
                        'elixir-tempo-tags)
