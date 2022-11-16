@@ -66,6 +66,9 @@
          by 'cddr
          do (if (string= property "ClickupDescription")
                 (progn
+                  (save-excursion
+                    (when (search-forward "* Description" nil t)
+                      (org-cut-subtree)))
                   (org-end-of-subtree)
                   (org-insert-heading)
                   (org-demote)
