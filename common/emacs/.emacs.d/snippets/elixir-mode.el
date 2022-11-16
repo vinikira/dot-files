@@ -23,3 +23,29 @@
                        "defdelegate"
                        "Inserts a defdelegate template"
                        'elixir-tempo-tags)
+
+(tempo-define-template "elixir-mode-defmodule-filename"
+                       '("defmodule "
+                         (string-replace
+                          "_" ""
+                          (string-replace
+                           "/" "."
+                           (substring
+                            (capitalize
+                             (cadr
+                              (split-string
+                               (file-name-directory buffer-file-name) "lib")))
+                            1)))
+                         (mapconcat 'capitalize (split-string (file-name-base) "_") "")
+                         " do"
+                         n n
+                         "end" >)
+                       "defmodule"
+                       "Inserts a defmodule with the name gereated from file name."
+                       'elixir-tempo-tags)
+
+(tempo-define-template "elixir-mode-defmodule"
+                       '("defmodule " p " do" n p n "end" >)
+                       "defm"
+                       "Inserts a defmodule template."
+                       'elixir-tempo-tags)
