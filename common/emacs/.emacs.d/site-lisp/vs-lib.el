@@ -286,6 +286,21 @@ Switch to the project specific term buffer if it already exists."
   (when (> (length (tab-bar-tabs)) 1)
     (tab-bar-close-tab)))
 
+;;;###autoload
+(defun vs/open-with-xwidget-webkit ()
+  "Renders HTML buffer with xwe xwidget-webkit."
+  (interactive)
+  (unless (featurep 'xwidget)
+    (user-error "Missing XWidget feature."))
+  (if (buffer-file-name)
+      (xwidget-webkit-browse-url (format "file://%s" (buffer-file-name)) t)
+    (let* ((file-name (format "%s.html" (buffer-hash)))
+           (fpath (concat (temporary-file-directory) file-name))
+           (buffer (current-buffer)))
+      (with-temp-file fpath
+        (insert-buffer-substring buffer))
+      (xwidget-webkit-browse-url (format "file://%s" fpath) t))))
+
 (provide 'vs-lib)
 
 ;;; vs-lib.el ends here
