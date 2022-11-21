@@ -61,3 +61,21 @@
                        "doc"
                        "Inserts a doc template."
                        'elixir-tempo-tags)
+
+(tempo-define-template "elixir-mode-describe"
+                       '("describe \"" p "\" do" > n > p n "end" >)
+                       "describe"
+                       "Inserts a describe template."
+                       'elixir-tempo-tags)
+
+(tempo-define-template "elixir-mode-test"
+                       '("test \"" p "\" do" > n > p n "end" >)
+                       "test"
+                       "Inserts a test template."
+                       'elixir-tempo-tags)
+
+(tempo-define-template "elixir-mode-test-context"
+                       '("test \"" p "\", ctx" p " do" > n > p n "end" >)
+                       "testc"
+                       "Inserts a test with context template."
+                       'elixir-tempo-tags)
