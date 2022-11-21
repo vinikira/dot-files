@@ -90,9 +90,7 @@ Profile emacs startup
   (add-hook 'emacs-startup-hook
             (lambda ()
               (message "*** Emacs loaded in %s with %d garbage collections."
-                       (format "%.2f seconds"
-                               (float-time
-                                (time-subtract after-init-time before-init-time)))
+                       (emacs-init-time)
                        gcs-done)))
 #+end_src
 
@@ -153,6 +151,14 @@ Safe funcall
          (funcall ,func ,@args)
        (error "Function %s not loaded" ,func)))
 #+end_src
+
+When IDLE for call code after emacs-init.
+
+#+begin_src emacs-lisp
+  (defmacro when-idle (&rest body)
+    `(run-with-idle-timer 0.5 nil (lambda () ,@body)))
+#+end_src
+
 *** Private directory
 #+begin_src emacs-lisp
   (defconst private-dir (expand-file-name "private" user-emacs-directory))
@@ -174,7 +180,7 @@ Safe funcall
   (unless (file-exists-p custom-file)
     (write-region "" nil custom-file))
 
-  (add-hook 'after-init-hook (lambda () (load custom-file)))
+  (when-idle (load custom-file))
 #+end_src
 
 *** UTF-8 please!
@@ -484,21 +490,19 @@ Variables customizations
 Org babel
 
 #+begin_src emacs-lisp
-  (add-hook 'after-init-hook
-            (lambda ()
-              (with-eval-after-load 'org
-                (org-babel-do-load-languages
-                 'org-babel-load-languages
-                 '((emacs-lisp . t)
-                   (python . t)
-                   (js . t)
-                   (shell . t)
-                   (plantuml . t)
-                   (sql . t)
-                   (elixir . t)
-                   (ruby . t)
-                   (dot . t)
-                   (latex . t))))))
+  (when-idle
+   (org-babel-do-load-languages
+    'org-babel-load-languages
+    '((emacs-lisp . t)
+      (python . t)
+      (js . t)
+      (shell . t)
+      (plantuml . t)
+      (sql . t)
+      (elixir . t)
+      (ruby . t)
+      (dot . t)
+      (latex . t))))
 #+end_src
 
 Org export Latex customization
@@ -650,10 +654,14 @@ Snippets dir
   (defvar vs/snippets-dir (expand-file-name "snippets" user-emacs-directory))
 #+end_src
 
-Require tempo mode
+Autoload tempo mode
 
 #+begin_src emacs-lisp
-  (require 'tempo)
+  (autoload 'tempo-forward-markn "tempo.el")
+
+  (autoload 'tempo-backward-mark "tempo.el")
+
+  (autoload 'tempo-complete-tag "tempo.el")
 #+end_src
 
 Global keys for tempo mode
@@ -686,7 +694,7 @@ Function to read the snippets from the =snippets-dir=.
 
   (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
-  (add-hook 'after-init-hook 'global-diff-hl-mode)
+  (when-idle (global-diff-hl-mode))
 #+end_src
 *** Dump jump
 #+begin_src emacs-lisp
@@ -699,7 +707,7 @@ Function to read the snippets from the =snippets-dir=.
 #+begin_src emacs-lisp
   (straight-use-package 'editorconfig)
 
-  (add-hook 'after-init-hook 'editorconfig-mode)
+  (add-hook 'prog-mode-hook 'editorconfig-mode)
 #+end_src
 *** Emacs everywhere
 #+begin_src emacs-lisp
@@ -717,7 +725,7 @@ Function to read the snippets from the =snippets-dir=.
   (straight-use-package 'exec-path-from-shell)
 
   (when (or (daemonp) (memq window-system '(mac ns x)))
-    (add-hook 'after-init-hook 'exec-path-from-shell-initialize))
+    (when-idle (exec-path-from-shell-initialize)))
 #+end_src
 *** Iedit
 #+begin_src emacs-lisp
@@ -836,7 +844,7 @@ Function to read the snippets from the =snippets-dir=.
     (customize-set-variable 'undo-tree-history-directory-alist
                             `(("." . ,(concat temp-dir "/undo/")))))
 
-  (add-hook 'after-init-hook 'global-undo-tree-mode)
+  (when-idle (global-undo-tree-mode))
 #+end_src
 *** View Large Files
 #+begin_src emacs-lisp
@@ -855,19 +863,19 @@ Function to read the snippets from the =snippets-dir=.
 
   (add-hook 'tree-sitter-after-on-hook 'tree-sitter-hl-mode)
 
-  (safe-funcall 'global-tree-sitter-mode)
+  (when-idle (safe-funcall 'global-tree-sitter-mode))
 #+end_src
 *** Wich Key
 #+begin_src emacs-lisp
   (straight-use-package 'which-key)
 
-  (add-hook 'after-init-hook 'which-key-mode)
+  (when-idle (which-key-mode))
 #+end_src
 *** XClip
 #+begin_src emacs-lisp
-  (straight-use-package 'xclip)
-
-  (add-hook 'after-init-hook 'xclip-mode)
+  (when (and (eq system-type 'gnu/linux) (string= (getenv "XDG_SESSION_TYPE") "x11"))
+    (straight-use-package 'xclip)
+    (when-idle after-init-hook 'xclip-mode))
 #+end_src
 ** Appearence
 *** Fonts Families
@@ -1053,7 +1061,7 @@ See more: https://github.com/domtronn/all-the-icons.el/wiki/Mode-Line
   (customize-set-variable 'vertico-cycle t)
   (customize-set-variable 'enable-recursive-minibuffers t)
 
-  (safe-funcall 'vertico-mode 1)
+  (when-idle (safe-funcall 'vertico-mode 1))
 
   (when (boundp 'vertico-map)
     (define-key vertico-map (kbd "M-h") 'vertico-directory-up))
@@ -1100,7 +1108,7 @@ Hide the mode line of the Embark live/completions buffers
 #+begin_src emacs-lisp
   (straight-use-package 'marginalia)
 
-  (safe-funcall 'marginalia-mode 1)
+  (when-idle (safe-funcall 'marginalia-mode 1))
 
   (define-key minibuffer-local-map (kbd "M-A") 'marginalia-cycle)
   (define-key minibuffer-local-map (kbd "M-A") 'marginalia-cycle)
@@ -1788,9 +1796,6 @@ RSpec mode
 
 #+begin_src emacs-lisp
   (straight-use-package 'rspec-mode)
-
-  (with-eval-after-load 'rspec-mode
-    (safe-funcall 'rspec-install-snippets))
 #+end_src
 
 Inf-ruby
