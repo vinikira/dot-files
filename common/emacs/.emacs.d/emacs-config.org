@@ -645,6 +645,12 @@ Turn code evaluation async.
     (require 'org-contacts))
 #+end_src
 
+**** Org tempo
+#+begin_src emacs-lisp
+  (with-eval-after-load 'org
+    (require 'org-tempo))
+#+end_src
+
 ** Tempo mode
 Built in mode to define snippets.
 
