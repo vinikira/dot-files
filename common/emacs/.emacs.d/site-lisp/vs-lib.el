@@ -267,8 +267,10 @@ Switch to the project specific term buffer if it already exists."
   "Copy the contents of the region BEGIN and END, replace new lines and kill it."
   (interactive "r")
   (let ((text (buffer-substring begin end)))
-    (kill-new (replace-regexp-in-string "\n" " " text))
-    (deactivate-mark)))
+    (with-temp-buffer
+      (insert text)
+      (vs/unfill-paragraph)
+      (kill-new (buffer-substring (point-min) (point-max))))))
 
 ;;;###autoload
 (defun vs/iso8601-now ()
@@ -291,7 +293,7 @@ Switch to the project specific term buffer if it already exists."
   "Renders HTML buffer with xwe xwidget-webkit."
   (interactive)
   (unless (featurep 'xwidget)
-    (user-error "Missing XWidget feature."))
+    (user-error "Missing XWidget feature"))
   (if (buffer-file-name)
       (xwidget-webkit-browse-url (format "file://%s" (buffer-file-name)) t)
     (let* ((file-name (format "%s.html" (buffer-hash)))
@@ -300,6 +302,14 @@ Switch to the project specific term buffer if it already exists."
       (with-temp-file fpath
         (insert-buffer-substring buffer))
       (xwidget-webkit-browse-url (format "file://%s" fpath) t))))
+
+;;;###autoload
+(defun vs/unfill-paragraph (&optional region)
+  "Takes a multi-line paragraph/REGION and make it into a single line of text."
+  (interactive (progn (barf-if-buffer-read-only) '(t)))
+  (let ((fill-column (point-max))
+        (emacs-lisp-docstring-fill-column t))
+    (fill-paragraph nil region)))
 
 (provide 'vs-lib)
 
