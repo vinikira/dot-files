@@ -1202,9 +1202,16 @@ Consult dir
 Consult and vertico
 
 #+begin_src emacs-lisp
-  (when (and (boundp 'vertico-mode) vertico-mode)
-    (customize-set-variable 'completion-in-region-function
-                            'consult-completion-in-region))
+  ;; Use `consult-completion-in-region' if Vertico is enabled.
+  ;; Otherwise use the default `completion--in-region' function.
+  (when (boundp 'vertico-mode)
+    (customize-set-variable
+     'completion-in-region-function
+     (lambda (&rest args)
+       (apply (if vertico-mode
+                  'consult-completion-in-region
+                'completion--in-region)
+              args))))
 #+end_src
 
 ** Global keybindings
