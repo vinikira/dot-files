@@ -168,10 +168,10 @@ When IDLE for call code after emacs-init.
 
 *** Temporary directory
 #+begin_src emacs-lisp
-    (defconst temp-dir (expand-file-name "cache" user-emacs-directory))
+  (defconst temp-dir (expand-file-name "cache" user-emacs-directory))
 
-    (unless (file-exists-p temp-dir)
-      (make-directory (concat temp-dir) :parents))
+  (unless (file-exists-p temp-dir)
+    (make-directory (concat temp-dir) :parents))
 #+end_src
 
 *** Custom file
@@ -684,9 +684,9 @@ Function to read the snippets from the =snippets-dir=.
   (defmacro vs/load-snippets (mode)
     "Load snippets for MODE."
     `(with-eval-after-load ,mode
-      (message "[%s] loading snippets..." ,mode)
-      (load (format "%s/%s.el" vs/snippets-dir ,mode))
-      (message "[%s] snippets loaded!" ,mode)))
+       (message "[%s] loading snippets..." ,mode)
+       (load (format "%s/%s.el" vs/snippets-dir ,mode))
+       (message "[%s] snippets loaded!" ,mode)))
 #+end_src
 
 ** Third part Extensions
