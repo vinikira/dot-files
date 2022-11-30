@@ -1069,7 +1069,7 @@ See more: https://github.com/domtronn/all-the-icons.el/wiki/Mode-Line
 
   (when-idle (safe-funcall 'vertico-mode 1))
 
-  (with-eval-after-load 'vertico-mode
+  (with-eval-after-load 'vertico
     (when (boundp 'vertico-map)
       (define-key vertico-map (kbd "M-h") 'vertico-directory-up)))
 
