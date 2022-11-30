@@ -1817,6 +1817,18 @@ Inf-ruby
   (add-hook 'ruby-mode-hook 'inf-ruby-minor-mode)
   (add-hook 'ruby-mode-hook 'inf-ruby-switch-setup)
 #+end_src
+
+LSP
+
+#+begin_src emacs-lisp
+  (vs/add-auto-lsp-server
+   'ruby-mode
+   :download-fn (lambda (_reinstall)
+                  (async-shell-command
+                   "gem install solargraph"
+                   (get-buffer-create "*Install Ruby LSP*"))))
+
+#+end_src
 *** Rust
 Rustic
 
