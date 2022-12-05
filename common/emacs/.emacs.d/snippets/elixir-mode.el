@@ -79,3 +79,27 @@
                        "testc"
                        "Inserts a test with context template."
                        'elixir-tempo-tags)
+
+(tempo-define-template "elixir-mode-for"
+                       '("for " p " <- " p " do" > n > p n "end" >)
+                       "for"
+                       "Inserts a for template."
+                       'elixir-tempo-tags)
+
+(tempo-define-template "elixir-mode-def"
+                       '("def " p "(" p ") do" > n > p n "end" >)
+                       "def"
+                       "Inserts a function template."
+                       'elixir-tempo-tags)
+
+(tempo-define-template "elixir-mode-defp"
+                       '("defp " p "(" p ") do" > n > p n "end" >)
+                       "defp"
+                       "Inserts a private function template."
+                       'elixir-tempo-tags)
+
+(tempo-define-template "elixir-mode-fn"
+                       '("fn " p " -> " > p " end")
+                       "fn"
+                       "Inserts an anonymous function template."
+                       'elixir-tempo-tags)
