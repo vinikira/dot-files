@@ -311,6 +311,15 @@ Switch to the project specific term buffer if it already exists."
         (emacs-lisp-docstring-fill-column t))
     (fill-paragraph nil region)))
 
+;;;###autoload
+(defun vs/minify (&optional begin end)
+  "Minify text from BEGIN to END."
+  (interactive "r")
+  (save-excursion
+    (replace-regexp-in-region "^\\([[:blank:]]+\\)" "" begin end)
+    (while (search-forward "\n" end t)
+      (replace-match " "))))
+
 (provide 'vs-lib)
 
 ;;; vs-lib.el ends here
