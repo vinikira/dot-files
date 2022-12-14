@@ -218,11 +218,16 @@ cleared."
            when (and (file-directory-p full-path)
                      (not (or (string= "." repo) (string= repo ".."))))
            do (let* ((full-path (format "%s%s" directory repo))
-                     (default-directory full-path))
-                (message "Updating repo: %s..." repo)
+                     (default-directory full-path)
+                     (output-buffer (get-buffer-create
+                                     (format "*updating git repos %s [%s]*" directory branch))))
+                (switch-to-buffer output-buffer)
+                (with-current-buffer output-buffer
+                  (insert (format "Updating repo: %s...\n" repo)))
                 (vc-git-retrieve-tag full-path branch t)
                 (vc-git-pull nil)
-                (message "Done!"))))
+                (with-current-buffer output-buffer
+                  (insert "Done!\n")))))
 
 ;;;###autoload
 (defun vs/generate-uid ()
