@@ -1561,7 +1561,36 @@ Helpers
     (interactive "r")
     (save-excursion
       (replace-regexp-in-region "\"\\([a-zA-z0-9]+\\)\" =>" "\\1: " begin end)))
+
+  (defun vs/elixir-open-dep-docs (&optional force-external)
+    "Open the choosen dep in hexdocs using xwidget-webkit if available.
+  FORCE-EXTERNAL browser if provided."
+    (interactive "P")
+    (unless (project-current)
+      (user-error "Not in a project."))
+    (let* ((default-directory
+             (safe-funcall
+              'project-root
+              (safe-funcall 'project-current)))
+           (url
+            (with-temp-buffer
+              (insert (shell-command-to-string "mix deps"))
+              (kill-matching-lines "^  " (point-min) (point-max))
+              (replace-regexp-in-region "^\* \\([a-zA-Z_]+\\) \\([0-9\.]+\\) .+$"
+                                        "https://hexdocs.pm/\\1/\\2"
+                                        (point-min)
+                                        (point-max))
+              (completing-read "select the dependency: "
+                               (split-string (string-trim (buffer-string)) "\n")))))
+      (if force-external
+          (browse-url url)
+        (if (featurep 'xwidget)
+            (xwidget-webkit-browse-url url t)
+          (browse-url url)))))
 #+end_src
+
+#+RESULTS:
+: vs/elixir-open-dep-docs
 
 Mode keymap
 
@@ -1572,7 +1601,8 @@ Mode keymap
       (define-key elixir-mode-map (kbd "C-c C-c M") 'vs/elixir-map-string-to-map-atom)
       (define-key elixir-mode-map (kbd "C-c C-c m") 'vs/elixir-map-atom-to-map-string)
       (define-key elixir-mode-map (kbd "C-c C-c J") 'vs/etf-to-json)
-      (define-key elixir-mode-map (kbd "C-c C-c j") 'vs/json-to-etf)))
+      (define-key elixir-mode-map (kbd "C-c C-c j") 'vs/json-to-etf)
+      (define-key elixir-mode-map (kbd "C-c C-c D") 'vs/elixir-open-dep-docs)))
 #+end_src
 
 LSP
