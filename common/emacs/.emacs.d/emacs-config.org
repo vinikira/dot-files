@@ -700,7 +700,7 @@ Function to read the snippets from the =snippets-dir=.
 
   (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
-  (when-idle (global-diff-hl-mode))
+  (when-idle (safe-funcall 'global-diff-hl-mode))
 #+end_src
 *** Dump jump
 #+begin_src emacs-lisp
@@ -731,7 +731,7 @@ Function to read the snippets from the =snippets-dir=.
   (straight-use-package 'exec-path-from-shell)
 
   (when (or (daemonp) (memq window-system '(mac ns x)))
-    (when-idle (exec-path-from-shell-initialize)))
+    (when-idle (safe-funcall 'exec-path-from-shell-initialize)))
 #+end_src
 *** Iedit
 #+begin_src emacs-lisp
@@ -875,7 +875,7 @@ Function to read the snippets from the =snippets-dir=.
 #+begin_src emacs-lisp
   (straight-use-package 'which-key)
 
-  (when-idle (which-key-mode))
+  (when-idle (safe-funcall 'which-key-mode))
 #+end_src
 *** XClip
 #+begin_src emacs-lisp
@@ -1637,7 +1637,7 @@ Snippets
     "Tempo tags for Elixir mode")
 
   (add-hook 'elixir-mode-hook (lambda ()
-                           (tempo-use-tag-list 'elixir-tempo-tags)))
+                                (safe-funcall 'tempo-use-tag-list 'elixir-tempo-tags)))
 #+end_src
 
 Loading snippets
@@ -1788,9 +1788,9 @@ Snippets
     "Tempo tags for JS/TS mode.")
 
   (add-hook 'js-mode-hook (lambda ()
-                            (tempo-use-tag-list 'javascript-tempo-tags)))
+                            (safe-funcall 'tempo-use-tag-list 'javascript-tempo-tags)))
   (add-hook 'typescript-mode-hook (lambda ()
-                                    (tempo-use-tag-list 'javascript-tempo-tags)))
+                                    (safe-funcall 'tempo-use-tag-list 'javascript-tempo-tags)))
 #+end_src
 
 Loading snippets
@@ -2080,7 +2080,7 @@ Creating a tag table for =plantuml-mode=.
     "Tempo tags for Plantuml mode")
 
   (add-hook 'plantuml-mode-hook (lambda ()
-                                  (tempo-use-tag-list 'plantuml-tempo-tags)))
+                                  (safe-funcall 'tempo-use-tag-list 'plantuml-tempo-tags)))
 #+end_src
 
 Loading snippets
