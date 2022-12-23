@@ -325,6 +325,47 @@ Switch to the project specific term buffer if it already exists."
     (while (search-forward "\n" end t)
       (replace-match " "))))
 
+;;;###autoload
+(defun vs/most-touched-git-files ()
+  "Show a buffer with the most touched git files in project."
+  (interactive)
+  (unless (project-current)
+    (user-error "not in a project."))
+  (with-current-buffer (get-buffer-create
+                        (format "*Most touched files for %s*"
+                                (project-root (project-current))))
+    (switch-to-buffer (current-buffer))
+    (setq-local truncate-lines t
+                tabulated-list-format [("Mods" 20 t) ("File" 70 t)]
+                tabulated-list-padding 2
+                vs/most-touched-git-files-output
+                (shell-command-to-string (concat "git log"
+                                                 " --format=format:"
+                                                 " --name-only"
+                                                 " --since=12.month"
+                                                 " | egrep -v '^$'"
+                                                 " | sort"
+                                                 " | uniq -c"
+                                                 " | sort -nr"
+                                                 " | head -50"))
+                tabulated-list-entries
+                (mapcar (lambda (str) (let ((l (split-string (string-trim-left str " "))))
+                                        `(,(cadr l) [,(car l) ,(cadr l)])))
+                        (split-string (string-trim vs/most-touched-git-files-output) "\n")))
+    (local-set-key (kbd "RET")
+                   (lambda ()
+                     (interactive)
+                     (let ((file-path (format "%s%s"
+                                              (project-root (project-current))
+                                              (aref (tabulated-list-get-entry) 1))))
+                       (if (file-exists-p file-path)
+                           (find-file file-path)
+                         (user-error "File %s was deleted from disk" file-path)))))
+    (hl-line-mode 1)
+    (tabulated-list-mode)
+    (tabulated-list-init-header)
+    (tabulated-list-revert)))
+
 (provide 'vs-lib)
 
 ;;; vs-lib.el ends here
