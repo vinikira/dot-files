@@ -840,18 +840,6 @@ Function to read the snippets from the =snippets-dir=.
 
   (global-set-key (kbd "C-x o") 'switch-window)
 #+end_src
-*** Undo tree
-#+begin_src emacs-lisp
-  (straight-use-package 'undo-tree)
-
-  (customize-set-variable 'undo-tree-auto-save-history nil)
-
-  (when (boundp 'temp-dir)
-    (customize-set-variable 'undo-tree-history-directory-alist
-                            `(("." . ,(concat temp-dir "/undo/")))))
-
-  (when-idle (global-undo-tree-mode))
-#+end_src
 *** View Large Files
 #+begin_src emacs-lisp
   (straight-use-package 'vlf)
