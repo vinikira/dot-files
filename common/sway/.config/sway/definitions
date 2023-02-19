@@ -15,7 +15,7 @@ set $cursor_size 24
 set $gtk_theme Adwaita
 set $gtk_icon_theme Adwaita
 
-set $locker 'swaylock --daemonize -l --font=$font -c 000000 --ignore-empty-password --show-failed-attempts'
+set $locker 'swaylock --daemonize -l --font="$font" -c 000000 --ignore-empty-password --show-failed-attempts'
 set $emacs emacsclient -cn -e "(progn (raise-frame) (x-focus-frame (selected-frame)))"
 set $browser /usr/bin/firefox
 set $file_browser /usr/bin/thunar
