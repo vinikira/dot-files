@@ -242,8 +242,6 @@ When IDLE for call code after emacs-init.
   (customize-set-variable 'read-process-output-max (* 1024 1024))
   (customize-set-variable 'compilation-scroll-output t)
   (customize-set-variable 'indent-tabs-mode nil)
-  (customize-set-variable 'mac-command-modifier 'meta)
-  (customize-set-variable 'mac-option-modifier 'hyper)
   (customize-set-variable 'tab-always-indent 'complete)
   (customize-set-variable 'dired-dwim-target t)
   (customize-set-variable 'scroll-conservatively 101)
@@ -265,6 +263,12 @@ When IDLE for call code after emacs-init.
   (setq-default bidi-inhibit-bpa t)
 #+end_src
 
+*** MacOS variables customizations
+#+begin_src emacs-lisp
+  (when VS/IS-MACOS
+    (customize-set-variable 'mac-command-modifier 'meta)
+    (customize-set-variable 'mac-option-modifier 'hyper))
+#+end_src
 *** Hooks for builtin modes
 #+begin_src emacs-lisp
   (defun vs/--line-numbers ()
