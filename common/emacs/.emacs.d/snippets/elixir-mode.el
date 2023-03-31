@@ -103,3 +103,21 @@
                        "fn"
                        "Inserts an anonymous function template."
                        'elixir-tempo-tags)
+
+(tempo-define-template "elixir-mode-pipe-debug"
+                       '("|> dbg()")
+                       "pd"
+                       "Pipe with dbg()"
+                       'elixir-tempo-tags)
+
+(tempo-define-template "elixir-mode-pipe-io-puts"
+                       '("IO.puts(\"" p "\")")
+                       "iop"
+                       "IO puts"
+                       'elixir-tempo-tags)
+
+(tempo-define-template "elixir-mode-pipe-io-inspect"
+                       '("IO.inspect(" p ", label: \"" p "\")")
+                       "ioi"
+                       "IO inspect"
+                       'elixir-tempo-tags)
