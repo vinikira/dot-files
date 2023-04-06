@@ -121,3 +121,9 @@
                        "ioi"
                        "IO inspect"
                        'elixir-tempo-tags)
+
+(tempo-define-template "elixir-mode-pry"
+                       '("require IEx; IEx.pry();")
+                       "pry"
+                       "IEx pry"
+                       'elixir-tempo-tags)
