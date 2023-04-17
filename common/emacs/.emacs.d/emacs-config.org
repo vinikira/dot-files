@@ -622,9 +622,9 @@ Turn code evaluation async.
 
     (safe-funcall 'org-notify-add
                   'default
-                  '(:time "10m" :period "2m" :duration 25 :actions notify/window)
-                  '(:time "1h" :period "15m" :duration 25 :actions notify/window)
-                  '(:time "2h" :period "30m" :duration 25 :actions notify/window)))
+                  '(:time "10m" :period "2m" :duration 25 :actions -notify/window)
+                  '(:time "1h" :period "15m" :duration 25 :actions -notify/window)
+                  '(:time "2h" :period "30m" :duration 25 :actions -notify/window)))
 #+end_src
 
 **** Org project
