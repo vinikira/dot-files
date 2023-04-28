@@ -1219,6 +1219,12 @@ Consult and vertico
               args))))
 #+end_src
 
+Consult and Eglot integration
+
+#+begin_src emacs-lisp
+  (straight-use-package 'consult-eglot)
+#+end_src
+
 ** Global keybindings
 
 New global keybindings
