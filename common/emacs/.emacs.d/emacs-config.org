@@ -1192,6 +1192,12 @@ Isearch integration
   (define-key isearch-mode-map (kbd "M-s l") 'consult-line)
 #+end_src
 
+Consult narrow key
+
+#+begin_src emacs-lisp
+  (customize-set-variable 'consult-narrow-key "<")
+#+end_src
+
 Consult dir
 
 #+begin_src emacs-lisp
