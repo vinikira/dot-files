@@ -918,6 +918,12 @@ Function to read the snippets from the =snippets-dir=.
     "Configure theme."
     (load-theme 'modus-vivendi t))
 #+end_src
+*** Theme customization
+#+begin_src emacs-lisp
+  (customize-set-variable 'modus-themes-italic-constructs t)
+  (customize-set-variable 'modus-themes-bold-constructs t)
+  (customize-set-variable 'modus-themes-mixed-fonts t)
+#+end_src
 *** Setup frame
 #+begin_src emacs-lisp
   (defvar vs/frame-alist
