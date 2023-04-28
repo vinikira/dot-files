@@ -1153,9 +1153,7 @@ Custom =M-#= bindings for fast register access
 Other custom bindings
 
 #+begin_src emacs-lisp
-
   (global-set-key (kbd "M-y") 'consult-yank-pop)
-  (global-set-key (kbd "<help> a") 'consult-apropos)
 #+end_src
 
 M-g bindings (goto-map)
@@ -1168,7 +1166,7 @@ M-g bindings (goto-map)
   (global-set-key (kbd "M-g m") 'consult-mark)
   (global-set-key (kbd "M-g k") 'consult-global-mark)
   (global-set-key (kbd "M-g i") 'consult-imenu)
-  (global-set-key (kbd "M-g I") 'consult-project-imenu)
+  (global-set-key (kbd "M-g I") 'consult-imenu-multi)
   (global-set-key (kbd "M-g !") 'consult-flymake)
 #+end_src
 
@@ -1181,7 +1179,6 @@ M-s bindings (search-map)
   (global-set-key (kbd "M-s G") 'consult-git-grep)
   (global-set-key (kbd "M-s r") 'consult-ripgrep)
   (global-set-key (kbd "M-s l") 'consult-line)
-  (global-set-key (kbd "M-s m") 'consult-multi-occur)
   (global-set-key (kbd "M-s k") 'consult-keep-lines)
   (global-set-key (kbd "M-s u") 'consult-focus-lines)
 #+end_src
@@ -1189,13 +1186,10 @@ M-s bindings (search-map)
 Isearch integration
 
 #+begin_src emacs-lisp
-  (global-set-key (kbd "M-s e") 'consult-isearch)
-  (define-key isearch-mode-map (kbd "M-e") 'consult-isearch)
-  (define-key isearch-mode-map (kbd "M-s e") 'consult-isearch)
+  (global-set-key (kbd "M-s e") 'consult-isearch-history)
+  (define-key isearch-mode-map (kbd "M-e") 'consult-isearch-history)
+  (define-key isearch-mode-map (kbd "M-s e") 'consult-isearch-history)
   (define-key isearch-mode-map (kbd "M-s l") 'consult-line)
-
-  (autoload 'projectile-project-root "projectile")
-  (customize-set-variable 'consult-project-root-function 'projectile-project-root)
 #+end_src
 
 Consult dir
