@@ -22,7 +22,7 @@ EMACS_USER_DIR = $(HOME)/.emacs.d
 TANGLE_SCRIPT = ${EMACS_USER_DIR}/tangle.el
 
 # Emacslisp files to compile
-EL_FILES = ${EMACS_USER_DIR}/init.el ${EMACS_USER_DIR}/early-init.el $(wildcard ${EMACS_USER_DIR}/site-lisp/*.el)
+EL_FILES = $(wildcard ${EMACS_USER_DIR}/site-lisp/*.el)
 
 # default target
 all: site-lisp-autoloads tangle compile
