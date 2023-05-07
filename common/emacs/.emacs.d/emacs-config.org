@@ -700,10 +700,6 @@ Function to read the snippets from the =snippets-dir=.
 #+end_src
 
 ** Third part Extensions
-*** All the icons
-#+begin_src emacs-lisp
-  (straight-use-package 'all-the-icons)
-#+end_src
 *** Diff HL
 #+begin_src emacs-lisp
   (straight-use-package 'diff-hl)
@@ -768,6 +764,12 @@ Function to read the snippets from the =snippets-dir=.
   (global-set-key (kbd "M-p") 'mc/mark-previous-like-this)
   (global-set-key (kbd "C-c x") 'mc/mark-all-like-this)
 #+end_src
+*** Nerd Icons
+#+begin_src emacs-lisp
+  (straight-use-package 'nerd-icons)
+
+  (customize-set-variable 'nerd-icons-font-family "Iosevka Nerd Font")
+#+end_src
 *** Password store
 #+begin_src emacs-lisp
   (straight-use-package 'password-store)
@@ -802,8 +804,6 @@ Function to read the snippets from the =snippets-dir=.
                                              (projects . 5)
                                              (bookmarks . 5)
                                              (agenda . 5)))
-  (customize-set-variable 'dashboard-set-file-icons t)
-  (customize-set-variable 'dashboard-set-heading-icons t)
   (customize-set-variable 'dashboard-startup-banner 'logo)
   (customize-set-variable 'dashboard-center-content t)
   (customize-set-variable 'initial-buffer-choice
