@@ -860,6 +860,12 @@ Function to read the snippets from the =snippets-dir=.
 
   (global-set-key (kbd "<f7>") 'vterm-other-window)
 #+end_src
+*** Telega
+#+begin_src emacs-lisp
+  (straight-use-package 'telega)
+
+  (global-set-key (kbd "C-c t") #'telega)
+#+end_src
 *** Tree Sitter
 #+begin_src emacs-lisp
   (straight-use-package 'tree-sitter)
