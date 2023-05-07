@@ -882,10 +882,12 @@ Function to read the snippets from the =snippets-dir=.
 #+end_src
 *** Tree Sitter
 #+begin_src emacs-lisp
+  (elpaca tree-sitter-langs)
+
   (elpaca tree-sitter
-          (elpaca tree-sitter-langs)
           (add-hook 'tree-sitter-after-on-hook 'tree-sitter-hl-mode)
           (safe-funcall 'global-tree-sitter-mode))
+
 #+end_src
 *** Wich Key
 #+begin_src emacs-lisp
