@@ -1601,9 +1601,6 @@ Helpers
           (browse-url url)))))
 #+end_src
 
-#+RESULTS:
-: vs/elixir-open-dep-docs
-
 Mode keymap
 
 #+begin_src emacs-lisp
