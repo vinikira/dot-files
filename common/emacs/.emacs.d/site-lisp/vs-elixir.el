@@ -1,4 +1,4 @@
-;;; vs-lib.el --- Elixir helpers -*- lexical-binding: t -*-
+;;; vs-elixir.el --- Elixir helpers -*- lexical-binding: t -*-
 
 ;; Author: Vinícius Simões
 ;; Maintainer: Vinícius Simões
