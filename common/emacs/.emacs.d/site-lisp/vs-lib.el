@@ -1,4 +1,4 @@
-;;; vs-lib.el --- Personal functions -*- lexical-binding: t -*-
+;;; vs-lib.el --- Uncategorized personal functions -*- lexical-binding: t -*-
 
 ;; Author: Vinícius Simões
 ;; Maintainer: Vinícius Simões
@@ -69,7 +69,7 @@ SIZE is the window size."
 
 ;;;###autoload
 (defun sudo-edit (&optional arg)
-  "Edit file with sudo permission.  ARG."
+  "Edit file with sudo permission. ARG."
   (interactive "p")
   (if (or arg (not buffer-file-name))
       (find-file (concat "/sudo:root@localhost:" (read-file-name "File: ")))
@@ -132,7 +132,7 @@ SIZE is the window size."
 
 ;;;###autoload
 (defun vs/verb-graphql (rs)
-  "Transform verb RS to graphql request."
+  "Transform verb RS to GraphQL request."
   (let* ((before-body (oref rs body))
          (splited-body (split-string before-body "\n\n"))
          (query (nth 0 splited-body))
@@ -148,18 +148,6 @@ SIZE is the window size."
   "Remove body newlines from RS."
   (oset rs body (replace-regexp-in-string "\n" "" (oref rs body)))
   rs)
-
-;;;###autoload
-(defun vs/garbage-collect ()
-  "Run `garbage-collect' and print stats about memory usage."
-  (interactive)
-  (message (cl-loop for (type size used free) in (garbage-collect)
-                    for used = (* used size)
-                    for free = (* (or free 0) size)
-                    for total = (file-size-human-readable (+ used free))
-                    for used = (file-size-human-readable used)
-                    for free = (file-size-human-readable free)
-                    concat (format "%s: %s + %s = %s\n" type used free total))))
 
 ;;;###autoload
 (defun vs/nxml-where (&optional copy)
@@ -330,7 +318,7 @@ Switch to the project specific term buffer if it already exists."
   "Show a buffer with the most touched git files in project."
   (interactive)
   (unless (project-current)
-    (user-error "not in a project."))
+    (user-error "not in a project"))
   (with-current-buffer (get-buffer-create
                         (format "*Most touched files for %s*"
                                 (project-root (project-current))))
