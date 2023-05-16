@@ -1290,7 +1290,11 @@ Removing some default keybindings
 #+begin_src emacs-lisp
   (with-eval-after-load 'project
     (when (functionp 'project-shell)
-      (fset 'project-shell 'vs/vterm-in-project)))
+      (fset 'project-shell 'vs/vterm-in-project)
+      (define-key project-prefix-map (kbd "C-o l") 'vs/project-dir-locals)
+      (define-key project-prefix-map (kbd "C-o d") 'vs/project-db-file)
+      (define-key project-prefix-map (kbd "C-o a") 'vs/project-api-file)
+      (define-key project-prefix-map (kbd "C-o r") 'vs/project-runbook)))
 #+end_src
 
 ** Language server protocol (LSP)
