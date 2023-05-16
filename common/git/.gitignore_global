@@ -9,4 +9,6 @@ node_modules/
 .idea/
 *.iml
 _api.org
-_scratch.org
+_runbook.org
+_db.sql
+.dir-locals.el
