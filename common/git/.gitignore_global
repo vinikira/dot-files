@@ -1,0 +1,12 @@
+.iex-history/
+.DS_Store
+*~
+*.swp
+.envrc
+node_modules/
+.elixir_ls/
+.vscode/
+.idea/
+*.iml
+_api.org
+_scratch.org

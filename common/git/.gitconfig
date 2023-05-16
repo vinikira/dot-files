@@ -3,6 +3,15 @@
 [user]
 	email = vinicius.simoes95@gmail.com
 	name = Vinícius Simões
-
 [init]
 	defaultBranch = main
+[core]
+  excludesfile = ~/.gitignore_global
+  autocrlf = input
+[color]
+  ui = auto
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
