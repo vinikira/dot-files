@@ -1847,8 +1847,8 @@ LSP
   (defvar-local zls-command
     (list (cond
            ((eq system-type 'darwin)
-            "x86_64-macos/bin/zls")
-           (t "x86_64-linux/bin/zls"))))
+            "bin/zls")
+           (t "bin/zls"))))
 
   (vs/add-auto-lsp-server 'zig-mode :download-url zls-link :command zls-command)
 #+end_src
