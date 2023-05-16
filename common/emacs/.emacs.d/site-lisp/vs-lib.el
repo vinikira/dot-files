@@ -219,7 +219,7 @@ cleared."
 
 ;;;###autoload
 (defun vs/generate-uid ()
-  "Generate an UID and insert at ponint."
+  "Generate an UID and insert at point."
   (interactive)
   (unless (executable-find "uuidgen")
     (error "Could not find uuidgen executable"))
@@ -227,33 +227,6 @@ cleared."
          (uid-downcased (downcase uid))
          (uid-sanatized (replace-regexp-in-string "\n" "" uid-downcased)))
     (insert uid-sanatized)))
-
-;;;###autoload
-(defun vs/project-name ()
-  "Return the project name for current project."
-  (when-let ((project (project-current))
-             (dir (project-root project)) )
-    (if (string-match "/\\([^/]+\\)/\\'" dir)
-        (match-string 1 dir)
-      dir)))
-
-;;;###autoload
-(defun vs/vterm-in-project ()
-  "Invoke `vterm' in the project's root.
-Switch to the project specific term buffer if it already exists."
-  (interactive)
-  (unless (project-current)
-    (error "File/buffer doesn't make part of an project"))
-  (when-let* ((project (project-current))
-              (default-directory (expand-file-name (project-root project)))
-              (project-name (vs/project-name))
-              (buffer-name (format "*vterm %s*" project-name)))
-    (unless (buffer-live-p (get-buffer buffer-name))
-      (unless (require 'vterm nil 'noerror)
-        (error "Package 'vterm' is not available"))
-      (when (fboundp 'vterm)
-        (vterm buffer-name)))
-    (pop-to-buffer-same-window buffer-name)))
 
 ;;;###autoload
 (defun vs/kill-ring-unfilled (begin end)
