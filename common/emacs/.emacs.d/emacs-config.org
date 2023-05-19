@@ -1650,6 +1650,14 @@ ESLint compilation mode
        (push 'eslint compilation-error-regexp-alist))))
 #+end_src
 
+Flymake ESLint
+
+#+begin_src emacs-lisp
+  (elpaca flymake-eslint
+    (with-eval-after-load 'js
+      (flymake-eslint-enable)))
+#+end_src
+
 LSP
 
 #+begin_src emacs-lisp
