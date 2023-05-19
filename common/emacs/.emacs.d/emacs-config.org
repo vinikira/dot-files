@@ -1617,6 +1617,11 @@ JS Mode
   (customize-set-variable 'js-indent-level 2)
 
   (add-hook 'javascript-mode-hook 'js-jsx-enable)
+
+  (add-hook 'javascript-mode-hook
+            (lambda ()
+              (when (boundp 'js-mode-map)
+                (define-key js-mode-map (kbd "M-.") 'xref-find-definition))))
 #+end_src
 
 TypeScript Mode
