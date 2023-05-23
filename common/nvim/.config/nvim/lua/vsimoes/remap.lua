@@ -1,20 +1,16 @@
-local nnoremap = require('vsimoes.keymap').nnoremap
-local inoremap = require('vsimoes.keymap').inoremap
+vim.keymap.set('n', '<leader>w', ':w<CR>')
+vim.keymap.set('n', '<leader>q', ':q<CR>')
+vim.keymap.set('n', '<leader>pv', '<cmd>Ex<CR>')
+vim.keymap.set('i', 'jk', '<esc>')
 
-nnoremap('<leader>w', ':w<CR>')
-nnoremap('<leader>q', ':q<CR>')
-nnoremap('<leader>pv', '<cmd>Ex<CR>')
-inoremap('jk', '<esc>')
+vim.keymap.set('v', 'J', ':m \'>+1<CR>gv=gv')
+vim.keymap.set('v', 'K', ':m \'<-2<CR>gv=gv')
 
-local telescope = require('telescope.builtin')
+vim.keymap.set('n', '<leader>y', '"+y')
+vim.keymap.set('v', '<leader>y', '"+y')
+vim.keymap.set('n', '<leader>Y', '"+Y')
 
-nnoremap('<leader>ff', telescope.find_files)
-nnoremap('<leader>fg', telescope.live_grep)
-nnoremap('<leader>fb', telescope.buffers)
-nnoremap('<leader>fh', telescope.help_tags)
+-- install tmux-sessionizer
+-- vim.keymap.set('n', '<C-f>', '<cmd>silent !tmux neww tmux-sessionizer<CR>')
 
-nnoremap('<leader>tt', ':TestNearest<CR>')
-nnoremap('<leader>tT', ':TestFile<CR>')
-nnoremap('<leader>ta', ':TestSuite<CR>')
-nnoremap('<leader>tl', ':TestLast<CR>')
-nnoremap('<leader>tg', ':TestVisit<CR>')
+vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
