@@ -155,6 +155,13 @@ Determine if is running in MacOS.
   (defconst VS/IS-MACOS (eq system-type 'darwin))
 #+end_src
 
+Determine if is running in Emacs 29+
+
+#+begin_src emacs-lisp
+  (defconst VS/IS-EMACS-29
+    (string-prefix-p "29" emacs-version))
+#+end_src
+
 *** Site lisp directory
 Adds site-lisp to the load-path
 
@@ -717,9 +724,9 @@ Global keys for tempo mode
 Function to read the snippets from the =snippets-dir=.
 
 #+begin_src emacs-lisp
-  (defmacro vs/load-snippets (mode)
+  (defmacro vs/load-snippets (mode &optional ts-mode)
     "Load snippets for MODE."
-    `(with-eval-after-load ,mode
+    `(with-eval-after-load (or ,ts-mode ,mode)
        (message "[%s] loading snippets..." ,mode)
        (load (format "%s/%s.el" vs/snippets-dir ,mode))
        (message "[%s] snippets loaded!" ,mode)))
@@ -881,13 +888,25 @@ Function to read the snippets from the =snippets-dir=.
           (global-set-key (kbd "C-c t") #'telega))
 #+end_src
 *** Tree Sitter
+Tree sitter support for Emacs 28
+
 #+begin_src emacs-lisp
-  (elpaca tree-sitter-langs)
+  (unless VS/IS-EMACS-29
+    (elpaca tree-sitter-langs)
 
-  (elpaca tree-sitter
-          (add-hook 'tree-sitter-after-on-hook 'tree-sitter-hl-mode)
-          (safe-funcall 'global-tree-sitter-mode))
+    (elpaca tree-sitter
+      (add-hook 'tree-sitter-after-on-hook 'tree-sitter-hl-mode)
+      (safe-funcall 'global-tree-sitter-mode)))
+#+end_src
 
+Tree sitter auto installer for Emacs 29
+
+#+begin_src emacs-lisp
+  (when VS/IS-EMACS-29
+    (elpaca treesit-auto
+      (customize-set-variable 'treesit-auto-install 'prompt)
+      (require 'treesit-auto)
+      (global-treesit-auto-mode)))
 #+end_src
 *** Wich Key
 #+begin_src emacs-lisp
@@ -1319,7 +1338,8 @@ Packages
   (elpaca dockerfile-mode)
   (elpaca docker-compose-mode)
   (elpaca docker)
-  (elpaca docker-tramp)
+  (unless VS/IS-EMACS-29
+    (elpaca docker-tramp))
 #+end_src
 
 Global key to access the Docker panel.
@@ -1396,7 +1416,8 @@ LSP
 CSharp mode
 
 #+begin_src emacs-lisp
-  (elpaca csharp-mode)
+  (unless VS/IS-EMACS-29
+    (elpaca csharp-mode))
 #+end_src
 
 LSP
@@ -1409,26 +1430,29 @@ LSP
     :safe t)
 
   (defvar-local omnisharp-link
-    (concat "https://github.com/omnisharp/omnisharp-roslyn/releases/latest/download/"
-            (cond
-             ((eq system-type 'darwin) "omnisharp-osx.tar.gz")
-             (t "omnisharp-linux-x64.tar.gz"))))
+      (concat "https://github.com/omnisharp/omnisharp-roslyn/releases/latest/download/"
+              (cond
+               ((eq system-type 'darwin) "omnisharp-osx.tar.gz")
+               (t "omnisharp-linux-x64.tar.gz"))))
 
   (defvar-local omnisharp-command (append
                                    (list "run" "-lsp")
                                    (when vs/omnisharp-solution-file
                                      (list "-s" vs/omnisharp-solution-file))))
 
-  (vs/add-auto-lsp-server 'csharp-mode
-                          :download-url omnisharp-link
-                          :command-fn (lambda (_interactive)
-                                        (append
-                                         (vs/--wrap-lsp-context 'csharp-mode "run")
-                                         (list "-lsp")
-                                         (when vs/omnisharp-solution-file
-                                           (list
-                                            "-s"
-                                            (expand-file-name vs/omnisharp-solution-file))))))
+  (let ((mode (if VS/IS-EMACS-29
+                  'csharp-ts-mode
+                csharp-mode)))
+    (vs/add-auto-lsp-server mode
+                            :download-url omnisharp-link
+                            :command-fn (lambda (_interactive)
+                                          (append
+                                           (vs/--wrap-lsp-context mode "run")
+                                           (list "-lsp")
+                                           (when vs/omnisharp-solution-file
+                                             (list
+                                              "-s"
+                                              (expand-file-name vs/omnisharp-solution-file)))))))
 #+end_src
 *** Crystal
 Crystal mode
@@ -1441,9 +1465,16 @@ Crystal mode
 Elixir mode
 
 #+begin_src emacs-lisp
-  (elpaca elixir-mode)
+  (when (not VS/IS-EMACS-29)
+    (elpaca elixir-mode)
+    (add-to-list 'auto-mode-alist '("\\mix.lock$" . elixir-mode)))
+#+end_src
 
-  (add-to-list 'auto-mode-alist '("\\mix.lock$" . elixir-mode))
+Elixir TS Mode
+
+#+begin_src emacs-lisp
+  (when VS/IS-EMACS-29
+    (elpaca elixir-ts-mode))
 #+end_src
 
 Ex Unit
@@ -1451,7 +1482,9 @@ Ex Unit
 #+begin_src emacs-lisp
   (elpaca exunit)
 
-  (add-hook 'elixir-mode-hook 'exunit-mode)
+  (if VS/IS-EMACS-29
+      (add-hook 'elixir-ts-mode-hook 'exunit-mode)
+    (add-hook 'elixir-mode-hook 'exunit-mode))
 #+end_src
 
 Inf Elixir
@@ -1471,31 +1504,51 @@ Compile Credo
 
 #+begin_src emacs-lisp
   (elpaca
-   '(compile-credo :type git :host github :repo "vinikira/compile-credo" :branch "main")
-   (require 'compile-credo nil t))
+      '(compile-credo :type git :host github :repo "vinikira/compile-credo" :branch "main")
+    (if VS/IS-EMACS-29
+        (with-eval-after-load 'elixir-ts-mode
+          (require 'compile-credo nil t))
+      (with-eval-after-load 'elixir-mode
+        (require 'compile-credo nil t))))
 #+end_src
 
 Mode keymap
 
 #+begin_src emacs-lisp
-  (with-eval-after-load 'elixir-mode
-    (when (boundp 'elixir-mode-map)
-      (define-key elixir-mode-map (kbd "C-c C-c f") 'elixir-format)
-      (define-key elixir-mode-map (kbd "C-c C-c M") 'vs/elixir-map-string-to-map-atom)
-      (define-key elixir-mode-map (kbd "C-c C-c m") 'vs/elixir-map-atom-to-map-string)
-      (define-key elixir-mode-map (kbd "C-c C-c J") 'vs/etf-to-json)
-      (define-key elixir-mode-map (kbd "C-c C-c j") 'vs/json-to-etf)
-      (define-key elixir-mode-map (kbd "C-c C-c D") 'vs/elixir-open-dep-docs)))
+  (if VS/IS-EMACS-29
+      (with-eval-after-load 'elixir-ts-mode
+        (when (boundp 'elixir-ts-mode-map)
+          (define-key elixir-ts-mode-map (kbd "C-c C-c f") 'elixir-format)
+          (define-key elixir-ts-mode-map (kbd "C-c C-c M") 'vs/elixir-map-string-to-map-atom)
+          (define-key elixir-ts-mode-map (kbd "C-c C-c m") 'vs/elixir-map-atom-to-map-string)
+          (define-key elixir-ts-mode-map (kbd "C-c C-c J") 'vs/etf-to-json)
+          (define-key elixir-ts-mode-map (kbd "C-c C-c j") 'vs/json-to-etf)
+          (define-key elixir-ts-mode-map (kbd "C-c C-c D") 'vs/elixir-open-dep-docs)))
+    (with-eval-after-load 'elixir-mode
+      (when (boundp 'elixir-mode-map)
+        (define-key elixir-mode-map (kbd "C-c C-c f") 'elixir-format)
+        (define-key elixir-mode-map (kbd "C-c C-c M") 'vs/elixir-map-string-to-map-atom)
+        (define-key elixir-mode-map (kbd "C-c C-c m") 'vs/elixir-map-atom-to-map-string)
+        (define-key elixir-mode-map (kbd "C-c C-c J") 'vs/etf-to-json)
+        (define-key elixir-mode-map (kbd "C-c C-c j") 'vs/json-to-etf)
+        (define-key elixir-mode-map (kbd "C-c C-c D") 'vs/elixir-open-dep-docs))))
 #+end_src
 
 LSP
 
 #+begin_src emacs-lisp
-  (vs/add-auto-lsp-server
-   'elixir-mode
-   :download-url "https://github.com/elixir-lsp/elixir-ls/releases/latest/download/elixir-ls.zip"
-   :command '("elixir-ls/language_server.sh"))
+  (if VS/IS-EMACS-29
+      (vs/add-auto-lsp-server
+       'elixir-ts-mode
+       :download-url "https://github.com/elixir-lsp/elixir-ls/releases/latest/download/elixir-ls.zip"
+       :command '("elixir-ls/language_server.sh"))
+    (vs/add-auto-lsp-server
+     'elixir-mode
+     :download-url "https://github.com/elixir-lsp/elixir-ls/releases/latest/download/elixir-ls.zip"
+     :command '("elixir-ls/language_server.sh")))
 #+end_src
+
+#+RESULTS:
 
 Flymake credo
 
@@ -1509,7 +1562,9 @@ Mix.el
 #+begin_src emacs-lisp
   (elpaca mix)
 
-  (add-hook 'elixir-mode-hook 'mix-minor-mode)
+  (if VS/IS-EMACS-29
+      (add-hook 'elixir-ts-mode-hook 'mix-minor-mode)
+    (add-hook 'elixir-mode-hook 'mix-minor-mode))
 #+end_src
 
 Snippets
@@ -1518,14 +1573,19 @@ Snippets
   (defvar elixir-tempo-tags nil
     "Tempo tags for Elixir mode")
 
-  (add-hook 'elixir-mode-hook (lambda ()
-                                (safe-funcall 'tempo-use-tag-list 'elixir-tempo-tags)))
+  (if VS/IS-EMACS-29
+      (add-hook 'elixir-ts-mode-hook (lambda ()
+                                    (safe-funcall 'tempo-use-tag-list 'elixir-tempo-tags)))
+      (add-hook 'elixir-mode-hook (lambda ()
+                                    (safe-funcall 'tempo-use-tag-list 'elixir-tempo-tags))))
 #+end_src
 
 Loading snippets
 
 #+begin_src emacs-lisp
-  (vs/load-snippets 'elixir-mode)
+  (if VS/IS-EMACS-29
+      (vs/load-snippets 'elixir-mode 'elixir-ts-mode)
+    (vs/load-snippets 'elixir-mode))
 #+end_src
 
 *** Elm
@@ -1618,25 +1678,23 @@ JS Mode
 
   (add-hook 'javascript-mode-hook 'js-jsx-enable)
 
-  (add-hook 'javascript-mode-hook
-            (lambda ()
-              (when (boundp 'js-mode-map)
-                (define-key js-mode-map (kbd "M-.") 'xref-find-definition))))
+  (fset 'js-find-symbol 'xref-find-definitions)
 #+end_src
 
 TypeScript Mode
 #+begin_src emacs-lisp
-  (elpaca typescript-mode)
+  (when VS/IS-EMACS-29
+    (elpaca typescript-mode))
 #+end_src
 
-Mocha
+Jest
+
 #+begin_src emacs-lisp
-  (elpaca mocha
-          (customize-set-variable 'mocha-reporter "spec")
-          (with-eval-after-load 'js
-            (add-to-list 'auto-mode-alist '("\\.mjs$" . javascript-mode))
-            (when (boundp 'js-mode-map)
-              (define-key js-mode-map (kbd "C-c , v") 'mocha-test-project))))
+  (elpaca jest-test-mode
+    (add-hook 'js-mode-hook 'jest-test-mode)
+    (add-hook 'js-jsx-mode-hook 'jest-test-mode)
+    (add-hook 'typescript-mode-hook 'jest-test-mode)
+    (add-hook 'typescript-tsx-mode-hook 'jest-test-mode))
 #+end_src
 
 ESLint compilation mode
