@@ -54,12 +54,12 @@ Remove some unneeded UI elements (the user can turn back on anything they wish)
 
 #+begin_src emacs-lisp
   (setq inhibit-startup-message t)
-  (push '(tool-bar-lines . 0) default-frame-alist)
-  (push '(menu-bar-lines . 0) default-frame-alist)
-  (push '(vertical-scroll-bars) default-frame-alist)
-  (push '(background-color . "#232635") default-frame-alist)
-  (push '(foreground-color . "#FFFFFF") default-frame-alist)
-  (push '(mouse-color . "white") default-frame-alist)
+  (add-to-list 'default-frame-alist '(tool-bar-lines . 0))
+  (add-to-list 'default-frame-alist '(menu-bar-lines . 0))
+  (add-to-list 'default-frame-alist '(vertical-scroll-bars))
+  (add-to-list 'default-frame-alist '(background-color . "#232635"))
+  (add-to-list 'default-frame-alist '(foreground-color . "#FFFFFF"))
+  (add-to-list 'default-frame-alist '(mouse-color . "white"))
 #+end_src
 
 Disable =package.el=
