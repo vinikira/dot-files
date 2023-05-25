@@ -807,7 +807,8 @@ Function to read the snippets from the =snippets-dir=.
 *** Nerd Icons
 #+begin_src emacs-lisp
   (elpaca nerd-icons
-          (customize-set-variable 'nerd-icons-font-family "Iosevka Nerd Font"))
+    (customize-set-variable 'nerd-icons-font-family "Iosevka Nerd Font")
+    (require 'nerd-icons))
 #+end_src
 *** Password store
 #+begin_src emacs-lisp
@@ -1067,7 +1068,8 @@ See more: https://github.com/domtronn/all-the-icons.el/wiki/Mode-Line
       mode-line-misc-info)
     "My custom modeline format.")
 
-  (customize-set-variable 'mode-line-format vs/custom-modeline-format)
+  (with-eval-after-load 'nerd-icons
+    (customize-set-variable 'mode-line-format vs/custom-modeline-format))
 #+end_src
 *** Side windows
 #+begin_src emacs-lisp
