@@ -1386,7 +1386,8 @@ Tramp integration for Kubernetes
 Flyspell for comments and strings.
 
 #+begin_src emacs-lisp
-  (add-hook 'prog-mode-hook 'flyspell-prog-mode)
+  (when-idle
+   (add-hook 'prog-mode-hook 'flyspell-prog-mode))
 #+end_src
 
 *** Clojure
