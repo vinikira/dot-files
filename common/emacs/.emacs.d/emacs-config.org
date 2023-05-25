@@ -279,7 +279,6 @@ When IDLE for call code after emacs-init.
   (customize-set-variable 'compilation-scroll-output t)
   (customize-set-variable 'indent-tabs-mode nil)
   (customize-set-variable 'tab-always-indent 'complete)
-  (customize-set-variable 'dired-dwim-target t)
   (customize-set-variable 'scroll-conservatively 101)
   (customize-set-variable 'indicate-empty-lines t)
   (customize-set-variable 'indicate-buffer-boundaries 'left)
@@ -290,6 +289,10 @@ When IDLE for call code after emacs-init.
   (customize-set-variable 'use-dialog-box t)
   (customize-set-variable 'global-auto-revert-non-file-buffers t)
   (customize-set-variable 'ediff-window-setup-function 'ediff-setup-windows-plain)
+  (when VS/IS-EMACS-29
+    (customize-set-variable 'dired-mouse-drag-files t)
+    (customize-set-variable 'mouse-drag-and-drop-region-cross-program t))
+  (customize-set-variable 'dired-listing-switches "-alh")
 
   (fset 'yes-or-no-p 'y-or-n-p)
   (windmove-default-keybindings)
