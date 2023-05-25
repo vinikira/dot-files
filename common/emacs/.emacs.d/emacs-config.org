@@ -99,7 +99,7 @@ Profile emacs startup
                        gcs-done)))
 #+end_src
 
-Loaddefs
+Emacs loaddefs
 
 #+begin_src emacs-lisp
   (require 'loaddefs)
@@ -823,6 +823,10 @@ Function to read the snippets from the =snippets-dir=.
 
           (when (boundp 'projectile-mode-map)
             (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)))
+#+end_src
+*** PDF tools
+#+begin_src emacs-lisp
+   (elpaca pdf-tools)
 #+end_src
 *** Dashboard
 #+begin_src emacs-lisp
@@ -1932,7 +1936,8 @@ LSP
 ** Files formats
 *** JSON
 #+begin_src emacs-lisp
-  (elpaca json-mode)
+  (unless VS/IS-EMACS-29
+    (elpaca json-mode))
 #+end_src
 
 *** YAML
@@ -2063,6 +2068,7 @@ Loading snippets
 #+end_src
 
 *** Langtool
+
 #+begin_src emacs-lisp
   (elpaca langtool
     (customize-set-variable 'langtool-default-language "en-US")
