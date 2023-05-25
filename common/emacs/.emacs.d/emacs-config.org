@@ -1360,9 +1360,10 @@ If is running in MacOS, use nerdctl with limavm instead of Docker.
 Tramp integration for Kubernetes
 
 #+begin_src emacs-lisp
-  (elpaca kubernetes-tramp)
+  (unless VS/IS-EMACS-29
+    (elpaca kubernetes-tramp)
 
-  (customize-set-variable 'tramp-remote-shell-executable "sh")
+    (customize-set-variable 'tramp-remote-shell-executable "sh"))
 #+end_src
 
 ** Programming languages
