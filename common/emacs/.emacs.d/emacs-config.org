@@ -398,6 +398,14 @@ Defining where the Org files will be stored.
     (if (file-directory-p "~/Sync/org/") "~/Sync/org/" "~/org"))
 #+end_src
 
+Org agenda directory
+
+#+begin_src emacs-lisp
+  (defconst vs/org-agenda-directory
+    (list
+     (concat vs/org-directory "agenda/")))
+#+end_src
+
 Capture templates
 
 #+begin_src emacs-lisp
@@ -511,8 +519,7 @@ Variables customizations
 
   (when (boundp 'org-directory)
     (customize-set-variable 'org-default-notes-file (concat org-directory "notes.org"))
-    (customize-set-variable 'org-agenda-files (list (concat org-directory "work.org")
-                                                    (concat org-directory "personal.org"))))
+    (customize-set-variable 'org-agenda-files vs/org-agenda-directory))
 
   (customize-set-variable 'org-confirm-babel-evaluate nil)
   (customize-set-variable 'org-src-fontify-natively t)
@@ -1699,7 +1706,10 @@ Jest
     (add-hook 'js-mode-hook 'jest-test-mode)
     (add-hook 'js-jsx-mode-hook 'jest-test-mode)
     (add-hook 'typescript-mode-hook 'jest-test-mode)
-    (add-hook 'typescript-tsx-mode-hook 'jest-test-mode))
+    (add-hook 'typescript-tsx-mode-hook 'jest-test-mode)
+    (when VS/IS-EMACS-29
+      (add-hook 'typescript-ts-mode-hook 'jest-test-mode)
+      (add-hook 'js-ts-mode-hook 'jest-test-mode)))
 #+end_src
 
 ESLint compilation mode
