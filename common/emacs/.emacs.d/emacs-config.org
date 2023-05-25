@@ -2124,32 +2124,33 @@ Loading snippets
 #+begin_src emacs-lisp
   (autoload 'notmuch "notmuch" "notmuch mail" t)
 
-  (customize-set-variable 'notmuch-saved-searches
-                          '((:name "Unread"
-                                   :query "tag:inbox and tag:unread"
-                                   :count-query "tag:inbox and tag:unread"
-                                   :key "u"
-                                   :sort-order newest-first)
-                            (:name "Inbox"
-                                   :query "tag:inbox"
-                                   :count-query "tag:inbox"
-                                   :key "i"
-                                   :sort-order newest-first)
-                            (:name "Archive"
-                                   :query "tag:archive"
-                                   :count-query "tag:archive"
-                                   :key "a"
-                                   :sort-order newest-first)
-                            (:name "Sent"
-                                   :query "tag:sent or tag:replied"
-                                   :count-query "tag:sent or tag:replied"
-                                   :key "s"
-                                   :sort-order newest-first)
-                            (:name "Trash"
-                                   :query "tag:deleted"
-                                   :count-query "tag:deleted"
-                                   :key "t"
-                                   :sort-order newest-first)))
+  (with-eval-after-load 'notmuch
+    (customize-set-variable 'notmuch-saved-searches
+                            '((:name "Unread"
+                                     :query "tag:inbox and tag:unread"
+                                     :count-query "tag:inbox and tag:unread"
+                                     :key "u"
+                                     :sort-order newest-first)
+                              (:name "Inbox"
+                                     :query "tag:inbox"
+                                     :count-query "tag:inbox"
+                                     :key "i"
+                                     :sort-order newest-first)
+                              (:name "Archive"
+                                     :query "tag:archive"
+                                     :count-query "tag:archive"
+                                     :key "a"
+                                     :sort-order newest-first)
+                              (:name "Sent"
+                                     :query "tag:sent or tag:replied"
+                                     :count-query "tag:sent or tag:replied"
+                                     :key "s"
+                                     :sort-order newest-first)
+                              (:name "Trash"
+                                     :query "tag:deleted"
+                                     :count-query "tag:deleted"
+                                     :key "t"
+                                     :sort-order newest-first))))
 #+end_src
 
 *** SMTP
