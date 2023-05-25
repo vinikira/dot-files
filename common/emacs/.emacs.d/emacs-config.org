@@ -842,17 +842,14 @@ Function to read the snippets from the =snippets-dir=.
 *** Dashboard
 #+begin_src emacs-lisp
   (elpaca dashboard
-          (customize-set-variable 'dashboard-items '((recents  . 5)
-                                                     (projects . 5)
-                                                     (bookmarks . 5)
-                                                     (agenda . 5)))
-          (customize-set-variable 'dashboard-startup-banner 'logo)
-          (customize-set-variable 'dashboard-center-content t)
-          (customize-set-variable 'initial-buffer-choice
-                                  (lambda () (get-buffer "*dashboard*")))
-          (safe-funcall 'dashboard-setup-startup-hook))
-
-  (add-hook 'elpaca-after-init-hook (lambda () (safe-funcall 'dashboard-open)))
+    (customize-set-variable 'dashboard-items '((recents  . 5)
+                                               (projects . 5)
+                                               (bookmarks . 5)
+                                               (agenda . 5)))
+    (customize-set-variable 'dashboard-startup-banner 'logo)
+    (customize-set-variable 'dashboard-center-content t)
+    (add-hook 'elpaca-after-init-hook (lambda ()
+                                        (safe-funcall 'dashboard-open))))
 #+end_src
 *** Ripgrep
 #+begin_src emacs-lisp
