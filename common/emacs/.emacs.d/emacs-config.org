@@ -1878,6 +1878,9 @@ Emmet Mode
           (add-hook 'web-mode-hook 'emmet-mode)
           (add-hook 'vue-mode-hook 'emmet-mode)
           (add-hook 'js-mode 'emmet-mode)
+          (when VS/IS-EMACS-29
+            (add-hook 'heex-ts-mode 'emmet-mode)
+            (add-hook 'elixir-ts-mode 'emmet-mode))
 
           (with-eval-after-load 'web-mode
             (when (boundp 'web-mode-map)
