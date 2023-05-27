@@ -1,0 +1,12 @@
+#!/usr/bin/bash
+
+docker run \
+  --rm \
+  -d \
+  --name plex \
+  --network=host \
+  -e TZ="America/Sao_Paulo" \
+  -v /run/media/vsimoes/files/Plex/database:/config \
+  -v /run/media/vsimoes/files/Plex/transcode:/transcode \
+  -v /run/media/vsimoes/files/Plex/media:/data \
+  plexinc/pms-docker
