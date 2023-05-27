@@ -1533,7 +1533,7 @@ Mode keymap
   (if VS/IS-EMACS-29
       (with-eval-after-load 'elixir-ts-mode
         (when (boundp 'elixir-ts-mode-map)
-          (define-key elixir-ts-mode-map (kbd "C-c C-c f") 'elixir-format)
+          (define-key elixir-ts-mode-map (kbd "C-c C-c f") 'vs/elixir-format)
           (define-key elixir-ts-mode-map (kbd "C-c C-c M") 'vs/elixir-map-string-to-map-atom)
           (define-key elixir-ts-mode-map (kbd "C-c C-c m") 'vs/elixir-map-atom-to-map-string)
           (define-key elixir-ts-mode-map (kbd "C-c C-c J") 'vs/etf-to-json)

@@ -88,6 +88,20 @@ FORCE-EXTERNAL browser if provided."
           (xwidget-webkit-browse-url url t)
         (browse-url url)))))
 
+;;;###autoload
+(defun vs/elixir-format (&optional project)
+  "Format the current elixir file. Format the whole PROJECT if flag is provided."
+  (interactive "P")
+  (unless (project-current)
+    (user-error "Not in a project"))
+  (let* ((default-directory (project-root (project-current)))
+         (mix (executable-find "mix"))
+         (file-name (buffer-file-name))
+         (args (append
+                `("elixir-format" "*mix format*" ,mix "format")
+                (if project '() `(,file-name)))))
+    (apply #'start-process args)))
+
 (provide 'vs-elixir)
 
 ;;; vs-elixir.el ends here
