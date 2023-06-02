@@ -97,10 +97,12 @@ FORCE-EXTERNAL browser if provided."
   (let* ((default-directory (project-root (project-current)))
          (mix (executable-find "mix"))
          (file-name (buffer-file-name))
+         (buffer-name "*mix format*")
          (args (append
-                `("elixir-format" "*mix format*" ,mix "format")
+                `("elixir-format" ,buffer-name ,mix "format")
                 (if project '() `(,file-name)))))
-    (apply #'start-process args)))
+    (apply #'start-process args)
+    (pop-to-buffer "*mix format*")))
 
 (provide 'vs-elixir)
 
