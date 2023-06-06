@@ -1292,6 +1292,7 @@ New global keybindings
   (global-set-key (kbd "H-S-<tab>") 'tab-previous)
   (global-set-key (kbd "M-W") 'vs/kill-ring-unfilled)
   (global-set-key (kbd "C-x p K") 'vs/close-project-tab)
+  (global-set-key (kbd "H-g o") 'vs/grep-org-files)
 #+end_src
 
 Removing some default keybindings

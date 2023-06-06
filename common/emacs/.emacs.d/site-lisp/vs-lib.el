@@ -327,6 +327,15 @@ cleared."
     (tabulated-list-init-header)
     (tabulated-list-revert)))
 
+;;;###autoload
+(defun vs/grep-org-files (&optional force)
+  "Search term in Org directory recursively. Use `lgrep' if FORCE is provided."
+  (interactive "P")
+  (when (boundp 'org-directory)
+    (if (and (featurep 'consult) (not force))
+        (funcall-interactively 'consult-ripgrep org-directory)
+      (funcall-interactively 'lgrep (read-string "Search for: ") "*.org" org-directory))))
+
 (provide 'vs-lib)
 
 ;;; vs-lib.el ends here
