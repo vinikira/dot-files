@@ -289,11 +289,6 @@ When IDLE for call code after emacs-init.
   (customize-set-variable 'use-dialog-box t)
   (customize-set-variable 'global-auto-revert-non-file-buffers t)
   (customize-set-variable 'ediff-window-setup-function 'ediff-setup-windows-plain)
-  (when VS/IS-EMACS-29
-    (customize-set-variable 'dired-mouse-drag-files t)
-    (customize-set-variable 'mouse-drag-and-drop-region-cross-program t))
-  (customize-set-variable 'dired-listing-switches "-alh")
-
   (fset 'yes-or-no-p 'y-or-n-p)
   (windmove-default-keybindings)
 
@@ -345,11 +340,6 @@ When IDLE for call code after emacs-init.
               (auto-fill-mode 1)
               (vs/--line-numbers)
               (vs/--font-lock)))
-
-  ;; enable dired-find-alternate-file
-  (add-hook 'window-setup-hook
-            (lambda ()
-              (put 'dired-find-alternate-file 'disabled nil)))
 #+end_src
 
 *** Enable some builtin modes
@@ -382,6 +372,33 @@ When IDLE for call code after emacs-init.
   (when (and (fboundp 'server-running-p)
              (not (server-running-p)))
     (server-start))
+#+end_src
+
+** Dired mode
+Custom variables
+
+#+begin_src emacs-lisp
+  (when VS/IS-EMACS-29
+    (customize-set-variable 'dired-mouse-drag-files t)
+    (customize-set-variable 'mouse-drag-and-drop-region-cross-program t))
+  (customize-set-variable 'dired-listing-switches "-alh")
+#+end_src
+
+Enable dired-find-alternate-file
+
+#+begin_src emacs-lisp
+  (add-hook 'window-setup-hook
+            (lambda ()
+              (put 'dired-find-alternate-file 'disabled nil)))
+#+end_src
+
+Keybindings
+
+#+begin_src emacs-lisp
+  (with-eval-after-load 'dired
+    (when (boundp 'dired-mode-map)
+      (define-key dired-mode-map (kbd "e") 'dired-create-empty-file)
+      (define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file)))
 #+end_src
 
 ** Org mode
@@ -1304,14 +1321,6 @@ Removing some default keybindings
 #+end_src
 
 ** Keybindings for specific modes
-*** Dired mode
-#+begin_src emacs-lisp
-  (with-eval-after-load 'dired
-    (when (boundp 'dired-mode-map)
-      (define-key dired-mode-map (kbd "e") 'dired-create-empty-file)
-      (define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file)))
-#+end_src
-
 *** NXML mode
 #+begin_src emacs-lisp
   (with-eval-after-load 'nxml-mode
