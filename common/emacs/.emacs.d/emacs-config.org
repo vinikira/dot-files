@@ -1352,6 +1352,8 @@ Removing some default keybindings
               (define-key eglot-mode-map (kbd "C-c C-o") 'eglot-code-action-organize-imports)
               (define-key eglot-mode-map (kbd "C-c C-d") 'eldoc)))
           (customize-set-variable 'eglot-autoshutdown t)
+          ;; disable events buffer
+          (customize-set-variable 'eglot-events-buffer-size 0)
           (fset #'jsonrpc--log-event #'ignore))
 #+end_src
 
