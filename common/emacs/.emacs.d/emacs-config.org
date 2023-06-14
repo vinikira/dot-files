@@ -1346,11 +1346,14 @@ Removing some default keybindings
   (elpaca eglot
           (with-eval-after-load 'eglot
             (when (boundp 'eglot-mode-map)
-              (define-key eglot-mode-map (kbd "M-RET") 'eglot-code-actions)
-              (define-key eglot-mode-map (kbd "C-c C-f") 'eglot-format)
-              (define-key eglot-mode-map (kbd "C-c C-r") 'eglot-rename)
-              (define-key eglot-mode-map (kbd "C-c C-o") 'eglot-code-action-organize-imports)
-              (define-key eglot-mode-map (kbd "C-c C-d") 'eldoc)))
+              (define-key eglot-mode-map (kbd "C-c e a") 'eglot-code-actions)
+              (define-key eglot-mode-map (kbd "C-c e f") 'eglot-format)
+              (define-key eglot-mode-map (kbd "C-c e r") 'eglot-rename)
+              (define-key eglot-mode-map (kbd "C-c e R") 'eglot-reconnect)
+              (define-key eglot-mode-map (kbd "C-c e o") 'eglot-code-action-organize-imports)
+              (define-key eglot-mode-map (kbd "C-c e D") 'eglot-find-declaration)
+              (define-key eglot-mode-map (kbd "C-c e d") 'eglot-find-typeDefinition)
+              (define-key eglot-mode-map (kbd "C-c e h") 'eldoc)))
           (customize-set-variable 'eglot-autoshutdown t)
           ;; disable events buffer
           (customize-set-variable 'eglot-events-buffer-size 0)
