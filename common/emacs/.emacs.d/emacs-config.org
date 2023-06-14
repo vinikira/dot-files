@@ -1341,7 +1341,8 @@ Removing some default keybindings
 #+end_src
 
 ** Language server protocol (LSP)
-***  Eglot
+Using Eglot since is the default LSP in Emacs.
+
 #+begin_src emacs-lisp
   (elpaca eglot
           (with-eval-after-load 'eglot
@@ -1352,6 +1353,7 @@ Removing some default keybindings
               (define-key eglot-mode-map (kbd "C-c e R") 'eglot-reconnect)
               (define-key eglot-mode-map (kbd "C-c e o") 'eglot-code-action-organize-imports)
               (define-key eglot-mode-map (kbd "C-c e D") 'eglot-find-declaration)
+              (define-key eglot-mode-map (kbd "C-c e i") 'eglot-find-implementation)
               (define-key eglot-mode-map (kbd "C-c e d") 'eglot-find-typeDefinition)
               (define-key eglot-mode-map (kbd "C-c e h") 'eldoc)))
           (customize-set-variable 'eglot-autoshutdown t)
