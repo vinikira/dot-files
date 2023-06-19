@@ -170,6 +170,7 @@ e01 |o..o{ e03
 
 (tempo-define-template "plantuml-mode-monochrome"
                        '("skinparam monochrome true
+skinparam defaultFontName Iosevka Nerd Font
 skinparam ranksep 20
 skinparam dpi 150
 skinparam arrowThickness 0.7
