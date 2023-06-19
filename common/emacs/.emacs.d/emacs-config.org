@@ -2043,7 +2043,7 @@ LSP
 *** Plantuml Mode
 #+begin_src emacs-lisp
   (elpaca plantuml-mode
-    (with-eval-after-load 'plantuml
+    (with-eval-after-load 'plantuml-mode
       (customize-set-variable 'plantuml-output-type "svg")
       (customize-set-variable 'plantuml-default-exec-mode 'jar)
       (let* ((plantuml-directory (if (boundp 'private-dir) private-dir "/tmp"))
