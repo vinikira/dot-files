@@ -2043,20 +2043,13 @@ LSP
 *** Plantuml Mode
 #+begin_src emacs-lisp
   (elpaca plantuml-mode
-          (customize-set-variable 'plantuml-output-type "png")
-          (customize-set-variable 'plantuml-default-exec-mode 'jar)
-
-          (with-eval-after-load 'plantuml-mode
-            (let* ((plantuml-directory (if (boundp 'private-dir) private-dir "/tmp"))
-                   (plantuml-link
-                    "http://sourceforge.net/projects/plantuml/files/plantuml.jar/download")
-                   (plantuml-target (concat plantuml-directory "/plantuml.jar")))
-              (if (not (file-exists-p plantuml-target))
-                  (progn (message "Downloading plantuml.jar")
-                         (async-shell-command
-                          (format "wget %s -O %s" plantuml-link plantuml-target))))
-              (customize-set-variable 'org-plantuml-jar-path plantuml-target)
-              (customize-set-variable 'plantuml-jar-path plantuml-target))))
+    (with-eval-after-load 'plantuml
+      (customize-set-variable 'plantuml-output-type "svg")
+      (customize-set-variable 'plantuml-default-exec-mode 'jar)
+      (let* ((plantuml-directory (if (boundp 'private-dir) private-dir "/tmp"))
+             (plantuml-target (concat plantuml-directory "/plantuml.jar")))
+        (customize-set-variable 'org-plantuml-jar-path plantuml-target)
+        (customize-set-variable 'plantuml-jar-path plantuml-target))))
 #+end_src
 
 Creating a tag table for =plantuml-mode=.
