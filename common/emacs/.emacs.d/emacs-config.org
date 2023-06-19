@@ -1835,12 +1835,21 @@ Inf-ruby
 LSP
 
 #+begin_src emacs-lisp
-  (vs/add-auto-lsp-server
-   'ruby-mode
-   :download-fn (lambda (_reinstall)
-                  (async-shell-command
-                   "gem install solargraph"
-                   (get-buffer-create "*Install Ruby LSP*"))))
+  (if VS/IS-EMACS-29
+      (vs/add-auto-lsp-server
+       'ruby-ts-mode
+       :download-fn (lambda (_reinstall)
+                      (async-shell-command
+                       "gem install solargraph"
+                       (get-buffer-create "*Install Ruby LSP*"))))
+    (vs/add-auto-lsp-server
+     'ruby-mode
+     :download-fn (lambda (_reinstall)
+                    (async-shell-command
+                     "gem install solargraph"
+                     (get-buffer-create "*Install Ruby LSP*")))))
+
+
 
 #+end_src
 *** Rust
