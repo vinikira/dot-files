@@ -382,6 +382,13 @@ Custom variables
     (customize-set-variable 'dired-mouse-drag-files t)
     (customize-set-variable 'mouse-drag-and-drop-region-cross-program t))
   (customize-set-variable 'dired-listing-switches "-alh")
+  (customize-set-variable 'delete-by-moving-to-trash t)
+  (customize-set-variable 'dired-dwim-target t)
+  (customize-set-variable
+   'dired-guess-shell-alist-user
+   '(("\\.\\(png\\|jpe?g\\|tiff\\)" "feh" "xdg-open" "open")
+     ("\\.\\(mp[34]\\|m4a\\|ogg\\|flac\\|webm\\|mkv\\)" "mpv" "xdg-open" "open")
+     (".*" "xdg-open" "open")))
 #+end_src
 
 Enable dired-find-alternate-file
