@@ -50,16 +50,32 @@ Native compilation settings
         file-name-handler-alist nil)
 #+end_src
 
+Default frame alist
+
+#+begin_src emacs-lisp
+  (dolist (var '(default-frame-alist initial-frame-alist))
+    (push '(scroll-bar . 0) var)
+    (push '(menu-bar-lines . 0) var)
+    (push '(tool-bar-lines . 0) var)
+    (push '(vertical-scroll-bars . nil) var)
+    (push '(scroll-bar-width  . 12) var))
+#+end_src
+
 Remove some unneeded UI elements (the user can turn back on anything they wish)
 
 #+begin_src emacs-lisp
-  (setq inhibit-startup-message t)
-  (add-to-list 'default-frame-alist '(tool-bar-lines . 0))
-  (add-to-list 'default-frame-alist '(menu-bar-lines . 0))
-  (add-to-list 'default-frame-alist '(vertical-scroll-bars))
-  (add-to-list 'default-frame-alist '(background-color . "#232635"))
-  (add-to-list 'default-frame-alist '(foreground-color . "#FFFFFF"))
-  (add-to-list 'default-frame-alist '(mouse-color . "white"))
+  (setq frame-resize-pixelwise t
+        frame-inhibit-implied-resize t
+        use-dialog-box t
+        use-file-dialog nil
+        inhibit-splash-screen t
+        inhibit-startup-screen t
+        inhibit-x-resources t
+        inhibit-startup-buffer-menu t)
+
+  (menu-bar-mode -1)
+  (scroll-bar-mode -1)
+  (tool-bar-mode -1)
 #+end_src
 
 Disable =package.el=
@@ -807,6 +823,11 @@ Function to read the snippets from the =snippets-dir=.
           (when (or (daemonp) (memq window-system '(mac ns x)))
             (safe-funcall 'exec-path-from-shell-initialize)))
 #+end_src
+*** Fontaine
+#+begin_src emacs-lisp
+  (elpaca fontaine
+    (require 'fontaine))
+#+end_src
 *** Iedit
 #+begin_src emacs-lisp
   (elpaca iedit
@@ -958,35 +979,64 @@ Tree sitter auto installer for Emacs 29
 #+end_src
 ** Appearence
 *** Fonts Families
+Uses fontaine to configure the fonts preset
+
 #+begin_src emacs-lisp
-  (defvar vs/monospace-font-family (cond
-                                    (VS/IS-MACOS "Iosevka Nerd Font Mono")
-                                    (t "Iosevka")))
-  (defvar vs/emoji-font-family (cond
-                                (VS/IS-MACOS "Apple Color Emoji")
-                                (t "Noto Color Emoji")))
+  (with-eval-after-load 'fontaine
+    (customize-set-variable
+     'fontaine-presets
+     `((small
+        :default-family "Iosevka Nerd Font"
+        :default-height ,(if VS/IS-MACOS 150 130)
+        :variable-pitch-family "Noto Sans")
+       (regular) ; like this it uses all the fallback values and is named `regular'
+       (medium
+        :default-weight semilight
+        :default-height ,(if VS/IS-MACOS 190 150)
+        :bold-weight extrabold)
+       (large
+        :inherit medium
+        :default-height ,(if VS/IS-MACOS 210 170))
+       (presentation
+        :inherit medium
+        :default-weight light
+        :default-height 180)
+       (t
+        :default-family "Iosevka Nerd Font"
+        :default-weight regular
+        :default-height ,(if VS/IS-MACOS 170 120)
+        :fixed-pitch-family nil ; falls back to :default-family
+        :fixed-pitch-weight nil ; falls back to :default-weight
+        :fixed-pitch-height 1.0
+        :fixed-pitch-serif-family nil ; falls back to :default-family
+        :fixed-pitch-serif-weight nil ; falls back to :default-weight
+        :fixed-pitch-serif-height 1.0
+        :variable-pitch-family "Noto Sans"
+        :variable-pitch-weight nil
+        :variable-pitch-height 1.0
+        :bold-family nil ; use whatever the underlying face has
+        :bold-weight bold
+        :italic-family nil
+        :italic-slant italic
+        :line-spacing nil
+        :symbol-family ,(if VS/IS-MACOS "Apple Color Emoji" "Noto Color Emoji"))))
 
-  (defun vs/--safe-set-font (face font &optional height)
-    "Set FONT to FACE if is installed.
-  If HEIGHT is non nil use it to set font heigth."
-    (if (member font (font-family-list))
-        (set-face-attribute face nil :family font :height (or height 100))
-      (message "[vs/--safe-set-font] Font %s not installed!" font)))
+    (fontaine-set-preset (or (fontaine-restore-latest-preset) 'regular))
 
-  (defun vs/--safe-set-fontset (face font &optional add)
-    "Set FONT as a fontset to FACE if is installed.
-  See `set-fontset-font' for ADD."
-    (if (member font (font-family-list))
-        (set-fontset-font t face font nil add)
-      (message "[vs/--safe-set-fontset] Font %s not installed!" font)))
+    (add-hook 'kill-emacs-hook #'fontaine-store-latest-preset)
+    (add-hook 'modus-themes-after-load-theme-hook #'fontaine-apply-current-preset)
 
-  (defun vs/--setup-fonts ()
-    "Setup my fonts."
-    (dolist (face '(default fixed-pitch))
-      (cond (VS/IS-MACOS (vs/--safe-set-font face vs/monospace-font-family 170))
-            (t (vs/--safe-set-font face vs/monospace-font-family 120))))
-    (vs/--safe-set-fontset 'symbol vs/emoji-font-family 'append))
+    (define-key global-map (kbd "C-c f") #'fontaine-set-preset)
+    (define-key global-map (kbd "C-c F") #'fontaine-set-face-font)
+    (define-key ctl-x-x-map (kbd "v") #'variable-pitch-mode))
 #+end_src
+
+Helps in font resize.
+
+#+begin_src emacs-lisp
+  (setq-default text-scale-remap-header-line t)
+#+end_src
+
 *** Theme
 #+begin_src emacs-lisp
   (defun vs/--setup-theme ()
@@ -1002,27 +1052,14 @@ Theme customization
   (customize-set-variable 'modus-themes-mixed-fonts t)
 #+end_src
 
-*** Setup frame
+Load theme after create a new frame
+
 #+begin_src emacs-lisp
-  (defvar vs/frame-alist
-    `((scroll-bar . 0)
-      (menu-bar-lines . 0)
-      (tool-bar-lines . 0)
-      (vertical-scroll-bars . nil)
-      (fullscreen . maximized)
-      (alpha . 100)))
-
-  (setq-default default-frame-alist vs/frame-alist)
-
-  (defun vs/--setup-frame ()
-    "Configure frames."
-    (vs/--setup-fonts)
-    (vs/--setup-theme))
-
   (if (daemonp)
-      (add-hook 'server-after-make-frame-hook 'vs/--setup-frame)
-    (vs/--setup-frame))
+      (add-hook 'server-after-make-frame-hook 'vs/--setup-theme)
+    (vs/--setup-theme))
 #+end_src
+
 *** Modeline
 See more: https://github.com/domtronn/all-the-icons.el/wiki/Mode-Line
 
