@@ -987,7 +987,7 @@ Uses fontaine to configure the fonts preset
      'fontaine-presets
      `((small
         :default-family "Iosevka Nerd Font"
-        :default-height ,(if VS/IS-MACOS 150 130)
+        :default-height ,(if VS/IS-MACOS 150 100)
         :variable-pitch-family "Noto Sans")
        (regular) ; like this it uses all the fallback values and is named `regular'
        (medium
