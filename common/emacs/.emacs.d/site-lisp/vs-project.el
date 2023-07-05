@@ -89,6 +89,23 @@ Switch to the project specific term buffer if it already exists."
               (default-directory (expand-file-name (project-root project))))
     (find-file filename)))
 
+;;;###autoload
+(defun vs/project-save-project-buffers ()
+  "Save all project buffers."
+  (interactive)
+  (let* ((project (project-current))
+         (project-name (project-name project))
+         (modified-buffers (cl-remove-if-not (lambda (buf)
+                                               (and (buffer-file-name buf)
+                                                    (buffer-modified-p buf)))
+                                             (project-buffers project))))
+    (if (null modified-buffers)
+        (message "[%s] No buffers need saving" project-name)
+      (dolist (buf modified-buffers)
+        (with-current-buffer buf
+          (save-buffer)))
+      (message "[%s] Saved %d buffers" project-name (length modified-buffers)))))
+
 (provide 'vs-project)
 
 ;;; vs-project.el ends here
