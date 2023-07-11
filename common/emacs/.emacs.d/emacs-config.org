@@ -163,6 +163,20 @@ Emacs loaddefs
   (elpaca `(,@elpaca-order))
 #+end_src
 
+Use package integration
+
+#+begin_src emacs-lisp
+  ;; Install use-package support
+  (elpaca elpaca-use-package
+    ;; Enable :elpaca use-package keyword.
+    (elpaca-use-package-mode)
+    ;; Assume :elpaca t unless otherwise specified.
+    (setq elpaca-use-package-by-default t))
+
+  ;; Block until current queue processed.
+  (elpaca-wait)
+#+end_src
+
 ** Base configuration
 *** Global Constants
 Determine if is running in MacOS.
@@ -425,16 +439,7 @@ Keybindings
 #+end_src
 
 ** Org mode
-*** Get the latest version
-#+begin_src emacs-lisp
-  (elpaca (org-contrib :type git
-                       :includes (org)
-                       :host nil
-                       :repo "https://git.sr.ht/~bzg/org-contrib"
-                       :files (:defaults "lisp/*.el")))
-#+end_src
-
-*** Customizations
+*** Constants
 Defining where the Org files will be stored.
 
 #+begin_src emacs-lisp
@@ -501,87 +506,84 @@ My Org structure templates.
       ("v" . "verse")))
 #+end_src
 
+*** Package declaration
+
+Start the use-package expression
+
+#+begin_src emacs-lisp
+  (use-package org
+    :elpaca nil
+#+end_src
+
+*** Customizations
+
 Org Agenda Custom Commands
 
 #+begin_src emacs-lisp
-  (defun vs/--org-skip-subtree-if-priority (priority)
-    "Skip an agenda subtree if it has a priority of PRIORITY.
-  PRIORITY may be one of the characters ?A, ?B, or ?C."
-    (when (boundp 'org-lowest-priority)
-      (let ((subtree-end (save-excursion (safe-funcall 'org-end-of-subtree t)))
-            (pri-value (* 1000 (- org-lowest-priority priority)))
-            (pri-current (safe-funcall 'org-get-priority (thing-at-point 'line t))))
-        (if (= pri-value pri-current)
-            subtree-end
-          nil))))
+  :custom
+  (org-agenda-custom-commands '(("c" "Complete agenda view"
+                                 ((tags "PRIORITY=\"A\""
+                                        ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                                         (org-agenda-overriding-header "High-priority unfinished tasks:")))
+                                  (agenda "")
+                                  (alltodo ""
+                                           ((org-agenda-skip-function
+                                             '(or (vs/--org-skip-subtree-if-habit)
+                                                  (vs/--org-skip-subtree-if-priority ?A)
+                                                  (org-agenda-skip-if nil '(scheduled deadline))))
+                                            (org-agenda-overriding-header "ALL normal priority tasks:")))))))
 
-  (defun vs/--org-skip-subtree-if-habit ()
-    "Skip an agenda entry if it has a STYLE property equal to \"habit\"."
-    (let ((subtree-end (save-excursion (safe-funcall 'org-end-of-subtree t))))
-      (if (string= (safe-funcall 'org-entry-get nil "STYLE") "habit")
-          subtree-end
-        nil)))
-
-  (customize-set-variable
-   'org-agenda-custom-commands
-   '(("c" "Complete agenda view"
-      ((tags "PRIORITY=\"A\""
-             ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
-              (org-agenda-overriding-header "High-priority unfinished tasks:")))
-       (agenda "")
-       (alltodo ""
-                ((org-agenda-skip-function
-                  '(or (vs/--org-skip-subtree-if-habit)
-                       (vs/--org-skip-subtree-if-priority ?A)
-                       (org-agenda-skip-if nil '(scheduled deadline))))
-                 (org-agenda-overriding-header "ALL normal priority tasks:")))))))
 #+end_src
 
-Hooks
+General customizations
 
 #+begin_src emacs-lisp
-  (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
-  (add-hook 'org-mode-hook 'toggle-word-wrap)
-  (add-hook 'org-mode-hook 'org-indent-mode)
-  (add-hook 'org-mode-hook 'turn-on-visual-line-mode)
-  (add-hook 'org-mode-hook (lambda () (display-line-numbers-mode -1)))
-  (add-hook 'org-mode-hook 'auto-fill-mode)
+  (org-directory vs/org-directory)
+  (org-default-notes-file (concat org-directory "notes.org"))
+  (org-agenda-files vs/org-agenda-directory)
+  (org-confirm-babel-evaluate nil)
+  (org-src-fontify-natively t)
+  (org-log-done 'time)
+  (org-babel-sh-command "bash")
+  (org-capture-templates vs/org-capture-templates)
+  (org-structure-template-alist vs/org-structure-template-alist)
+  (org-use-speed-commands t)
+  (org-refile-use-outline-path t)
+  (org-outline-path-complete-in-steps nil)
+  (org-refile-targets '((org-agenda-files :maxlevel . 9)))
+  (org-hide-emphasis-markers t)
+  (org-imenu-depth 7)
 #+end_src
+
+*** Hooks
+
+#+begin_src emacs-lisp
+  :hook
+  (org-babel-after-execute . org-display-inline-images)
+  (org-mode . toggle-word-wrap)
+  (org-mode . org-indent-mode)
+  (org-mode . turn-on-visual-line-mode)
+  (org-mode . (lambda () (display-line-numbers-mode -1)))
+  (org-mode . auto-fill-mode)
+#+end_src
+
+*** Maps
 
 Global keys related to org mode
 
 #+begin_src emacs-lisp
-  (global-set-key (kbd "C-c l") 'org-store-link)
-  (global-set-key (kbd "C-c a") 'org-agenda)
-  (global-set-key (kbd "C-c c") 'org-capture)
+  :bind
+  (("C-c l" . #'org-store-link)
+   ("C-c a" . #'org-agenda)
+   ("C-c c" . #'org-capture))
 #+end_src
 
-Variables customizations
-
-#+begin_src emacs-lisp
-  (customize-set-variable 'org-directory vs/org-directory)
-
-  (when (boundp 'org-directory)
-    (customize-set-variable 'org-default-notes-file (concat org-directory "notes.org"))
-    (customize-set-variable 'org-agenda-files vs/org-agenda-directory))
-
-  (customize-set-variable 'org-confirm-babel-evaluate nil)
-  (customize-set-variable 'org-src-fontify-natively t)
-  (customize-set-variable 'org-log-done 'time)
-  (customize-set-variable 'org-babel-sh-command "bash")
-  (customize-set-variable 'org-capture-templates vs/org-capture-templates)
-  (customize-set-variable 'org-structure-template-alist vs/org-structure-template-alist)
-  (customize-set-variable 'org-use-speed-commands t)
-  (customize-set-variable 'org-refile-use-outline-path t)
-  (customize-set-variable 'org-outline-path-complete-in-steps nil)
-  (customize-set-variable 'org-refile-targets '((org-agenda-files :maxlevel . 9)))
-  (customize-set-variable 'org-hide-emphasis-markers t)
-  (customize-set-variable 'org-imenu-depth 7)
-#+end_src
+*** Config
 
 Org babel
 
 #+begin_src emacs-lisp
+  :config
   (when-idle
    (org-babel-do-load-languages
     'org-babel-load-languages
@@ -594,155 +596,156 @@ Org babel
       (elixir . t)
       (ruby . t)
       (dot . t)
-      (latex . t))))
+      (latex . t)))))
 #+end_src
 
-Org export Latex customization
+*** Org export Latex customization
+Abntex2 class
 
 #+begin_src emacs-lisp
-  ;; Abntex2 class
-  (with-eval-after-load 'ox-latex
-    (when (boundp 'org-latex-classes)
-      (add-to-list 'org-latex-classes
-                   '("abntex2"
-                     "\\documentclass{abntex2}
+  (use-package ox-latex
+    :elpaca nil
+    :after ox-latex
+    :custom
+    ;; Source code highlight with Minted package.
+    (org-latex-listings 'minted)
+    (org-latex-packages-alist '(("" "minted")))
+    (org-latex-pdf-process
+     '("latexmk -shell-escape -pdf -interaction=nonstopmode -file-line-error %f")
+     :config
+     (add-to-list 'org-latex-classes
+                  '("abntex2"
+                    "\\documentclass{abntex2}
                       [NO-DEFAULT-PACKAGES]
                       [EXTRA]"
-                     ("\\section{%s}" . "\\section*{%s}")
-                     ("\\subsection{%s}" . "\\subsection*{%s}")
-                     ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                     ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                     ("\\subparagraph{%s}" . "\\subparagraph*{%s}")
-                     ("\\maketitle" . "\\imprimircapa")))))
-
-  ;; Source code highlight with Minted package.
-  (customize-set-variable 'org-latex-listings 'minted)
-  (customize-set-variable 'org-latex-packages-alist '(("" "minted")))
-  (customize-set-variable
-   'org-latex-pdf-process
-   '("latexmk -shell-escape -pdf -interaction=nonstopmode -file-line-error %f"))
+                    ("\\section{%s}" . "\\section*{%s}")
+                    ("\\subsection{%s}" . "\\subsection*{%s}")
+                    ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                    ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                    ("\\subparagraph{%s}" . "\\subparagraph*{%s}")
+                    ("\\maketitle" . "\\imprimircapa")))))
 #+end_src
+
+#+RESULTS:
 
 *** Extensions
 **** Org Bullets
 #+begin_src emacs-lisp
-  (elpaca org-bullets)
-
-  (add-hook 'org-mode-hook 'org-bullets-mode)
-
-  (customize-set-variable 'org-hide-leading-stars t)
+  (use-package org-bullets
+    :after org
+    :hook (org-mode . org-bullets-mode)
+    :custom (org-hide-leading-stars t))
 #+end_src
 
 **** Org Download
 #+begin_src emacs-lisp
-  (elpaca org-download)
-
-  (add-hook 'dired-mode-hook 'org-download-enable)
+  (use-package org-download
+    :hook (dired-mode . org-download-enable))
 #+end_src
 
 **** Org Present
 #+begin_src emacs-lisp
-  (elpaca org-present)
-
-  (add-hook 'org-present-mode-hook
-            (lambda ()
-              (safe-funcall 'org-present-big)
-              (safe-funcall 'org-display-inline-images)
-              (safe-funcall 'org-present-hide-cursor)
-              (safe-funcall 'org-present-read-only)))
-
-  (add-hook 'org-present-mode-quit-hook
-            (lambda ()
-              (safe-funcall 'org-present-small)
-              (safe-funcall 'org-remove-inline-images)
-              (safe-funcall 'org-present-show-cursor)
-              (safe-funcall 'org-present-read-write)))
+  (use-package org-present
+    :hook
+    (org-present-mode .
+                      (lambda ()
+                        (org-present-big)
+                        (org-display-inline-images)
+                        (org-present-hide-cursor)
+                        (org-present-read-only)))
+    (org-present-mode-quit .
+                           (lambda ()
+                             (org-present-small)
+                             (org-remove-inline-images)
+                             (org-present-show-cursor)
+                             (org-present-read-write))))
 #+end_src
 
 **** Org + Reveal.js
 #+begin_src emacs-lisp
-  (elpaca org-re-reveal)
-
-  (customize-set-variable 'org-re-reveal-root
-                          "https://cdn.jsdelivr.net/reveal.js/latest")
-  (customize-set-variable 'org-reveal-mathjax t)
+  (use-package org-re-reveal
+    :custom
+    (org-re-reveal-root
+     "https://cdn.jsdelivr.net/reveal.js/latest")
+    (org-reveal-mathjax t))
 #+end_src
 
 **** Org Verb
 Make HTTP requests using org files!
 
 #+begin_src emacs-lisp
-  (elpaca verb
-    (with-eval-after-load 'org
-      (when (and (boundp 'org-mode-map)
-                 (boundp 'verb-command-map))
-        (define-key org-mode-map (kbd "C-c C-r") verb-command-map))))
+  (use-package verb
+    :after org
+    :config
+    (define-key org-mode-map (kbd "C-c C-r") verb-command-map))
 #+end_src
 
 **** Org Babel Async
 Turn code evaluation async.
 
 #+begin_src emacs-lisp
-  (elpaca ob-async
-    (with-eval-after-load 'ob
-      (require 'ob-async)))
+  (use-package ob-async
+    :after ob)
 #+end_src
 
 **** Ox-pandoc
 #+begin_src emacs-lisp
-  (elpaca ox-pandoc)
-
-  (with-eval-after-load 'ox
-    (require 'ox-pandoc))
+  (use-package ox-pandoc
+    :after ox)
 #+end_src
 
 **** Org Notify
 #+begin_src emacs-lisp
-  (elpaca org-notify
-    (with-eval-after-load 'org
-      (require 'org-notify)
+  (use-package org-notify
+    :after org
+    :config
+    (org-notify-start 60)
 
-      (safe-funcall 'org-notify-start 60)
-
-      (safe-funcall 'org-notify-add
-                    'default
-                    '(:time "10m" :period "2m" :duration 25 :actions -notify/window)
-                    '(:time "1h" :period "15m" :duration 25 :actions -notify/window)
-                    '(:time "2h" :period "30m" :duration 25 :actions -notify/window))))
+    (org-notify-add
+     'default
+     '(:time "10m" :period "2m" :duration 25 :actions -notify/window)
+     '(:time "1h" :period "15m" :duration 25 :actions -notify/window)
+     '(:time "2h" :period "30m" :duration 25 :actions -notify/window)))
 #+end_src
 
 **** Org project
 #+begin_src emacs-lisp
-  (elpaca
-   '(org-project :type git :host github :repo "delehef/org-project"))
-
-  (customize-set-variable 'org-project-todos-per-project t)
-
-  (with-eval-after-load 'project
-    (when (boundp 'project-prefix-map)
-      (define-key project-prefix-map (kbd "t") 'org-project-quick-capture)
-      (define-key project-prefix-map (kbd "T") 'org-project-capture)
-      (define-key project-prefix-map (kbd "o") 'org-project-open-todos)))
+  (use-package org-project
+    :after (org project)
+    :elpaca (org-project :type git :host github :repo "delehef/org-project")
+    :custom
+    (org-project-todos-per-project t)
+    :bind (:map project-prefix-map
+                ("t" . #'org-project-quick-capture)
+                ("T" . #'org-project-capture)
+                ("o" . #'org-project-open-todos)))
 #+end_src
 
 **** Org contacts
 #+begin_src emacs-lisp
-  (elpaca org-contacts
-    (with-eval-after-load 'org
-      (require 'org-contacts)))
+  (use-package org-contacts
+    :after org)
 #+end_src
 
 **** Org tempo
 #+begin_src emacs-lisp
-  (with-eval-after-load 'org
-    (require 'org-tempo))
+  (use-package org-tempo
+    :after org
+    :elpaca nil)
 #+end_src
 
 ** Project
 Get latest version of project.el
 
 #+begin_src emacs-lisp
-  (elpaca project)
+  (use-package project
+    :bind (:map project-prefix-map
+                ("C-o l" . vs/project-dir-locals)
+                ("C-o d" . vs/project-db-file)
+                ("C-o a" . vs/project-api-file)
+                ("C-o r" . vs/project-runbook))
+    :config
+    (fset 'project-shell 'vs/vterm-in-project))
 #+end_src
 
 ** Tempo mode
@@ -754,29 +757,24 @@ Snippets dir
   (defvar vs/snippets-dir (expand-file-name "snippets" user-emacs-directory))
 #+end_src
 
-Autoload tempo mode
+Package declaration
 
 #+begin_src emacs-lisp
-  (autoload 'tempo-forward-markn "tempo.el")
-
-  (autoload 'tempo-backward-mark "tempo.el")
-
-  (autoload 'tempo-complete-tag "tempo.el")
+  (use-package tempo
+    :elpaca nil
+    :commands (tempo-forward-mark tempo-backward-mark tempo-complete-tag)
+    :bind
+    (("M-]" . tempo-forward-mark)
+     ("M-[" . tempo-backward-mark)
+     ("S-<tab>" . tempo-complete-tag)))
 #+end_src
 
-Global keys for tempo mode
-
-#+begin_src emacs-lisp
-  (global-set-key (kbd "M-]") 'tempo-forward-mark)
-  (global-set-key (kbd "M-[") 'tempo-backward-mark)
-  (global-set-key (kbd "S-<tab>") 'tempo-complete-tag)
-#+end_src
-
-Function to read the snippets from the =snippets-dir=.
+Macro to read the snippets from the =snippets-dir=.
 
 #+begin_src emacs-lisp
   (defmacro vs/load-snippets (mode &optional ts-mode)
-    "Load snippets for MODE."
+    "Load snippets for MODE.
+  If mode has a tree-sitter mode must be provided in the TS-MODE option."
     `(with-eval-after-load (or ,ts-mode ,mode)
        (message "[%s] loading snippets..." ,mode)
        (load (format "%s/%s.el" vs/snippets-dir ,mode))
@@ -784,207 +782,197 @@ Function to read the snippets from the =snippets-dir=.
 #+end_src
 
 ** Third part Extensions
-*** All the icons
-#+begin_src emacs-lisp :tangle no
-  (elpaca all-the-icons)
-#+end_src
 *** Diff HL
 #+begin_src emacs-lisp
-  (elpaca diff-hl
-          (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
-          (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
-          (safe-funcall 'global-diff-hl-mode))
+  (use-package diff-hl
+    :hook
+    (magit-pre-refresh-hook . diff-hl-magit-pre-refresh)
+    (magit-post-refresh-hook . diff-hl-magit-post-refresh)
+    :config
+    (global-diff-hl-mode))
 #+end_src
 *** Dump jump
 #+begin_src emacs-lisp
-  (elpaca dumb-jump
-          (with-eval-after-load 'xref
-            (add-hook 'xref-backend-functions 'dumb-jump-xref-activate)))
+  (use-package dumb-jump
+    :after xref
+    :config
+    (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
 #+end_src
 *** Editor config
 #+begin_src emacs-lisp
-  (elpaca editorconfig
-          (add-hook 'prog-mode-hook 'editorconfig-mode))
+  (use-package editorconfig
+    :hook
+    (prog-mode . editorconfig-mode))
 #+end_src
 *** Emacs everywhere
 #+begin_src emacs-lisp
-  (elpaca emacs-everywhere
-          (customize-set-variable
-           'emacs-everywhere-frame-parameters '((name . "emacs-everywhere")
-                                                (width . 80)
-                                                (height . 12)
-                                                (menu-bar-lines . 0)
-                                                (tool-bar-lines . 0)
-                                                (vertical-scroll-bars . nil))))
+  (use-package emacs-everywhere
+    :defer t
+    :custom
+    (emacs-everywhere-frame-parameters  '((name . "emacs-everywhere")
+                                          (width . 80)
+                                          (height . 12)
+                                          (menu-bar-lines . 0)
+                                          (tool-bar-lines . 0)
+                                          (vertical-scroll-bars . nil))))
 #+end_src
 *** Exec Path From Shell
 #+begin_src emacs-lisp
-  (elpaca exec-path-from-shell
-          (when (or (daemonp) (memq window-system '(mac ns x)))
-            (safe-funcall 'exec-path-from-shell-initialize)))
-#+end_src
-*** Fontaine
-#+begin_src emacs-lisp
-  (elpaca fontaine
-    (require 'fontaine))
+  (use-package exec-path-from-shell
+    :config
+    (when (or (daemonp) (memq window-system '(mac ns x)))
+      (exec-path-from-shell-initialize)))
 #+end_src
 *** Iedit
 #+begin_src emacs-lisp
-  (elpaca iedit
-          (global-set-key (kbd "C-;") 'iedit-mode))
+  (use-package iedit
+    :bind ("C-;" . iedit-mode))
 #+end_src
 *** Impostman
 #+begin_src emacs-lisp
-  (elpaca
-   '(impostman :type git :host github :repo "flashcode/impostman" :branch "main"))
+  (use-package impostman
+    :defer t)
 #+end_src
 *** Magit
 #+begin_src emacs-lisp
-  (elpaca magit
-          (global-set-key (kbd "C-x g") 'magit-status))
+  (use-package magit
+    :bind ("C-x g" . magit-status))
 #+end_src
 *** Multiple cursors
 #+begin_src emacs-lisp
-  (elpaca multiple-cursors
-          (global-set-key (kbd "M-n") 'mc/mark-next-like-this)
-          (global-set-key (kbd "M-p") 'mc/mark-previous-like-this)
-          (global-set-key (kbd "C-c x") 'mc/mark-all-like-this))
+  (use-package multiple-cursors
+    :bind
+    ("M-n" . mc/mark-next-like-this)
+    ("M-p" . mc/mark-previous-like-this)
+    ("C-c x" . mc/mark-all-like-this))
 #+end_src
 *** Nerd Icons
 #+begin_src emacs-lisp
-  (elpaca nerd-icons
-    (customize-set-variable 'nerd-icons-font-family "Iosevka Nerd Font")
-    (require 'nerd-icons))
+  (use-package nerd-icons
+    :custom
+    (nerd-icons-font-family "Iosevka Nerd Font"))
 #+end_src
 *** Password store
 #+begin_src emacs-lisp
-  (elpaca password-store)
-#+end_src
-*** Projectile
-#+begin_src emacs-lisp
-  (elpaca projectile
-          (when (boundp 'temp-dir)
-            (customize-set-variable 'projectile-known-projects-file
-                                    (expand-file-name "projectile-bookmarks.eld" temp-dir)))
-
-          (customize-set-variable 'projectile-globally-ignored-directories
-                                  '("node_modules" ".git" ".svn" "deps" "_build" ".elixir_ls"))
-
-          (customize-set-variable 'compilation-buffer-name-function
-                                  'projectile-compilation-buffer-name)
-
-          (customize-set-variable 'compilation-save-buffers-predicate
-                                  'projectile-current-project-buffer-p)
-
-          (safe-funcall 'projectile-mode 1)
-
-          (when (boundp 'projectile-mode-map)
-            (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)))
+  (use-package password-store
+    :defer t)
 #+end_src
 *** PDF tools
 #+begin_src emacs-lisp
-   (elpaca pdf-tools)
+  (use-package pdf-tools
+    :mode  ("\\.pdf\\'" . pdf-view-mode)
+    :config
+    (pdf-loader-install))
 #+end_src
 *** Dashboard
 #+begin_src emacs-lisp
-  (elpaca dashboard
-    (customize-set-variable 'dashboard-items '((recents  . 5)
-                                               (projects . 5)
-                                               (bookmarks . 5)
-                                               (agenda . 5)))
-    (customize-set-variable 'dashboard-startup-banner 'logo)
-    (customize-set-variable 'dashboard-center-content t)
-    (add-hook 'elpaca-after-init-hook (lambda ()
-                                        (safe-funcall 'dashboard-open))))
+  (use-package dashboard
+    :custom
+    (dashboard-projects-backend 'project-el)
+    (dashboard-items '((recents  . 5)
+                       (projects . 5)
+                       (bookmarks . 5)
+                       (agenda . 5)))
+    (dashboard-startup-banner 'logo)
+    (dashboard-center-content t)
+    (dashboard-display-icons-p t)
+    (dashboard-icon-type 'nerd-icons)
+    (dashboard-set-heading-icons t)
+    (dashboard-set-file-icons t)
+    (initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
+    :config
+    (dashboard-setup-startup-hook))
 #+end_src
 *** Ripgrep
 #+begin_src emacs-lisp
-  (elpaca rg
-          (global-set-key (kbd "C-c r") 'rg-menu)
-          (customize-set-variable 'rg-command-line-flags '("--hidden")))
+  (use-package rg
+    :bind ("C-c r" . rg-menu)
+    :custom (rg-command-line-flags '("--hidden")))
 #+end_src
 *** Rainbow mode
 #+begin_src emacs-lisp
-  (elpaca rainbow-mode
-          (add-hook 'prog-mode-hook 'rainbow-mode))
+  (use-package rainbow-mode
+    :hook (prog-mode . rainbow-mode))
 #+end_src
 *** Smartparens
 #+begin_src emacs-lisp
-  (elpaca smartparens
-          (with-eval-after-load 'smartparens
-            (require 'smartparens-config)
-
-            (when (boundp 'smartparens-mode-map)
-              (define-key smartparens-mode-map (kbd "C-)") 'sp-forward-slurp-sexp)
-              (define-key smartparens-mode-map (kbd "C-(") 'sp-forward-barf-sexp)
-              (define-key smartparens-mode-map (kbd "C-{") 'sp-backward-slurp-sexp)
-              (define-key smartparens-mode-map (kbd "C-}") 'sp-backward-barf-sexp)))
-
-          (add-hook 'prog-mode-hook 'smartparens-mode))
-#+end_src
-*** Smex
-#+begin_src emacs-lisp
-  (elpaca smex)
+  (use-package smartparens
+    :config
+    (require 'smartparens-config)
+    :bind
+    (:map smartparens-mode-map
+          ("C-)" . sp-forward-slurp-sexp)
+          ("C-(" . sp-forward-barf-sexp)
+          ("C-{" . sp-backward-slurp-sexp)
+          ("C-}" . sp-backward-barf-sexp))
+    :hook   (prog-mode . smartparens-mode))
 #+end_src
 *** Switch Window
 #+begin_src emacs-lisp
-  (elpaca switch-window
-          (global-set-key (kbd "C-x o") 'switch-window))
+  (use-package switch-window
+    :bind ("C-x o" . switch-window))
 #+end_src
 *** View Large Files
 #+begin_src emacs-lisp
-  (elpaca vlf)
+  (use-package vlf
+    :config
+    (require 'vlf-setup))
 #+end_src
 *** VTerm
 #+begin_src emacs-lisp
-  (elpaca vterm
-          (global-set-key (kbd "<f7>") 'vterm-other-window))
+  (use-package vterm
+    :bind ("<f7>" . vterm-other-window)
+    :custom (vterm-max-scrollback 5000))
 #+end_src
 *** Telega
 #+begin_src emacs-lisp
-  (elpaca telega
-          (global-set-key (kbd "C-c t") #'telega))
+  (use-package telega
+    :bind ("C-c t" . telega))
 #+end_src
 *** Tree Sitter
 Tree sitter support for Emacs 28
 
 #+begin_src emacs-lisp
-  (unless VS/IS-EMACS-29
-    (elpaca tree-sitter-langs)
+  (use-package tree-sitter-langs
+    :if (not VS/IS-EMACS-29))
 
-    (elpaca tree-sitter
-      (add-hook 'tree-sitter-after-on-hook 'tree-sitter-hl-mode)
-      (safe-funcall 'global-tree-sitter-mode)))
+  (use-package tree-sitter
+    :if (not VS/IS-EMACS-29)
+    :hook (tree-sitter-after-on-hook . tree-sitter-hl-mode)
+    :config (global-tree-sitter-mode))
 #+end_src
 
 Tree sitter auto installer for Emacs 29
 
 #+begin_src emacs-lisp
-  (when VS/IS-EMACS-29
-    (elpaca treesit-auto
-      (customize-set-variable 'treesit-auto-install 'prompt)
-      (require 'treesit-auto)
-      (global-treesit-auto-mode)))
+  (use-package treesit-auto
+    :if VS/IS-EMACS-29
+    :custom
+    (treesit-auto-install 'prompt)
+    :config
+    (global-treesit-auto-mode))
 #+end_src
 *** Wich Key
 #+begin_src emacs-lisp
-  (elpaca which-key
-          (safe-funcall 'which-key-mode))
+  (use-package which-key
+    :config
+    (which-key-mode))
 #+end_src
 *** XClip
 #+begin_src emacs-lisp
-  (when (and (eq system-type 'gnu/linux) (string= (getenv "XDG_SESSION_TYPE") "x11"))
-    (elpaca xclip
-            after-init-hook 'xclip-mode))
+  (use-package xclip
+    :if (and (eq system-type 'gnu/linux) (string= (getenv "XDG_SESSION_TYPE") "x11"))
+    :hook (after-init . xclip-mode))
 #+end_src
 ** Appearence
 *** Fonts Families
 Uses fontaine to configure the fonts preset
 
 #+begin_src emacs-lisp
-  (with-eval-after-load 'fontaine
-    (customize-set-variable
-     'fontaine-presets
+  (use-package fontaine
+    :if window-system
+    :custom
+    (fontaine-presets
      `((small
         :default-family "Iosevka Nerd Font"
         :default-height ,(if VS/IS-MACOS 150 100)
@@ -1020,15 +1008,15 @@ Uses fontaine to configure the fonts preset
         :italic-slant italic
         :line-spacing nil
         :symbol-family ,(if VS/IS-MACOS "Apple Color Emoji" "Noto Color Emoji"))))
-
+    :init
     (fontaine-set-preset (or (fontaine-restore-latest-preset) 'regular))
-
-    (add-hook 'kill-emacs-hook #'fontaine-store-latest-preset)
-    (add-hook 'modus-themes-after-load-theme-hook #'fontaine-apply-current-preset)
-
-    (define-key global-map (kbd "C-c f") #'fontaine-set-preset)
-    (define-key global-map (kbd "C-c F") #'fontaine-set-face-font)
-    (define-key ctl-x-x-map (kbd "v") #'variable-pitch-mode))
+    :hook
+    (kill-emacs . fontaine-store-latest-preset)
+    (modus-themes-after-load-theme . fontaine-apply-current-preset)
+    :bind (("C-c f" . fontaine-set-preset)
+           ("C-c F" . fontaine-set-face-font)
+           :map ctl-x-x-map
+           ("v" . variable-pitch-mode)))
 #+end_src
 
 Helps in font resize.
@@ -1075,7 +1063,7 @@ See more: https://github.com/domtronn/all-the-icons.el/wiki/Mode-Line
          vs/--modeline-separator)
       (let ((branch (mapconcat 'concat (cdr (split-string vc-mode "[:-]")) "-")))
         (concat
-         (safe-funcall 'nerd-icons-devicon "nf-dev-git_branch")
+         (nerd-icons-devicon "nf-dev-git_branch")
          " "
          branch
          vs/--modeline-separator))))
@@ -1083,13 +1071,13 @@ See more: https://github.com/domtronn/all-the-icons.el/wiki/Mode-Line
   (defun vs/--custom-modeline-clock-calendar ()
     "Define the mode for calendar and clock."
     (concat
-     (safe-funcall 'nerd-icons-faicon "nf-fa-clock_o")
+     (nerd-icons-faicon "nf-fa-clock_o")
      (propertize (format-time-string " %H:%M")
                  'face '(:height 0.9)
                  'mouse-face 'mode-line-highlight
                  'local-map (make-mode-line-mouse-map 'mouse-1 'world-clock))
      " "
-     (safe-funcall 'nerd-icons-faicon "nf-fa-calendar")
+     (nerd-icons-faicon "nf-fa-calendar")
      (propertize (format-time-string "  %b %d")
                  'face '(:height 0.9)
                  'mouse-face 'mode-line-highlight
@@ -1099,14 +1087,14 @@ See more: https://github.com/domtronn/all-the-icons.el/wiki/Mode-Line
   (defun vs/--custom-modeline-line-column ()
     "Define the mode for lines and columns."
     (concat
-     (safe-funcall 'nerd-icons-faicon "nf-fa-code")
+     (nerd-icons-faicon "nf-fa-code")
      "  %l:%c"
      vs/--modeline-separator))
 
   (defun vs/--custom-modeline-mode-major-mode ()
     "Define the mode line text for major modes."
     (concat
-     (safe-funcall 'nerd-icons-icon-for-buffer)
+     (nerd-icons-icon-for-buffer)
      " "
      (format-mode-line mode-name)
      vs/--modeline-separator))
@@ -1170,44 +1158,44 @@ See more: https://github.com/domtronn/all-the-icons.el/wiki/Mode-Line
 ** Completion system
 *** Vertico
 #+begin_src emacs-lisp
-  (elpaca (vertico
-           :files (:defaults "extensions/*")
-           :includes (vertico-directory))
-
-          (customize-set-variable 'vertico-cycle t)
-          (customize-set-variable 'enable-recursive-minibuffers t)
-
-          (safe-funcall 'vertico-mode 1)
-
-          (with-eval-after-load 'vertico
-            (when (boundp 'vertico-map)
-              (define-key vertico-map (kbd "M-h") 'vertico-directory-up)))
-
-          (add-hook 'rfn-eshadow-update-overlay-hook 'vertico-directory-tidy))
+  (use-package vertico
+    :elpaca (vertico
+             :files (:defaults "extensions/*")
+             :includes (vertico-directory))
+    :custom
+    (vertico-cycle t)
+    (enable-recursive-minibuffers t)
+    :init
+    (vertico-mode 1)
+    :bind
+    (:map vertico-map
+          ("M-h" . vertico-directory-up))
+    :hook
+    (rfn-eshadow-update-overlay . vertico-directory-tidy))
 #+end_src
 
 *** Orderless
 #+begin_src emacs-lisp
-  (elpaca orderless
-          (customize-set-variable 'completion-styles '(orderless))
-          (customize-set-variable 'completion-category-overrides '((file (styles . (partial-completion)))))
-          (customize-set-variable 'completion-category-defaults nil))
+  (use-package orderless
+    :custom
+    (completion-styles '(orderless))
+    (completion-category-overrides '((file (styles . (partial-completion)))))
+    (completion-category-defaults nil))
 #+end_src
 
 *** Embark - minibuffer actions
 #+begin_src emacs-lisp
-  (elpaca embark
-          (global-set-key (kbd "M-o") 'embark-act)
-          (global-set-key (kbd "C-h B") 'embark-bindings)
-
-          (with-eval-after-load 'embark
-            (customize-set-variable 'prefix-help-command 'embark-prefix-help-command)
-            (customize-set-variable 'embark-action-indicator
-                                    (lambda (map _target)
-                                      (safe-funcall 'which-key--show-keymap "Embark" map nil nil 'no-paging)
-                                      'which-key--hide-popup-ignore-command))
-            (customize-set-variable 'embark-become-indicator 'embark-action-indicator)))
-
+  (use-package embark
+    :bind
+    (("M-o" . embark-act)
+     ("C-h B" . embark-bindings))
+    :custom
+    (prefix-help-command 'embark-prefix-help-command)
+    (embark-action-indicator
+     (lambda (map _target)
+       (which-key--show-keymap "Embark" map nil nil 'no-paging)
+       'which-key--hide-popup-ignore-command))
+    (embark-become-indicator 'embark-action-indicator))
 #+end_src
 
 Hide the mode line of the Embark live/completions buffers
@@ -1221,89 +1209,102 @@ Hide the mode line of the Embark live/completions buffers
 
 *** Marginalia - minibuffer annotations
 #+begin_src emacs-lisp
-  (elpaca marginalia
-          (safe-funcall 'marginalia-mode 1)
-          (define-key minibuffer-local-map (kbd "M-A") 'marginalia-cycle)
-          (define-key minibuffer-local-map (kbd "M-A") 'marginalia-cycle))
+  (use-package marginalia
+    :init
+    (marginalia-mode 1)
+    :bind (:map minibuffer-local-map
+                ("M-A" . marginalia-cycle)
+                ("M-A" . marginalia-cycle)))
 #+end_src
 
 *** Consult - commands based on completing-read
 #+begin_src emacs-lisp
-  (elpaca consult)
-  (elpaca embark-consult)
-  (elpaca consult-dir)
+  (use-package consult
+    :bind
+    (("C-c h" . consult-history)
+     ("C-c m" . consult-mode-command)
+     ("C-c b" . consult-bookmark)
+     ("C-c k" . consult-kmacro)
 
-  (global-set-key (kbd "C-c h") 'consult-history)
-  (global-set-key (kbd "C-c m") 'consult-mode-command)
-  (global-set-key (kbd "C-c b") 'consult-bookmark)
-  (global-set-key (kbd "C-c k") 'consult-kmacro)
-
-  (global-set-key (kbd "C-x M-:") 'consult-complex-command)
-  (global-set-key (kbd "C-x b") 'consult-buffer)
-  (global-set-key (kbd "C-x 4 b") 'consult-buffer-other-window)
-  (global-set-key (kbd "C-x 5 b") 'consult-buffer-other-frame)
+     ("C-x M-:" . consult-complex-command)
+     ("C-x b". consult-buffer)
+     ("C-x 4 b". consult-buffer-other-window)
+     ("C-x 5 b". consult-buffer-other-frame)
 #+end_src
 
 Custom =M-#= bindings for fast register access
 
-(global-set-key (kbd "M-#") 'consult-register-load)
-(global-set-key (kbd "M-'") 'consult-register-store)
-(global-set-key (kbd "C-M-#") 'consult-register)
-(global-set-key (kbd "C-M-#") 'consult-register)
+#+begin_src emacs-lisp
+  ("M-#" . consult-register-load)
+  ("M-'" . consult-register-store)
+  ("C-M-#" . consult-register)
+  ("C-M-#" . consult-register)
 #+end_src
 
 Other custom bindings
 
 #+begin_src emacs-lisp
-  (global-set-key (kbd "M-y") 'consult-yank-pop)
+  ("M-y" . consult-yank-pop)
 #+end_src
 
 M-g bindings (goto-map)
 
 #+begin_src emacs-lisp
-  (global-set-key (kbd "M-g e") 'consult-compile-error)
-  (global-set-key (kbd "M-g g") 'consult-goto-line)
-  (global-set-key (kbd "M-g M-g") 'consult-goto-line)
-  (global-set-key (kbd "M-g o") 'consult-outline)
-  (global-set-key (kbd "M-g m") 'consult-mark)
-  (global-set-key (kbd "M-g k") 'consult-global-mark)
-  (global-set-key (kbd "M-g i") 'consult-imenu)
-  (global-set-key (kbd "M-g I") 'consult-imenu-multi)
-  (global-set-key (kbd "M-g !") 'consult-flymake)
+  ("M-g e" . consult-compile-error)
+  ("M-g g" . consult-goto-line)
+  ("M-g M-g" . consult-goto-line)
+  ("M-g o" . consult-outline)
+  ("M-g m" . consult-mark)
+  ("M-g k" . consult-global-mark)
+  ("M-g i" . consult-imenu)
+  ("M-g I" . consult-imenu-multi)
+  ("M-g !" . consult-flymake)
 #+end_src
 
 M-s bindings (search-map)
 
 #+begin_src emacs-lisp
-  (global-set-key (kbd "M-s f") 'consult-find)
-  (global-set-key (kbd "M-s L") 'consult-locate)
-  (global-set-key (kbd "M-s g") 'consult-grep)
-  (global-set-key (kbd "M-s G") 'consult-git-grep)
-  (global-set-key (kbd "M-s r") 'consult-ripgrep)
-  (global-set-key (kbd "M-s l") 'consult-line)
-  (global-set-key (kbd "M-s k") 'consult-keep-lines)
-  (global-set-key (kbd "M-s u") 'consult-focus-lines)
+  ("M-s f" . consult-find)
+  ("M-s L" . consult-locate)
+  ("M-s g" . consult-grep)
+  ("M-s G" . consult-git-grep)
+  ("M-s r" . consult-ripgrep)
+  ("M-s l" . consult-line)
+  ("M-s k" . consult-keep-lines)
+  ("M-s u" . consult-focus-lines)
 #+end_src
 
 Isearch integration
 
 #+begin_src emacs-lisp
-  (global-set-key (kbd "M-s e") 'consult-isearch-history)
-  (define-key isearch-mode-map (kbd "M-e") 'consult-isearch-history)
-  (define-key isearch-mode-map (kbd "M-s e") 'consult-isearch-history)
-  (define-key isearch-mode-map (kbd "M-s l") 'consult-line)
+  ("M-s e" . consult-isearch-history)
+  :map isearch-mode-map
+  ("M-e" . consult-isearch-history)
+  ("M-s e" . consult-isearch-history)
+  ("M-s l" . consult-line))
 #+end_src
 
 Consult narrow key
 
 #+begin_src emacs-lisp
-  (customize-set-variable 'consult-narrow-key "<")
+  :custom
+  (consult-narrow-key "<"))
+#+end_src
+
+Consult and emabark
+
+#+begin_src emacs-lisp
+  (use-package embark-consult
+    :after consult)
 #+end_src
 
 Consult dir
 
 #+begin_src emacs-lisp
-  (global-set-key (kbd "C-x C-d") 'consult-dir)
+  (use-package consult-dir
+    :bind
+    ("C-x C-d" . consult-dir)
+    :after consult)
 #+end_src
 
 Consult and vertico
@@ -1324,7 +1325,8 @@ Consult and vertico
 Consult and Eglot integration
 
 #+begin_src emacs-lisp
-  (elpaca consult-eglot)
+  (use-package consult-eglot
+    :after (consult eglot))
 #+end_src
 
 ** Global keybindings
@@ -1367,78 +1369,61 @@ Removing some default keybindings
 ** Keybindings for specific modes
 *** NXML mode
 #+begin_src emacs-lisp
-  (with-eval-after-load 'nxml-mode
-    (when (boundp 'nxml-mode-map)
-      (define-key nxml-mode-map (kbd "C-c C-f") 'vs/format-xml-buffer)
-      (define-key nxml-mode-map (kbd "C-c C-w") 'vs/nxml-where)))
-#+end_src
+  (use-package nxml-mode
+    :elpaca nil
+    :bind (:map nxml-mode-map
+                ("C-c C-f" . vs/format-xml-buffer)
+                ("C-c C-w" . vs/nxml-where)))
 
-*** Project mode
-#+begin_src emacs-lisp
-  (with-eval-after-load 'project
-    (when (functionp 'project-shell)
-      (fset 'project-shell 'vs/vterm-in-project)
-      (define-key project-prefix-map (kbd "C-o l") 'vs/project-dir-locals)
-      (define-key project-prefix-map (kbd "C-o d") 'vs/project-db-file)
-      (define-key project-prefix-map (kbd "C-o a") 'vs/project-api-file)
-      (define-key project-prefix-map (kbd "C-o r") 'vs/project-runbook)))
 #+end_src
 
 ** Language server protocol (LSP)
 Using Eglot since is the default LSP in Emacs.
 
 #+begin_src emacs-lisp
-  (elpaca eglot
-          (with-eval-after-load 'eglot
-            (when (boundp 'eglot-mode-map)
-              (define-key eglot-mode-map (kbd "C-c e a") 'eglot-code-actions)
-              (define-key eglot-mode-map (kbd "C-c e f") 'eglot-format)
-              (define-key eglot-mode-map (kbd "C-c e r") 'eglot-rename)
-              (define-key eglot-mode-map (kbd "C-c e R") 'eglot-reconnect)
-              (define-key eglot-mode-map (kbd "C-c e o") 'eglot-code-action-organize-imports)
-              (define-key eglot-mode-map (kbd "C-c e D") 'eglot-find-declaration)
-              (define-key eglot-mode-map (kbd "C-c e i") 'eglot-find-implementation)
-              (define-key eglot-mode-map (kbd "C-c e d") 'eglot-find-typeDefinition)
-              (define-key eglot-mode-map (kbd "C-c e h") 'eldoc)))
-          (customize-set-variable 'eglot-autoshutdown t)
-          ;; disable events buffer
-          (customize-set-variable 'eglot-events-buffer-size 0)
-          (fset #'jsonrpc--log-event #'ignore))
+  (use-package eglot
+    :bind
+    (:map eglot-mode-map
+          ("C-c e a" . eglot-code-actions)
+          ("C-c e f" . eglot-format)
+          ("C-c e r" . eglot-rename)
+          ("C-c e R" . eglot-reconnect)
+          ("C-c e o" . eglot-code-action-organize-imports)
+          ("C-c e D" . eglot-find-declaration)
+          ("C-c e i" . eglot-find-implementation)
+          ("C-c e d" . eglot-find-typeDefinition)
+          ("C-c e h" . eldoc))
+    :custom
+    (eglot-autoshutdown t)
+    ;; disable events buffer
+    (eglot-events-buffer-size 0)
+    :config
+    (fset #'jsonrpc--log-event #'ignore))
 #+end_src
 
 ** Docker
 Packages
 
 #+begin_src emacs-lisp
-  (elpaca dockerfile-mode)
-  (elpaca docker-compose-mode)
-  (elpaca docker)
-  (unless VS/IS-EMACS-29
-    (elpaca docker-tramp))
-#+end_src
+  (use-package dockerfile-mode
+    :defer t)
 
-Global key to access the Docker panel.
+  (use-package docker-compose-mode
+    :defer t)
 
-#+begin_src emacs-lisp
-  (global-set-key (kbd "C-c d") 'docker)
-#+end_src
+  (use-package docker
+    :bind ("C-c d" . docker))
 
-If is running in MacOS, use nerdctl with limavm instead of Docker.
-
-#+begin_src emacs-lisp
-  (when VS/IS-MACOS
-    (customize-set-variable 'docker-command "nerdctl.lima")
-    (customize-set-variable 'docker-compose-command "nerdctl.lima compose")
-    (customize-set-variable 'docker-tramp-docker-executable "nerdctl.lima"))
+  (use-package docker-tramp
+    :if (not VS/IS-EMACS-29))
 #+end_src
 
 Tramp integration for Kubernetes
 
 #+begin_src emacs-lisp
-  (unless VS/IS-EMACS-29
-    (elpaca kubernetes-tramp)
-
-    (customize-set-variable 'tramp-remote-shell-executable "sh"))
+  (use-package kubernetes-tramp
+    :if (not VS/IS-EMACS-29)
+    :custom (tramp-remote-shell-executable "sh"))
 #+end_src
 
 ** Programming languages
@@ -1453,37 +1438,38 @@ Flyspell for comments and strings.
 Clojure mode
 
 #+begin_src emacs-lisp
-  (elpaca clojure-mode)
+  (use-package clojure-mode
+    :defer t)
 #+end_src
 
 Cider
 
 #+begin_src emacs-lisp
-  (elpaca cider)
+  (use-package cider
+    :after clojure)
 #+end_src
 
 Flymake Kondor
 
 #+begin_src emacs-lisp
-  (elpaca flymake-kondor)
-
-  (add-hook 'clojure-mode-hook 'flymake-kondor-setup)
+  (use-package flymake-kondor
+    :hook (clojure-mode . flymake-kondor-setup))
 #+end_src
 
 LSP
 
 #+begin_src emacs-lisp
   (defvar-local clojure-lsp-link
-    (concat "https://github.com/clojure-lsp/clojure-lsp/releases/latest/download/"
-            (cond
-             ((eq system-type 'darwin) "clojure-lsp-native-macos-amd64.zip")
-             (t "clojure-lsp-native-static-linux-amd64.zip"))))
+      (concat "https://github.com/clojure-lsp/clojure-lsp/releases/latest/download/"
+              (cond
+               ((eq system-type 'darwin) "clojure-lsp-native-macos-amd64.zip")
+               (t "clojure-lsp-native-static-linux-amd64.zip"))))
 
   (defvar-local clojure-lsp-command
-    (cond
-     ((eq system-type 'darwin)
-      '("clojure-lsp-native-macos-amd64/clojure-lsp"))
-     (t '("clojure-lsp-native-static-linux-amd64/clojure-lsp"))))
+      (cond
+       ((eq system-type 'darwin)
+        '("clojure-lsp-native-macos-amd64/clojure-lsp"))
+       (t '("clojure-lsp-native-static-linux-amd64/clojure-lsp"))))
 
   (vs/add-auto-lsp-server 'clojure-mode
                           :download-url clojure-lsp-link
@@ -1493,8 +1479,17 @@ LSP
 CSharp mode
 
 #+begin_src emacs-lisp
-  (unless VS/IS-EMACS-29
-    (elpaca csharp-mode))
+  (use-package csharp-mode
+    :if (not VS/IS-EMACS-29)
+    :defer t)
+#+end_src
+
+CSharp TS mode
+
+#+begin_src emacs-lisp
+  (use-package csharp-mode
+    :if VS/IS-EMACS-29
+    :defer t)
 #+end_src
 
 LSP
@@ -1535,80 +1530,73 @@ LSP
 Crystal mode
 
 #+begin_src emacs-lisp
-  (elpaca crystal-mode)
+  (use-package crystal-mode
+    :defer t)
 #+end_src
 
 *** Elixir
 Elixir mode
 
 #+begin_src emacs-lisp
-  (when (not VS/IS-EMACS-29)
-    (elpaca elixir-mode)
-    (add-to-list 'auto-mode-alist '("\\mix.lock$" . elixir-mode)))
+  (use-package elixir-mode
+    :if (not VS/IS-EMACS-29)
+    :defer t
+    :bind (:map elixir-mode-map
+                ("C-c C-c f" . elixir-format)
+                ("C-c C-c M" . vs/elixir-map-string-to-map-atom)
+                ("C-c C-c m" . vs/elixir-map-atom-to-map-string)
+                ("C-c C-c J" . vs/etf-to-json)
+                ("C-c C-c j" . vs/json-to-etf)
+                ("C-c C-c D" . vs/elixir-open-dep-docs)))
 #+end_src
 
 Elixir TS Mode
 
 #+begin_src emacs-lisp
-  (when VS/IS-EMACS-29
-    (elpaca elixir-ts-mode))
+  (use-package elixir-ts-mode
+    :if VS/IS-EMACS-29
+    :defer t
+    :bind (:map elixir-ts-mode-map
+                ("C-c C-c f" . vs/elixir-format)
+                ("C-c C-c M" . vs/elixir-map-string-to-map-atom)
+                ("C-c C-c m" . vs/elixir-map-atom-to-map-string)
+                ("C-c C-c J" . vs/etf-to-json)
+                ("C-c C-c j" . vs/json-to-etf)
+                ("C-c C-c D" . vs/elixir-open-dep-docs)))
 #+end_src
 
 Ex Unit
 
 #+begin_src emacs-lisp
-  (elpaca exunit)
-
-  (if VS/IS-EMACS-29
-      (add-hook 'elixir-ts-mode-hook 'exunit-mode)
-    (add-hook 'elixir-mode-hook 'exunit-mode))
+  (use-package exunit
+    :hook
+    (elixir-ts-mode . exunit-mode)
+    (elixir-mode . exunit-mode))
 #+end_src
 
 Inf Elixir
 
 #+begin_src emacs-lisp
-  (elpaca
-   '(inf-elixir :type git :host github :repo "vinikira/inf-elixir.el" :branch "main"))
+  (use-package inf-elixir
+    :defer t
+    :elpaca
+    (inf-elixir :type git :host github :repo "vinikira/inf-elixir.el" :branch "main"))
 #+end_src
 
 Org Babel Elixir
 
 #+begin_src emacs-lisp
-  (elpaca ob-elixir)
+  (use-package ob-elixir
+    :after ob)
 #+end_src
 
 Compile Credo
 
 #+begin_src emacs-lisp
-  (elpaca
-      '(compile-credo :type git :host github :repo "vinikira/compile-credo" :branch "main")
-    (if VS/IS-EMACS-29
-        (with-eval-after-load 'elixir-ts-mode
-          (require 'compile-credo nil t))
-      (with-eval-after-load 'elixir-mode
-        (require 'compile-credo nil t))))
-#+end_src
-
-Mode keymap
-
-#+begin_src emacs-lisp
-  (if VS/IS-EMACS-29
-      (with-eval-after-load 'elixir-ts-mode
-        (when (boundp 'elixir-ts-mode-map)
-          (define-key elixir-ts-mode-map (kbd "C-c C-c f") 'vs/elixir-format)
-          (define-key elixir-ts-mode-map (kbd "C-c C-c M") 'vs/elixir-map-string-to-map-atom)
-          (define-key elixir-ts-mode-map (kbd "C-c C-c m") 'vs/elixir-map-atom-to-map-string)
-          (define-key elixir-ts-mode-map (kbd "C-c C-c J") 'vs/etf-to-json)
-          (define-key elixir-ts-mode-map (kbd "C-c C-c j") 'vs/json-to-etf)
-          (define-key elixir-ts-mode-map (kbd "C-c C-c D") 'vs/elixir-open-dep-docs)))
-    (with-eval-after-load 'elixir-mode
-      (when (boundp 'elixir-mode-map)
-        (define-key elixir-mode-map (kbd "C-c C-c f") 'elixir-format)
-        (define-key elixir-mode-map (kbd "C-c C-c M") 'vs/elixir-map-string-to-map-atom)
-        (define-key elixir-mode-map (kbd "C-c C-c m") 'vs/elixir-map-atom-to-map-string)
-        (define-key elixir-mode-map (kbd "C-c C-c J") 'vs/etf-to-json)
-        (define-key elixir-mode-map (kbd "C-c C-c j") 'vs/json-to-etf)
-        (define-key elixir-mode-map (kbd "C-c C-c D") 'vs/elixir-open-dep-docs))))
+  (use-package compile-credo
+    :elpaca
+    (compile-credo :type git :host github :repo "vinikira/compile-credo" :branch "main")
+    :after (:any elixir-mode elixir-ts-mode))
 #+end_src
 
 LSP
@@ -1630,18 +1618,22 @@ LSP
 Flymake credo
 
 #+begin_src emacs-lisp
-  (elpaca
-   '(flymake-credo :type git :host github :repo "vinikira/flymake-credo" :branch "main"))
+  (use-package flymake-credo
+    :hook
+    (elixir-ts-mode . flymake-credo-load)
+    (elixir-mode . flymake-credo-load)
+    :elpaca
+    (flymake-credo :type git :host github :repo "vinikira/flymake-credo" :branch "main"))
 #+end_src
 
 Mix.el
 
 #+begin_src emacs-lisp
-  (elpaca mix)
+  (use-package mix
+    :hook
+    (elixir-ts-mode . mix-minor-mode)
+    (elixir-mode . mix-minor-mode))
 
-  (if VS/IS-EMACS-29
-      (add-hook 'elixir-ts-mode-hook 'mix-minor-mode)
-    (add-hook 'elixir-mode-hook 'mix-minor-mode))
 #+end_src
 
 Snippets
@@ -1652,9 +1644,9 @@ Snippets
 
   (if VS/IS-EMACS-29
       (add-hook 'elixir-ts-mode-hook (lambda ()
-                                    (safe-funcall 'tempo-use-tag-list 'elixir-tempo-tags)))
-      (add-hook 'elixir-mode-hook (lambda ()
-                                    (safe-funcall 'tempo-use-tag-list 'elixir-tempo-tags))))
+                                       (safe-funcall 'tempo-use-tag-list 'elixir-tempo-tags)))
+    (add-hook 'elixir-mode-hook (lambda ()
+                                  (safe-funcall 'tempo-use-tag-list 'elixir-tempo-tags))))
 #+end_src
 
 Loading snippets
@@ -1668,7 +1660,8 @@ Loading snippets
 *** Elm
 Elm mode
 #+begin_src emacs-lisp
-  (elpaca elm-mode)
+  (use-package elm-mode
+    :defer t)
 #+end_src
 *** Erlang
 Erlang Mode
@@ -1698,108 +1691,130 @@ Erlang Mode
 Dart mode
 
 #+begin_src emacs-lisp
-  (elpaca dart-mode)
-
-  (customize-set-variable 'dart-format-on-save t)
-#+end_src
-
-LSP
-
-#+begin_src emacs-lisp
-  (vs/add-auto-lsp-server
-   'dart-mode
-   :command-fn (lambda () (list "dart" "language-server")))
+  (use-package dart-mode
+    :defer t
+    :custom (dart-format-on-save t)
+    :config
+    (vs/add-auto-lsp-server
+     'dart-mode
+     :command-fn (lambda () (list "dart" "language-server"))))
 #+end_src
 *** Go
 Go mode
 
 #+begin_src emacs-lisp
-  (elpaca go-mode)
+  (use-package go-mode
+    :defer t)
 #+end_src
 *** Groovy
 Groovy mode
+
 #+begin_src emacs-lisp
-  (elpaca groovy-mode)
+  (use-package groovy-mode
+    :defer t)
 #+end_src
 *** Haskell
 Haskell Mode
 
 #+begin_src emacs-lisp
-  (elpaca haskell-mode)
-
-  (customize-set-variable 'haskell-font-lock-symbols t)
-
-  (add-hook 'haskell-mode-hook 'haskell-indentation-mode)
-  (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+  (use-package haskell-mode
+    :custom (haskell-font-lock-symbols t)
+    :hook
+    (haskell-mode . haskell-indentation-mode)
+    (haskell-mode . interactive-haskell-mode))
 #+end_src
 
 *** Java
 Configures Java Mode
 
 #+begin_src emacs-lisp
-  (add-hook 'java-mode-hook
-            (lambda ()
-              (require 'cc-mode)
-              (c-set-style "cc-mode")
-              (make-local-variable 'tab-width)
-              (make-local-variable 'indent-tabs-mode)
-              (make-local-variable 'c-basic-offset)
-              (customize-set-variable 'tab-width 4)
-              (customize-set-variable 'indent-tabs-mode t)
-              (customize-set-variable 'c-basic-offset 4)))
+  (use-package java-ts-mode
+    :elpaca nil
+    :defer t
+    :hook (java-ts-mode . (lambda ()
+                            (require 'cc-mode)
+                            (c-set-style "cc-mode")
+                            (make-local-variable 'tab-width)
+                            (make-local-variable 'indent-tabs-mode)
+                            (make-local-variable 'c-basic-offset)
+                            (customize-set-variable 'tab-width 4)
+                            (customize-set-variable 'indent-tabs-mode t)
+                            (customize-set-variable 'c-basic-offset 4))))
 #+end_src
 *** JavaScript
-JS Mode
+Snippets variable list
+
 #+begin_src emacs-lisp
-  (customize-set-variable 'js-indent-level 2)
+  (defvar javascript-tempo-tags nil
+    "Tempo tags for JS/TS mode.")
+#+end_src
 
-  (add-hook 'javascript-mode-hook 'js-jsx-enable)
+JS TS Mode
 
-  (fset 'js-find-symbol 'xref-find-definitions)
+#+begin_src emacs-lisp
+  (use-package js-ts-mode
+    :elpaca nil
+    :if VS/IS-EMACS-29
+    :defer t
+    :config
+    (tempo-use-tag-list 'javascript-tempo-tags))
+#+end_src
+
+JS Mode
+
+#+begin_src emacs-lisp
+  (use-package js-mode
+    :elpaca nil
+    :defer t
+    :hook (javascript-mode . js-jsx-enable)
+    :custom
+    (js-indent-level 2)
+    :config
+    (tempo-use-tag-list 'javascript-tempo-tags)
+    (fset 'js-find-symbol 'xref-find-definitions))
 #+end_src
 
 TypeScript Mode
 #+begin_src emacs-lisp
-  (when VS/IS-EMACS-29
-    (elpaca typescript-mode))
+  (use-package typescript-mode
+    :defer t
+    :if (not VS/IS-EMACS-29)
+    :config
+    (tempo-use-tag-list 'javascript-tempo-tags))
 #+end_src
 
 Jest
 
 #+begin_src emacs-lisp
-  (elpaca jest-test-mode
-    (add-hook 'js-mode-hook 'jest-test-mode)
-    (add-hook 'js-jsx-mode-hook 'jest-test-mode)
-    (add-hook 'typescript-mode-hook 'jest-test-mode)
-    (add-hook 'typescript-tsx-mode-hook 'jest-test-mode)
-    (when VS/IS-EMACS-29
-      (add-hook 'typescript-ts-mode-hook 'jest-test-mode)
-      (add-hook 'js-ts-mode-hook 'jest-test-mode)))
+  (use-package jest-test-mode
+    :hook
+    ((js-ts-modejs-mode js-jsx-mode typescript-mode typescript-tsx-mode typescript-ts-mode)
+     . jest-test-mode))
 #+end_src
 
 ESLint compilation mode
 
 #+begin_src emacs-lisp :tangle no
-  (elpaca
-   '(eslint :type git :host github :repo "Fuco1/compile-eslint" :branch "master")
-   (with-eval-after-load 'js
-     (require 'compile-eslint)
-     (when (boundp 'compilation-error-regexp-alist)
-       (push 'eslint compilation-error-regexp-alist))))
+  (use-package compile-eslint
+    :elpaca (compile-eslint :type git :host github :repo "Fuco1/compile-eslint" :branch "master")
+    :after (:any js-mode js-ts-mode)
+    :config
+    (require 'compile-eslint)
+    (when (boundp 'compilation-error-regexp-alist)
+      (push 'eslint compilation-error-regexp-alist)))
 #+end_src
 
 Flymake ESLint
 
 #+begin_src emacs-lisp
-  (elpaca flymake-eslint
-    (with-eval-after-load 'js
-      (flymake-eslint-enable)))
+  (use-package flymake-eslint
+    :hook ((js-mode js-ts-mode) . flymake-eslint-enable))
 #+end_src
 
 LSP
 
 #+begin_src emacs-lisp
-  (cl-loop for mode in '(typescript-mode js-mode)
+  (cl-loop for mode in '(typescript-mode js-mode js-ts-mode typescript-ts-mode)
            do
            (vs/add-auto-lsp-server
             mode
@@ -1809,71 +1824,82 @@ LSP
                             (get-buffer-create "*Install js/ts LSP*")))))
 #+end_src
 
-Snippets
-
-#+begin_src emacs-lisp
-  (defvar javascript-tempo-tags nil
-    "Tempo tags for JS/TS mode.")
-
-  (add-hook 'js-mode-hook (lambda ()
-                            (safe-funcall 'tempo-use-tag-list 'javascript-tempo-tags)))
-  (add-hook 'typescript-mode-hook (lambda ()
-                                    (safe-funcall 'tempo-use-tag-list 'javascript-tempo-tags)))
-#+end_src
-
 Loading snippets
 
 #+begin_src emacs-lisp
   (vs/load-snippets 'js-mode)
+  (vs/load-snippets 'js-ts-mode)
+  (vs/load-snippets 'typescript-mode)
+  (vs/load-snippets 'typescript-ts-tsmode)
 #+end_src
 
 *** Kotlin
 Kotlin Mode
 
 #+begin_src emacs-lisp
-  (elpaca kotlin-mode)
+  (use-package kotlin-mode
+    :defer t)
 #+end_src
 *** Lisp
 Slime
 
 #+begin_src emacs-lisp :tangle no
-  (elpaca slime
-
-          (add-to-list 'auto-mode-alist '("\\.cl$|\\.lisp$" . slime-mode))
-
-          (customize-set-variable 'inferior-lisp-program "sbcl")
-          (customize-set-variable 'slime1-contribs '(slime-fancy))
-          (customize-set-variable 'slime-net-coding-system 'utf-8-unix))
+  (use-package slime
+    :mode ("\\.cl$|\\.lisp$" . slime-mode)
+    :custom
+    (inferior-lisp-program "sbcl")
+    (slime1-contribs '(slime-fancy))
+    (slime-net-coding-system 'utf-8-unix))
 #+end_src
 *** Python
 Customize python mode
 
+Python TS mode
+
 #+begin_src emacs-lisp
-  (customize-set-variable 'python-shell-interpreter "ipython")
-  (customize-set-variable 'python-shell-interpreter-args "-i --simple-prompt")
+  (use-package python-ts-mode
+    :if VS/IS-EMACS-29
+    :defer t
+    :elpaca nil
+    :custom
+    (python-shell-interpreter "ipython")
+    (python-shell-interpreter-args "-i --simple-prompt"))
 #+end_src
+
+Python mode
+
+#+begin_src emacs-lisp
+  (use-package python-ts-mode
+    :if (not VS/IS-EMACS-29)
+    :defer t
+    :elpaca nil
+    :custom
+    (python-shell-interpreter "ipython")
+    (python-shell-interpreter-args "-i --simple-prompt"))
+#+end_src
+
 *** Ruby
 Flymake Ruby
 
 #+begin_src emacs-lisp
-  (elpaca flymake-ruby)
-
-  (add-hook 'ruby-mode-hook 'flymake-ruby-load)
+  (use-package flymake-ruby
+    :hook ((ruby-ts-mode ruby-mode) . flymake-ruby-load))
 #+end_src
 
 RSpec mode
 
 #+begin_src emacs-lisp
-  (elpaca rspec-mode)
+  (use-package rspec-mode
+    :defer t)
 #+end_src
 
 Inf-ruby
 
 #+begin_src emacs-lisp
-  (elpaca inf-ruby)
-
-  (add-hook 'ruby-mode-hook 'inf-ruby-minor-mode)
-  (add-hook 'ruby-mode-hook 'inf-ruby-switch-setup)
+  (use-package inf-ruby
+    :hook
+    (ruby-modek . inf-ruby-minor-mode)
+    (ruby-mode . inf-ruby-switch-setup))
 #+end_src
 
 LSP
@@ -1900,25 +1926,25 @@ LSP
 Rustic
 
 #+begin_src emacs-lisp
-  (elpaca rustic)
-
-  (customize-set-variable 'rustic-lsp-client 'eglot)
+  (use-package rustic
+    :defer t
+    :custom (rustic-lsp-client 'eglot))
 #+end_src
 
 LSP
 
 #+begin_src emacs-lisp
   (defvar-local rust-analyzer-link
-    (concat "https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/"
-            (cond
-             ((eq system-type 'darwin) "rust-analyzer-x86_64-apple-darwin.gz")
-             (t "rust-analyzer-x86_64-unknown-linux-musl.gz"))))
+      (concat "https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/"
+              (cond
+               ((eq system-type 'darwin) "rust-analyzer-x86_64-apple-darwin.gz")
+               (t "rust-analyzer-x86_64-unknown-linux-musl.gz"))))
 
   (defvar-local rust-analyzer-command
-    (list (cond
-           ((eq system-type 'darwin)
-            "rust-analyzer-x86_64-apple-darwin")
-           (t "rust-analyzer-x86_64-unknown-linux-musl"))))
+      (list (cond
+             ((eq system-type 'darwin)
+              "rust-analyzer-x86_64-apple-darwin")
+             (t "rust-analyzer-x86_64-unknown-linux-musl"))))
 
   (vs/add-auto-lsp-server 'rustic-mode
                           :download-url rust-analyzer-link
@@ -1928,78 +1954,66 @@ LSP
 Web Mode
 
 #+begin_src emacs-lisp
-  (elpaca web-mode)
+  (use-package web-mode
+    :mode
+    ("\\.html?\\'" . web-mode)
+    ("\\.njk?\\'" . web-mode)
+    ("\\.phtml?\\'" . web-mode)
+    ("\\.tpl\\.php\\'" . web-mode)
+    ("\\.[agj]sp\\'" . web-mode)
+    ("\\.as[cp]x\\'" . web-mode)
+    ("\\.erb\\'" . web-mode)
+    ("\\.mustache\\'" . web-mode)
+    ("\\.djhtml\\'" . web-mode)
+    ("\\.mjml\\'" . web-mode)
+    ("\\.eex\\'" . web-mode)
+    ("\\.leex\\'" . web-mode)
+    ("\\.heex\\'" . web-mode)
+    :custom
+    (web-mode-markup-indent-offset 2)
+    (web-mode-css-indent-offset 2)
+    (web-mode-code-indent-offset 2)
+    (css-indent-offset 2)
+    (web-mode-enable-current-element-highlight t)
+    :bind (:map web-mode-map
+                ("C-c o b" . browse-url-of-file)))
 
-  (customize-set-variable 'web-mode-markup-indent-offset 2)
-  (customize-set-variable 'web-mode-css-indent-offset 2)
-  (customize-set-variable 'web-mode-code-indent-offset 2)
-  (customize-set-variable 'css-indent-offset 2)
-  (customize-set-variable 'web-mode-enable-current-element-highlight t)
-
-  (with-eval-after-load 'web-mode
-    (when (boundp 'web-mode-map)
-      (define-key web-mode-map (kbd "C-c o b") 'browse-url-of-file)))
-
-  (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.njk?\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.phtml?\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.mjml\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.eex\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.leex\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.heex\\'" . web-mode))
 #+end_src
 
 Emmet Mode
-#+begin_src emacs-lisp
-  (elpaca emmet-mode
-          (customize-set-variable 'emmet-move-cursor-between-quotes t)
-          (add-hook 'web-mode-hook 'emmet-mode)
-          (add-hook 'vue-mode-hook 'emmet-mode)
-          (add-hook 'js-mode 'emmet-mode)
-          (when VS/IS-EMACS-29
-            (add-hook 'heex-ts-mode 'emmet-mode)
-            (add-hook 'elixir-ts-mode 'emmet-mode))
 
-          (with-eval-after-load 'web-mode
-            (when (boundp 'web-mode-map)
-              (define-key web-mode-map (kbd "C-c [") 'emmet-prev-edit-point)
-              (define-key web-mode-map (kbd "C-c ]") 'emmet-next-edit-point))))
-#+end_src
-
-Pug Mode
 #+begin_src emacs-lisp
-  (elpaca pug-mode)
+  (use-package emmet-mode
+    :custom
+    (emmet-move-cursor-between-quotes t)
+    :hook
+    ((web-mode vue-mode js-mode js-ts-mode heex-ts-mode elixir-ts-mode)
+     . emmet-mode))
 #+end_src
 
 Vue Mode
 #+begin_src emacs-lisp
-  (elpaca vue-mode)
+  (use-package vue-mode
+    :defer t)
 #+end_src
 *** SQL
 SQL Format
 
 #+begin_src emacs-lisp
-  (elpaca sqlformat)
-
-  (customize-set-variable 'sqlformat-command 'pgformatter)
-  (customize-set-variable 'sqlformat-args '("-s2" "-g" "-u1"))
-
-  (with-eval-after-load 'sql
-    (when (boundp 'sql-mode-map)
-      (define-key sql-mode-map (kbd "C-c C-f") 'sqlformat)))
+  (use-package sqlformat
+    :custom
+    (sqlformat-command pgformatter)
+    (sqlformat-args '("-s2" "-g" "-u1"))
+    :bind (:map sql-mode-map
+                ("C-c C-f" . sqlformat)))
 #+end_src
 
 *** Zig
 Zig mode
 
 #+begin_src emacs-lisp
-  (elpaca zig-mode)
+  (use-package zig-mode
+    :defer t)
 #+end_src
 
 LSP
@@ -2023,77 +2037,81 @@ LSP
 ** Files formats
 *** JSON
 #+begin_src emacs-lisp
-  (unless VS/IS-EMACS-29
-    (elpaca json-mode))
+  (use-package json-mode
+    :if (not VS/IS-EMACS-29)
+    :defer t)
 #+end_src
 
 *** YAML
 #+begin_src emacs-lisp
-  (elpaca yaml-mode)
+  (use-package yaml-mode
+    :defer t)
 #+end_src
 
 *** CVS
 #+begin_src emacs-lisp
-  (elpaca csv-mode)
-
-  (add-hook 'csv-mode-hook 'csv-align-mode)
+  (use-package csv-mode
+    :defer t
+    :hook (csv-mode . csv-align-mode))
 #+end_src
 
 *** GraphQL
 #+begin_src emacs-lisp
-  (elpaca graphql-mode)
+  (use-package graphql-mode
+    :defer t)
 #+end_src
 
 *** Graphviz
 #+begin_src emacs-lisp
-  (elpaca graphviz-dot-mode)
-
-  (customize-set-variable 'graphviz-dot-indent-width 4)
+  (use-package graphviz-dot-mode
+    :defer t
+    :custom
+    (graphviz-dot-indent-width 4))
 #+end_src
 
 *** HashiCorp Configuration Language
 #+begin_src emacs-lisp
-  (elpaca hcl-mode)
+  (use-package hcl-mode
+    :defer t)
 #+end_src
 
 *** Markdown
 #+begin_src emacs-lisp
-  (elpaca markdown-mode)
-  (elpaca markdownfmt)
+  (use-package markdown-mode
+    :mode ("README\\.md$" . gfm-mode)
+    :custom (markdown-command "pandoc --quiet -f gfm -s")
+    :bind (:map markdown-mode-map
+                ("C-c C-f" . markdownfmt-format-buffer)))
 
-  (add-to-list 'auto-mode-alist '("README\\.md$" . gfm-mode))
-
-  (customize-set-variable 'markdown-command
-                          "pandoc --quiet -f gfm -s")
-
-  (add-hook 'markdown-mode-hook 'markdownfmt-enable-on-save)
-  (add-hook 'gfm-mode 'markdownfmt-enable-on-save)
-
-  (with-eval-after-load 'markdown-mode
-    (when (boundp 'markdown-mode-map)
-      (define-key markdown-mode-map (kbd "C-c C-f") 'markdownfmt-format-buffer)))
+  (use-package markdownfmt
+    :hook
+    ((gfm-mode markdown-mode) 'markdownfmt-enable-on-save))
 #+end_src
 
 *** Mermaid Mode
 #+begin_src emacs-lisp
-  (elpaca mermaid-mode)
+  (use-package mermaid-mode
+    :defer t)
 #+end_src
 
 *** Nginx
 #+begin_src emacs-lisp
-  (elpaca nginx-mode)
+  (use-package nginx-mode
+    :defer t)
 #+end_src
 
 *** Plantuml Mode
 #+begin_src emacs-lisp
-  (elpaca plantuml-mode
-    (with-eval-after-load 'plantuml-mode
-      (customize-set-variable 'plantuml-output-type "svg")
-      (customize-set-variable 'plantuml-default-exec-mode 'jar)
-      (let* ((plantuml-directory (if (boundp 'private-dir) private-dir "/tmp"))
-             (plantuml-target (concat plantuml-directory "/plantuml.jar")))
-        (customize-set-variable 'org-plantuml-jar-path plantuml-target)
-        (customize-set-variable 'plantuml-jar-path plantuml-target))))
+  (use-package plantuml-mode
+    :defer t
+    :custom
+    (plantuml-output-type "svg")
+    (plantuml-default-exec-mode 'jar)
+    :config
+    (let* ((plantuml-directory (if (boundp 'private-dir) private-dir "/tmp"))
+           (plantuml-target (concat plantuml-directory "/plantuml.jar")))
+      (customize-set-variable 'org-plantuml-jar-path plantuml-target)
+      (customize-set-variable 'plantuml-jar-path plantuml-target)))
 #+end_src
 
 Creating a tag table for =plantuml-mode=.
@@ -2114,105 +2132,108 @@ Loading snippets
 
 *** Protobuf mode
 #+begin_src emacs-lisp
-  (elpaca protobuf-mode)
+  (use-package protobuf-mode
+    :defer t)
 #+end_src
 
 *** TOML Mode
 #+begin_src emacs-lisp
-  (elpaca toml-mode)
+  (use-package toml-mode
+    :defer t)
 #+end_src
 
 ** Writer
 *** LaTeX
 #+begin_src emacs-lisp
-  (elpaca auctex)
-  (elpaca auctex-latexmk)
+  (use-package auctex
+    :defer t
+    :hook (tex-mode . flyspell-mode))
 
-  (customize-set-variable 'auctex-latexmk-inherit-TeX-PDF-mode t)
-
-  (add-hook 'tex-mode-hook 'flyspell-mode)
-  (add-hook 'auctex-mode-hook 'auctex-latexmk-setup)
+  (use-package auctex-latexmk
+    :defer auctex
+    :custom (auctex-latexmk-inherit-TeX-PDF-mode t)
+    :hook (auctex-mode-hook . auctex-latexmk-setup))
 #+end_src
 
 *** Epub mode
 #+begin_src emacs-lisp
-  (elpaca nov)
-  (add-to-list 'auto-mode-alist '("\\.epub$" . nov-mode))
+  (use-package nov
+    :mode ("\\.epub$" . nov-mode))
 #+end_src
 
 *** Dark Room mode
 #+begin_src emacs-lisp
-  (elpaca darkroom)
-
-  (global-set-key (kbd "<f6>") 'darkroom-tentative-mode)
+  (use-package darkroom
+    :bind ("<f6>" . darkroom-tentative-mode))
 #+end_src
 
 *** Langtool
 
 #+begin_src emacs-lisp
-  (elpaca langtool
-    (customize-set-variable 'langtool-default-language "en-US")
-    (customize-set-variable 'langtool-mother-tongue "pt-BR")
-
-    (global-set-key (kbd "C-x w c") 'langtool-check)
-    (global-set-key (kbd "C-x w d") 'langtool-check-done)
-    (global-set-key (kbd "C-x w l") 'langtool-switch-default-language)
-    (global-set-key (kbd "C-x w s") 'langtool-show-message-at-point)
-    (global-set-key (kbd "C-x w b") 'langtool-correct-buffer)
-
-    (with-eval-after-load 'langtool
-      (let* ((langtool-directory (if (boundp 'private-dir) private-dir "/tmp"))
-             (langtool-link
-              "https://languagetool.org/download/LanguageTool-stable.zip")
-             (langtool-zip (concat langtool-directory "/langtool.zip"))
-             (langtool-folder (concat langtool-directory "/langtool/")))
-        (if (not (file-exists-p langtool-folder))
-            (progn (message "Downloading langtool.zip")
-                   (async-shell-command
-                    (format "wget %s -O %s && unzip %s -d %s && rm %s"
-                            langtool-link
-                            langtool-zip
-                            langtool-zip
-                            langtool-folder
-                            langtool-zip))))
-        (autoload 'find-lisp-find-files "find-lisp.el")
-        (customize-set-variable 'langtool-language-tool-jar
-                                (car (find-lisp-find-files
-                                      langtool-folder "languagetool-commandline.jar"))))))
+  (use-package langtool
+    :custom
+    (langtool-default-language "en-US")
+    (langtool-mother-tongue "pt-BR")
+    :bind
+    ("C-x w c" . langtool-check)
+    ("C-x w d" . langtool-check-done)
+    ("C-x w l" . langtool-switch-default-language)
+    ("C-x w s" . langtool-show-message-at-point)
+    ("C-x w b" . langtool-correct-buffer)
+    :config
+    (let* ((langtool-directory (if (boundp 'private-dir) private-dir "/tmp"))
+           (langtool-link
+            "https://languagetool.org/download/LanguageTool-stable.zip")
+           (langtool-zip (concat langtool-directory "/langtool.zip"))
+           (langtool-folder (concat langtool-directory "/langtool/")))
+      (if (not (file-exists-p langtool-folder))
+          (progn (message "Downloading langtool.zip")
+                 (async-shell-command
+                  (format "wget %s -O %s && unzip %s -d %s && rm %s"
+                          langtool-link
+                          langtool-zip
+                          langtool-zip
+                          langtool-folder
+                          langtool-zip))))
+      (autoload 'find-lisp-find-files "find-lisp.el")
+      (customize-set-variable 'langtool-language-tool-jar
+                              (car (find-lisp-find-files
+                                    langtool-folder "languagetool-commandline.jar")))))
 #+end_src
 
 ** Mail
 *** Notmuch mail client
 #+begin_src emacs-lisp
-  (autoload 'notmuch "notmuch" "notmuch mail" t)
-
-  (with-eval-after-load 'notmuch
-    (customize-set-variable 'notmuch-saved-searches
-                            '((:name "Unread"
-                                     :query "tag:inbox and tag:unread"
-                                     :count-query "tag:inbox and tag:unread"
-                                     :key "u"
-                                     :sort-order newest-first)
-                              (:name "Inbox"
-                                     :query "tag:inbox"
-                                     :count-query "tag:inbox"
-                                     :key "i"
-                                     :sort-order newest-first)
-                              (:name "Archive"
-                                     :query "tag:archive"
-                                     :count-query "tag:archive"
-                                     :key "a"
-                                     :sort-order newest-first)
-                              (:name "Sent"
-                                     :query "tag:sent or tag:replied"
-                                     :count-query "tag:sent or tag:replied"
-                                     :key "s"
-                                     :sort-order newest-first)
-                              (:name "Trash"
-                                     :query "tag:deleted"
-                                     :count-query "tag:deleted"
-                                     :key "t"
-                                     :sort-order newest-first))))
+  (use-package notmuch
+    :elpaca nil
+    :commands (notmuch)
+    :custom
+    'notmuch-saved-searches
+    '((:name "Unread"
+             :query "tag:inbox and tag:unread"
+             :count-query "tag:inbox and tag:unread"
+             :key "u"
+             :sort-order newest-first)
+      (:name "Inbox"
+             :query "tag:inbox"
+             :count-query "tag:inbox"
+             :key "i"
+             :sort-order newest-first)
+      (:name "Archive"
+             :query "tag:archive"
+             :count-query "tag:archive"
+             :key "a"
+             :sort-order newest-first)
+      (:name "Sent"
+             :query "tag:sent or tag:replied"
+             :count-query "tag:sent or tag:replied"
+             :key "s"
+             :sort-order newest-first)
+      (:name "Trash"
+             :query "tag:deleted"
+             :count-query "tag:deleted"
+             :key "t"
+             :sort-order newest-first)))
 #+end_src
 
 *** SMTP
