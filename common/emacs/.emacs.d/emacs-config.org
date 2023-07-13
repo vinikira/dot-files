@@ -596,7 +596,8 @@ Org babel
       (elixir . t)
       (ruby . t)
       (dot . t)
-      (latex . t)))))
+      (latex . t)
+      (verb . t)))))
 #+end_src
 
 *** Org export Latex customization
