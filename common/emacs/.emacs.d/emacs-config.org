@@ -824,6 +824,11 @@ Macro to read the snippets from the =snippets-dir=.
     (when (or (daemonp) (memq window-system '(mac ns x)))
       (exec-path-from-shell-initialize)))
 #+end_src
+*** Git Gutter
+#+begin_src emacs-lisp
+  (use-package git-gutter
+    :hook (prog-mode . git-gutter-mode))
+#+end_src
 *** Iedit
 #+begin_src emacs-lisp
   (use-package iedit
