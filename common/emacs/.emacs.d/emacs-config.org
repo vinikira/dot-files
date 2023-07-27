@@ -1710,8 +1710,20 @@ Go mode
 
 #+begin_src emacs-lisp
   (use-package go-mode
+    :if (not VS/IS-EMACS-29)
     :defer t)
 #+end_src
+
+Go TS mode
+
+#+begin_src emacs-lisp
+  (use-package go-ts-mode
+    :elpaca nil
+    :defer t
+    :custom
+    (go-ts-mode-indent-offset 4))
+#+end_src
+
 *** Groovy
 Groovy mode
 
