@@ -744,7 +744,8 @@ Get latest version of project.el
                 ("C-o l" . vs/project-dir-locals)
                 ("C-o d" . vs/project-db-file)
                 ("C-o a" . vs/project-api-file)
-                ("C-o r" . vs/project-runbook))
+                ("C-o r" . vs/project-runbook)
+                ("S" . vs/project-save-project-buffers))
     :config
     (fset 'project-shell 'vs/vterm-in-project))
 #+end_src
