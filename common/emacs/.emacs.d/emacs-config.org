@@ -784,6 +784,11 @@ Macro to read the snippets from the =snippets-dir=.
 #+end_src
 
 ** Third part Extensions
+*** ChatGPT Shell
+#+begin_src emacs-lisp
+  (use-package chatgpt-shell
+    :defer t)
+#+end_src
 *** Diff HL
 #+begin_src emacs-lisp
   (use-package diff-hl
