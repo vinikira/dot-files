@@ -360,7 +360,6 @@ When IDLE for call code after emacs-init.
             (lambda ()
               (setq-local show-trailing-whitespace t)
               (flymake-mode 1)
-              (which-function-mode 1)
               (vs/--line-numbers)
               (vs/--font-lock)))
   (add-hook 'text-mode-hook
@@ -1063,71 +1062,12 @@ Load theme after create a new frame
 See more: https://github.com/domtronn/all-the-icons.el/wiki/Mode-Line
 
 #+begin_src emacs-lisp
-  (defconst vs/--modeline-separator " · "
-    "Mode line separator character.")
-
-  (defun vs/--custom-modeline-git-vc ()
-    "Define the custom icons for vc mode."
-    (if (not vc-mode)
-        (concat
-         "No VC"
-         vs/--modeline-separator)
-      (let ((branch (mapconcat 'concat (cdr (split-string vc-mode "[:-]")) "-")))
-        (concat
-         (nerd-icons-devicon "nf-dev-git_branch")
-         " "
-         branch
-         vs/--modeline-separator))))
-
-  (defun vs/--custom-modeline-clock-calendar ()
-    "Define the mode for calendar and clock."
-    (concat
-     (nerd-icons-faicon "nf-fa-clock_o")
-     (propertize (format-time-string " %H:%M")
-                 'face '(:height 0.9)
-                 'mouse-face 'mode-line-highlight
-                 'local-map (make-mode-line-mouse-map 'mouse-1 'world-clock))
-     " "
-     (nerd-icons-faicon "nf-fa-calendar")
-     (propertize (format-time-string "  %b %d")
-                 'face '(:height 0.9)
-                 'mouse-face 'mode-line-highlight
-                 'local-map (make-mode-line-mouse-map 'mouse-1 'calendar))
-     vs/--modeline-separator))
-
-  (defun vs/--custom-modeline-line-column ()
-    "Define the mode for lines and columns."
-    (concat
-     (nerd-icons-faicon "nf-fa-code")
-     "  %l:%c"
-     vs/--modeline-separator))
-
-  (defun vs/--custom-modeline-mode-major-mode ()
-    "Define the mode line text for major modes."
-    (concat
-     (nerd-icons-icon-for-buffer)
-     " "
-     (format-mode-line mode-name)
-     vs/--modeline-separator))
-
-  (defvar vs/custom-modeline-format
-    `("%e"
-      mode-line-front-space
-      mode-line-mule-info
-      mode-line-modified
-      mode-line-remote
-      vs/--modeline-separator
-      (:eval (vs/--custom-modeline-clock-calendar))
-      (:eval (vs/--custom-modeline-line-column))
-      (:eval (propertized-buffer-identification "%b"))
-      vs/--modeline-separator
-      (:eval (vs/--custom-modeline-mode-major-mode))
-      (:eval (vs/--custom-modeline-git-vc))
-      mode-line-misc-info)
-    "My custom modeline format.")
-
-  (with-eval-after-load 'nerd-icons
-    (customize-set-variable 'mode-line-format vs/custom-modeline-format))
+   (use-package vs-modeline-mode
+    :elpaca nil
+    :defer t
+    :after nerd-icons
+    :init
+    (vs-modeline-mode))
 #+end_src
 *** Side windows
 #+begin_src emacs-lisp
