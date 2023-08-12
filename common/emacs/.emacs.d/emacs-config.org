@@ -185,13 +185,6 @@ Determine if is running in MacOS.
   (defconst VS/IS-MACOS (eq system-type 'darwin))
 #+end_src
 
-Determine if is running in Emacs 29+
-
-#+begin_src emacs-lisp
-  (defconst VS/IS-EMACS-29
-    (string-prefix-p "29" emacs-version))
-#+end_src
-
 *** Site lisp directory
 Adds site-lisp to the load-path
 
@@ -406,9 +399,8 @@ When IDLE for call code after emacs-init.
 Custom variables
 
 #+begin_src emacs-lisp
-  (when VS/IS-EMACS-29
-    (customize-set-variable 'dired-mouse-drag-files t)
-    (customize-set-variable 'mouse-drag-and-drop-region-cross-program t))
+  (customize-set-variable 'dired-mouse-drag-files t)
+  (customize-set-variable 'mouse-drag-and-drop-region-cross-program t)
   (customize-set-variable 'dired-listing-switches "-alh")
   (customize-set-variable 'delete-by-moving-to-trash t)
   (customize-set-variable 'dired-dwim-target t)
@@ -940,23 +932,10 @@ Macro to read the snippets from the =snippets-dir=.
     :bind ("C-c t" . telega))
 #+end_src
 *** Tree Sitter
-Tree sitter support for Emacs 28
-
-#+begin_src emacs-lisp
-  (use-package tree-sitter-langs
-    :if (not VS/IS-EMACS-29))
-
-  (use-package tree-sitter
-    :if (not VS/IS-EMACS-29)
-    :hook (tree-sitter-after-on-hook . tree-sitter-hl-mode)
-    :config (global-tree-sitter-mode))
-#+end_src
-
 Tree sitter auto installer for Emacs 29
 
 #+begin_src emacs-lisp
   (use-package treesit-auto
-    :if VS/IS-EMACS-29
     :custom
     (treesit-auto-install 'prompt)
     :config
@@ -1364,17 +1343,6 @@ Packages
 
   (use-package docker
     :bind ("C-c d" . docker))
-
-  (use-package docker-tramp
-    :if (not VS/IS-EMACS-29))
-#+end_src
-
-Tramp integration for Kubernetes
-
-#+begin_src emacs-lisp
-  (use-package kubernetes-tramp
-    :if (not VS/IS-EMACS-29)
-    :custom (tramp-remote-shell-executable "sh"))
 #+end_src
 
 ** Programming languages
@@ -1427,22 +1395,6 @@ LSP
                           :command clojure-lsp-command)
 #+end_src
 *** C#
-CSharp mode
-
-#+begin_src emacs-lisp
-  (use-package csharp-mode
-    :if (not VS/IS-EMACS-29)
-    :defer t)
-#+end_src
-
-CSharp TS mode
-
-#+begin_src emacs-lisp
-  (use-package csharp-mode
-    :if VS/IS-EMACS-29
-    :defer t)
-#+end_src
-
 LSP
 
 #+begin_src emacs-lisp
@@ -1463,19 +1415,17 @@ LSP
                                    (when vs/omnisharp-solution-file
                                      (list "-s" vs/omnisharp-solution-file))))
 
-  (let ((mode (if VS/IS-EMACS-29
-                  'csharp-ts-mode
-                csharp-mode)))
-    (vs/add-auto-lsp-server mode
-                            :download-url omnisharp-link
-                            :command-fn (lambda (_interactive)
-                                          (append
-                                           (vs/--wrap-lsp-context mode "run")
-                                           (list "-lsp")
-                                           (when vs/omnisharp-solution-file
-                                             (list
-                                              "-s"
-                                              (expand-file-name vs/omnisharp-solution-file)))))))
+  (vs/add-auto-lsp-server
+   'csharp-ts-mode
+   :download-url omnisharp-link
+   :command-fn (lambda (_interactive)
+                 (append
+                  (vs/--wrap-lsp-context mode "run")
+                  (list "-lsp")
+                  (when vs/omnisharp-solution-file
+                    (list
+                     "-s"
+                     (expand-file-name vs/omnisharp-solution-file))))))
 #+end_src
 *** Crystal
 Crystal mode
@@ -1486,26 +1436,10 @@ Crystal mode
 #+end_src
 
 *** Elixir
-Elixir mode
-
-#+begin_src emacs-lisp
-  (use-package elixir-mode
-    :if (not VS/IS-EMACS-29)
-    :defer t
-    :bind (:map elixir-mode-map
-                ("C-c C-c f" . elixir-format)
-                ("C-c C-c M" . vs/elixir-map-string-to-map-atom)
-                ("C-c C-c m" . vs/elixir-map-atom-to-map-string)
-                ("C-c C-c J" . vs/etf-to-json)
-                ("C-c C-c j" . vs/json-to-etf)
-                ("C-c C-c D" . vs/elixir-open-dep-docs)))
-#+end_src
-
 Elixir TS Mode
 
 #+begin_src emacs-lisp
   (use-package elixir-ts-mode
-    :if VS/IS-EMACS-29
     :defer t
     :bind (:map elixir-ts-mode-map
                 ("C-c C-c f" . vs/elixir-format)
@@ -1553,15 +1487,10 @@ Compile Credo
 LSP
 
 #+begin_src emacs-lisp
-  (if VS/IS-EMACS-29
-      (vs/add-auto-lsp-server
-       'elixir-ts-mode
-       :download-url "https://github.com/elixir-lsp/elixir-ls/releases/latest/download/elixir-ls.zip"
-       :command '("elixir-ls/language_server.sh"))
-    (vs/add-auto-lsp-server
-     'elixir-mode
-     :download-url "https://github.com/elixir-lsp/elixir-ls/releases/latest/download/elixir-ls.zip"
-     :command '("elixir-ls/language_server.sh")))
+  (vs/add-auto-lsp-server
+   'elixir-ts-mode
+   :download-url "https://github.com/elixir-lsp/elixir-ls/releases/latest/download/elixir-ls.zip"
+   :command '("elixir-ls/language_server.sh"))
 #+end_src
 
 #+RESULTS:
@@ -1593,19 +1522,15 @@ Snippets
   (defvar elixir-tempo-tags nil
     "Tempo tags for Elixir mode")
 
-  (if VS/IS-EMACS-29
-      (add-hook 'elixir-ts-mode-hook (lambda ()
-                                       (safe-funcall 'tempo-use-tag-list 'elixir-tempo-tags)))
-    (add-hook 'elixir-mode-hook (lambda ()
-                                  (safe-funcall 'tempo-use-tag-list 'elixir-tempo-tags))))
+  (add-hook 'elixir-ts-mode-hook
+            (lambda ()
+              (tempo-use-tag-list 'elixir-tempo-tags)))
 #+end_src
 
 Loading snippets
 
 #+begin_src emacs-lisp
-  (if VS/IS-EMACS-29
-      (vs/load-snippets 'elixir-mode 'elixir-ts-mode)
-    (vs/load-snippets 'elixir-mode))
+  (vs/load-snippets 'elixir-mode 'elixir-ts-mode)
 #+end_src
 
 *** Elm
@@ -1651,14 +1576,6 @@ Dart mode
      :command-fn (lambda () (list "dart" "language-server"))))
 #+end_src
 *** Go
-Go mode
-
-#+begin_src emacs-lisp
-  (use-package go-mode
-    :if (not VS/IS-EMACS-29)
-    :defer t)
-#+end_src
-
 Go TS mode
 
 #+begin_src emacs-lisp
@@ -1717,7 +1634,6 @@ JS TS Mode
 #+begin_src emacs-lisp
   (use-package js-ts-mode
     :elpaca nil
-    :if VS/IS-EMACS-29
     :defer t
     :config
     (tempo-use-tag-list 'javascript-tempo-tags))
@@ -1735,15 +1651,6 @@ JS Mode
     :config
     (tempo-use-tag-list 'javascript-tempo-tags)
     (fset 'js-find-symbol 'xref-find-definitions))
-#+end_src
-
-TypeScript Mode
-#+begin_src emacs-lisp
-  (use-package typescript-mode
-    :defer t
-    :if (not VS/IS-EMACS-29)
-    :config
-    (tempo-use-tag-list 'javascript-tempo-tags))
 #+end_src
 
 Jest
@@ -1821,19 +1728,6 @@ Python TS mode
 
 #+begin_src emacs-lisp
   (use-package python-ts-mode
-    :if VS/IS-EMACS-29
-    :defer t
-    :elpaca nil
-    :custom
-    (python-shell-interpreter "ipython")
-    (python-shell-interpreter-args "-i --simple-prompt"))
-#+end_src
-
-Python mode
-
-#+begin_src emacs-lisp
-  (use-package python-ts-mode
-    :if (not VS/IS-EMACS-29)
     :defer t
     :elpaca nil
     :custom
@@ -1868,22 +1762,12 @@ Inf-ruby
 LSP
 
 #+begin_src emacs-lisp
-  (if VS/IS-EMACS-29
-      (vs/add-auto-lsp-server
-       'ruby-ts-mode
-       :download-fn (lambda (_reinstall)
-                      (async-shell-command
-                       "gem install solargraph"
-                       (get-buffer-create "*Install Ruby LSP*"))))
-    (vs/add-auto-lsp-server
-     'ruby-mode
-     :download-fn (lambda (_reinstall)
-                    (async-shell-command
-                     "gem install solargraph"
-                     (get-buffer-create "*Install Ruby LSP*")))))
-
-
-
+  (vs/add-auto-lsp-server
+   'ruby-ts-mode
+   :download-fn (lambda (_reinstall)
+                  (async-shell-command
+                   "gem install solargraph"
+                   (get-buffer-create "*Install Ruby LSP*"))))
 #+end_src
 *** Rust
 Rustic
@@ -1998,13 +1882,6 @@ LSP
 #+end_src
 
 ** Files formats
-*** JSON
-#+begin_src emacs-lisp
-  (use-package json-mode
-    :if (not VS/IS-EMACS-29)
-    :defer t)
-#+end_src
-
 *** YAML
 #+begin_src emacs-lisp
   (use-package yaml-mode
