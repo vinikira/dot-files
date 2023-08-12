@@ -30,8 +30,6 @@
 
 ;;; Code:
 
-(require 'nerd-icons)
-
 (defgroup vc-modeline nil
   "Custom group for vs-modeline."
   :group 'mode-line)
