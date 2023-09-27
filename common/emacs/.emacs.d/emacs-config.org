@@ -959,7 +959,6 @@ Uses fontaine to configure the fonts preset
 
 #+begin_src emacs-lisp
   (use-package fontaine
-    :if window-system
     :custom
     (fontaine-presets
      `((small
