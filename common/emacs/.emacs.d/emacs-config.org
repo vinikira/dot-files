@@ -74,8 +74,9 @@ Remove some unneeded UI elements (the user can turn back on anything they wish)
         inhibit-startup-buffer-menu t)
 
   (menu-bar-mode -1)
-  (scroll-bar-mode -1)
-  (tool-bar-mode -1)
+  (unless (eq system-type 'android)
+    (scroll-bar-mode -1)
+    (tool-bar-mode -1))
 #+end_src
 
 Disable =package.el=
@@ -90,6 +91,18 @@ fonts that are larger than the system default.
 
 #+begin_src emacs-lisp
   (setq frame-inhibit-implied-resize t)
+#+end_src
+
+Android specific changes
+
+#+begin_src emacs-lisp
+  (when (eq system-type 'android)
+    (setenv "PATH" (format "%s:%s" "/data/data/com.termux/files/usr/bin"
+                           (getenv "PATH")))
+    (setenv "LD_LIBRARY_PATH" (format "%s:%s"
+                                      "/data/data/com.termux/files/usr/lib"
+                                      (getenv "LD_LIBRARY_PATH")))
+    (push "/data/data/com.termux/files/usr/bin" exec-path))
 #+end_src
 * Init
 :PROPERTIES:
@@ -179,10 +192,16 @@ Use package integration
 
 ** Base configuration
 *** Global Constants
-Determine if is running in MacOS.
+Determine if is running on MacOS.
 
 #+begin_src emacs-lisp
   (defconst VS/IS-MACOS (eq system-type 'darwin))
+#+end_src
+
+Determine if is running on Android.
+
+#+begin_src emacs-lisp
+  (defconst VS/IS-ANDROID (eq system-type 'android))
 #+end_src
 
 *** Site lisp directory
@@ -637,6 +656,7 @@ Abntex2 class
 **** Org Present
 #+begin_src emacs-lisp
   (use-package org-present
+    :unless VS/IS-ANDROID
     :hook
     (org-present-mode .
                       (lambda ()
@@ -655,6 +675,7 @@ Abntex2 class
 **** Org + Reveal.js
 #+begin_src emacs-lisp
   (use-package org-re-reveal
+    :unless VS/IS-ANDROID
     :custom
     (org-re-reveal-root
      "https://cdn.jsdelivr.net/reveal.js/latest")
@@ -688,6 +709,7 @@ Turn code evaluation async.
 **** Org Notify
 #+begin_src emacs-lisp
   (use-package org-notify
+    :unless VS/IS-ANDROID
     :after org
     :config
     (org-notify-start 60)
@@ -702,6 +724,7 @@ Turn code evaluation async.
 **** Org project
 #+begin_src emacs-lisp
   (use-package org-project
+    :unless VS/IS-ANDROID
     :after (org project)
     :elpaca (org-project :type git :host github :repo "delehef/org-project")
     :custom
@@ -804,6 +827,7 @@ Macro to read the snippets from the =snippets-dir=.
 *** Emacs everywhere
 #+begin_src emacs-lisp
   (use-package emacs-everywhere
+    :unless VS/IS-ANDROID
     :defer t
     :custom
     (emacs-everywhere-frame-parameters  '((name . "emacs-everywhere")
@@ -929,6 +953,7 @@ Macro to read the snippets from the =snippets-dir=.
 *** Telega
 #+begin_src emacs-lisp
   (use-package telega
+    :unless VS/IS-ANDROID
     :bind ("C-c t" . telega))
 #+end_src
 *** Tree Sitter
@@ -1341,6 +1366,7 @@ Packages
     :defer t)
 
   (use-package docker
+    :unless VS/IS-ANDROID
     :bind ("C-c d" . docker))
 #+end_src
 
@@ -2044,6 +2070,7 @@ Loading snippets
 *** Notmuch mail client
 #+begin_src emacs-lisp
   (use-package notmuch
+    :unless VS/IS-ANDROID
     :elpaca nil
     :commands (notmuch)
     :custom
