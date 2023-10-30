@@ -748,6 +748,16 @@ Turn code evaluation async.
     :elpaca nil)
 #+end_src
 
+**** Grip mode
+Render org mode/markdown as Github README on the browser.
+
+Requires Python package =grip=.
+
+#+begin_src emacs-lisp
+  (use-package grip-mode
+    :defer t)
+#+end_src
+
 ** Project
 Get latest version of project.el
 
