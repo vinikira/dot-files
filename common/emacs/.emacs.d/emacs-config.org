@@ -956,7 +956,7 @@ Macro to read the snippets from the =snippets-dir=.
     :unless VS/IS-ANDROID
     :bind ("C-c t" . telega))
 #+end_src
-*** Tree Sitter
+*** Treesit Auto
 Tree sitter auto installer for Emacs 29
 
 #+begin_src emacs-lisp
