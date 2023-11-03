@@ -512,8 +512,8 @@ My Org structure templates.
       ("l" . "export latex")
       ("q" . "quote")
       ("s" . "src")
-      ("v" . "verse")
-      ("vs" . "src verb :wrap src ob-verb-response")))
+      ("sv" . "src verb :wrap src ob-verb-response")
+      ("v" . "verse")))
 #+end_src
 
 *** Package declaration
