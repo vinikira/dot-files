@@ -1086,7 +1086,7 @@ See more: https://github.com/domtronn/all-the-icons.el/wiki/Mode-Line
 *** Side windows
 #+begin_src emacs-lisp
   (customize-set-variable 'display-buffer-alist
-                          '(("\\(\\*vterm\\*?\\|\\*?e?shell\\*\\)"
+                          '(("\\(\\*.*vterm\\.*\\*?\\|\\*?e?shell\\*\\)"
                              (display-buffer-in-side-window)
                              (window-height . 0.30)
                              (side . bottom)
