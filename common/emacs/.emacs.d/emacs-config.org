@@ -826,6 +826,8 @@ Macro to read the snippets from the =snippets-dir=.
 #+begin_src emacs-lisp
   (use-package dumb-jump
     :after xref
+    :custom ((dumb-jump-force-searcher 'rg)
+             (xref-show-definitions-function #'xref-show-definitions-completing-read))
     :config
     (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
 #+end_src
