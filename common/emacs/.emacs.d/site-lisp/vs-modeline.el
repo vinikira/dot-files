@@ -89,7 +89,7 @@ Only show for text and prog modes.")
     (concat
      (nerd-icons-devicon "nf-dev-git_branch")
      " "
-     branch)))
+     (propertize (substring branch 0 15) 'help-echo branch))))
 
 (defvar-local vs-modeline-vc
     '(:eval
