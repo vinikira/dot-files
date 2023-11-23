@@ -102,7 +102,11 @@ FORCE-EXTERNAL browser if provided."
                 `("elixir-format" ,buffer-name ,mix "format")
                 (if project '() `(,file-name)))))
     (apply #'start-process args)
-    (pop-to-buffer "*mix format*")))
+    (set-process-sentinel
+     (get-buffer-process buffer-name)
+     (lambda (process _event)
+       (when (> (process-exit-status process) 0 )
+         (pop-to-buffer buffer-name))))))
 
 (provide 'vs-elixir)
 

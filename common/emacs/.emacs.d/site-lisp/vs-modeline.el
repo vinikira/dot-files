@@ -84,7 +84,7 @@ Only show for text and prog modes.")
   "Mode line construct displaying the buffer name.")
 
 (defun vs-modeline--vc ()
-  "Mode line construct displaying version control information"
+  "Mode line construct displaying version control information."
   (let ((branch (mapconcat 'concat (cdr (split-string vc-mode "[:-]")) "-")))
     (concat
      (nerd-icons-devicon "nf-dev-git_branch")
