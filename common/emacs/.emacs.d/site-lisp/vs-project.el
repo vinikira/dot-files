@@ -72,7 +72,7 @@ Switch to the project specific term buffer if it already exists."
 (defun vs/project-db-file ()
   "Open or create the _db.sql file in the current project."
   (interactive)
-  (vs/--project-open-file "_db.sql"))
+  (vs/--project-open-file "_db.org"))
 
 ;;;###autoload
 (defun vs/project-dir-locals ()
