@@ -727,20 +727,6 @@ Turn code evaluation async.
      '(:time "2h" :period "30m" :duration 25 :actions -notify/window)))
 #+end_src
 
-**** Org project
-#+begin_src emacs-lisp
-  (use-package org-project
-    :unless VS/IS-ANDROID
-    :after (org project)
-    :elpaca (org-project :type git :host github :repo "delehef/org-project")
-    :custom
-    (org-project-todos-per-project t)
-    :bind (:map project-prefix-map
-                ("t" . #'org-project-quick-capture)
-                ("T" . #'org-project-capture)
-                ("o" . #'org-project-open-todos)))
-#+end_src
-
 **** Org contacts
 #+begin_src emacs-lisp
   (use-package org-contacts
@@ -770,11 +756,13 @@ Get latest version of project.el
 #+begin_src emacs-lisp
   (use-package project
     :bind (:map project-prefix-map
-                ("C-o l" . vs/project-dir-locals)
-                ("C-o d" . vs/project-db-file)
-                ("C-o a" . vs/project-api-file)
-                ("C-o r" . vs/project-runbook)
+                ("o l" . vs/project-dir-locals)
+                ("o d" . vs/project-db-file)
+                ("o a" . vs/project-api-file)
+                ("o r" . vs/project-runbook)
                 ("S" . vs/project-save-project-buffers))
+    :custom ((project-compilation-buffer-name-function
+              'project-prefixed-buffer-name))
     :config
     (fset 'project-shell 'vs/vterm-in-project))
 #+end_src
