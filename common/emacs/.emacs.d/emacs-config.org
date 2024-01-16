@@ -447,6 +447,17 @@ Keybindings
       (define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file)))
 #+end_src
 
+** Flymake
+#+begin_src emacs-lisp
+  (use-package flymake
+    :elpaca nil
+    :hook (prog-mode . flymake-mode)
+    :bind (:map flymake-mode-map
+                ("C-c ! n" . flymake-goto-next-error)
+                ("C-c ! p" . flymake-goto-prev-error)
+                ("C-c ! L" . flymake-show-project-diagnostics)
+                ("C-c ! l" . flymake-show-buffer-diagnostics)))
+#+end_src
 ** Flyspell
 #+begin_src emacs-lisp
   (eval-after-load "flyspell"
