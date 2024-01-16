@@ -1116,7 +1116,6 @@ Experimenting nano-modeline for a while.
     (org-agenda-mode     . nano-modeline-org-agenda-mode))
 #+end_src
 
-
 *** Side windows
 #+begin_src emacs-lisp
   (customize-set-variable 'display-buffer-alist
