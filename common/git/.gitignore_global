@@ -10,5 +10,5 @@ node_modules/
 *.iml
 _api.org
 _runbook.org
-_db.sql
+_db.org
 .dir-locals.el
