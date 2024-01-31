@@ -1926,8 +1926,8 @@ SQL Format
 #+begin_src emacs-lisp
   (use-package sqlformat
     :custom
-    (sqlformat-command pgformatter)
-    (sqlformat-args '("-s2" "-g" "-u1"))
+    (sqlformat-command 'pgformatter)
+    (sqlformat-args '("-s2" "-g"))
     :bind (:map sql-mode-map
                 ("C-c C-f" . sqlformat)))
 #+end_src
