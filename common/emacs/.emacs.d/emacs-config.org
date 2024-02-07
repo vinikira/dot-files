@@ -357,17 +357,8 @@ When IDLE for call code after emacs-init.
      nil '(("\\<\\(FIXME\\|TODO\\|NOCOMMIT\\)"
             1 font-lock-warning-face t))))
 
-  ;; Enable ANSI colors on compilation mode
-  (defun vs/--colorize-compilation ()
-    "Colorize from `compilation-filter-start' to `point'."
-    (let ((inhibit-read-only t))
-      (when (boundp 'compilation-filter-start)
-        (safe-funcall 'ansi-color-apply-on-region
-                      compilation-filter-start (point)))))
-
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
-  (add-hook 'compilation-filter-hook
-            'vs/--colorize-compilation)
+  (add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
   (add-hook 'prog-mode-hook
             (lambda ()
               (setq-local show-trailing-whitespace t)
