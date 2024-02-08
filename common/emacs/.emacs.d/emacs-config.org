@@ -1107,7 +1107,7 @@ Experimenting nano-modeline for a while.
     (org-agenda-mode     . nano-modeline-org-agenda-mode))
 #+end_src
 
-*** Side windows
+*** Display buffer rules
 #+begin_src emacs-lisp
   (customize-set-variable 'display-buffer-alist
                           '(("\\(\\*.*vterm\\.*\\*?\\|\\*?e?shell\\*\\)"
@@ -1115,7 +1115,7 @@ Experimenting nano-modeline for a while.
                              (window-height . 0.30)
                              (side . bottom)
                              (slot . -1))
-                            ("\\*.*compilation.*\\*"
+                            ((derived-mode . compilation-mode)
                              (display-buffer-in-side-window)
                              (window-height . 0.30)
                              (side . bottom)
