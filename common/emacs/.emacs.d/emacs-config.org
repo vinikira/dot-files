@@ -352,7 +352,6 @@ When IDLE for call code after emacs-init.
   (add-hook 'prog-mode-hook
             (lambda ()
               (setq-local show-trailing-whitespace t)
-              (flymake-mode 1)
               (vs/--line-numbers)
               (vs/--font-lock)))
   (add-hook 'text-mode-hook
