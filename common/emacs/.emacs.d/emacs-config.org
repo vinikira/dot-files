@@ -219,16 +219,6 @@ libs with my custom functions
 #+end_src
 
 *** Macros
-Safe funcall
-
-#+begin_src emacs-lisp
-  (defmacro safe-funcall (func &rest args)
-    "Call FUNC with ARGS, if it's bounded."
-    `(if (fboundp ,func)
-         (funcall ,func ,@args)
-       (error "Function %s not loaded" ,func)))
-#+end_src
-
 When IDLE for call code after emacs-init.
 
 #+begin_src emacs-lisp
@@ -2031,8 +2021,9 @@ Creating a tag table for =plantuml-mode=.
   (defvar plantuml-tempo-tags nil
     "Tempo tags for Plantuml mode")
 
-  (add-hook 'plantuml-mode-hook (lambda ()
-                                  (safe-funcall 'tempo-use-tag-list 'plantuml-tempo-tags)))
+  (add-hook 'plantuml-mode-hook
+            (lambda ()
+              (tempo-use-tag-list 'plantuml-tempo-tags))
 #+end_src
 
 Loading snippets
