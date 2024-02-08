@@ -1114,17 +1114,20 @@ Experimenting nano-modeline for a while.
                              (display-buffer-in-side-window)
                              (window-height . 0.30)
                              (side . bottom)
-                             (slot . -1))
+                             (slot . -1)
+                             (dedicated . t))
                             ((derived-mode . compilation-mode)
                              (display-buffer-in-side-window)
                              (window-height . 0.30)
                              (side . bottom)
-                             (slot . 0))
+                             (slot . 0)
+                             (dedicated . t))
                             ("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\|Help\\)\\*"
                              (display-buffer-in-side-window)
                              (window-height . 0.30)
                              (side . bottom)
-                             (slot . 1))))
+                             (slot . 1)
+                             (dedicated . t))))
 #+end_src
 
 *** Tab bar mode
