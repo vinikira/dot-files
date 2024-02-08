@@ -31,15 +31,6 @@
 (require 'project)
 
 ;;;###autoload
-(defun vs/project-name ()
-  "Return the project name for current project."
-  (when-let ((project (project-current))
-             (dir (project-root project)) )
-    (if (string-match "/\\([^/]+\\)/\\'" dir)
-        (match-string 1 dir)
-      dir)))
-
-;;;###autoload
 (defun vs/vterm-in-project ()
   "Invoke `vterm' in the project's root.
 Switch to the project specific term buffer if it already exists."

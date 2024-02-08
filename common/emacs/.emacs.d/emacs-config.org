@@ -1126,17 +1126,17 @@ Experimenting nano-modeline for a while.
                              (side . bottom)
                              (slot . 1))))
 #+end_src
+
 *** Tab bar mode
 #+begin_src emacs-lisp
-  (defun vs/--tab-bar-name ()
-    "Custom function to generate tab bar names."
-    (let ((project-name (safe-funcall 'vs/project-name)))
-      (if (not project-name)
-          (tab-bar-tab-name-current)
-        project-name)))
-
+  (customize-set-variable
+   'tab-bar-tab-name-function
+   (lambda ()
+     (if-let ((project (project-current))
+              (project-name (project-name project)))
+         project-name
+       (tab-bar-tab-name-current))))
   (customize-set-variable 'tab-bar-mode t)
-  (customize-set-variable 'tab-bar-tab-name-function 'vs/--tab-bar-name)
   (customize-set-variable 'tab-bar-new-tab-choice "*scratch*")
   (customize-set-variable 'tab-bar-close-button-show nil)
   (customize-set-variable 'tab-bar-new-button-show nil)
