@@ -464,21 +464,15 @@ Capture templates
 
 #+begin_src emacs-lisp
   (defconst vs/org-capture-templates
-    '(("t" "TODO menu")
-      ("tp" "TODO personal" entry (file+headline "personal.org" "Tasks")
-       "* TODO %?\nSCHEDULED: ^%^t\n%u\n%a\n")
-      ("tw" "TODO work" entry (file+headline "work.org" "Tasks")
-       "* TODO %?\nSCHEDULED: %^t\n%u\n%a\n")
-      ("m" "Meetings menu")
-      ("mp" "Meeting personal" entry (file+headline "personal.org" "Meetings")
-       "* MEETING with %? :MEETING:\nSCHEDULED: %^t")
-      ("mw" "Meeting work" entry (file+headline "work.org" "Meetings")
-       "* MEETING with %? :MEETING:\nSCHEDULED: %^t")
+    `(("t" "TODO entry" entry (file+headline "personal.org" "Tasks")
+       "* TODO %?\nSCHEDULED: %^t\n%U\n%a\n")
+      ("m" "Meetings menu" entry (file+headline "personal.org" "Meetings")
+       "* TODO MEETING with %? :MEETING:\nSCHEDULED: %^t\n%U\n")
+      ("r" "Reading list" entry (file+headline "reading_list.org" "Articles/Posts")
+       "* TODO %?\n%U\n"
+       :refile-targets (("reading_list.org" :maxlevel . 1)))
       ("n" "Note" entry (file org-default-notes-file)
        "* %? \n%t")
-      ("j" "Journal Entry" entry (file+datetree "journal.org")
-       "* Event: %?\n\n  %i\n\n  From: %a"
-       :empty-lines 1)
       ("c" "New Contact" entry (file "contacts.org")
        "* %(org-contacts-template-name)
   :PROPERTIES:
@@ -490,6 +484,7 @@ Capture templates
   :ICON:
   :NOTE:
   :ADDRESS:
+  :COMPLEMENT:
   :BIRTHDAY:
   :END:")))
 #+end_src
@@ -556,7 +551,7 @@ General customizations
   (org-use-speed-commands t)
   (org-refile-use-outline-path t)
   (org-outline-path-complete-in-steps nil)
-  (org-refile-targets '((org-agenda-files :maxlevel . 9)))
+  (org-refile-targets '((org-agenda-files :maxlevel . 1)))
   (org-hide-emphasis-markers t)
   (org-imenu-depth 7)
 #+end_src
