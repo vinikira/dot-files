@@ -547,6 +547,7 @@ General customizations
   (org-log-done 'time)
   (org-babel-sh-command "bash")
   (org-capture-templates vs/org-capture-templates)
+  (org-capture-bookmark nil)
   (org-structure-template-alist vs/org-structure-template-alist)
   (org-use-speed-commands t)
   (org-refile-use-outline-path t)
