@@ -23,15 +23,15 @@ Increase temporarily the GC limits.
         (fha file-name-handler-alist))
     (add-hook 'after-init-hook
               (lambda ()
-                (setq gc-cons-threshold (* 2 1000 1000) ;; 2MB
-                      gc-cons-percentage gc-cp
-                      file-name-handler-alist fha))))
+                (setopt gc-cons-threshold (* 2 1000 1000) ;; 2MB
+                        gc-cons-percentage gc-cp
+                        file-name-handler-alist fha))))
 #+end_src
 
 Do not check bytecode
 
 #+begin_src emacs-lisp
-  (setq load-prefer-newer noninteractive)
+   (setopt load-prefer-newer noninteractive)
 #+end_src
 
 Native compilation settings
@@ -39,15 +39,14 @@ Native compilation settings
 #+begin_src emacs-lisp
   (when (featurep 'native-compile)
     ;; Silence compiler warnings as they can be pretty disruptive
-    (setq-default native-comp-async-report-warnings-errors nil)
-
-    ;; Make native compilation happens asynchronously
-    (setq native-comp-deferred-compilation t))
+    (setopt native-comp-async-report-warnings-errors nil
+            ;; Make native compilation happens asynchronously
+            native-comp-jit-compilation t))
 
   ;; Disable garbage collection on startup
-  (setq gc-cons-threshold most-positive-fixnum
-        gc-cons-percentage 0.8
-        file-name-handler-alist nil)
+  (setopt gc-cons-threshold most-positive-fixnum
+          gc-cons-percentage 0.8
+          file-name-handler-alist nil)
 #+end_src
 
 Default frame alist
@@ -64,14 +63,14 @@ Default frame alist
 Remove some unneeded UI elements (the user can turn back on anything they wish)
 
 #+begin_src emacs-lisp
-  (setq frame-resize-pixelwise t
-        frame-inhibit-implied-resize t
-        use-dialog-box t
-        use-file-dialog nil
-        inhibit-splash-screen t
-        inhibit-startup-screen t
-        inhibit-x-resources t
-        inhibit-startup-buffer-menu t)
+  (setopt frame-resize-pixelwise t
+          frame-inhibit-implied-resize t
+          use-dialog-box t
+          use-file-dialog nil
+          inhibit-splash-screen t
+          inhibit-startup-screen t
+          inhibit-x-resources t
+          inhibit-startup-buffer-menu t)
 
   (menu-bar-mode -1)
   (unless (eq system-type 'android)
@@ -82,7 +81,7 @@ Remove some unneeded UI elements (the user can turn back on anything they wish)
 Disable =package.el=
 
 #+begin_src emacs-lisp
-  (setq package-enable-at-startup nil)
+  (setopt package-enable-at-startup nil
 #+end_src
 
 Resizing the Emacs frame can be a terribly expensive part of changing
@@ -90,7 +89,7 @@ the p font. By inhibiting this, we easily halve startup times with
 fonts that are larger than the system default.
 
 #+begin_src emacs-lisp
-  (setq frame-inhibit-implied-resize t)
+          frame-inhibit-implied-resize t)
 #+end_src
 
 Android specific changes
@@ -243,7 +242,7 @@ When IDLE for call code after emacs-init.
 
 *** Custom file
 #+begin_src emacs-lisp
-  (setq custom-file (expand-file-name "custom.el" private-dir))
+  (setopt custom-file (expand-file-name "custom.el" private-dir))
 
   (add-hook 'elpaca-after-init-hook (lambda ()
                                       (unless (file-exists-p custom-file)
@@ -253,9 +252,9 @@ When IDLE for call code after emacs-init.
 
 *** UTF-8 please!
 #+begin_src emacs-lisp
-  (customize-set-variable 'default-process-coding-system
-                          '(utf-8-unix . utf-8-unix))
-  (customize-set-variable 'locale-coding-system 'utf-8)
+  (setopt default-process-coding-system '(utf-8-unix . utf-8-unix)
+          locale-coding-system 'utf-8)
+
   (set-charset-priority 'unicode)
   (set-terminal-coding-system 'utf-8)
   (set-keyboard-coding-system 'utf-8)
@@ -268,71 +267,72 @@ When IDLE for call code after emacs-init.
 *** Variables customizations
 
 #+begin_src emacs-lisp
-  (customize-set-variable 'confirm-kill-emacs 'y-or-n-p)
-  (customize-set-variable 'confirm-nonexistent-file-or-buffer t)
-  (customize-set-variable 'save-interprogram-paste-before-kill t)
-  (customize-set-variable 'mouse-yank-at-point t)
-  (customize-set-variable 'require-final-newline t)
-  (customize-set-variable 'visible-bell nil)
-  (customize-set-variable 'ring-bell-function 'ignore)
-  ;; http://ergoemacs.org/emacs/emacs_stop_cursor_enter_prompt.html
-  (customize-set-variable 'minibuffer-prompt-properties
-                          '(read-only
-                            t
-                            point-entered
-                            minibuffer-avoid-prompt
-                            face minibuffer-prompt))
-  ;; Disable non selected window highlight
-  (customize-set-variable 'cursor-in-non-selected-windows nil)
-  (customize-set-variable 'highlight-nonselected-windows nil)
-  ;; PATH
-  (customize-set-variable 'exec-path (append
-                                      exec-path
-                                      `("/usr/local/bin/"
-                                        ,(expand-file-name "~/.local/bin")
-                                        ,(expand-file-name "~/.asdf/shims"))))
-  (customize-set-variable 'inhibit-startup-message t)
-  (customize-set-variable 'fringes-outside-margins t)
-  (customize-set-variable 'select-enable-clipboard t)
-  ;; Backups enabled, use nil to disable
-  (customize-set-variable 'history-length 1000)
-  (customize-set-variable 'backup-inhibited nil)
-  (customize-set-variable 'make-backup-files t)
-  (customize-set-variable 'auto-save-default t)
-  (customize-set-variable 'auto-save-list-file-name (concat temp-dir "/autosave"))
-  (customize-set-variable 'create-lockfiles nil)
-  (customize-set-variable 'backup-directory-alist
-                          `((".*" . ,(concat temp-dir "/backup/"))))
-  (customize-set-variable 'auto-save-file-name-transforms
-                          `((".*" ,(concat temp-dir "/backup/") t)))
-  (customize-set-variable 'bookmark-save-flag t)
-  (customize-set-variable 'bookmark-default-file (concat temp-dir "/bookmarks"))
-  (customize-set-variable 'read-process-output-max (* 1024 1024))
-  (customize-set-variable 'compilation-scroll-output t)
-  (customize-set-variable 'indent-tabs-mode nil)
-  (customize-set-variable 'tab-always-indent 'complete)
-  (customize-set-variable 'scroll-conservatively 101)
-  (customize-set-variable 'indicate-empty-lines t)
-  (customize-set-variable 'indicate-buffer-boundaries 'left)
-  (customize-set-variable 'sentence-end-double-space nil)
-  (customize-set-variable 'tab-width 4)
-  (customize-set-variable 'kill-do-not-save-duplicates t)
-  (customize-set-variable 'use-dialog-box t)
-  (customize-set-variable 'global-auto-revert-non-file-buffers t)
-  (customize-set-variable 'ediff-window-setup-function 'ediff-setup-windows-plain)
+  (setopt confirm-kill-emacs 'y-or-n-p
+          confirm-nonexistent-file-or-buffer t
+          save-interprogram-paste-before-kill t
+          mouse-yank-at-point t
+          require-final-newline t
+          visible-bell nil
+          ring-bell-function 'ignore
+          ;; http://ergoemacs.org/emacs/emacs_stop_cursor_enter_prompt.html
+          minibuffer-prompt-properties
+          '(read-only
+            t
+            point-entered
+            minibuffer-avoid-prompt
+            face minibuffer-prompt)
+          ;; Disable non selected window highlight
+          cursor-in-non-selected-windows nil
+          highlight-nonselected-windows nil
+          ;; PATH
+          exec-path (append
+                     exec-path
+                     `("/usr/local/bin/"
+                       ,(expand-file-name "~/.local/bin")
+                       ,(expand-file-name "~/.asdf/shims")))
+          inhibit-startup-message t
+          fringes-outside-margins t
+          select-enable-clipboard t
+          ;; Backups enabled, use nil to disable
+          history-length 1000
+          backup-inhibited nil
+          make-backup-files t
+          auto-save-default t
+          auto-save-list-file-name (concat temp-dir "/autosave")
+          create-lockfiles nil
+          backup-directory-alist
+          `((".*" . ,(concat temp-dir "/backup/")))
+          auto-save-file-name-transforms
+          `((".*" ,(concat temp-dir "/backup/") t))
+          bookmark-save-flag t
+          bookmark-default-file (concat temp-dir "/bookmarks")
+          read-process-output-max (* 1024 1024)
+          compilation-scroll-output t
+          indent-tabs-mode nil
+          tab-always-indent 'complete
+          scroll-conservatively 101
+          indicate-empty-lines t
+          indicate-buffer-boundaries 'left
+          sentence-end-double-space nil
+          tab-width 4
+          kill-do-not-save-duplicates t
+          use-dialog-box t
+          global-auto-revert-non-file-buffers t
+          ediff-window-setup-function 'ediff-setup-windows-plain)
+
   (fset 'yes-or-no-p 'y-or-n-p)
   (windmove-default-keybindings)
 
   ;; Better support for files with long lines
-  (setq-default bidi-paragraph-direction 'left-to-right)
-  (setq-default bidi-inhibit-bpa t)
+  (setopt bidi-paragraph-direction 'left-to-right)
+  (setopt bidi-inhibit-bpa t)
 #+end_src
 
 *** MacOS variables customizations
 #+begin_src emacs-lisp
   (when VS/IS-MACOS
-    (customize-set-variable 'mac-command-modifier 'meta)
-    (customize-set-variable 'mac-option-modifier 'hyper))
+    (setopt mac-command-modifier 'meta
+            mac-option-modifier 'hyper))
 #+end_src
 *** Hooks for builtin modes
 #+begin_src emacs-lisp
@@ -376,8 +376,6 @@ When IDLE for call code after emacs-init.
 *** Disable some builtin modes
 #+begin_src emacs-lisp
   (blink-cursor-mode -1)
-  (customize-set-variable 'inhibit-startup-screen t)
-  (customize-set-variable 'inhibit-splash-screen t)
 #+end_src
 
 *** Prevent *scratch* to be killed
@@ -398,16 +396,15 @@ When IDLE for call code after emacs-init.
 Custom variables
 
 #+begin_src emacs-lisp
-  (customize-set-variable 'dired-mouse-drag-files t)
-  (customize-set-variable 'mouse-drag-and-drop-region-cross-program t)
-  (customize-set-variable 'dired-listing-switches "-alh")
-  (customize-set-variable 'delete-by-moving-to-trash t)
-  (customize-set-variable 'dired-dwim-target t)
-  (customize-set-variable
-   'dired-guess-shell-alist-user
-   '(("\\.\\(png\\|jpe?g\\|tiff\\)" "feh" "xdg-open" "open")
-     ("\\.\\(mp[34]\\|m4a\\|ogg\\|flac\\|webm\\|mkv\\)" "mpv" "xdg-open" "open")
-     (".*" "xdg-open" "open")))
+  (setopt dired-mouse-drag-files t
+          mouse-drag-and-drop-region-cross-program t
+          dired-listing-switches "-alh"
+          delete-by-moving-to-trash t
+          dired-dwim-target t
+          dired-guess-shell-alist-user
+          '(("\\.\\(png\\|jpe?g\\|tiff\\)" "feh" "xdg-open" "open")
+            ("\\.\\(mp[34]\\|m4a\\|ogg\\|flac\\|webm\\|mkv\\)" "mpv" "xdg-open" "open")
+            (".*" "xdg-open" "open")))
 #+end_src
 
 Enable dired-find-alternate-file
@@ -1028,7 +1025,7 @@ Uses fontaine to configure the fonts preset
 Helps in font resize.
 
 #+begin_src emacs-lisp
-  (setq-default text-scale-remap-header-line t)
+  (setopt text-scale-remap-header-line t)
 #+end_src
 
 *** Theme
@@ -1041,9 +1038,9 @@ Helps in font resize.
 Theme customization
 
 #+begin_src emacs-lisp
-  (customize-set-variable 'modus-themes-italic-constructs t)
-  (customize-set-variable 'modus-themes-bold-constructs t)
-  (customize-set-variable 'modus-themes-mixed-fonts t)
+  (setopt modus-themes-italic-constructs t
+          modus-themes-bold-constructs t
+          modus-themes-mixed-fonts t)
 #+end_src
 
 Load theme after create a new frame
@@ -1094,40 +1091,40 @@ Experimenting nano-modeline for a while.
 
 *** Display buffer rules
 #+begin_src emacs-lisp
-  (customize-set-variable 'display-buffer-alist
-                          '(("\\(\\*.*vterm\\.*\\*?\\|\\*?e?shell\\*\\)"
-                             (display-buffer-in-side-window)
-                             (window-height . 0.30)
-                             (side . bottom)
-                             (slot . -1)
-                             (dedicated . t))
-                            ((derived-mode . compilation-mode)
-                             (display-buffer-in-side-window)
-                             (window-height . 0.30)
-                             (side . bottom)
-                             (slot . 0)
-                             (dedicated . t))
-                            ("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\|Help\\)\\*"
-                             (display-buffer-in-side-window)
-                             (window-height . 0.30)
-                             (side . bottom)
-                             (slot . 1)
-                             (dedicated . t))))
+  (setopt display-buffer-alist
+          '(("\\(\\*.*vterm\\.*\\*?\\|\\*?e?shell\\*\\)"
+             (display-buffer-in-side-window)
+             (window-height . 0.30)
+             (side . bottom)
+             (slot . -1)
+             (dedicated . t))
+            ((derived-mode . compilation-mode)
+             (display-buffer-in-side-window)
+             (window-height . 0.30)
+             (side . bottom)
+             (slot . 0)
+             (dedicated . t))
+            ("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\|Help\\)\\*"
+             (display-buffer-in-side-window)
+             (window-height . 0.30)
+             (side . bottom)
+             (slot . 1)
+             (dedicated . t))))
 #+end_src
 
 *** Tab bar mode
 #+begin_src emacs-lisp
-  (customize-set-variable
-   'tab-bar-tab-name-function
+  (setopt
+   tab-bar-tab-name-function
    (lambda ()
      (if-let ((project (project-current))
               (project-name (project-name project)))
          project-name
-       (tab-bar-tab-name-current))))
-  (customize-set-variable 'tab-bar-mode t)
-  (customize-set-variable 'tab-bar-new-tab-choice "*scratch*")
-  (customize-set-variable 'tab-bar-close-button-show nil)
-  (customize-set-variable 'tab-bar-new-button-show nil)
+       (tab-bar-tab-name-current)))
+   tab-bar-mode t
+   tab-bar-new-tab-choice "*scratch*"
+   tab-bar-close-button-show nil
+   tab-bar-new-button-show nil)
 
   (global-set-key (kbd "H-t") 'tab-bar-select-tab-by-name)
 #+end_src
@@ -1289,14 +1286,12 @@ Consult and vertico
 #+begin_src emacs-lisp
   ;; Use `consult-completion-in-region' if Vertico is enabled.
   ;; Otherwise use the default `completion--in-region' function.
-  (customize-set-variable
-   'completion-in-region-function
-   (lambda (&rest args)
-     (apply (if (bound-and-true-p vertico-mode)
-                'consult-completion-in-region
-              'completion--in-region)
-            args)))
-
+  (setopt completion-in-region-function
+          (lambda (&rest args)
+            (apply (if (bound-and-true-p vertico-mode)
+                       'consult-completion-in-region
+                     'completion--in-region)
+                   args)))
 #+end_src
 
 Consult and Eglot integration
@@ -1673,9 +1668,9 @@ Configures Java Mode
                             (make-local-variable 'tab-width)
                             (make-local-variable 'indent-tabs-mode)
                             (make-local-variable 'c-basic-offset)
-                            (customize-set-variable 'tab-width 4)
-                            (customize-set-variable 'indent-tabs-mode t)
-                            (customize-set-variable 'c-basic-offset 4))))
+                            (setopt tab-width 4
+                                    indent-tabs-mode t
+                                    c-basic-offset 4))))
 #+end_src
 *** JavaScript
 Snippets variable list
@@ -2006,8 +2001,8 @@ LSP
     :config
     (let* ((plantuml-directory (if (boundp 'private-dir) private-dir "/tmp"))
            (plantuml-target (concat plantuml-directory "/plantuml.jar")))
-      (customize-set-variable 'org-plantuml-jar-path plantuml-target)
-      (customize-set-variable 'plantuml-jar-path plantuml-target)))
+      (setopt org-plantuml-jar-path plantuml-target
+              plantuml-jar-path plantuml-target)))
 #+end_src
 
 Creating a tag table for =plantuml-mode=.
@@ -2093,9 +2088,9 @@ Loading snippets
                           langtool-folder
                           langtool-zip))))
       (autoload 'find-lisp-find-files "find-lisp.el")
-      (customize-set-variable 'langtool-language-tool-jar
-                              (car (find-lisp-find-files
-                                    langtool-folder "languagetool-commandline.jar")))))
+      (setopt langtool-language-tool-jar
+              (car (find-lisp-find-files
+                    langtool-folder "languagetool-commandline.jar")))))
 #+end_src
 
 ** Mail
@@ -2139,12 +2134,12 @@ Remember to set the `user-full-name' and `user-mail-address' in custom
 file.
 
 #+begin_src emacs-lisp
-  (customize-set-variable 'mail-user-agent 'message-user-agent)
-  (customize-set-variable 'mail-specify-envelope-from t)
-  (customize-set-variable 'sendmail-program "msmtp")
-  (customize-set-variable 'mail-specify-envelope-from t)
-  (customize-set-variable 'mail-envelope-from 'header)
-  (customize-set-variable 'message-sendmail-envelope-from 'header)
-  (customize-set-variable 'message-send-mail-function 'message-send-mail-with-sendmail)
-  (customize-set-variable 'message-kill-buffer-on-exit t)
+  (setopt mail-user-agent 'message-user-agent
+          mail-specify-envelope-from t
+          sendmail-program "msmtp"
+          mail-specify-envelope-from t
+          mail-envelope-from 'header
+          message-sendmail-envelope-from 'header
+          message-send-mail-function 'message-send-mail-with-sendmail
+          message-kill-buffer-on-exit t)
 #+end_src
