@@ -1504,12 +1504,31 @@ Elixir TS Mode
   (use-package elixir-ts-mode
     :defer t
     :bind (:map elixir-ts-mode-map
-                ("C-c C-c f" . vs/elixir-format)
+                ("C-c C-c f" . elixir-format-buffer)
                 ("C-c C-c M" . vs/elixir-map-string-to-map-atom)
                 ("C-c C-c m" . vs/elixir-map-atom-to-map-string)
                 ("C-c C-c J" . vs/etf-to-json)
                 ("C-c C-c j" . vs/json-to-etf)
                 ("C-c C-c D" . vs/elixir-open-dep-docs)))
+#+end_src
+
+Elixir reformatter definition
+
+#+begin_src emacs-lisp
+  (reformatter-define elixir-format
+    :program "mix"
+    :args '("format" "-"))
+
+  (defun vs/--set-default-directory-to-mix-project-root (original-fun &rest args)
+                (if-let* ((mix-project-root (and buffer-file-name
+                                                 (locate-dominating-file buffer-file-name
+                                                                         ".formatter.exs"))))
+                    (let ((default-directory mix-project-root))
+                      (apply original-fun args))
+                  (apply original-fun args)))
+
+  (advice-add 'elixir-format-region :around #'vs/--set-default-directory-to-mix-project-root)
+  (advice-add 'elixir-format-buffer :around #'vs/--set-default-directory-to-mix-project-root)
 #+end_src
 
 Ex Unit
