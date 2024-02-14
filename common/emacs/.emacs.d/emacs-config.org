@@ -899,6 +899,19 @@ Macro to read the snippets from the =snippets-dir=.
     :config
     (dashboard-setup-startup-hook))
 #+end_src
+*** Reformatter
+Provides a macro that helps to standardize the way Emacs use CLI
+formatters, dealing with things such as:
+
+- Missing programs
+- Buffers not yet saved to a file
+- Displaying error output
+- Colorising ANSI escape sequences in any error output
+- Handling file encodings correctly
+
+  #+begin_src emacs-lisp
+    (use-package reformatter)
+  #+end_src
 *** Ripgrep
 #+begin_src emacs-lisp
   (use-package rg
