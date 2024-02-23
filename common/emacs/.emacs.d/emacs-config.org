@@ -849,6 +849,14 @@ Macro to read the snippets from the =snippets-dir=.
   (use-package impostman
     :defer t)
 #+end_src
+*** Kubel
+Kubernetes management from Emacs
+https://github.com/abrochard/kubel/tree/master
+
+#+begin_src emacs-lisp
+  (use-package kubel
+    :bind ("C-c K" . kubel))
+#+end_src
 *** Magit
 #+begin_src emacs-lisp
   (use-package magit
