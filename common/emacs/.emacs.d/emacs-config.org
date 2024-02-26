@@ -1674,8 +1674,8 @@ Go TS mode
   (use-package go-ts-mode
     :elpaca nil
     :defer t
-    :custom
-    (go-ts-mode-indent-offset 4))
+    :config
+    (add-to-list 'major-mode-remap-alist '(go-mode . go-ts-mode)))
 #+end_src
 
 *** Groovy
