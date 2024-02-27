@@ -1838,16 +1838,19 @@ Python TS mode
   (use-package ruby-ts-mode
     :elpaca nil
     :bind (:map ruby-ts-mode-map
-                ("C-c C-c f" . ruby-format-buffer)))
+                ("C-c C-c f" . ruby-format-buffer)
+                ("C-c C-c z" . run-ruby))
 #+end_src
 
 Ruby reformatter definition
 
 #+begin_src emacs-lisp
+  :config
   (reformatter-define ruby-format
-      :program "rubocop"
-      :args '("-a" "--stderr" "-s" "--")
-      :exit-code-success-p (lambda (_c) t))
+    :program "rubocop"
+    :args '("-a" "--stderr" "-s" "--")
+    :exit-code-success-p (lambda (_c) t))
+  (add-to-list 'major-mode-remap-alist '(ruby-mode . ruby-ts-mode)))
 #+end_src
 
 Flymake Ruby
