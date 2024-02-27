@@ -2079,7 +2079,7 @@ Creating a tag table for =plantuml-mode=.
 
   (add-hook 'plantuml-mode-hook
             (lambda ()
-              (tempo-use-tag-list 'plantuml-tempo-tags))
+              (tempo-use-tag-list 'plantuml-tempo-tags)))
 #+end_src
 
 Loading snippets
