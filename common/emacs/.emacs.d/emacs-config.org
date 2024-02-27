@@ -2102,7 +2102,7 @@ Loading snippets
 
 ** Writer
 *** LaTeX
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package auctex
     :defer t
     :hook (tex-mode . flyspell-mode))
