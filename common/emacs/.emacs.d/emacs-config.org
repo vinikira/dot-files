@@ -1518,26 +1518,32 @@ Elixir TS Mode
                 ("C-c C-c m" . vs/elixir-map-atom-to-map-string)
                 ("C-c C-c J" . vs/etf-to-json)
                 ("C-c C-c j" . vs/json-to-etf)
-                ("C-c C-c D" . vs/elixir-open-dep-docs)))
+                ("C-c C-c D" . vs/elixir-open-dep-docs)
+                ("C-c C-c z" . run-elixir-project))
 #+end_src
 
 Elixir reformatter definition
 
 #+begin_src emacs-lisp
+  :config
   (reformatter-define elixir-format
     :program "mix"
     :args '("format" "-"))
 
   (defun vs/--set-default-directory-to-mix-project-root (original-fun &rest args)
-                (if-let* ((mix-project-root (and buffer-file-name
-                                                 (locate-dominating-file buffer-file-name
-                                                                         ".formatter.exs"))))
-                    (let ((default-directory mix-project-root))
-                      (apply original-fun args))
-                  (apply original-fun args)))
+    (if-let* ((mix-project-root (and buffer-file-name
+                                     (locate-dominating-file buffer-file-name
+                                                             ".formatter.exs"))))
+        (let ((default-directory mix-project-root))
+          (apply original-fun args))
+      (apply original-fun args)))
 
   (advice-add 'elixir-format-region :around #'vs/--set-default-directory-to-mix-project-root)
-  (advice-add 'elixir-format-buffer :around #'vs/--set-default-directory-to-mix-project-root)
+  (advice-add 'elixir-format-buffer :around #'vs/--set-default-directory-to-mix-project-root))
+
+  ;; add major mode remap alist
+  (add-to-list 'major-mode-remap-alist
+               '(elixir-mode . elixir-ts-mode)))
 #+end_src
 
 Ex Unit
