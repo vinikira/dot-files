@@ -1037,10 +1037,10 @@ Uses fontaine to configure the fonts preset
         :default-family "Iosevka Nerd Font"
         :default-weight regular
         :default-height ,(if VS/IS-MACOS 170 120)
-        :fixed-pitch-family nil ; falls back to :default-family
+        :fixed-pitch-family "Iosevka Nerd Font" ; falls back to :default-family
         :fixed-pitch-weight nil ; falls back to :default-weight
         :fixed-pitch-height 1.0
-        :fixed-pitch-serif-family nil ; falls back to :default-family
+        :fixed-pitch-serif-family "Iosevka Nerd Font" ; falls back to :default-family
         :fixed-pitch-serif-weight nil ; falls back to :default-weight
         :fixed-pitch-serif-height 1.0
         :variable-pitch-family "Noto Sans"
@@ -1058,7 +1058,6 @@ Uses fontaine to configure the fonts preset
     (kill-emacs . fontaine-store-latest-preset)
     (modus-themes-after-load-theme . fontaine-apply-current-preset)
     :bind (("C-c f" . fontaine-set-preset)
-           ("C-c F" . fontaine-set-face-font)
            :map ctl-x-x-map
            ("v" . variable-pitch-mode)))
 #+end_src
