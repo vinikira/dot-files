@@ -143,36 +143,38 @@ Emacs loaddefs
 [[https://github.com/progfolio/elpaca][Elpaca package manager]] configuration.
 
 #+begin_src emacs-lisp
-  (defvar elpaca-installer-version 0.6)
+  (defvar elpaca-installer-version 0.7)
   (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
   (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
   (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
   (defvar elpaca-order '(elpaca :repo "https://github.com/progfolio/elpaca.git"
-                                :ref nil
-                                :files (:defaults "elpaca-test.el" (:exclude "extensions"))
-                                :build (:not elpaca--activate-package)))
+				:ref nil :depth 1
+				:files (:defaults "elpaca-test.el" (:exclude "extensions"))
+				:build (:not elpaca--activate-package)))
   (let* ((repo  (expand-file-name "elpaca/" elpaca-repos-directory))
-         (build (expand-file-name "elpaca/" elpaca-builds-directory))
-         (order (cdr elpaca-order))
-         (default-directory repo))
+	 (build (expand-file-name "elpaca/" elpaca-builds-directory))
+	 (order (cdr elpaca-order))
+	 (default-directory repo))
     (add-to-list 'load-path (if (file-exists-p build) build repo))
     (unless (file-exists-p repo)
       (make-directory repo t)
       (when (< emacs-major-version 28) (require 'subr-x))
       (condition-case-unless-debug err
-          (if-let ((buffer (pop-to-buffer-same-window "*elpaca-bootstrap*"))
-                   ((zerop (call-process "git" nil buffer t "clone"
-                                         (plist-get order :repo) repo)))
-                   ((zerop (call-process "git" nil buffer t "checkout"
-                                         (or (plist-get order :ref) "--"))))
-                   (emacs (concat invocation-directory invocation-name))
-                   ((zerop (call-process emacs nil buffer nil "-Q" "-L" "." "--batch"
-                                         "--eval" "(byte-recompile-directory \".\" 0 'force)")))
-                   ((require 'elpaca))
-                   ((elpaca-generate-autoloads "elpaca" repo)))
-              (progn (message "%s" (buffer-string)) (kill-buffer buffer))
-            (error "%s" (with-current-buffer buffer (buffer-string))))
-        ((error) (warn "%s" err) (delete-directory repo 'recursive))))
+	  (if-let ((buffer (pop-to-buffer-same-window "*elpaca-bootstrap*"))
+		   ((zerop (apply #'call-process `("git" nil ,buffer t "clone"
+						   ,@(when-let ((depth (plist-get order :depth)))
+						       (list (format "--depth=%d" depth) "--no-single-branch"))
+						   ,(plist-get order :repo) ,repo))))
+		   ((zerop (call-process "git" nil buffer t "checkout"
+					 (or (plist-get order :ref) "--"))))
+		   (emacs (concat invocation-directory invocation-name))
+		   ((zerop (call-process emacs nil buffer nil "-Q" "-L" "." "--batch"
+					 "--eval" "(byte-recompile-directory \".\" 0 'force)")))
+		   ((require 'elpaca))
+		   ((elpaca-generate-autoloads "elpaca" repo)))
+	      (progn (message "%s" (buffer-string)) (kill-buffer buffer))
+	    (error "%s" (with-current-buffer buffer (buffer-string))))
+	((error) (warn "%s" err) (delete-directory repo 'recursive))))
     (unless (require 'elpaca-autoloads nil t)
       (require 'elpaca)
       (elpaca-generate-autoloads "elpaca" repo)
@@ -433,7 +435,7 @@ Keybindings
 ** Flymake
 #+begin_src emacs-lisp
   (use-package flymake
-    :elpaca nil
+    :ensure nil
     :hook (prog-mode . flymake-mode)
     :bind (:map flymake-mode-map
                 ("C-c ! n" . flymake-goto-next-error)
@@ -516,7 +518,7 @@ Start the use-package expression
 
 #+begin_src emacs-lisp
   (use-package org
-    :elpaca nil
+    :ensure nil
 #+end_src
 
 *** Customizations
@@ -610,7 +612,7 @@ Abntex2 class
 
 #+begin_src emacs-lisp
   (use-package ox-latex
-    :elpaca nil
+    :ensure nil
     :after ox-latex
     :custom
     ;; Source code highlight with Minted package.
@@ -727,7 +729,7 @@ Turn code evaluation async.
 #+begin_src emacs-lisp
   (use-package org-tempo
     :after org
-    :elpaca nil)
+    :ensure nil)
 #+end_src
 
 **** Grip mode
@@ -770,7 +772,7 @@ Package declaration
 
 #+begin_src emacs-lisp
   (use-package tempo
-    :elpaca nil
+    :ensure nil
     :commands (tempo-forward-mark tempo-backward-mark tempo-complete-tag)
     :bind
     (("M-]" . tempo-forward-mark)
@@ -1085,7 +1087,7 @@ Disabling my custom modeline for now.
 
 #+begin_src emacs-lisp :tangle no
    (use-package vs-modeline-mode
-    :elpaca nil
+    :ensure nil
     :defer t
     :after nerd-icons
     :init
@@ -1161,7 +1163,7 @@ Experimenting nano-modeline for a while.
 *** Vertico
 #+begin_src emacs-lisp
   (use-package vertico
-    :elpaca (vertico
+    :ensure (vertico
              :files (:defaults "extensions/*")
              :includes (vertico-directory))
     :custom
@@ -1370,7 +1372,7 @@ Removing some default keybindings
 *** NXML mode
 #+begin_src emacs-lisp
   (use-package nxml-mode
-    :elpaca nil
+    :ensure nil
     :bind (:map nxml-mode-map
                 ("C-c C-f" . vs/format-xml-buffer)
                 ("C-c C-w" . vs/nxml-where)))
@@ -1382,6 +1384,7 @@ Using Eglot since is the default LSP in Emacs.
 
 #+begin_src emacs-lisp
   (use-package eglot
+    :ensure nil
     :bind
     (:map eglot-mode-map
           ("C-c e a" . eglot-code-actions)
@@ -1566,7 +1569,7 @@ Inf Elixir
 #+begin_src emacs-lisp
   (use-package inf-elixir
     :defer t
-    :elpaca
+    :ensure
     (inf-elixir :type git :host github :repo "vinikira/inf-elixir.el" :branch "main"))
 #+end_src
 
@@ -1574,7 +1577,7 @@ Org Babel Elixir
 
 #+begin_src emacs-lisp
   (use-package ob-elixir
-    :elpaca
+    :ensure
      (ob-elixir :type git :host github :repo "vinikira/ob-elixir" :branch "master")
     :after ob)
 #+end_src
@@ -1583,7 +1586,7 @@ Compile Credo
 
 #+begin_src emacs-lisp
   (use-package compile-credo
-    :elpaca
+    :ensure
     (compile-credo :type git :host github :repo "vinikira/compile-credo" :branch "main")
     :after (:any elixir-mode elixir-ts-mode))
 #+end_src
@@ -1606,7 +1609,7 @@ Flymake credo
     :hook
     (elixir-ts-mode . flymake-credo-load)
     (elixir-mode . flymake-credo-load)
-    :elpaca
+    :ensure
     (flymake-credo :type git :host github :repo "vinikira/flymake-credo" :branch "main"))
 #+end_src
 
@@ -1684,7 +1687,7 @@ Go TS mode
 
 #+begin_src emacs-lisp
   (use-package go-ts-mode
-    :elpaca nil
+    :ensure nil
     :defer t
     :config
     (add-to-list 'major-mode-remap-alist '(go-mode . go-ts-mode)))
@@ -1713,7 +1716,7 @@ Configures Java Mode
 
 #+begin_src emacs-lisp
   (use-package java-ts-mode
-    :elpaca nil
+    :ensure nil
     :defer t
     :hook (java-ts-mode . (lambda ()
                             (require 'cc-mode)
@@ -1737,7 +1740,7 @@ JS TS Mode
 
 #+begin_src emacs-lisp
   (use-package js-ts-mode
-    :elpaca nil
+    :ensure nil
     :defer t
     :config
     (tempo-use-tag-list 'javascript-tempo-tags))
@@ -1747,7 +1750,7 @@ JS Mode
 
 #+begin_src emacs-lisp
   (use-package js-mode
-    :elpaca nil
+    :ensure nil
     :defer t
     :hook (javascript-mode . js-jsx-enable)
     :custom
@@ -1770,7 +1773,7 @@ ESLint compilation mode
 
 #+begin_src emacs-lisp :tangle no
   (use-package compile-eslint
-    :elpaca (compile-eslint :type git :host github :repo "Fuco1/compile-eslint" :branch "master")
+    :ensure (compile-eslint :type git :host github :repo "Fuco1/compile-eslint" :branch "master")
     :after (:any js-mode js-ts-mode)
     :config
     (require 'compile-eslint)
@@ -1833,7 +1836,7 @@ Python TS mode
 #+begin_src emacs-lisp
   (use-package python-ts-mode
     :defer t
-    :elpaca nil
+    :ensure nil
     :custom
     (python-shell-interpreter "ipython")
     (python-shell-interpreter-args "-i --simple-prompt"))
@@ -1842,7 +1845,7 @@ Python TS mode
 *** Ruby
 #+begin_src emacs-lisp
   (use-package ruby-ts-mode
-    :elpaca nil
+    :ensure nil
     :bind (:map ruby-ts-mode-map
                 ("C-c C-c f" . ruby-format-buffer)
                 ("C-c C-c z" . run-ruby))
@@ -2170,7 +2173,7 @@ Loading snippets
 #+begin_src emacs-lisp
   (use-package notmuch
     :unless VS/IS-ANDROID
-    :elpaca nil
+    :ensure nil
     :commands (notmuch)
     :custom
     'notmuch-saved-searches
