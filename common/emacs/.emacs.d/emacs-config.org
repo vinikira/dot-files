@@ -103,6 +103,12 @@ Android specific changes
                                       (getenv "LD_LIBRARY_PATH")))
     (push "/data/data/com.termux/files/usr/bin" exec-path))
 #+end_src
+
+End of file
+
+#+begin_src emacs-lisp
+  ;;; early-init.el ends here
+#+end_src
 * Init
 :PROPERTIES:
 :header-args:emacs-lisp: :tangle (expand-file-name "init.el" user-emacs-directory)
@@ -2208,4 +2214,11 @@ file.
           message-sendmail-envelope-from 'header
           message-send-mail-function 'message-send-mail-with-sendmail
           message-kill-buffer-on-exit t)
+#+end_src
+
+** End of file
+End of file
+
+#+begin_src emacs-lisp
+  ;;; init.el ends here
 #+end_src
