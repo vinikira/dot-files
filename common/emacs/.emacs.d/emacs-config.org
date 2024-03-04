@@ -1560,7 +1560,7 @@ Elixir reformatter definition
       (apply original-fun args)))
 
   (advice-add 'elixir-format-region :around #'vs/--set-default-directory-to-mix-project-root)
-  (advice-add 'elixir-format-buffer :around #'vs/--set-default-directory-to-mix-project-root))
+  (advice-add 'elixir-format-buffer :around #'vs/--set-default-directory-to-mix-project-root)
 
   ;; add major mode remap alist
   (add-to-list 'major-mode-remap-alist
