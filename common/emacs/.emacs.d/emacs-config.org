@@ -81,7 +81,7 @@ Remove some unneeded UI elements (the user can turn back on anything they wish)
 Disable =package.el=
 
 #+begin_src emacs-lisp
-  (setopt package-enable-at-startup nil
+   (setq package-enable-at-startup nil)
 #+end_src
 
 Resizing the Emacs frame can be a terribly expensive part of changing
@@ -89,7 +89,7 @@ the p font. By inhibiting this, we easily halve startup times with
 fonts that are larger than the system default.
 
 #+begin_src emacs-lisp
-          frame-inhibit-implied-resize t)
+  (setopt frame-inhibit-implied-resize t)
 #+end_src
 
 Android specific changes
