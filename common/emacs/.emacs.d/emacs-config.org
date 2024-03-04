@@ -866,6 +866,18 @@ https://github.com/abrochard/kubel/tree/master
     :bind ("C-c K" . kubel))
 #+end_src
 *** Magit
+Latest seq for transient (bug elpaca)
+
+#+begin_src emacs-lisp
+  (use-package seq)
+#+end_src
+
+Latest transient (bug elpaca)
+
+#+begin_src emacs-lisp
+  (use-package transient)
+#+end_src
+
 #+begin_src emacs-lisp
   (use-package magit
     :bind ("C-x g" . magit-status))
