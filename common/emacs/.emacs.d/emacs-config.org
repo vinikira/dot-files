@@ -1581,7 +1581,8 @@ Inf Elixir
   (use-package inf-elixir
     :defer t
     :ensure
-    (inf-elixir :type git :host github :repo "vinikira/inf-elixir.el" :branch "main"))
+    (inf-elixir :type git :host github :repo "vinikira/inf-elixir.el" :branch "main")
+    :hook (elixir-ts-mode . inf-elixir-minor-mode))
 #+end_src
 
 Org Babel Elixir
