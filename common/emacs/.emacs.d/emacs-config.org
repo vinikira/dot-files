@@ -469,9 +469,9 @@ Capture templates
 
 #+begin_src emacs-lisp
   (defconst vs/org-capture-templates
-    `(("t" "TODO entry" entry (file+headline "personal.org" "Tasks")
+    `(("t" "TODO entry" entry (file+headline "agenda/personal.org" "Tasks")
        "* TODO %?\nSCHEDULED: %^t\n%U\n%a\n")
-      ("m" "Meetings menu" entry (file+headline "personal.org" "Meetings")
+      ("m" "Meetings menu" entry (file+headline "agenda/personal.org" "Meetings")
        "* TODO MEETING with %? :MEETING:\nSCHEDULED: %^t\n%U\n")
       ("r" "Reading list" entry (file+headline "reading_list.org" "Articles/Posts")
        "* TODO %?\n%U\n"
@@ -560,6 +560,7 @@ General customizations
   (org-refile-targets '((org-agenda-files :maxlevel . 1)))
   (org-hide-emphasis-markers t)
   (org-imenu-depth 7)
+  (org-bookmark-names-plist nil)
 #+end_src
 
 *** Hooks
