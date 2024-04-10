@@ -996,6 +996,7 @@ Tree sitter auto installer for Emacs 29
     :custom
     (treesit-auto-install 'prompt)
     :config
+    (treesit-auto-add-to-auto-mode-alist 'all)
     (global-treesit-auto-mode))
 #+end_src
 *** Wich Key
