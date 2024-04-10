@@ -110,6 +110,12 @@
                        "Pipe with dbg()"
                        'elixir-tempo-tags)
 
+(tempo-define-template "elixir-mode-pipe-debug-this"
+                       '("|> tap(&dbg(&1))")
+                       "pdt"
+                       "Pipe with dbg() only for the current pipeline function"
+                       'elixir-tempo-tags)
+
 (tempo-define-template "elixir-mode-pipe-io-puts"
                        '("IO.puts(\"" p "\")")
                        "iop"
