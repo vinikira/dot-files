@@ -784,13 +784,13 @@ Package declaration
 Macro to read the snippets from the =snippets-dir=.
 
 #+begin_src emacs-lisp
-  (defmacro vs/load-snippets (mode &optional ts-mode)
-    "Load snippets for MODE.
-  If mode has a tree-sitter mode must be provided in the TS-MODE option."
-    `(with-eval-after-load (or ,ts-mode ,mode)
-       (message "[%s] loading snippets..." ,mode)
-       (load (format "%s/%s.el" vs/snippets-dir ,mode))
-       (message "[%s] snippets loaded!" ,mode)))
+  (defmacro vs/load-snippets (mode)
+    "Load snippets for MODE."
+    `(let ((remaped-mode (alist-get ,mode major-mode-remap-alist ,mode)))
+       (with-eval-after-load remaped-mode
+         (message "[%s] loading snippets..." remaped-mode)
+         (load (format "%s/%s.el" vs/snippets-dir ,mode))
+         (message "[%s] snippets loaded!" remaped-mode))))
 #+end_src
 
 ** Third part Extensions
@@ -1529,11 +1529,19 @@ Crystal mode
 #+end_src
 
 *** Elixir
+Snippets variable list
+
+#+begin_src emacs-lisp
+  (defvar elixir-tempo-tags nil
+    "Tempo tags for Elixir mode")
+#+end_src
+
 Elixir TS Mode
 
 #+begin_src emacs-lisp
   (use-package elixir-ts-mode
     :defer t
+    :hook (elixir-ts-mode . (lambda () (tempo-use-tag-list 'elixir-tempo-tags)))
     :bind (:map elixir-ts-mode-map
                 ("C-c C-c f" . elixir-format-buffer)
                 ("C-c C-c M" . vs/elixir-map-string-to-map-atom)
@@ -1542,30 +1550,28 @@ Elixir TS Mode
                 ("C-c C-c j" . vs/json-to-etf)
                 ("C-c C-c D" . vs/elixir-open-dep-docs)
                 ("C-c C-c z" . run-elixir-project))
-#+end_src
+    :config
+    ;; reformatter
+    (reformatter-define elixir-format
+      :program "mix"
+      :args '("format" "-"))
 
-Elixir reformatter definition
+    (defun vs/--set-default-directory-to-mix-project-root (original-fun &rest args)
+      (if-let* ((mix-project-root (and buffer-file-name
+                                       (locate-dominating-file buffer-file-name
+                                                               ".formatter.exs"))))
+          (let ((default-directory mix-project-root))
+            (apply original-fun args))
+        (apply original-fun args)))
 
-#+begin_src emacs-lisp
-  :config
-  (reformatter-define elixir-format
-    :program "mix"
-    :args '("format" "-"))
+    (advice-add 'elixir-format-region :around #'vs/--set-default-directory-to-mix-project-root)
+    (advice-add 'elixir-format-buffer :around #'vs/--set-default-directory-to-mix-project-root)
 
-  (defun vs/--set-default-directory-to-mix-project-root (original-fun &rest args)
-    (if-let* ((mix-project-root (and buffer-file-name
-                                     (locate-dominating-file buffer-file-name
-                                                             ".formatter.exs"))))
-        (let ((default-directory mix-project-root))
-          (apply original-fun args))
-      (apply original-fun args)))
-
-  (advice-add 'elixir-format-region :around #'vs/--set-default-directory-to-mix-project-root)
-  (advice-add 'elixir-format-buffer :around #'vs/--set-default-directory-to-mix-project-root)
-
-  ;; add major mode remap alist
-  (add-to-list 'major-mode-remap-alist
-               '(elixir-mode . elixir-ts-mode)))
+    ;; add major mode remap alist
+    (add-to-list 'major-mode-remap-alist
+                 '(elixir-mode . elixir-ts-mode))
+    ;; Snippets
+    (vs/load-snippets 'elixir-mode))
 #+end_src
 
 Ex Unit
@@ -1635,23 +1641,6 @@ Mix.el
     (elixir-ts-mode . mix-minor-mode)
     (elixir-mode . mix-minor-mode))
 
-#+end_src
-
-Snippets
-
-#+begin_src emacs-lisp
-  (defvar elixir-tempo-tags nil
-    "Tempo tags for Elixir mode")
-
-  (add-hook 'elixir-ts-mode-hook
-            (lambda ()
-              (tempo-use-tag-list 'elixir-tempo-tags)))
-#+end_src
-
-Loading snippets
-
-#+begin_src emacs-lisp
-  (vs/load-snippets 'elixir-mode 'elixir-ts-mode)
 #+end_src
 
 *** Elm
@@ -1756,22 +1745,33 @@ JS TS Mode
   (use-package js-ts-mode
     :ensure nil
     :defer t
-    :config
-    (tempo-use-tag-list 'javascript-tempo-tags))
-#+end_src
-
-JS Mode
-
-#+begin_src emacs-lisp
-  (use-package js-mode
-    :ensure nil
-    :defer t
-    :hook (javascript-mode . js-jsx-enable)
+    :hook ((js-ts-mode . js-jsx-enable)
+           (js-ts-mode . (lambda () (tempo-use-tag-list 'javascript-tempo-tags))))
     :custom
     (js-indent-level 2)
     :config
+    ;; remap major mode
+    (add-to-list 'major-mode-remap-alist
+                 '(js-mode . js-ts-mode))
+    ;; Loading snippets
+    (vs/load-snippets 'js-mode))
+#+end_src
+
+TypeScript TS mode
+
+#+begin_src emacs-lisp
+  (use-package typescript-ts-mode
+    :ensure nil
+    :defer t
+    :hook ((typescript-ts-mode . js-jsx-enable)
+           (typescript-ts-mode . (lambda () (tempo-use-tag-list 'javascript-tempo-tags))))
+    :config
+    ;; remap major mode
+    (add-to-list 'major-mode-remap-alist
+                 '(typescript-mode . typescript-ts-mode))
+    ;; Loading snippets
     (tempo-use-tag-list 'javascript-tempo-tags)
-    (fset 'js-find-symbol 'xref-find-definitions))
+    (vs/load-snippets 'javascript-mode))
 #+end_src
 
 Jest
@@ -1813,15 +1813,6 @@ LSP
                            (async-shell-command
                             "npm install -g typescript-language-server typescript"
                             (get-buffer-create "*Install js/ts LSP*")))))
-#+end_src
-
-Loading snippets
-
-#+begin_src emacs-lisp
-  (vs/load-snippets 'js-mode)
-  (vs/load-snippets 'js-ts-mode)
-  (vs/load-snippets 'typescript-mode)
-  (vs/load-snippets 'typescript-ts-tsmode)
 #+end_src
 
 *** Kotlin
