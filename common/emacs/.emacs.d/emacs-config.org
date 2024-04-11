@@ -764,12 +764,36 @@ Get latest version of project.el
 #+begin_src emacs-lisp
   (use-package tempo
     :ensure nil
-    :commands (tempo-forward-mark tempo-backward-mark tempo-complete-tag)
+    :commands (tempo-forward-mark
+               tempo-backward-mark
+               tempo-complete-tag
+               vs/insert-tempo-template)
     :custom ((tempo-interactive t))
     :bind
     (("M-]" . tempo-forward-mark)
      ("M-[" . tempo-backward-mark)
-     ("S-<tab>" . tempo-complete-tag)))
+     ("S-<tab>" . tempo-complete-tag)
+     ("C-c I" . vs/insert-tempo-template))
+    :init
+    (defun vs/insert-tempo-template ()
+      "Reads a template from a completion list and call it.
+  Based on https://www.n16f.net/blog/templating-in-emacs-with-tempo/."
+      (interactive)
+      (let* ((tags-data
+              (mapcar (lambda (entry)
+                        (let ((function (cdr entry)))
+                          (list function (documentation function))))
+                      (tempo-build-collection)))
+             (completion-extra-properties
+              `(:annotation-function
+                (lambda (string)
+                  (let* ((data (alist-get string minibuffer-completion-table
+                                          nil nil #'string=))
+                         (description (car data)))
+                    (format "  %s" description)))))
+             (function-name (completing-read "Template: " tags-data))
+             (function (intern function-name)))
+        (funcall function))))
 #+end_src
 
 ** Third part Extensions
