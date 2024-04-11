@@ -761,36 +761,15 @@ Get latest version of project.el
 #+end_src
 
 ** Tempo mode
-Built in mode to define snippets.
-
-Snippets dir
-
-#+begin_src emacs-lisp
-  (defvar vs/snippets-dir (expand-file-name "snippets" user-emacs-directory))
-#+end_src
-
-Package declaration
-
 #+begin_src emacs-lisp
   (use-package tempo
     :ensure nil
     :commands (tempo-forward-mark tempo-backward-mark tempo-complete-tag)
+    :custom ((tempo-interactive t))
     :bind
     (("M-]" . tempo-forward-mark)
      ("M-[" . tempo-backward-mark)
      ("S-<tab>" . tempo-complete-tag)))
-#+end_src
-
-Macro to read the snippets from the =snippets-dir=.
-
-#+begin_src emacs-lisp
-  (defmacro vs/load-snippets (mode)
-    "Load snippets for MODE."
-    `(let ((remaped-mode (alist-get ,mode major-mode-remap-alist ,mode)))
-       (with-eval-after-load remaped-mode
-         (message "[%s] loading snippets..." remaped-mode)
-         (load (format "%s/%s.el" vs/snippets-dir ,mode))
-         (message "[%s] snippets loaded!" remaped-mode))))
 #+end_src
 
 ** Third part Extensions
@@ -1529,13 +1508,6 @@ Crystal mode
 #+end_src
 
 *** Elixir
-Snippets variable list
-
-#+begin_src emacs-lisp
-  (defvar elixir-tempo-tags nil
-    "Tempo tags for Elixir mode")
-#+end_src
-
 Elixir TS Mode
 
 #+begin_src emacs-lisp
@@ -1569,9 +1541,7 @@ Elixir TS Mode
 
     ;; add major mode remap alist
     (add-to-list 'major-mode-remap-alist
-                 '(elixir-mode . elixir-ts-mode))
-    ;; Snippets
-    (vs/load-snippets 'elixir-mode))
+                 '(elixir-mode . elixir-ts-mode)))
 #+end_src
 
 Ex Unit
@@ -1640,9 +1610,148 @@ Mix.el
     :hook
     (elixir-ts-mode . mix-minor-mode)
     (elixir-mode . mix-minor-mode))
-
 #+end_src
 
+**** Snippets
+#+begin_src emacs-lisp
+  (with-eval-after-load 'elixir-ts-mode
+    (defvar elixir-tempo-tags nil
+      "Tempo tags for Elixir mode")
+
+    (tempo-define-template "elixir-mode-pipe-inspect"
+                           '("|> IO.inspect(label: \"" p "\")")
+                           "pi"
+                           "Pipe with IO.inspect"
+                           'elixir-tempo-tags)
+
+    (tempo-define-template "elixir-mode-pipe"
+                           '("|> " p)
+                           "p"
+                           "Inserts a pipe"
+                           'elixir-tempo-tags)
+
+    (tempo-define-template "elixir-mode-type"
+                           '("@type t :: %__MODULE__{" n> p n "}" >)
+                           "type"
+                           "Inserts a type template"
+                           'elixir-tempo-tags)
+
+    (tempo-define-template "elixir-mode-defdelegate"
+                           '("defdelegate " p ", to: " p ", as: " p )
+                           "defdelegate"
+                           "Inserts a defdelegate template"
+                           'elixir-tempo-tags)
+
+    (tempo-define-template "elixir-mode-defmodule-filename"
+                           '("defmodule "
+                             (string-replace
+                              "_" ""
+                              (string-replace
+                               "/" "."
+                               (substring
+                                (capitalize
+                                 (cadr
+                                  (split-string
+                                   (file-name-directory buffer-file-name) "lib")))
+                                1)))
+                             (mapconcat 'capitalize (split-string (file-name-base) "_") "")
+                             " do"
+                             n n
+                             "end" >)
+                           "defmodule"
+                           "Inserts a defmodule with the name gereated from file name."
+                           'elixir-tempo-tags)
+
+    (tempo-define-template "elixir-mode-defmodule"
+                           '("defmodule " p " do" n p n "end" >)
+                           "defm"
+                           "Inserts a defmodule template."
+                           'elixir-tempo-tags)
+
+    (tempo-define-template "elixir-mode-moduledoc"
+                           '("@moduledoc \"\"\"" > n p n "\"\"\"" >)
+                           "moddoc"
+                           "Inserts a module doc template."
+                           'elixir-tempo-tags)
+
+    (tempo-define-template "elixir-mode-doc"
+                           '("@doc \"\"\"" > n p n "\"\"\"" >)
+                           "doc"
+                           "Inserts a doc template."
+                           'elixir-tempo-tags)
+
+    (tempo-define-template "elixir-mode-describe"
+                           '("describe \"" p "\" do" > n > p n "end" >)
+                           "describe"
+                           "Inserts a describe template."
+                           'elixir-tempo-tags)
+
+    (tempo-define-template "elixir-mode-test"
+                           '("test \"" p "\" do" > n > p n "end" >)
+                           "test"
+                           "Inserts a test template."
+                           'elixir-tempo-tags)
+
+    (tempo-define-template "elixir-mode-test-context"
+                           '("test \"" p "\", ctx" p " do" > n > p n "end" >)
+                           "testc"
+                           "Inserts a test with context template."
+                           'elixir-tempo-tags)
+
+    (tempo-define-template "elixir-mode-for"
+                           '("for " p " <- " p " do" > n > p n "end" >)
+                           "for"
+                           "Inserts a for template."
+                           'elixir-tempo-tags)
+
+    (tempo-define-template "elixir-mode-def"
+                           '("def " p "(" p ") do" > n > p n "end" >)
+                           "def"
+                           "Inserts a function template."
+                           'elixir-tempo-tags)
+
+    (tempo-define-template "elixir-mode-defp"
+                           '("defp " p "(" p ") do" > n > p n "end" >)
+                           "defp"
+                           "Inserts a private function template."
+                           'elixir-tempo-tags)
+
+    (tempo-define-template "elixir-mode-fn"
+                           '("fn " p " -> " > p " end")
+                           "fn"
+                           "Inserts an anonymous function template."
+                           'elixir-tempo-tags)
+
+    (tempo-define-template "elixir-mode-pipe-debug"
+                           '("|> dbg()")
+                           "pd"
+                           "Pipe with dbg()"
+                           'elixir-tempo-tags)
+
+    (tempo-define-template "elixir-mode-pipe-debug-this"
+                           '("|> tap(&dbg(&1))")
+                           "pdt"
+                           "Pipe with dbg() only for the current pipeline function"
+                           'elixir-tempo-tags)
+
+    (tempo-define-template "elixir-mode-pipe-io-puts"
+                           '("IO.puts(\"" p "\")")
+                           "iop"
+                           "IO puts"
+                           'elixir-tempo-tags)
+
+    (tempo-define-template "elixir-mode-pipe-io-inspect"
+                           '("IO.inspect(" (p "Variable: " variable) ", label: \"" (s variable) "\")")
+                           "ioi"
+                           "IO inspect"
+                           'elixir-tempo-tags)
+
+    (tempo-define-template "elixir-mode-pry"
+                           '("require IEx; IEx.pry();")
+                           "pry"
+                           "IEx pry"
+                           'elixir-tempo-tags))
+#+end_src
 *** Elm
 Elm mode
 #+begin_src emacs-lisp
@@ -1732,19 +1841,11 @@ Configures Java Mode
                                     c-basic-offset 4))))
 #+end_src
 *** JavaScript
-Snippets variable list
-
-#+begin_src emacs-lisp
-  (defvar javascript-tempo-tags nil
-    "Tempo tags for JS/TS mode.")
-#+end_src
-
 JS TS Mode
 
 #+begin_src emacs-lisp
   (use-package js-ts-mode
     :ensure nil
-    :defer t
     :hook ((js-ts-mode . js-jsx-enable)
            (js-ts-mode . (lambda () (tempo-use-tag-list 'javascript-tempo-tags))))
     :custom
@@ -1752,9 +1853,7 @@ JS TS Mode
     :config
     ;; remap major mode
     (add-to-list 'major-mode-remap-alist
-                 '(js-mode . js-ts-mode))
-    ;; Loading snippets
-    (vs/load-snippets 'js-mode))
+                 '(js-mode . js-ts-mode)))
 #+end_src
 
 TypeScript TS mode
@@ -1762,16 +1861,12 @@ TypeScript TS mode
 #+begin_src emacs-lisp
   (use-package typescript-ts-mode
     :ensure nil
-    :defer t
     :hook ((typescript-ts-mode . js-jsx-enable)
            (typescript-ts-mode . (lambda () (tempo-use-tag-list 'javascript-tempo-tags))))
     :config
     ;; remap major mode
     (add-to-list 'major-mode-remap-alist
-                 '(typescript-mode . typescript-ts-mode))
-    ;; Loading snippets
-    (tempo-use-tag-list 'javascript-tempo-tags)
-    (vs/load-snippets 'javascript-mode))
+                 '(typescript-mode . typescript-ts-mode)))
 #+end_src
 
 Jest
@@ -1814,7 +1909,258 @@ LSP
                             "npm install -g typescript-language-server typescript"
                             (get-buffer-create "*Install js/ts LSP*")))))
 #+end_src
+**** Snippets
+#+begin_src emacs-lisp
+  (with-eval-after-load 'js
+    (defvar javascript-tempo-tags nil
+      "Tempo tags for JS/TS mode.")
 
+    (tempo-define-template "js-mode-named-function"
+                           '("function " p "(" p ") {" n> r> n> "}" >)
+                           "f"
+                           "Inserts a define template for function"
+                           'javascript-tempo-tags)
+
+    (tempo-define-template "js-mode-arrow-function"
+                           '("(" p ") => {" n> r> n> "}" >)
+                           "af"
+                           "Inserts a define template for arrow function"
+                           'javascript-tempo-tags)
+
+    (tempo-define-template "js-mode-console-log"
+                           '("console.log(" r ")")
+                           "clg"
+                           "Inserts a define template for console log"
+                           'javascript-tempo-tags)
+
+    (tempo-define-template "js-mode-define-require-js"
+                           '("/**" > n
+                             "* " > p n
+                             "* @author " > p n
+                             "* @since " > p n
+                             " */" > n
+                             "define(['" p "']," > n
+                             "function (" p ") {" > n
+                             > p n
+                             "     return {" > n
+                             "       myModule: null" > n
+                             "     }" > n
+                             "})" >
+                             )
+                           "define"
+                           "Inserts a define template for RequireJS"
+                           'javascript-tempo-tags)
+
+    (tempo-define-template "js-mode-require-require-js"
+                           '("require(['" p "']," > n
+                             "function (" p ") {" > n
+                             > p n
+                             "})" >
+                             )
+                           "requirejs"
+                           "Inserts a require template for RequireJS"
+                           'javascript-tempo-tags)
+
+    (tempo-define-template "js-mode-import"
+                           '("import " p " from '" p "'")
+                           "import"
+                           "Inserts a import template"
+                           'javascript-tempo-tags)
+
+    (tempo-define-template "js-mode-log-audit"
+                           '("log.audit({title: '" p "', details: '" p "'})")
+                           "log.audit"
+                           "Inserts a log audit template"
+                           'javascript-tempo-tags)
+
+    (tempo-define-template "js-mode-module-exports"
+                           '("module.exports = " p)
+                           "mde"
+                           "Inserts a module export template"
+                           'javascript-tempo-tags)
+
+    (tempo-define-template "js-mode-ssclient"
+                           '("/**
+  ,* @NApiVersion 2.x
+  ,* @NScriptType ClientScript
+  ,*/
+  define([" p "],
+    function (" p ") {
+  "> p "
+      return {
+        pageInit: null,
+        fieldChanged: null,
+        postSourcing: null,
+        sublistChanged: null,
+        lineInit: null,
+        validateField: null,
+        validateLine: null,
+        validateInsert: null,
+        validateDelete: null,
+        saveRecord: null
+      }
+    })")
+                           "ssclient"
+                           "Inserts a module suite script client template"
+                           'javascript-tempo-tags)
+
+    (tempo-define-template "js-mode-ssmapreduce"
+                           '("/**
+   ,*@NApiVersion 2.x
+   ,*@NScriptType MapReduceScript
+   ,*/
+  define([" p "],
+    function (" p ") {
+  "> p "
+      return {
+        getInputData: null,
+        map: null,
+        reduce: null,
+        summarize: null
+      }
+    })")
+                           "ssmapreduce"
+                           "Inserts a module suite script map reduce template"
+                           'javascript-tempo-tags)
+
+    (tempo-define-template "js-mode-ssmassupdate"
+                           '("/**
+   ,*@NApiVersion 2.0
+   ,*@NScriptType MassUpdateScript
+   ,*/
+  define([" p "],
+    function (" p ") {
+      function each(params) {
+  " p >"
+      }
+
+      return {
+        each: each
+      }
+    })")
+                           "ssmassupdate"
+                           "Inserts a module suite script mass update template"
+                           'javascript-tempo-tags)
+
+    (tempo-define-template "js-mode-ssportlet"
+                           '("/**
+   ,*@NApiVersion 2.x
+   ,*@NScriptType Portlet
+   ,*/
+  define([" p "],
+    function(" p ") {
+      function render(params) {
+  " p > "
+      }
+
+      return {
+        render: render
+      }
+    })")
+                           "ssportlet"
+                           "Inserts a module suite script portlet template"
+                           'javascript-tempo-tags)
+
+    (tempo-define-template "js-mode-ssrestlet"
+                           '("/**
+   ,*@NApiVersion 2.x
+   ,*@NScriptType Restlet
+   ,*/
+  define([" p "],
+    function(" p ") {
+  " p > "
+
+      return {
+        get: null,
+        delete: null,
+        post: null,
+        put: null
+      }
+    })")
+                           "ssrestlet"
+                           "Inserts a module suite script restlet template"
+                           'javascript-tempo-tags)
+
+    (tempo-define-template "js-mode-ssschedule"
+                           '("/**
+   ,*@NApiVersion 2.x
+   ,*@NScriptType ScheduledScript
+   ,*/
+  define([" p "],
+    function(" p ") {
+        function execute(context) {
+  " p > "
+        }
+
+        return {
+          execute: execute
+        }
+  })")
+                           "ssschedule"
+                           "Inserts a module suite script schedule template"
+                           'javascript-tempo-tags)
+
+    (tempo-define-template "js-mode-sssuitelet"
+                           '("/**
+   ,*@NApiVersion 2.x
+   ,*@NScriptType Suitelet
+   ,*/
+  define([" p "],
+    function(" p ") {
+      function onRequest(context) {
+        const router = {
+          'GET': get,
+          'POST': post,
+          'PUT': put,
+          'DELETE': delete
+        }
+
+        const handler = router[context.request.method] || notFound
+
+        return handler(context)
+      }
+
+      function get(context) {
+      }
+
+      function post(context) {
+      }
+
+      function put(context) {
+      }
+
+      function delete(context) {
+      }
+
+      function notFound(context) {
+      }
+
+      return {
+        onRequest: onRequest
+      }
+    })")
+                           "sssuitelet"
+                           "Inserts a module suite script suitlet template"
+                           'javascript-tempo-tags)
+
+    (tempo-define-template "js-mode-ssuserevent"
+                           '("/**
+   ,*@NApiVersion 2.x
+   ,*@NScriptType UserEventScript
+   ,*/
+  define([" p "],
+    function(" p ") {
+  " p > "
+      return {
+        beforeLoad: null,
+        beforeSubmit: null,
+        afterSubmit: null
+      }
+    })")
+                           "ssuserevent"
+                           "Inserts a module suite script user event template"
+                           'javascript-tempo-tags))
+#+end_src
 *** Kotlin
 Kotlin Mode
 
@@ -2075,6 +2421,8 @@ LSP
 #+begin_src emacs-lisp
   (use-package plantuml-mode
     :defer t
+    :hook (plantuml-mode . (lambda ()
+                             (tempo-use-tag-list 'plantuml-tempo-tags)))
     :custom
     (plantuml-output-type "svg")
     (plantuml-default-exec-mode 'jar)
@@ -2085,23 +2433,204 @@ LSP
               plantuml-jar-path plantuml-target)))
 #+end_src
 
-Creating a tag table for =plantuml-mode=.
-
+**** Snippets
 #+begin_src emacs-lisp
-  (defvar plantuml-tempo-tags nil
-    "Tempo tags for Plantuml mode")
+  (with-eval-after-load 'plantuml-mode
+    (defvar plantuml-tempo-tags nil
+      "Tempo tags for Plantuml mode")
 
-  (add-hook 'plantuml-mode-hook
-            (lambda ()
-              (tempo-use-tag-list 'plantuml-tempo-tags)))
+    (tempo-define-template "plantuml-mode-c4dynamic"
+                           '("@startuml
+  !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Dynamic.puml
+
+  /'
+  ' macros: Person, Person_Ext, System, System_Ext, SystemDb, SystemDb_Ext,
+  ' Boundary, System_Boundary, Enterprise_Boundary, Container, ContainerDb,
+  ' Container_Boundary, Component, ComponentDb, RelIndex, increment, setIndex
+  '/
+
+  Person(personAlias, \"Label\", \"Optional\")
+  Container(containerAlias, \"Label\", \"Tecnology\", \"Optional description\")
+  System(systemAlias, \"Label\", \"Optional description\")
+
+  Rel(personAlias, containerAlias, \"Label\", \"Optional Tecnology\")
+  @enduml
+  ")
+                           "c4dynamic"
+                           "Inserts a c4 dynamic diagram template."
+                           'plantuml-tempo-tags)
+
+    (tempo-define-template "plantuml-mode-c4component"
+                           '("@startuml
+  !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+  /'
+  ' macros: Person, Person_Ext, System, System_Ext, SystemDb, SystemDb_Ext,
+  ' Boundary, System_Boundary, Enterprise_Boundary, Container, ContainerDb,
+  ' Container_Boundary, Component, ComponentDb
+  '/
+
+  Person(personAlias, \"Label\", \"Optional\")
+  Container(containerAlias, \"Label\", \"Tecnology\", \"Optional description\")
+  System(systemAlias, \"Label\", \"Optional description\")
+
+  Rel(personAlias, containerAlias, \"Label\", \"Optional Tecnology\")
+  @enduml
+  ")
+                           "c4component"
+                           "Inserts a c4 component diagram template."
+                           'plantuml-tempo-tags)
+
+    (tempo-define-template "plantuml-mode-c4container"
+                           '("@startuml
+  !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+  /'
+  ' macros: Person, Person_Ext, System, System_Ext, SystemDb, SystemDb_Ext,
+  ' Boundary, System_Boundary, Enterprise_Boundary, Container, ContainerDb,
+  ' Container_Boundary
+  '/
+
+  !define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+  !define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+  !include DEVICONS/angular.puml
+  !include DEVICONS/java.puml
+  !include DEVICONS/msql_server.puml
+  !include FONTAWESOME/users.puml
+
+  LAYOUT_WITH_LEGEND()
+
+  Person(user, \"Customer\", \"People that need products\", \"users\")
+  Container(spa, \"SPA\", \"angular\", \"The main interface that the customer interacts with\", \"angular\")
+  Container(api, \"API\", \"java\", \"Handles all business logic\", \"java\")
+  ContainerDb(db, \"Database\", \"Microsoft SQL\", \"Holds product, order and invoice information\", \"msql_server\")
+
+  Rel(user, spa, \"Uses\", \"https\")
+  Rel(spa, api, \"Uses\", \"https\")
+  Rel_R(api, db, \"Reads/Writes\")
+  @enduml
+  ")
+                           "c4container"
+                           "Inserts a c4 container diagram template."
+                           'plantuml-tempo-tags)
+
+    (tempo-define-template "plantuml-mode-c4context"
+                           '("@startuml
+  !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+  /'
+  ' macros: Person, Person_Ext, System, System_Ext, SystemDb, SystemDb_Ext,
+  ' Boundary, System_Boundary, Enterprise_Boundary
+  '/
+
+  Person(admin, \"Administrator\")
+
+  System(web_app, \"WebApp\")
+
+  System(twitter, \"Twitter\")
+
+  Rel(admin, web_app, \"Uses\", \"HTTPS\")
+  Rel(web_app, twitter, \"Gets tweets from\", \"HTTPS\")
+  @enduml")
+                           "c4context"
+                           "Inserts a c4 context diagram template."
+                           'plantuml-tempo-tags)
+
+    (tempo-define-template "plantuml-mode-c4deployment"
+                           '("@startuml
+  !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Deployment.puml
+
+  /'
+  ' macros: Person, Person_Ext, System, System_Ext, SystemDb, SystemDb_Ext,
+  ' Boundary, System_Boundary, Enterprise_Boundary, Container, ContainerDb,
+  ' Container_Boundary, Component, ComponentDb, RelIndex, increment, setIndex
+  ' Deployment_Node
+  '/
+
+  Person(personAlias, \"Label\", \"Optional\")
+  Container(containerAlias, \"Label\", \"Tecnology\", \"Optional description\")
+  System(systemAlias, \"Label\", \"Optional description\")
+
+  Rel(personAlias, containerAlias, \"Label\", \"Optional Tecnology\")
+  @enduml
+  ")
+                           "c4deployment"
+                           "Inserts a c4 deployment diagram template."
+                           'plantuml-tempo-tags)
+
+    (tempo-define-template "plantuml-mode-er"
+                           '("@startuml
+  ' hide the spot
+  hide circle
+
+  ' avoid problems with angled crows feet
+  skinparam linetype ortho
+
+  entity \"Entity01\" as e01 {
+    ,*e1_id : number <<generated>>
+    --
+    ,*name : text
+    description : text
+  }
+
+  entity \"Entity02\" as e02 {
+    ,*e2_id : number <<generated>>
+    --
+    ,*e1_id : number <<FK>>
+    other_details : text
+  }
+
+  entity \"Entity03\" as e03 {
+    ,*e3_id : number <<generated>>
+    --
+    e1_id : number <<FK>>
+    other_details : text
+  }
+
+  e01 ||..o{ e02
+  e01 |o..o{ e03
+
+  @enduml")
+                           "er"
+                           "Inserts a ER diagram template."
+                           'plantuml-tempo-tags)
+
+    (tempo-define-template
+     "plantuml-mode-er-entity"
+     '("entity \"" p "\" as " p " {
+    ,*" p " : number <<generated>>
+    --
+    " p " : number <<FK>>
+    " p " : text
+  }")
+     "ent"
+     "Inserts a ER entity template."
+     'plantuml-tempo-tags)
+
+    (tempo-define-template "plantuml-mode-monochrome"
+                           '("skinparam monochrome true
+  skinparam backgroundColor #EEEBDC
+  skinparam defaultFontName Iosevka Nerd Font
+  skinparam ranksep 20
+  skinparam dpi 150
+  skinparam arrowThickness 0.7
+  skinparam packageTitleAlignment left
+  skinparam usecaseBorderThickness 0.4
+  skinparam defaultFontSize 12
+  skinparam rectangleBorderThickness 1
+  ")
+                           "monochrome"
+                           "Inserts monochrome setup."
+                           'plantuml-tempo-tags)
+
+
+    (tempo-define-template
+     "plantuml-mode-note"
+     '("note " p " of " p n p n "end note")
+     "n"
+     "Inserts note template."
+     'plantuml-tempo-tags))
 #+end_src
-
-Loading snippets
-
-#+begin_src emacs-lisp
-  (vs/load-snippets 'plantuml-mode)
-#+end_src
-
 *** Protobuf mode
 #+begin_src emacs-lisp
   (use-package protobuf-mode
