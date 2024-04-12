@@ -601,7 +601,7 @@ Org babel
       (shell . t)
       (plantuml . t)
       (sql . t)
-      (elixir . t)
+      (elixir-ts . t)
       (ruby . t)
       (dot . t)
       (latex . t)
