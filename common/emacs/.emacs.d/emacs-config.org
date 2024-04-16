@@ -1375,7 +1375,7 @@ New global keybindings
   (keymap-global-set "M-W" 'vs/kill-ring-unfilled)
   (keymap-global-set "C-x p K" 'vs/close-project-tab)
   (keymap-global-set "H-g o" 'vs/grep-org-files)
-  (keymap-global-set "<f5>" 'compile)
+  (keymap-global-set "<f5>" 'project-compile)
 
   ;; global replacements
   (keymap-substitute global-map 'eval-last-sexp 'pp-eval-last-sexp)
