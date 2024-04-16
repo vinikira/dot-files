@@ -1596,7 +1596,7 @@ Org Babel Elixir
 #+begin_src emacs-lisp
   (use-package ob-elixir
     :ensure
-     (ob-elixir :type git :host github :repo "vinikira/ob-elixir" :branch "master")
+     (ob-elixir :type git :host github :repo "vinikira/ob-elixir" :branch "main")
     :after ob)
 #+end_src
 
