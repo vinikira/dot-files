@@ -1352,36 +1352,40 @@ Consult and Eglot integration
 New global keybindings
 
 #+begin_src emacs-lisp
-  (global-set-key (kbd "C-x C-b") 'ibuffer)
-  (global-set-key (kbd "C-c i") 'vs/indent-buffer)
-  (global-set-key (kbd "H-=") 'maximize-window)
-  (global-set-key (kbd "H--") 'minimize-window)
-  (global-set-key (kbd "H-0") 'balance-windows)
-  (global-set-key (kbd "C-x 2") 'vs/split-window-below-and-switch)
-  (global-set-key (kbd "C-x 3") 'vs/split-window-right-and-switch)
-  (global-set-key (kbd "M-S-<up>") 'vs/move-line-up)
-  (global-set-key (kbd "M-S-<down>") 'vs/move-line-down)
-  (global-set-key (kbd "M-D") 'vs/duplicate-current-line)
-  (global-set-key (kbd "H-d") 'vs/duplicate-current-line)
-  (global-set-key (kbd "M-/") 'hippie-expand)
-  (global-set-key (kbd "C-c s b") 'vs/scratch-buffer)
-  (global-set-key (kbd "<f8>") 'window-toggle-side-windows)
-  (global-set-key [remap eval-last-sexp] 'pp-eval-last-sexp)
-  (global-set-key (kbd "M-u") 'upcase-dwim)
-  (global-set-key (kbd "M-l") 'downcase-dwim)
-  (global-set-key (kbd "M-c") 'capitalize-dwim)
-  (global-set-key (kbd "H-<tab>") 'tab-next)
-  (global-set-key (kbd "H-S-<tab>") 'tab-previous)
-  (global-set-key (kbd "M-W") 'vs/kill-ring-unfilled)
-  (global-set-key (kbd "C-x p K") 'vs/close-project-tab)
-  (global-set-key (kbd "H-g o") 'vs/grep-org-files)
+  ;; global key
+  (keymap-global-set "C-x C-b" 'ibuffer)
+  (keymap-global-set "C-c i" 'vs/indent-buffer)
+  (keymap-global-set "H-=" 'maximize-window)
+  (keymap-global-set "H--" 'minimize-window)
+  (keymap-global-set "H-0" 'balance-windows)
+  (keymap-global-set "C-x 2" 'vs/split-window-below-and-switch)
+  (keymap-global-set "C-x 3" 'vs/split-window-right-and-switch)
+  (keymap-global-set "M-S-<up>" 'vs/move-line-up)
+  (keymap-global-set "M-S-<down>" 'vs/move-line-down)
+  (keymap-global-set "M-D" 'vs/duplicate-current-line)
+  (keymap-global-set "H-d" 'vs/duplicate-current-line)
+  (keymap-global-set "M-/" 'hippie-expand)
+  (keymap-global-set "C-c s b" 'vs/scratch-buffer)
+  (keymap-global-set "<f8>" 'window-toggle-side-windows)
+  (keymap-global-set "M-u" 'upcase-dwim)
+  (keymap-global-set "M-l" 'downcase-dwim)
+  (keymap-global-set "M-c" 'capitalize-dwim)
+  (keymap-global-set "H-<tab>" 'tab-next)
+  (keymap-global-set "H-S-<tab>" 'tab-previous)
+  (keymap-global-set "M-W" 'vs/kill-ring-unfilled)
+  (keymap-global-set "C-x p K" 'vs/close-project-tab)
+  (keymap-global-set "H-g o" 'vs/grep-org-files)
+  (keymap-global-set "<f5>" 'compile)
+
+  ;; global replacements
+  (keymap-substitute global-map 'eval-last-sexp 'pp-eval-last-sexp)
 #+end_src
 
 Removing some default keybindings
 
 #+begin_src emacs-lisp
-  (global-unset-key (kbd "C-z"))
-  (global-unset-key (kbd "C-x C-z"))
+  (keymap-global-unset "C-z" t)
+  (keymap-global-unset "C-x C-z" t)
 #+end_src
 
 ** Keybindings for specific modes
