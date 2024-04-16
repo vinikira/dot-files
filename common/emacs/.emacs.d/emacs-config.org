@@ -2242,8 +2242,9 @@ Ruby reformatter definition
 #+end_src
 
 Flymake Ruby
+TODO: fix elpaca build for this
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package flymake-ruby
     :hook ((ruby-ts-mode ruby-mode) . flymake-ruby-load))
 #+end_src
