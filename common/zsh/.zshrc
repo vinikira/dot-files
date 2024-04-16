@@ -64,10 +64,10 @@ source $ZSH/oh-my-zsh.sh
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
-export ALTERNATE_EDITOR="emacs -q -nw"
-export EDITOR="emacsclient -t"
-export VISUAL="emacsclient -c"
-export ELIXIR_EDITOR="emacsclient -n +__LINE__ __FILE__"
+export ALTERNATE_EDITOR=""
+export EDITOR="emacsclient -r -a emacs"
+export VISUAL="emacsclient -r -c -a emacs"
+export ELIXIR_EDITOR="emacsclient -r -n +__LINE__ __FILE__"
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
