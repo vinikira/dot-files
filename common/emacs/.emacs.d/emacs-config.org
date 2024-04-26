@@ -1576,6 +1576,10 @@ Ex Unit
 
 #+begin_src emacs-lisp
   (use-package exunit
+    :config
+    ;; fix broken dark test link
+    (custom-set-faces
+     '(ansi-color-black ((t (:background "MediumPurple2" :foreground "MediumPurple2")))))
     :hook
     (elixir-ts-mode . exunit-mode)
     (elixir-mode . exunit-mode))
