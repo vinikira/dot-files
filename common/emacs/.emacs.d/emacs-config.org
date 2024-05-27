@@ -1075,14 +1075,16 @@ Helps in font resize.
 
 *** Theme
 #+begin_src emacs-lisp
+  (use-package modus-themes)
+
   (defun vs/--setup-theme ()
     "Configure theme."
-    (load-theme 'modus-vivendi t))
+    (load-theme 'modus-vivendi-tinted t))
 #+end_src
 
 Theme customization
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (setopt modus-themes-italic-constructs t
           modus-themes-bold-constructs t
           modus-themes-mixed-fonts t)
@@ -1110,28 +1112,12 @@ Disabling my custom modeline for now.
     (vs-modeline-mode))
 #+end_src
 
-Experimenting nano-modeline for a while.
+Experimenting Mood Line
 
 #+begin_src emacs-lisp
-  (use-package nano-modeline
+  (use-package mood-line
     :init
-    (nano-modeline-prog-mode t)
-    :custom
-    (nano-modeline-position 'nano-modeline-footer)
-    :hook
-    (prog-mode           . nano-modeline-prog-mode)
-    (text-mode           . nano-modeline-text-mode)
-    (org-mode            . nano-modeline-org-mode)
-    (pdf-view-mode       . nano-modeline-pdf-mode)
-    (mu4e-headers-mode   . nano-modeline-mu4e-headers-mode)
-    (mu4e-view-mode      . nano-modeline-mu4e-message-mode)
-    (elfeed-show-mode    . nano-modeline-elfeed-entry-mode)
-    (elfeed-search-mode  . nano-modeline-elfeed-search-mode)
-    (term-mode           . nano-modeline-term-mode)
-    (xwidget-webkit-mode . nano-modeline-xwidget-mode)
-    (messages-buffer-mode . nano-modeline-message-mode)
-    (org-capture-mode    . nano-modeline-org-capture-mode)
-    (org-agenda-mode     . nano-modeline-org-agenda-mode))
+    (mood-line-mode 1))
 #+end_src
 
 *** Display buffer rules
