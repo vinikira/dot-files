@@ -1084,27 +1084,18 @@ Helps in font resize.
 
 *** Theme
 #+begin_src emacs-lisp
-  (use-package modus-themes)
-
-  (defun vs/--setup-theme ()
-    "Configure theme."
-    (load-theme 'modus-vivendi-tinted t))
-#+end_src
-
-Theme customization
-
-#+begin_src emacs-lisp :tangle no
-  (setopt modus-themes-italic-constructs t
-          modus-themes-bold-constructs t
-          modus-themes-mixed-fonts t)
-#+end_src
-
-Load theme after create a new frame
-
-#+begin_src emacs-lisp
-  (if (daemonp)
-      (add-hook 'server-after-make-frame-hook 'vs/--setup-theme)
-    (vs/--setup-theme))
+  (use-package modus-themes
+    :custom
+    (modus-themes-italic-constructs t)
+    (modus-themes-bold-constructs t)
+    (modus-themes-mixed-fonts t)
+    :config
+    (defun vs/--setup-theme ()
+      "Configure theme."
+      (load-theme 'modus-vivendi-tinted t))
+    (if (daemonp)
+        (add-hook 'server-after-make-frame-hook 'vs/--setup-theme)
+      (vs/--setup-theme)))
 #+end_src
 
 *** Modeline
