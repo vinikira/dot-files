@@ -869,10 +869,20 @@ https://github.com/abrochard/kubel/tree/master
     :bind ("C-c K" . kubel))
 #+end_src
 *** Magit
-Latest seq for transient (bug elpaca)
+Latest seq for transient (with workaround due to a bug on elpaca)
 
 #+begin_src emacs-lisp
-  (use-package seq)
+  (defun +elpaca-unload-seq (e)
+    (and (featurep 'seq) (unload-feature 'seq t))
+    (elpaca--continue-build e))
+
+  ;; You could embed this code directly in the reicpe, I just abstracted it into a function.
+  (defun +elpaca-seq-build-steps ()
+    (append (butlast (if (file-exists-p (expand-file-name "seq" elpaca-builds-directory))
+                         elpaca--pre-built-steps elpaca-build-steps))
+            (list '+elpaca-unload-seq 'elpaca--activate-package)))
+
+  (use-package seq :ensure `(seq :build ,(+elpaca-seq-build-steps)))
 #+end_src
 
 Latest transient (bug elpaca)
