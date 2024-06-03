@@ -744,10 +744,9 @@ Requires Python package =grip=.
 #+end_src
 
 ** Project
-Get latest version of project.el
-
 #+begin_src emacs-lisp
   (use-package project
+    :ensure nil
     :bind (:map project-prefix-map
                 ("o l" . vs/project-dir-locals)
                 ("o d" . vs/project-db-file)
