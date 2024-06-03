@@ -1129,8 +1129,9 @@ Experimenting Mood Line
              (side . bottom)
              (slot . -1)
              (dedicated . t))
-            ((or (derived-mode . compilation-mode)
-                 (derived-mode . comint-mode))
+            ((lambda (buffer-name)
+               (with-current-buffer buffer-name
+                 (derived-mode-p 'compilation-mode 'comint-mode)))
              (display-buffer-in-side-window)
              (window-height . 0.30)
              (side . bottom)
