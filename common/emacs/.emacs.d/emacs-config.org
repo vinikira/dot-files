@@ -1029,20 +1029,20 @@ Uses fontaine to configure the fonts preset
 
 #+begin_src emacs-lisp
   (use-package fontaine
-    :custom
+     :custom
     (fontaine-presets
      `((small
         :default-family "Iosevka Nerd Font"
-        :default-height ,(if VS/IS-MACOS 150 100)
+        :default-height ,(if VS/IS-MACOS 140 100)
         :variable-pitch-family "Noto Sans")
        (regular) ; like this it uses all the fallback values and is named `regular'
        (medium
         :default-weight semilight
-        :default-height ,(if VS/IS-MACOS 190 150)
+        :default-height ,(if VS/IS-MACOS 180 140)
         :bold-weight extrabold)
        (large
         :inherit medium
-        :default-height ,(if VS/IS-MACOS 210 170))
+        :default-height ,(if VS/IS-MACOS 220 180))
        (presentation
         :inherit medium
         :default-weight light
@@ -1050,7 +1050,7 @@ Uses fontaine to configure the fonts preset
        (t
         :default-family "Iosevka Nerd Font"
         :default-weight regular
-        :default-height ,(if VS/IS-MACOS 170 120)
+        :default-height ,(if VS/IS-MACOS 160 120)
         :fixed-pitch-family "Iosevka Nerd Font" ; falls back to :default-family
         :fixed-pitch-weight nil ; falls back to :default-weight
         :fixed-pitch-height 1.0
