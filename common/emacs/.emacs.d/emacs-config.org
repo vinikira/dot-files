@@ -708,7 +708,7 @@ Turn code evaluation async.
 **** Org Notify
 #+begin_src emacs-lisp
   (use-package org-notify
-    :unless VS/IS-ANDROID
+    :unless (or VS/IS-ANDROID VS/IS-MACOS)
     :after org
     :config
     (org-notify-start 60)
