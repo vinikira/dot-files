@@ -720,12 +720,6 @@ Turn code evaluation async.
      '(:time "2h" :period "30m" :duration 25 :actions -notify/window)))
 #+end_src
 
-**** Org contacts
-#+begin_src emacs-lisp
-  (use-package org-contacts
-    :after org)
-#+end_src
-
 **** Org tempo
 #+begin_src emacs-lisp
   (use-package org-tempo
