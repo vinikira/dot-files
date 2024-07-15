@@ -1398,11 +1398,7 @@ Using Eglot since is the default LSP in Emacs.
           ("C-c e d" . eglot-find-typeDefinition)
           ("C-c e h" . eldoc))
     :custom
-    (eglot-autoshutdown t)
-    ;; disable events buffer
-    (eglot-events-buffer-size 0)
-    :config
-    (fset #'jsonrpc--log-event #'ignore))
+    (eglot-autoshutdown t))
 #+end_src
 
 ** Docker
