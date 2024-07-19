@@ -1017,6 +1017,22 @@ Tree sitter auto installer for Emacs 29
     :if (and (eq system-type 'gnu/linux) (string= (getenv "XDG_SESSION_TYPE") "x11"))
     :hook (after-init . xclip-mode))
 #+end_src
+*** Yequake
+Emacsclient popups on desktop
+
+#+begin_src emacs-lisp
+  (use-package yequake
+    :custom
+    (yequake-frames
+     '(("org-capture"
+        (buffer-fns . (yequake-org-capture))
+        (width . 0.75)
+        (height . 0.5)
+        (alpha . 0.95)
+        (frame-parameters . ((undecorated . t)
+                             (skip-taskbar . t)
+                             (sticky . t)))))))
+#+end_src
 ** Appearence
 *** Fonts Families
 Uses fontaine to configure the fonts preset
