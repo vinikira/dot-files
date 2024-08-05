@@ -491,99 +491,66 @@ My Org structure templates.
 #+end_src
 
 *** Package declaration
-
-Start the use-package expression
-
 #+begin_src emacs-lisp
   (use-package org
     :ensure nil
-#+end_src
+    :custom
+    (org-agenda-custom-commands
+     '(("c" "Complete agenda view"
+        ((tags "PRIORITY=\"A\""
+               ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                (org-agenda-overriding-header "High-priority unfinished tasks:")))
+         (agenda "")
+         (alltodo ""
+                  ((org-agenda-skip-function
+                    '(or (vs/--org-skip-subtree-if-habit)
+                         (vs/--org-skip-subtree-if-priority ?A)
+                         (org-agenda-skip-if nil '(scheduled deadline))))
+                   (org-agenda-overriding-header "ALL normal priority tasks:")))))))
+    (org-directory vs/org-directory)
+    (org-default-notes-file (concat org-directory "notes.org"))
+    (org-agenda-files vs/org-agenda-directory)
+    (org-confirm-babel-evaluate nil)
+    (org-src-fontify-natively t)
+    (org-log-done 'time)
+    (org-babel-sh-command "zsh")
+    (org-capture-templates vs/org-capture-templates)
+    (org-capture-bookmark nil)
+    (org-structure-template-alist vs/org-structure-template-alist)
+    (org-use-speed-commands t)
+    (org-refile-use-outline-path t)
+    (org-outline-path-complete-in-steps nil)
+    (org-refile-targets '((org-agenda-files :maxlevel . 1)))
+    (org-hide-emphasis-markers t)
+    (org-imenu-depth 7)
+    (org-bookmark-names-plist nil)
+    (org-babel-load-languages '((emacs-lisp . t)
+                                (python . t)
+                                (js . t)
+                                (shell . t)
+                                (plantuml . t)
+                                (sql . t)
+                                (ruby . t)
+                                (dot . t)
+                                (latex . t)))
 
-*** Customizations
+    :hook
+    (org-babel-after-execute . org-display-inline-images)
+    (org-mode . toggle-word-wrap)
+    (org-mode . org-indent-mode)
+    (org-mode . turn-on-visual-line-mode)
+    (org-mode . (lambda () (display-line-numbers-mode -1)))
+    (org-mode . auto-fill-mode)
 
-Org Agenda Custom Commands
+    :bind
+    (("C-c l" . #'org-store-link)
+     ("C-c a" . #'org-agenda)
+     ("C-c c" . #'org-capture))
 
-#+begin_src emacs-lisp
-  :custom
-  (org-agenda-custom-commands '(("c" "Complete agenda view"
-                                 ((tags "PRIORITY=\"A\""
-                                        ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
-                                         (org-agenda-overriding-header "High-priority unfinished tasks:")))
-                                  (agenda "")
-                                  (alltodo ""
-                                           ((org-agenda-skip-function
-                                             '(or (vs/--org-skip-subtree-if-habit)
-                                                  (vs/--org-skip-subtree-if-priority ?A)
-                                                  (org-agenda-skip-if nil '(scheduled deadline))))
-                                            (org-agenda-overriding-header "ALL normal priority tasks:")))))))
-
-#+end_src
-
-General customizations
-
-#+begin_src emacs-lisp
-  (org-directory vs/org-directory)
-  (org-default-notes-file (concat org-directory "notes.org"))
-  (org-agenda-files vs/org-agenda-directory)
-  (org-confirm-babel-evaluate nil)
-  (org-src-fontify-natively t)
-  (org-log-done 'time)
-  (org-babel-sh-command "bash")
-  (org-capture-templates vs/org-capture-templates)
-  (org-capture-bookmark nil)
-  (org-structure-template-alist vs/org-structure-template-alist)
-  (org-use-speed-commands t)
-  (org-refile-use-outline-path t)
-  (org-outline-path-complete-in-steps nil)
-  (org-refile-targets '((org-agenda-files :maxlevel . 1)))
-  (org-hide-emphasis-markers t)
-  (org-imenu-depth 7)
-  (org-bookmark-names-plist nil)
-#+end_src
-
-*** Hooks
-
-#+begin_src emacs-lisp
-  :hook
-  (org-babel-after-execute . org-display-inline-images)
-  (org-mode . toggle-word-wrap)
-  (org-mode . org-indent-mode)
-  (org-mode . turn-on-visual-line-mode)
-  (org-mode . (lambda () (display-line-numbers-mode -1)))
-  (org-mode . auto-fill-mode)
-#+end_src
-
-*** Maps
-
-Global keys related to org mode
-
-#+begin_src emacs-lisp
-  :bind
-  (("C-c l" . #'org-store-link)
-   ("C-c a" . #'org-agenda)
-   ("C-c c" . #'org-capture))
-#+end_src
-
-*** Config
-
-Org babel
-
-#+begin_src emacs-lisp
-  :config
-  (when-idle
-   (org-babel-do-load-languages
-    'org-babel-load-languages
-    '((emacs-lisp . t)
-      (python . t)
-      (js . t)
-      (shell . t)
-      (plantuml . t)
-      (sql . t)
-      (elixir . t)
-      (ruby . t)
-      (dot . t)
-      (latex . t)
-      (verb . t)))))
+    :config
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     org-babel-load-languages))
 #+end_src
 
 *** Org export Latex customization
@@ -612,8 +579,6 @@ Abntex2 class
                     ("\\subparagraph{%s}" . "\\subparagraph*{%s}")
                     ("\\maketitle" . "\\imprimircapa")))))
 #+end_src
-
-#+RESULTS:
 
 *** Extensions
 **** Org Bullets
@@ -666,7 +631,8 @@ Make HTTP requests using org files!
   (use-package verb
     :after org
     :config
-    (define-key org-mode-map (kbd "C-c C-r") verb-command-map))
+    (define-key org-mode-map (kbd "C-c C-r") verb-command-map)
+    (add-to-list 'org-babel-load-languages '(verb . t)))
 #+end_src
 
 **** Org Babel Async
@@ -1617,8 +1583,9 @@ Org Babel Elixir
 #+begin_src emacs-lisp
   (use-package ob-elixir
     :ensure
-     (ob-elixir :type git :host github :repo "vinikira/ob-elixir" :branch "main")
-    :after ob)
+    (ob-elixir :type git :host github :repo "vinikira/ob-elixir" :branch "main")
+    :config
+    (add-to-list 'org-babel-load-languages '(elixir . t)))
 #+end_src
 
 Compile Credo
