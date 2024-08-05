@@ -123,16 +123,6 @@ Adds the header to avoid warnings, also enables lexical binding.
 #+end_src
 
 ** Startup
-Profile emacs startup
-
-#+begin_src emacs-lisp
-  (add-hook 'emacs-startup-hook
-            (lambda ()
-              (message "*** Emacs loaded in %s with %d garbage collections."
-                       (emacs-init-time)
-                       gcs-done)))
-#+end_src
-
 Emacs loaddefs
 
 #+begin_src emacs-lisp
