@@ -371,6 +371,11 @@ libs with my custom functions
 #+begin_src emacs-lisp
   (use-package compile
     :ensure nil
+    :bind
+    (("C-x c" . (lambda ()
+                  (interactive)
+                  (let ((current-prefix-arg '(4)))
+                    (call-interactively 'project-compile)))))
     :custom
     (compilation-scroll-output t)
     :hook
