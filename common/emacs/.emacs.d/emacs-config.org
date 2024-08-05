@@ -202,14 +202,6 @@ libs with my custom functions
   (require 'site-lisp-loaddefs nil t)
 #+end_src
 
-*** Macros
-When IDLE for call code after emacs-init.
-
-#+begin_src emacs-lisp
-  (defmacro when-idle (&rest body)
-    `(run-with-idle-timer 0.5 nil (lambda () ,@body)))
-#+end_src
-
 *** Private directory
 #+begin_src emacs-lisp
   (defconst private-dir (expand-file-name "private" user-emacs-directory))
