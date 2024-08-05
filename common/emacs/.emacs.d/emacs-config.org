@@ -198,19 +198,6 @@ Use package integration
 #+end_src
 
 ** Base configuration
-*** Global Constants
-Determine if is running on MacOS.
-
-#+begin_src emacs-lisp
-  (defconst VS/IS-MACOS (eq system-type 'darwin))
-#+end_src
-
-Determine if is running on Android.
-
-#+begin_src emacs-lisp
-  (defconst VS/IS-ANDROID (eq system-type 'android))
-#+end_src
-
 *** Site lisp directory
 Adds site-lisp to the load-path
 
@@ -339,7 +326,7 @@ When IDLE for call code after emacs-init.
 
 *** MacOS variables customizations
 #+begin_src emacs-lisp
-  (when VS/IS-MACOS
+  (when (eq system-type 'darwin)
     (setopt mac-command-modifier 'meta
             mac-option-modifier 'hyper))
 #+end_src
@@ -656,7 +643,7 @@ Abntex2 class
 **** Org Present
 #+begin_src emacs-lisp
   (use-package org-present
-    :unless VS/IS-ANDROID
+    :unless (eq system-type 'android)
     :hook
     (org-present-mode .
                       (lambda ()
@@ -675,7 +662,7 @@ Abntex2 class
 **** Org + Reveal.js
 #+begin_src emacs-lisp
   (use-package org-re-reveal
-    :unless VS/IS-ANDROID
+    :unless (eq system-type 'android)
     :custom
     (org-re-reveal-root
      "https://cdn.jsdelivr.net/reveal.js/latest")
@@ -709,7 +696,7 @@ Turn code evaluation async.
 **** Org Notify
 #+begin_src emacs-lisp
   (use-package org-notify
-    :unless (or VS/IS-ANDROID VS/IS-MACOS)
+    :unless (or (eq system-type 'android) (eq system-type 'darwin))
     :after org
     :config
     (org-notify-start 60)
@@ -823,7 +810,7 @@ Requires Python package =grip=.
 *** Emacs everywhere
 #+begin_src emacs-lisp
   (use-package emacs-everywhere
-    :unless VS/IS-ANDROID
+    :unless (eq system-type 'android)
     :defer t
     :custom
     (emacs-everywhere-frame-parameters  '((name . "emacs-everywhere")
@@ -992,7 +979,7 @@ formatters, dealing with things such as:
 *** Telega
 #+begin_src emacs-lisp
   (use-package telega
-    :unless VS/IS-ANDROID
+    :unless (eq system-type 'android)
     :bind ("C-c t" . telega))
 #+end_src
 *** Treesit Auto
@@ -1044,16 +1031,16 @@ Uses fontaine to configure the fonts preset
     (fontaine-presets
      `((small
         :default-family "Iosevka Nerd Font"
-        :default-height ,(if VS/IS-MACOS 140 100)
+        :default-height ,(if (eq system-type 'darwin) 140 100)
         :variable-pitch-family "Noto Sans")
        (regular) ; like this it uses all the fallback values and is named `regular'
        (medium
         :default-weight semilight
-        :default-height ,(if VS/IS-MACOS 180 140)
+        :default-height ,(if (eq system-type 'darwin) 180 140)
         :bold-weight extrabold)
        (large
         :inherit medium
-        :default-height ,(if VS/IS-MACOS 220 180))
+        :default-height ,(if (eq system-type 'darwin) 220 180))
        (presentation
         :inherit medium
         :default-weight light
@@ -1061,7 +1048,7 @@ Uses fontaine to configure the fonts preset
        (t
         :default-family "Iosevka Nerd Font"
         :default-weight regular
-        :default-height ,(if VS/IS-MACOS 160 120)
+        :default-height ,(if (eq system-type 'darwin) 160 120)
         :fixed-pitch-family "Iosevka Nerd Font" ; falls back to :default-family
         :fixed-pitch-weight nil ; falls back to :default-weight
         :fixed-pitch-height 1.0
@@ -1076,7 +1063,7 @@ Uses fontaine to configure the fonts preset
         :italic-family nil
         :italic-slant italic
         :line-spacing nil
-        :symbol-family ,(if VS/IS-MACOS "Apple Color Emoji" "Noto Color Emoji"))))
+        :symbol-family ,(if (eq system-type 'darwin) "Apple Color Emoji" "Noto Color Emoji"))))
     :init
     (fontaine-set-preset (or (fontaine-restore-latest-preset) 'regular))
     :hook
@@ -1481,7 +1468,7 @@ Packages
     :defer t)
 
   (use-package docker
-    :unless VS/IS-ANDROID
+    :unless (eq system-type 'android)
     :bind ("C-c d" . docker))
 #+end_src
 
@@ -2780,7 +2767,7 @@ LSP
 *** Notmuch mail client
 #+begin_src emacs-lisp
   (use-package notmuch
-    :unless VS/IS-ANDROID
+    :unless (eq system-type 'android)
     :ensure nil
     :commands (notmuch)
     :custom
