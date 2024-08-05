@@ -408,8 +408,10 @@ Custom variables
 #+end_src
 ** Flyspell
 #+begin_src emacs-lisp
-  (eval-after-load "flyspell"
-    '(define-key flyspell-mode-map (kbd "C-;") nil))
+  (use-package flyspell
+    :ensure nil
+    :bind (:map flyspell-mode
+                ("C-;" . nil)))
 #+end_src
 ** Org mode
 *** Constants
