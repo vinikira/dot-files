@@ -212,7 +212,6 @@ libs with my custom functions
 *** Temporary directory
 #+begin_src emacs-lisp
   (defconst temp-dir (expand-file-name "cache" user-emacs-directory))
-
   (unless (file-exists-p temp-dir)
     (make-directory (concat temp-dir) :parents))
 #+end_src
@@ -374,32 +373,26 @@ libs with my custom functions
 Custom variables
 
 #+begin_src emacs-lisp
-  (setopt dired-mouse-drag-files t
-          mouse-drag-and-drop-region-cross-program t
-          dired-listing-switches "-alh"
-          delete-by-moving-to-trash t
-          dired-dwim-target t
-          dired-guess-shell-alist-user
-          '(("\\.\\(png\\|jpe?g\\|tiff\\)" "feh" "xdg-open" "open")
-            ("\\.\\(mp[34]\\|m4a\\|ogg\\|flac\\|webm\\|mkv\\)" "mpv" "xdg-open" "open")
-            (".*" "xdg-open" "open")))
-#+end_src
-
-Enable dired-find-alternate-file
-
-#+begin_src emacs-lisp
-  (add-hook 'window-setup-hook
-            (lambda ()
-              (put 'dired-find-alternate-file 'disabled nil)))
-#+end_src
-
-Keybindings
-
-#+begin_src emacs-lisp
-  (with-eval-after-load 'dired
-    (when (boundp 'dired-mode-map)
-      (define-key dired-mode-map (kbd "e") 'dired-create-empty-file)
-      (define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file)))
+  (use-package dired
+    :ensure nil
+    :custom
+    (dired-mouse-drag-files t)
+    (mouse-drag-and-drop-region-cross-program t)
+    (dired-listing-switches "-alh")
+    (delete-by-moving-to-trash t)
+    (dired-dwim-target t)
+    (dired-guess-shell-alist-user
+     '(("\\.\\(png\\|jpe?g\\|tiff\\)" "feh" "xdg-open" "open")
+       ("\\.\\(mp[34]\\|m4a\\|ogg\\|flac\\|webm\\|mkv\\)" "mpv" "xdg-open" "open")
+       (".*" "xdg-open" "open")))
+    :hook
+    (window-setup .
+                  (lambda ()
+                    (put 'dired-find-alternate-file 'disabled nil)))
+    :bind
+    (:map dired-mode-map
+          ("e" . dired-create-empty-file)
+          ("RET"  . dired-find-alternate-file)))
 #+end_src
 
 ** Flymake
