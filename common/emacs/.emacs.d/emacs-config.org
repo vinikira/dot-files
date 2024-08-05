@@ -1088,19 +1088,20 @@ Experimenting Mood Line
 
 *** Tab bar mode
 #+begin_src emacs-lisp
-  (setopt
-   tab-bar-tab-name-function
-   (lambda ()
-     (if-let ((project (project-current))
-              (project-name (project-name project)))
-         project-name
-       (tab-bar-tab-name-current)))
-   tab-bar-mode t
-   tab-bar-new-tab-choice "*scratch*"
-   tab-bar-close-button-show nil
-   tab-bar-new-button-show nil)
-
-  (global-set-key (kbd "H-t") 'tab-bar-select-tab-by-name)
+  (use-package tab-bar-mode
+    :ensure nil
+    :custom
+    (tab-bar-tab-name-function  (lambda ()
+                                  (if-let ((project (project-current))
+                                           (project-name (project-name project)))
+                                      project-name
+                                    (tab-bar-tab-name-current))))
+    (tab-bar-mode t)
+    (tab-bar-new-tab-choice "*scratch*")
+    (tab-bar-close-button-show nil)
+    (tab-bar-new-button-show nil)
+    :bind
+    ("H-t" . tab-bar-select-tab-by-name))
 #+end_src
 
 ** Completion system
