@@ -406,7 +406,54 @@ Custom variables
           ("e" . dired-create-empty-file)
           ("RET"  . dired-find-alternate-file)))
 #+end_src
-
+** Eshell
+#+begin_src emacs-lisp
+  (use-package eshell
+    :ensure nil
+    :init
+    (defun vs--eshell-cat-with-syntax-highlighting (filename)
+      "Like cat(1) but with sintax highlighting."
+      (let ((existing-buffer (get-file-buffer filename))
+            (buffer (find-file-noselect filename)))
+        (eshell-print
+         (with-current-buffer buffer
+           (if (fboundp 'font-lock-ensure)
+               (font-lock-ensure)
+             (with-no-warnings
+               (font-lock-fontify-buffer)))
+           (let ((contents (buffer-string)))
+             (remove-text-properties 0 (length contents) '(read-only nil) contents)
+             contents)))
+        (unless existing-buffer
+          (kill-buffer buffer))
+        nil))
+    :config
+    (advice-add 'eshell/cat :override #'vs--eshell-cat-with-syntax-highlighting)
+    :hook ((eshell-mode . (lambda ()
+                            (setq-local completion-styles '(basic)
+                                        corfu-count 3
+                                        completion-at-point-functions
+                                        '(pcomplete-completions-at-point cape-file cape-history)))))
+    :custom
+    (eshell-scroll-to-bottom-on-input t)
+    (eshell-highlight-prompt nil)
+    (eshell-cd-on-directory t))
+#+end_src
+*** eshell git prompt
+#+begin_src emacs-lisp
+  (use-package eshell-git-prompt
+    :after eshell
+    :config
+    (eshell-git-prompt-use-theme 'powerline))
+#+end_src
+*** eshell syntax highlight
+#+begin_src emacs-lisp
+  (use-package eshell-syntax-highlighting
+    :after eshell
+    :config
+    ;; Enable in all Eshell buffers.
+    (eshell-syntax-highlighting-global-mode +1))
+#+end_src
 ** Flymake
 #+begin_src emacs-lisp
   (use-package flymake
