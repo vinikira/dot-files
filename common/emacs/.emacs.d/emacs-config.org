@@ -1653,10 +1653,12 @@ Compile Credo
 LSP
 
 #+begin_src emacs-lisp
-  (vs/add-auto-lsp-server
-   'elixir-ts-mode
-   :download-url "https://github.com/elixir-lsp/elixir-ls/releases/latest/download/elixir-ls.zip"
-   :command '("elixir-ls/language_server.sh"))
+  (with-eval-after-load 'eglot
+    (add-to-list 'eglot-server-programs
+                 `((elixir-ts-mode heex-ts-mode elixir-mode) .
+                   ("/Users/vinicius.simoes/.emacs.d/cache/lsp/elixir-ts-mode/next-ls/next_ls"
+                    "--stdio=true"
+                    :initializationOptions (:experimental (:completions (:enable t)))))))
 #+end_src
 
 #+RESULTS:
