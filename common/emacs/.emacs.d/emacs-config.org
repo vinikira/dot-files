@@ -794,12 +794,6 @@ Requires Python package =grip=.
     :config
     (global-diff-hl-mode))
 #+end_src
-*** Direnv
-#+begin_src emacs-lisp
-  (use-package direnv
-    :config
-    (direnv-mode))
-#+end_src
 *** Dump jump
 #+begin_src emacs-lisp
   (use-package dumb-jump
@@ -827,6 +821,11 @@ Requires Python package =grip=.
                                           (menu-bar-lines . 0)
                                           (tool-bar-lines . 0)
                                           (vertical-scroll-bars . nil))))
+#+end_src
+*** Envrc
+#+begin_src emacs-lisp
+  (use-package envrc
+    :hook (after-init . envrc-global-mode))
 #+end_src
 *** Exec Path From Shell
 #+begin_src emacs-lisp
