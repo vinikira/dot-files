@@ -1576,7 +1576,8 @@ Elixir TS Mode
 #+begin_src emacs-lisp
   (use-package elixir-ts-mode
     :defer t
-    :hook (elixir-ts-mode . (lambda () (tempo-use-tag-list 'elixir-tempo-tags)))
+    :hook (((elixir-ts-mode heex-ts-mode elixir-mode) . eglot-ensure)
+           (elixir-ts-mode . (lambda () (tempo-use-tag-list 'elixir-tempo-tags))))
     :bind (:map elixir-ts-mode-map
                 ("C-c C-c f" . elixir-format-buffer)
                 ("C-c C-c M" . vs/elixir-map-string-to-map-atom)
