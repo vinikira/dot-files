@@ -994,6 +994,7 @@ Tree sitter auto installer for Emacs 29
 
 #+begin_src emacs-lisp
   (use-package treesit-auto
+    :after treesit
     :custom
     (treesit-auto-install 'prompt)
     :config
