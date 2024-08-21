@@ -2719,19 +2719,18 @@ LSP
     :bind ("<f6>" . darkroom-tentative-mode))
 #+end_src
 
-*** Langtool
+*** Flymake LanguageTool
 
 #+begin_src emacs-lisp
-  (use-package langtool
+  (use-package flymake-languagetool
+    :ensure t
+    :hook ((text-mode . flymake-languagetool-load)
+           (latex-mode . flymake-languagetool-load)
+           (org-mode . flymake-languagetool-load)
+           (markdown-mode . flymake-languagetool-load))
     :custom
-    (langtool-default-language "en-US")
-    (langtool-mother-tongue "pt-BR")
-    :bind
-    ("C-x w c" . langtool-check)
-    ("C-x w d" . langtool-check-done)
-    ("C-x w l" . langtool-switch-default-language)
-    ("C-x w s" . langtool-show-message-at-point)
-    ("C-x w b" . langtool-correct-buffer)
+    (flymake-languagetool-language "en-US")
+    (flymake-languagetool-check-spelling t)
     :config
     (let* ((langtool-directory (if (boundp 'private-dir) private-dir "/tmp"))
            (langtool-link
@@ -2747,10 +2746,10 @@ LSP
                           langtool-zip
                           langtool-folder
                           langtool-zip))))
-      (autoload 'find-lisp-find-files "find-lisp.el")
-      (setopt langtool-language-tool-jar
+      (require 'find-lisp)
+      (setopt flymake-languagetool-server-jar
               (car (find-lisp-find-files
-                    langtool-folder "languagetool-commandline.jar")))))
+                    langtool-folder "languagetool-server.jar")))))
 #+end_src
 
 ** Mail
