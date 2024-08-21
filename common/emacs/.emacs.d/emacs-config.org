@@ -726,7 +726,7 @@ Requires Python package =grip=.
 
 #+begin_src emacs-lisp
   (use-package grip-mode
-    :defer t)
+    :commands (grip-mode))
 #+end_src
 
 ** Project
