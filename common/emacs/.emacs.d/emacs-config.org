@@ -605,10 +605,10 @@ Abntex2 class
 #+begin_src emacs-lisp
   (use-package ox-latex
     :ensure nil
-    :after ox-latex
+    :after ox
     :custom
     ;; Source code highlight with Minted package.
-    (org-latex-listings 'minted)
+    (org-latex-src-block-backend 'minted)
     (org-latex-packages-alist '(("" "minted")))
     (org-latex-pdf-process
      '("latexmk -shell-escape -pdf -interaction=nonstopmode -file-line-error %f")
