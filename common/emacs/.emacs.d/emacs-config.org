@@ -645,6 +645,7 @@ Abntex2 class
 #+begin_src emacs-lisp
   (use-package org-present
     :unless (eq system-type 'android)
+    :commands (org-present)
     :hook
     (org-present-mode .
                       (lambda ()
