@@ -700,7 +700,7 @@ Turn code evaluation async.
 **** Org Notify
 #+begin_src emacs-lisp
   (use-package org-notify
-    :unless (or (eq system-type 'android) (eq system-type 'darwin))
+    :unless (or (eq system-type 'android))
     :after org
     :config
     (org-notify-start 60)
