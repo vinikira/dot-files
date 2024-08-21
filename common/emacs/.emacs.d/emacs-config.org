@@ -665,6 +665,7 @@ Abntex2 class
 #+begin_src emacs-lisp
   (use-package org-re-reveal
     :unless (eq system-type 'android)
+    :after ox
     :custom
     (org-re-reveal-root
      "https://cdn.jsdelivr.net/reveal.js/latest")
