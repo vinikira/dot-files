@@ -104,6 +104,14 @@ Android specific changes
     (push "/data/data/com.termux/files/usr/bin" exec-path))
 #+end_src
 
+Scratch with fundamental-mode
+
+ #+begin_src emacs-lisp
+   (setq initial-major-mode 'fundamental-mode
+         initial-scratch-message nil
+         inhibit-startup-echo-area-message user-login-name)
+ #+end_src
+
 End of file
 
 #+begin_src emacs-lisp
