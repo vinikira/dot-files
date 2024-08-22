@@ -234,6 +234,17 @@ libs with my custom functions
                                       (load custom-file 'noerror)))
 #+end_src
 
+*** Local init
+Run after emacs init hook, this file contains non-shared lisp code.
+
+#+begin_src emacs-lisp
+  (add-hook 'after-init-hook
+            (lambda ()
+              (setq local-init-file (expand-file-name "local-init.el" private-dir))
+              (when (file-exists-p local-init-file)
+                  (load local-init-file 'noerror))))
+#+end_src
+
 *** UTF-8 please!
 #+begin_src emacs-lisp
   (setopt default-process-coding-system '(utf-8-unix . utf-8-unix)
