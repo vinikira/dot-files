@@ -1680,6 +1680,7 @@ Mix.el
 **** Snippets
 #+begin_src emacs-lisp
   (with-eval-after-load 'elixir-ts-mode
+    (require 'tempo)
     (defvar elixir-tempo-tags nil
       "Tempo tags for Elixir mode")
 
@@ -1979,6 +1980,7 @@ LSP
 **** Snippets
 #+begin_src emacs-lisp
   (with-eval-after-load 'js
+    (require 'tempo)
     (defvar javascript-tempo-tags nil
       "Tempo tags for JS/TS mode.")
 
@@ -2492,6 +2494,7 @@ LSP
 **** Snippets
 #+begin_src emacs-lisp
   (with-eval-after-load 'plantuml-mode
+    (require 'tempo)
     (defvar plantuml-tempo-tags nil
       "Tempo tags for Plantuml mode")
 
