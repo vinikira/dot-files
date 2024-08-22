@@ -2410,12 +2410,6 @@ LSP
 #+end_src
 
 ** Files formats
-*** YAML
-#+begin_src emacs-lisp
-  (use-package yaml-mode
-    :defer t)
-#+end_src
-
 *** CVS
 #+begin_src emacs-lisp
   (use-package csv-mode
