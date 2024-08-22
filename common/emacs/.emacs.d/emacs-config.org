@@ -2702,7 +2702,7 @@ LSP
     :hook (tex-mode . flyspell-mode))
 
   (use-package auctex-latexmk
-    :defer auctex
+    :after auctex
     :custom (auctex-latexmk-inherit-TeX-PDF-mode t)
     :hook (auctex-mode-hook . auctex-latexmk-setup))
 #+end_src
