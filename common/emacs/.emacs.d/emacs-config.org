@@ -2793,14 +2793,18 @@ Remember to set the `user-full-name' and `user-mail-address' in custom
 file.
 
 #+begin_src emacs-lisp
-  (setopt mail-user-agent 'message-user-agent
-          mail-specify-envelope-from t
-          sendmail-program "msmtp"
-          mail-specify-envelope-from t
-          mail-envelope-from 'header
-          message-sendmail-envelope-from 'header
-          message-send-mail-function 'message-send-mail-with-sendmail
-          message-kill-buffer-on-exit t)
+  (use-package sendmail
+    :ensure nil
+    :defer t
+    :custom
+    (mail-user-agent message-user-agent)
+    (mail-specify-envelope-from t)
+    (sendmail-program "msmtp")
+    (mail-specify-envelope-from t)
+    (mail-envelope-from 'header)
+    (message-sendmail-envelope-from 'header)
+    (message-send-mail-function 'message-send-mail-with-sendmail)
+    (message-kill-buffer-on-exit t))
 #+end_src
 
 ** End of file
