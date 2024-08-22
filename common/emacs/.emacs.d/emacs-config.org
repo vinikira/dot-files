@@ -2803,7 +2803,7 @@ file.
     :ensure nil
     :defer t
     :custom
-    (mail-user-agent message-user-agent)
+    (mail-user-agent 'message-user-agent)
     (mail-specify-envelope-from t)
     (sendmail-program "msmtp")
     (mail-specify-envelope-from t)
