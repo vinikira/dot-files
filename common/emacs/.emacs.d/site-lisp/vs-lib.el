@@ -99,19 +99,6 @@ SIZE is the window size."
   (indent-according-to-mode))
 
 ;;;###autoload
-(defun vs/duplicate-current-line (&optional n)
-  "Duplicate current line, make more than 1 copy given a N argument."
-  (interactive "p")
-  (save-excursion
-    (let ((current-line (thing-at-point 'line)))
-      (when (or (= 1 (forward-line 1)) (eq (point) (point-max)))
-        (insert "\n"))
-      ;; now insert as many time as requested
-      (while (> n 0)
-        (insert current-line)
-        (setq n (- n 1))))))
-
-;;;###autoload
 (defun vs/sh-cmd-to-string (cmd)
   "Execute shell CMD and remove unnecessary newline of output."
   (string-trim
