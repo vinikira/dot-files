@@ -801,11 +801,6 @@ Requires Python package =grip=.
 #+end_src
 
 ** Third part Extensions
-*** ChatGPT Shell
-#+begin_src emacs-lisp
-  (use-package chatgpt-shell
-    :defer t)
-#+end_src
 *** Diff HL
 #+begin_src emacs-lisp
   (use-package diff-hl
@@ -857,6 +852,11 @@ Requires Python package =grip=.
 #+begin_src emacs-lisp
   (use-package git-gutter
     :hook (prog-mode . git-gutter-mode))
+#+end_src
+*** Gptel
+#+begin_src emacs-lisp
+  (use-package gptel
+    :defer t)
 #+end_src
 *** Iedit
 #+begin_src emacs-lisp
