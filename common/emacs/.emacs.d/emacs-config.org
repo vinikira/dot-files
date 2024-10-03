@@ -2421,7 +2421,7 @@ SQL Format
     (sqlformat-command 'pgformatter)
     (sqlformat-args '("-s2" "-g"))
     :bind (:map sql-mode-map
-                ("C-c C-f" . sqlformat)))
+                ("C-c C-f" . sqlformat-buffer)))
 #+end_src
 
 *** Zig
