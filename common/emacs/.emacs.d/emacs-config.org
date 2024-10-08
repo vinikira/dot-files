@@ -512,9 +512,9 @@ Capture templates
 
 #+begin_src emacs-lisp
   (defconst vs/org-capture-templates
-    `(("t" "TODO entry" entry (file+headline "agenda/personal.org" "Tasks")
+    `(("t" "TODO entry" entry (file "agenda/personal.org")
        "* TODO %?\nSCHEDULED: %^t\n%U\n%a\n")
-      ("m" "Meetings menu" entry (file+headline "agenda/personal.org" "Meetings")
+      ("m" "Meetings menu" entry (file"agenda/personal.org")
        "* TODO MEETING with %? :MEETING:\nSCHEDULED: %^t\n%U\n")
       ("r" "Reading list" entry (file+headline "reading_list.org" "Articles/Posts")
        "* TODO %?\n%U\n"
@@ -583,7 +583,7 @@ My Org structure templates.
     (org-capture-bookmark nil)
     (org-structure-template-alist vs/org-structure-template-alist)
     (org-use-speed-commands t)
-    (org-refile-use-outline-path t)
+    (org-refile-use-outline-path 'file)
     (org-outline-path-complete-in-steps nil)
     (org-refile-targets '((org-agenda-files :maxlevel . 1)))
     (org-hide-emphasis-markers t)
