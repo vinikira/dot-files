@@ -488,8 +488,9 @@ Custom variables
 #+begin_src emacs-lisp
   (use-package flyspell
     :ensure nil
-    :bind (:map flyspell-mode
-                ("C-;" . nil)))
+    :bind (:map flyspell-mode-map
+                ("C-;" . nil)
+                ("<f12>" . flyspell-auto-correct-previous-word)))
 #+end_src
 ** Org mode
 *** Constants
