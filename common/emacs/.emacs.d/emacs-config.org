@@ -1499,6 +1499,12 @@ Packages
            (prog-mode-hook . subword-mode)))
 #+end_src
 
+*** C
+#+begin_src emacs-lisp
+  (use-package cc-vars
+    :ensure nil
+    :custom ((c-ts-mode-indent-offset 4)))
+#+end_src
 *** Clojure
 Clojure mode
 
