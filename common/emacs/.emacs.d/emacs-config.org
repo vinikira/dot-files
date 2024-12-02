@@ -1,7 +1,7 @@
 # -*- org-use-property-inheritance: t; lexical-binding: t -*-
 #+title: Emacs configuration
 #+author: Vinícius Simões <vinicius.simoes95@gmail.com>
-#+startup: overview
+#+startup: show2levels
 
 * Early init
 :PROPERTIES:
