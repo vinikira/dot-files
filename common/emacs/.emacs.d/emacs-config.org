@@ -1145,7 +1145,8 @@ Experimenting Mood Line
              (window-height . 0.30)
              (side . bottom)
              (slot . -1)
-             (dedicated . t))
+             (dedicated . t)
+             (window-parameters . ((no-other-window . t))))
             ((lambda (buffer-name)
                (with-current-buffer buffer-name
                  (derived-mode-p 'compilation-mode 'comint-mode)))
@@ -1153,13 +1154,15 @@ Experimenting Mood Line
              (window-height . 0.30)
              (side . bottom)
              (slot . 0)
-             (dedicated . t))
+             (dedicated . t)
+             (window-parameters . ((no-other-window . t))))
             ("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\|Help\\)\\*"
              (display-buffer-in-side-window)
              (window-height . 0.30)
              (side . bottom)
              (slot . 1)
-             (dedicated . t))))
+             (dedicated . t)
+             (window-parameters . ((no-other-window . t))))))
 #+end_src
 
 *** Tab bar mode
