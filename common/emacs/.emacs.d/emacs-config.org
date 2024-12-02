@@ -998,7 +998,7 @@ formatters, dealing with things such as:
   (use-package transform-symbol-at-point
     :ensure (transform-symbol-at-point
              :repo "git@github.com:waymondo/transform-symbol-at-point.git")
-    :defer t)
+    :bind (("H-;" . transform-symbol-at-point)))
 #+end_src
 *** Treesit Auto
 Tree sitter auto installer for Emacs 29
