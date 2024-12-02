@@ -993,11 +993,11 @@ formatters, dealing with things such as:
     :unless (eq system-type 'android)
     :bind ("C-c t" . telega))
 #+end_src
-*** Transform String At Point
+*** Transform Symbol At Point
 #+begin_src emacs-lisp
-  (use-package transform-string-at-point
-    :ensure (transform-string-at-point
-             :repo "git@github.com:waymondo/transform-string-at-point.git")
+  (use-package transform-symbol-at-point
+    :ensure (transform-symbol-at-point
+             :repo "git@github.com:waymondo/transform-symbol-at-point.git")
     :defer t)
 #+end_src
 *** Treesit Auto
