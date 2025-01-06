@@ -1640,13 +1640,13 @@ Elixir TS Mode
         (setf (alist-get '(elixir-mode elixir-ts-mode heex-ts-mode) eglot-server-programs nil nil #'equal)
               (pcase server
                 ('(?E "ElixirLS")
-                 `(,(concat user-emacs-directory "cache/lsp/elixir-ts-mode/elixir-ls/language_server.sh")))
+                 `(,(expand-file-name (concat user-emacs-directory "cache/lsp/elixir-ts-mode/elixir-ls/language_server.sh"))))
                 ('(?L "LexicalLSP")
-                 `(,(concat user-emacs-directory "cache/lsp/elixir-ts-mode/lexical/bin/start_lexical.sh")))
+                 `(,(expand-file-name (concat user-emacs-directory "cache/lsp/elixir-ts-mode/lexical/bin/start_lexical.sh"))))
                 ('(?N "NextLS")
-                 `(,(concat user-emacs-directory "/cache/lsp/elixir-ts-mode/next-ls/next_ls")
+                 `(,(expand-file-name (concat user-emacs-directory "/cache/lsp/elixir-ts-mode/next-ls/next_ls")
                    "--stdio=true"
-                   :initializationOptions (:experimental (:completions (:enable t)))))))))
+                   :initializationOptions (:experimental (:completions (:enable t))))))))))
 
     (vs/elixir-choose-lsp '(?E "ElixirLS")))
 #+end_src
