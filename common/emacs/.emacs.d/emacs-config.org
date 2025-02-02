@@ -880,11 +880,11 @@ https://github.com/abrochard/kubel/tree/master
 *** Magit
 #+begin_src emacs-lisp
   (use-package magit
-    :ensure (:tag "v4.0.0")
+    :ensure (:tag "v4.2.0")
     :bind ("C-x g" . magit-status))
 
   (use-package transient
-    :ensure (:tag "v0.7.4")
+    :ensure (:tag "v0.8.4")
     :after magit)
 #+end_src
 *** Multiple cursors
