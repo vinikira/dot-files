@@ -1964,7 +1964,8 @@ JS TS Mode
     (add-to-list 'major-mode-remap-alist
                  '(js-mode . js-ts-mode))
     (with-eval-after-load 'js
-      (define-key js-base-mode-map (kbd "M-.") nil)))
+      (define-key js-base-mode-map (kbd "M-.") nil)
+      (define-key js-ts-mode-map (kbd "M-.") nil)))
 #+end_src
 
 TypeScript TS mode
