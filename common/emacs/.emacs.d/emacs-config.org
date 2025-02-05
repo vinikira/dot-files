@@ -880,8 +880,13 @@ https://github.com/abrochard/kubel/tree/master
 *** Magit
 #+begin_src emacs-lisp
   (use-package magit
-    :ensure (:tag "v4.2.0")
-    :bind ("C-x g" . magit-status))
+    :ensure (:tag "v4.3.0")
+    :bind ("C-x g" . magit-status)
+    :config
+    (let ((git-path "/Applications/Xcode.app/Contents/Developer/usr/bin/git"))
+      (when (and (eq system-type 'darwin)
+                 (file-exists-p git-path))
+        (setopt magit-git-executable git-path))))
 
   (use-package transient
     :ensure (:tag "v0.8.4")
