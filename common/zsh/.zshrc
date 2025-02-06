@@ -1,5 +1,11 @@
+# asdf vm
+export ASDF_DATA_DIR=~/.asdf
+# [ -f $HOME/.asdf/asdf.sh ] && source $HOME/.asdf/asdf.sh
+
+# [ -f $HOME/.asdf/completions/asdf.bash ] && source $HOME/.asdf/completions/asdf.bash
+
 # If you come from bash you might have to change your $PATH.
-export PATH=/usr/local/bin:$PATH
+export PATH=$ASDF_DATA_DIR/shims:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
@@ -54,7 +60,7 @@ ENABLE_CORRECTION="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git archlinux jsontools node npm tmux docker docker-compose asdf brew pass)
+plugins=(git archlinux jsontools node npm tmux docker docker-compose brew pass)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -77,11 +83,6 @@ export ELIXIR_EDITOR="emacsclient -r -n +__LINE__ __FILE__"
 
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# asdf vm
-[ -f $HOME/.asdf/asdf.sh ] && source $HOME/.asdf/asdf.sh
-
-[ -f $HOME/.asdf/completions/asdf.bash ] && source $HOME/.asdf/completions/asdf.bash
 
 # Nix package manager
 if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then . $HOME/.nix-profile/etc/profile.d/nix.sh; fi
