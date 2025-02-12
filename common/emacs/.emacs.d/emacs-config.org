@@ -650,7 +650,6 @@ Abntex2 class
 **** Org Bullets
 #+begin_src emacs-lisp
   (use-package org-bullets
-    :after org
     :hook (org-mode . org-bullets-mode)
     :custom (org-hide-leading-stars t))
 #+end_src
@@ -697,9 +696,9 @@ Make HTTP requests using org files!
 
 #+begin_src emacs-lisp
   (use-package verb
-    :after org
+    :bind (:map org-mode-map
+                ("C-c C-r" . verb-command-map))
     :config
-    (define-key org-mode-map (kbd "C-c C-r") verb-command-map)
     (add-to-list 'org-babel-load-languages '(verb . t)))
 #+end_src
 
