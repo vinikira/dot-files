@@ -141,7 +141,7 @@ Emacs loaddefs
 [[https://github.com/progfolio/elpaca][Elpaca package manager]] configuration.
 
 #+begin_src emacs-lisp
-  (defvar elpaca-installer-version 0.9)
+  (defvar elpaca-installer-version 0.10)
   (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
   (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
   (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
@@ -156,7 +156,7 @@ Emacs loaddefs
     (add-to-list 'load-path (if (file-exists-p build) build repo))
     (unless (file-exists-p repo)
       (make-directory repo t)
-      (when (< emacs-major-version 28) (require 'subr-x))
+      (when (<= emacs-major-version 28) (require 'subr-x))
       (condition-case-unless-debug err
           (if-let* ((buffer (pop-to-buffer-same-window "*elpaca-bootstrap*"))
                     ((zerop (apply #'call-process `("git" nil ,buffer t "clone"
@@ -598,7 +598,8 @@ My Org structure templates.
                                 (sql . t)
                                 (ruby . t)
                                 (dot . t)
-                                (latex . t)))
+                                ;; (latex . t)
+                                ))
 
     :hook
     (org-babel-after-execute . org-display-inline-images)
@@ -753,10 +754,10 @@ Requires Python package =grip=.
   (use-package project
     :ensure nil
     :bind (:map project-prefix-map
-                ("o l" . vs/project-dir-locals)
-                ("o d" . vs/project-db-file)
-                ("o a" . vs/project-api-file)
-                ("o r" . vs/project-runbook)
+                ("O l" . vs/project-dir-locals)
+                ("O d" . vs/project-db-file)
+                ("O a" . vs/project-api-file)
+                ("O r" . vs/project-runbook)
                 ("S" . vs/project-save-project-buffers))
     :custom ((project-compilation-buffer-name-function
               'project-prefixed-buffer-name))
@@ -1019,6 +1020,7 @@ Tree sitter auto installer for Emacs 29
 *** Wich Key
 #+begin_src emacs-lisp
   (use-package which-key
+    :ensure nil
     :config
     (which-key-mode))
 #+end_src
@@ -1151,7 +1153,7 @@ Experimenting Mood Line
              (slot . -1)
              (dedicated . t)
              (window-parameters . ((no-other-window . t))))
-            ((lambda (buffer-name)
+            ((lambda (buffer-name alist)
                (with-current-buffer buffer-name
                  (derived-mode-p 'compilation-mode 'comint-mode)))
              (display-buffer-in-side-window)
@@ -1600,6 +1602,7 @@ Elixir TS Mode
 #+begin_src emacs-lisp
   (use-package elixir-ts-mode
     :defer t
+    :mode ("\\.elixir\\'" "\\.ex\\'" "\\.exs\\'" "mix\\.lock")
     :hook (((elixir-ts-mode heex-ts-mode elixir-mode) . eglot-ensure)
            (elixir-ts-mode . (lambda () (tempo-use-tag-list 'elixir-tempo-tags))))
     :bind (:map elixir-ts-mode-map
@@ -1961,10 +1964,7 @@ JS TS Mode
     :config
     ;; remap major mode
     (add-to-list 'major-mode-remap-alist
-                 '(js-mode . js-ts-mode))
-    (with-eval-after-load 'js
-      (define-key js-base-mode-map (kbd "M-.") nil)
-      (define-key js-ts-mode-map (kbd "M-.") nil)))
+                 '(js-mode . js-ts-mode)))
 #+end_src
 
 TypeScript TS mode
