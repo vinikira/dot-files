@@ -1601,6 +1601,7 @@ Elixir TS Mode
 
 #+begin_src emacs-lisp
   (use-package elixir-ts-mode
+    :ensure nil
     :defer t
     :mode ("\\.elixir\\'" "\\.ex\\'" "\\.exs\\'" "mix\\.lock")
     :hook (((elixir-ts-mode heex-ts-mode elixir-mode) . eglot-ensure)
