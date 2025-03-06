@@ -2498,13 +2498,9 @@ LSP
 #+begin_src emacs-lisp
   (use-package markdown-mode
     :mode ("README\\.md$" . gfm-mode)
-    :custom (markdown-command "pandoc --quiet -f gfm -s")
+    :custom (markdown-command "multimarkdown")
     :bind (:map markdown-mode-map
-                ("C-c C-f" . markdownfmt-format-buffer)))
-
-  (use-package markdownfmt
-    :hook
-    ((gfm-mode markdown-mode) 'markdownfmt-enable-on-save))
+                ("C-c C-e" . markdown-do)))
 #+end_src
 
 *** Mermaid Mode
