@@ -12,3 +12,4 @@ _api.org
 _runbook.org
 _db.org
 .dir-locals.el
+.lexical/
