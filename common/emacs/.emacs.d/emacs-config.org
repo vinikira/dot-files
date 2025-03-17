@@ -458,13 +458,6 @@ Custom variables
     (eshell-highlight-prompt nil)
     (eshell-cd-on-directory t))
 #+end_src
-*** eshell git prompt
-#+begin_src emacs-lisp
-  (use-package eshell-git-prompt
-    :after eshell
-    :config
-    (eshell-git-prompt-use-theme 'powerline))
-#+end_src
 *** eshell syntax highlight
 #+begin_src emacs-lisp
   (use-package eshell-syntax-highlighting
