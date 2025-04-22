@@ -2,7 +2,7 @@
 
 RCLONE_REMOTE="gdrive"
 BACKUP_DIR="$RCLONE_REMOTE:Backups"
-SOURCE="$HOME/Sync"
+SOURCE="$HOME/Syncthing/Sync"
 RESTIC_REPO="$HOME/Backups"
 BACKUP_FILE="/tmp/vsimoes-backup.tar.gz"
 
