@@ -758,6 +758,17 @@ Requires Python package =grip=.
     (fset 'project-shell 'vs/vterm-in-project))
 #+end_src
 
+** Grep
+#+begin_src emacs-lisp
+  (use-package grep
+    :ensure nil
+    :defer t
+    :config
+    (when (executable-find "rg")
+      (grep-apply-setting
+       'grep-template
+       "rg --no-heading -H -uu -g <F> <R> <D>")))
+#+end_src
 ** Tempo mode
 #+begin_src emacs-lisp
   (use-package tempo
