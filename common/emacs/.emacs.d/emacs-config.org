@@ -81,7 +81,7 @@ Remove some unneeded UI elements (the user can turn back on anything they wish)
 Disable =package.el=
 
 #+begin_src emacs-lisp
-   (setq package-enable-at-startup nil)
+  (setq package-enable-at-startup nil)
 #+end_src
 
 Resizing the Emacs frame can be a terribly expensive part of changing
@@ -238,7 +238,7 @@ libs with my custom functions
 Run after emacs init hook, this file contains non-shared lisp code.
 
 #+begin_src emacs-lisp
-  (add-hook 'after-init-hook
+  (add-hook 'elpaca-after-init-hook
             (lambda ()
               (setq local-init-file (expand-file-name "local-init.el" private-dir))
               (when (file-exists-p local-init-file)
@@ -358,13 +358,17 @@ Run after emacs init hook, this file contains non-shared lisp code.
 
 *** Enable some builtin modes
 #+begin_src emacs-lisp
-  (global-auto-revert-mode 1)
-  (show-paren-mode 1)
-  (column-number-mode 1)
-  (winner-mode 1)
-  (global-so-long-mode 1)
-  (savehist-mode 1)
-  (recentf-mode 1)
+  (add-hook
+   'elpaca-after-init-hook
+   (lambda ()
+     (global-auto-revert-mode 1)
+     (show-paren-mode 1)
+     (column-number-mode 1)
+     (winner-mode 1)
+     (global-so-long-mode 1)
+     (savehist-mode 1)
+     (recentf-mode 1)
+     (pixel-scroll-precision-mode)))
 #+end_src
 
 *** Disable some builtin modes
@@ -390,6 +394,7 @@ Run after emacs init hook, this file contains non-shared lisp code.
 #+begin_src emacs-lisp
   (use-package compile
     :ensure nil
+    :commands (compile)
     :bind
     (("C-x c" . (lambda ()
                   (interactive)
@@ -406,6 +411,7 @@ Custom variables
 #+begin_src emacs-lisp
   (use-package dired
     :ensure nil
+    :commands (dired)
     :custom
     (dired-mouse-drag-files t)
     (mouse-drag-and-drop-region-cross-program t)
@@ -429,6 +435,7 @@ Custom variables
 #+begin_src emacs-lisp
   (use-package eshell
     :ensure nil
+    :commands (eshell)
     :init
     (defun vs--eshell-cat-with-syntax-highlighting (filename)
       "Like cat(1) but with sintax highlighting."
@@ -481,6 +488,7 @@ Custom variables
 #+begin_src emacs-lisp
   (use-package flyspell
     :ensure nil
+    :commands (flyspell-mode)
     :bind (:map flyspell-mode-map
                 ("C-;" . nil)
                 ("<f12>" . flyspell-auto-correct-previous-word)))
@@ -846,12 +854,12 @@ Requires Python package =grip=.
 *** Envrc
 #+begin_src emacs-lisp
   (use-package envrc
-    :hook (after-init . envrc-global-mode))
+    :hook (elpaca-after-init . envrc-global-mode))
 #+end_src
 *** Exec Path From Shell
 #+begin_src emacs-lisp
   (use-package exec-path-from-shell
-    :defer t)
+    :hook (elpaca-after-init . exec-path-from-shell))
 #+end_src
 *** Git Gutter
 #+begin_src emacs-lisp
@@ -907,8 +915,24 @@ https://github.com/abrochard/kubel/tree/master
 *** Nerd Icons
 #+begin_src emacs-lisp
   (use-package nerd-icons
+    :defer t
+    :hook (elpaca-after-init . (lambda () (require 'nerd-icons)))
     :custom
     (nerd-icons-font-family "Iosevka Nerd Font"))
+
+  (use-package nerd-icons-completion
+    :after marginalia
+    :config
+    (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
+
+  (use-package nerd-icons-corfu
+    :after corfu
+    :config
+    (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
+
+  (use-package nerd-icons-dired
+    :hook
+    (dired-mode . nerd-icons-dired-mode))
 #+end_src
 *** Password store
 #+begin_src emacs-lisp
@@ -939,8 +963,7 @@ https://github.com/abrochard/kubel/tree/master
     (dashboard-set-heading-icons t)
     (dashboard-set-file-icons t)
     (initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
-    :config
-    (dashboard-setup-startup-hook))
+    :hook (elpaca-after-init . dashboard-setup-startup-hook))
 #+end_src
 *** Reformatter
 Provides a macro that helps to standardize the way Emacs use CLI
@@ -953,7 +976,8 @@ formatters, dealing with things such as:
 - Handling file encodings correctly
 
   #+begin_src emacs-lisp
-    (use-package reformatter)
+    (use-package reformatter
+      :defer t)
   #+end_src
 *** Ripgrep
 #+begin_src emacs-lisp
@@ -987,8 +1011,7 @@ formatters, dealing with things such as:
 *** View Large Files
 #+begin_src emacs-lisp
   (use-package vlf
-    :config
-    (require 'vlf-setup))
+    :hook (elpaca-after-init . (lambda () (require 'vlf-setup))))
 #+end_src
 *** VTerm
 #+begin_src emacs-lisp
@@ -1025,20 +1048,20 @@ Tree sitter auto installer for Emacs 29
 #+begin_src emacs-lisp
   (use-package which-key
     :ensure nil
-    :config
-    (which-key-mode))
+    :hook (elpaca-after-init . which-key-mode))
 #+end_src
 *** XClip
 #+begin_src emacs-lisp
   (use-package xclip
     :if (and (eq system-type 'gnu/linux) (string= (getenv "XDG_SESSION_TYPE") "x11"))
-    :hook (after-init . xclip-mode))
+    :hook (elpaca-after-init . xclip-mode))
 #+end_src
 *** Yequake
 Emacsclient popups on desktop
 
 #+begin_src emacs-lisp
   (use-package yequake
+    :defer t
     :custom
     (yequake-frames
      '(("org-capture"
@@ -1143,8 +1166,7 @@ Experimenting Mood Line
 
 #+begin_src emacs-lisp
   (use-package mood-line
-    :init
-    (mood-line-mode 1))
+    :hook (elpaca-after-init . mood-line-mode))
 #+end_src
 
 *** Display buffer rules
@@ -1203,13 +1225,12 @@ Experimenting Mood Line
     :custom
     (vertico-cycle t)
     (enable-recursive-minibuffers t)
-    :init
-    (vertico-mode 1)
     :bind
     (:map vertico-map
           ("M-h" . vertico-directory-up))
     :hook
-    (rfn-eshadow-update-overlay . vertico-directory-tidy))
+    (rfn-eshadow-update-overlay . vertico-directory-tidy)
+    (elpaca-after-init . vertico-mode))
 #+end_src
 
 *** Orderless
@@ -1248,8 +1269,7 @@ Hide the mode line of the Embark live/completions buffers
 *** Marginalia - minibuffer annotations
 #+begin_src emacs-lisp
   (use-package marginalia
-    :init
-    (marginalia-mode 1)
+    :hook (elpaca-after-init . marginalia-mode)
     :bind (:map minibuffer-local-map
                 ("M-A" . marginalia-cycle)
                 ("M-A" . marginalia-cycle)))
@@ -1388,8 +1408,10 @@ Consult and Eglot integration
     ;; Recommended: Enable Corfu globally.  This is recommended since Dabbrev can
     ;; be used globally (M-/).  See also the customization variable
     ;; `global-corfu-modes' to exclude certain modes.
-    :init
-    (global-corfu-mode))
+    :hook (elpaca-after-init . global-corfu-mode)
+    :custom (corfu-popupinfo-delay '(1.25 . 0.5))
+    :config
+    (corfu-popupinfo-mode 1))
 #+end_src
 *** Cape
 Useful completion functions
@@ -1516,6 +1538,7 @@ Packages
 #+begin_src emacs-lisp
   (use-package cc-vars
     :ensure nil
+    :defer t
     :custom ((c-ts-mode-indent-offset 4)))
 #+end_src
 *** Clojure
@@ -1933,6 +1956,7 @@ Haskell Mode
 
 #+begin_src emacs-lisp
   (use-package haskell-mode
+    :defer t
     :custom (haskell-font-lock-symbols t)
     :hook
     (haskell-mode . haskell-indentation-mode)
@@ -1962,6 +1986,7 @@ JS TS Mode
 #+begin_src emacs-lisp
   (use-package js-ts-mode
     :ensure nil
+    :defer t
     :hook ((js-ts-mode . js-jsx-enable)
            (js-ts-mode . (lambda () (tempo-use-tag-list 'javascript-tempo-tags))))
     :custom
@@ -1977,6 +2002,7 @@ TypeScript TS mode
 #+begin_src emacs-lisp
   (use-package typescript-ts-mode
     :ensure nil
+    :defer t
     :hook ((typescript-ts-mode . js-jsx-enable)
            (typescript-ts-mode . (lambda () (tempo-use-tag-list 'javascript-tempo-tags))))
     :config
@@ -2314,6 +2340,7 @@ Python TS mode
 #+begin_src emacs-lisp
   (use-package ruby-ts-mode
     :ensure nil
+    :defer t
     :bind (:map ruby-ts-mode-map
                 ("C-c C-c f" . ruby-format-buffer)
                 ("C-c C-c z" . run-ruby))
@@ -2343,7 +2370,7 @@ Inf-ruby
 #+begin_src emacs-lisp
   (use-package inf-ruby
     :hook
-    (ruby-modek . inf-ruby-minor-mode)
+    (ruby-mode . inf-ruby-minor-mode)
     (ruby-mode . inf-ruby-switch-setup))
 #+end_src
 
@@ -2471,7 +2498,7 @@ LSP
 #+end_src
 
 ** Files formats
-*** CVS
+*** CSV
 #+begin_src emacs-lisp
   (use-package csv-mode
     :defer t
