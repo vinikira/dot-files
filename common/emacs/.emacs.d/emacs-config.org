@@ -1035,7 +1035,7 @@ formatters, dealing with things such as:
 *** Treesit Auto
 Tree sitter auto installer for Emacs 29
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package treesit-auto
     :after treesit
     :custom
