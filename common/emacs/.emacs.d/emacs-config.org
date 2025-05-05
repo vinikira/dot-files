@@ -859,7 +859,7 @@ Requires Python package =grip=.
 *** Exec Path From Shell
 #+begin_src emacs-lisp
   (use-package exec-path-from-shell
-    :hook (elpaca-after-init . exec-path-from-shell))
+    :hook (elpaca-after-init . exec-path-from-shell-initialize))
 #+end_src
 *** Git Gutter
 #+begin_src emacs-lisp
