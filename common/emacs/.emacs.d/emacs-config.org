@@ -698,9 +698,10 @@ Make HTTP requests using org files!
 
 #+begin_src emacs-lisp
   (use-package verb
-    :bind (:map org-mode-map
-                ("C-c C-r" . verb-command-map))
+    :after org
+    :defer t
     :config
+    (define-key org-mode-map (kbd "C-c C-r") verb-command-map)
     (add-to-list 'org-babel-load-languages '(verb . t)))
 #+end_src
 
