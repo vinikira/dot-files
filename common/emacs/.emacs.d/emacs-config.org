@@ -2556,6 +2556,7 @@ LSP
     :custom
     (plantuml-output-type "svg")
     (plantuml-default-exec-mode 'jar)
+    (plantuml-indent-level 4)
     :config
     (let* ((plantuml-directory (if (boundp 'private-dir) private-dir "/tmp"))
            (plantuml-target (concat plantuml-directory "/plantuml.jar")))
