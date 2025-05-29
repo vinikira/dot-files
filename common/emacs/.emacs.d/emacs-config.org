@@ -382,6 +382,14 @@ Run after emacs init hook, this file contains non-shared lisp code.
     (emacs-lock-mode 'kill))
 #+end_src
 
+*** Ask before kill a frame
+#+begin_src emacs-lisp
+  (define-advice delete-frame (:around (oldfun &rest args) confirm-frame-deletion)
+    "Confirm deleting the frame."
+    (interactive)
+    (when (y-or-n-p "Delete frame? ")
+      (apply oldfun args)))
+#+end_src
 *** Emacs Server
 #+begin_src emacs-lisp
   (require 'server)
