@@ -776,7 +776,7 @@ Requires Python package =grip=.
     (when (executable-find "rg")
       (grep-apply-setting
        'grep-template
-       "rg --no-heading -H -uu -g <F> <R> <D>")))
+       "rg --no-heading -H -uu -g '<F>' <R> <D>")))
 #+end_src
 ** Tempo mode
 #+begin_src emacs-lisp
