@@ -779,6 +779,13 @@ Requires Python package =grip=.
        'grep-template
        "rg --no-heading -H -uu -g '<F>' <R> <D>")))
 #+end_src
+** Xref
+#+begin_src emacs-lisp
+  (use-package xref
+    :ensure nil
+    :defer t
+    :custom ((xref-search-program 'ripgrep)))
+#+end_src
 ** Tempo mode
 #+begin_src emacs-lisp
   (use-package tempo
