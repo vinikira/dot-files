@@ -774,7 +774,7 @@ Requires Python package =grip=.
     :defer t
     :config
     (when (executable-find "rg")
-      (setf (nth 0 grep-files-aliases) ("all" . "*.*"))
+      (setf (nth 0 grep-files-aliases) '("all" . "*.*"))
       (grep-apply-setting
        'grep-template
        "rg --no-heading -H -uu -g '<F>' <R> <D>")))
