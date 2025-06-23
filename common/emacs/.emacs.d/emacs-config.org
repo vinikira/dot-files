@@ -2086,6 +2086,11 @@ LSP
                            "Inserts a define template for console log"
                            'javascript-tempo-tags)
 
+    (tempo-define-template "js-mode-console-log-debug"
+                           '("console.log('[DEBUG] " (p "Variable: " variable) "', " (s variable) ")")
+                           "dclg"
+                           "Inserts a define template for console log with debug info"
+                           'javascript-tempo-tags)
     (tempo-define-template "js-mode-define-require-js"
                            '("/**" > n
                              "* " > p n
