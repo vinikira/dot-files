@@ -1702,6 +1702,10 @@ Elixir TS Mode
                 ("C-c C-c j" . vs/json-to-etf)
                 ("C-c C-c D" . vs/elixir-open-dep-docs)
                 ("C-c C-c z" . run-elixir-project))
+    :init
+    ;; add major mode remap alist
+    (add-to-list 'major-mode-remap-alist
+                 '(elixir-mode . elixir-ts-mode))
     :config
     ;; reformatter
     (reformatter-define elixir-format
@@ -1718,10 +1722,6 @@ Elixir TS Mode
 
     (advice-add 'elixir-format-region :around #'vs/--set-default-directory-to-mix-project-root)
     (advice-add 'elixir-format-buffer :around #'vs/--set-default-directory-to-mix-project-root)
-
-    ;; add major mode remap alist
-    (add-to-list 'major-mode-remap-alist
-                 '(elixir-mode . elixir-ts-mode))
 
     ;; LSP config
 
@@ -2001,7 +2001,7 @@ Go TS mode
   (use-package go-ts-mode
     :ensure nil
     :defer t
-    :config
+    :init
     (add-to-list 'major-mode-remap-alist '(go-mode . go-ts-mode)))
 #+end_src
 
@@ -2047,12 +2047,12 @@ JS TS Mode
 #+begin_src emacs-lisp
   (use-package js-ts-mode
     :ensure nil
-    :defer t
+
     :hook ((js-ts-mode . js-jsx-enable)
            (js-ts-mode . (lambda () (tempo-use-tag-list 'javascript-tempo-tags))))
     :custom
     (js-indent-level 2)
-    :config
+    :init
     ;; remap major mode
     (add-to-list 'major-mode-remap-alist
                  '(js-mode . js-ts-mode)))
@@ -2063,10 +2063,9 @@ TypeScript TS mode
 #+begin_src emacs-lisp
   (use-package typescript-ts-mode
     :ensure nil
-    :defer t
     :hook ((typescript-ts-mode . js-jsx-enable)
            (typescript-ts-mode . (lambda () (tempo-use-tag-list 'javascript-tempo-tags))))
-    :config
+    :init
     ;; remap major mode
     (add-to-list 'major-mode-remap-alist
                  '(typescript-mode . typescript-ts-mode)))
@@ -2142,6 +2141,7 @@ LSP
                            "dclg"
                            "Inserts a define template for console log with debug info"
                            'javascript-tempo-tags)
+
     (tempo-define-template "js-mode-define-require-js"
                            '("/**" > n
                              "* " > p n
@@ -2410,11 +2410,12 @@ Python TS mode
     :bind (:map ruby-ts-mode-map
                 ("C-c C-c f" . ruby-format-buffer)
                 ("C-c C-c z" . run-ruby))
+    :init
+    (add-to-list 'major-mode-remap-alist '(ruby-mode . ruby-ts-mode))
     :config
     (reformatter-define ruby-format
       :program "rubocop"
-      :args '("-x" "--stderr" "-s" "--"))
-    (add-to-list 'major-mode-remap-alist '(ruby-mode . ruby-ts-mode)))
+      :args '("-x" "--stderr" "-s" "--")))
 #+end_src
 
 Flymake Ruby
