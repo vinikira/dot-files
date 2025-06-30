@@ -878,7 +878,7 @@ Requires Python package =grip=.
 *** Gptel
 #+begin_src emacs-lisp
   (use-package gptel
-    :custom ((gptel-default-mode . org-mode))
+    :custom ((gptel-default-mode org-mode))
     :defer t)
 #+end_src
 *** Iedit
