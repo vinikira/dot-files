@@ -1083,6 +1083,57 @@ Emacsclient popups on desktop
                              (skip-taskbar . t)
                              (sticky . t)))))))
 #+end_src
+** My extensions
+*** popup frames
+#+begin_src emacs-lisp
+  (defun popup-frame-delete (&rest _)
+    "Kill selected frame if it has parameter `popup-frame'."
+    (when (frame-parameter nil 'popup-frame))
+    (delete-frame))
+
+  (defmacro popup-frame-define (command title &optional delete-frame)
+    "Define interactive function to call COMMAND in frame with TITLE."
+    `(defun ,(intern (format "popup-frame-%s" command)) ()
+       (interactive)
+       (let* ((display-buffer-alist '(("")
+                                      (display-buffer-full-frame)))
+              (frame (make-frame
+                      '((title . ,title)
+                        (window-system . ns)
+                        (popup-frame . t)))))
+         (select-frame frame)
+         (switch-to-buffer " popup-frame-hidden-buffer")
+         (condition-case nil
+             (progn
+               (call-interactively ',command)
+               (delete-other-windows)
+               (when (eq system-type 'darwin)
+                 (sit-for 0.2)
+                 (start-process
+                  "osascript"
+                  nil
+                  "osascript"
+                  "-e"
+                  (format "'tell application \"System Events\"
+      tell application process \"Emacs\"
+          set windowList to windows
+          repeat with win in windowList
+              if name of win is \"%s\" then
+                  set frontmost to true
+                  perform action \"AXRaise\" of win
+                  exit repeat
+              end if
+          end repeat
+      end tell
+  end tell'" title))))
+           (error (delete-frame frame)))
+         (when ,delete-frame
+           (sit-for 0.2)
+           (delete-frame frame)))))
+
+  (popup-frame-define password-store-copy "password-store-copy-popup" t)
+  (popup-frame-define org-capture "capture-popup")
+#+end_src
 ** Appearence
 *** Fonts Families
 Uses fontaine to configure the fonts preset
