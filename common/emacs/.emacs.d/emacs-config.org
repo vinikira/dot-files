@@ -1260,20 +1260,67 @@ Experimenting Mood Line
 
 *** Tab bar mode
 #+begin_src emacs-lisp
-  (use-package tab-bar-mode
+  (use-package tab-bar
     :ensure nil
+    :defer t
     :custom
-    (tab-bar-tab-name-function  (lambda ()
-                                  (if-let ((project (project-current))
-                                           (project-name (project-name project)))
-                                      project-name
-                                    (tab-bar-tab-name-current))))
-    (tab-bar-mode t)
     (tab-bar-new-tab-choice "*scratch*")
+    (tab-bar-tab-name-function 'tab-bar-tab-name-current)
     (tab-bar-close-button-show nil)
     (tab-bar-new-button-show nil)
+    (tab-bar-auto-width nil)
+    (tab-bar-separator " ")
+    (tab-bar-format
+     '(tab-bar-format-tabs-groups
+       tab-bar-separator
+  	 tab-bar-format-add-tab))
+    (tab-bar-tab-group-format-function
+     (lambda (tab _i &optional current-p)
+       (propertize
+        (concat (funcall tab-bar-tab-group-function tab))
+        'face (if current-p 'tab-bar-tab-group-current 'tab-bar-tab-group-inactive))))
+    :init
+    (defun vs/tab-group-from-project ()
+  	"Call `tab-group` with the current project name as the group."
+  	(interactive)
+      (call-interactively #'tab-new)
+      (call-interactively #'project-switch-project)
+  	(when-let* ((proj (project-current))
+  				(name (project-name proj)))
+  	  (tab-group (format "[%s]" name))))
+
+    (defun vs/close-project-tab ()
+      "Closes the current project tab."
+      (interactive)
+      (unless (project-current)
+        (user-error "The current tab has no open projects"))
+      (project-kill-buffers)
+      (when (> (length (tab-bar-tabs)) 1)
+        (tab-bar-close-tab)))
+
+    (defun vs/tab-switch-to-group ()
+      "Prompt for a tab group and switch to its first tab.
+  Uses position instead of index field."
+      (interactive)
+      (let* ((tabs (funcall tab-bar-tabs-function)))
+  	  (let* ((groups (delete-dups (mapcar (lambda (tab)
+  										    (funcall tab-bar-tab-group-function tab))
+  										  tabs)))
+  		     (group (completing-read "Switch to group: " groups nil t)))
+  	    (let ((i 1) (found nil))
+  		  (dolist (tab tabs)
+  		    (let ((tab-group (funcall tab-bar-tab-group-function tab)))
+  			  (when (and (not found)
+  					     (string= tab-group group))
+  			    (setq found t)
+  			    (tab-bar-select-tab i)))
+  		    (setq i (1+ i)))))))
+    (tab-bar-mode 1)
     :bind
-    ("H-t" . tab-bar-select-tab-by-name))
+    ("C-x t P" . vs/tab-group-from-project)
+    ("C-x t g" . vs/tab-switch-to-group)
+    ("C-x p K" . vs/close-project-tab))
+
 #+end_src
 
 ** Completion system
@@ -1525,7 +1572,6 @@ New global keybindings
   (keymap-global-set "H-<tab>" 'tab-next)
   (keymap-global-set "H-S-<tab>" 'tab-previous)
   (keymap-global-set "M-W" 'vs/kill-ring-unfilled)
-  (keymap-global-set "C-x p K" 'vs/close-project-tab)
   (keymap-global-set "H-g o" 'vs/grep-org-files)
   (keymap-global-set "<f5>" 'project-compile)
 

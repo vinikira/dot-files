@@ -232,16 +232,6 @@ cleared."
   (insert (format-time-string "%FT%T.%3NZ")))
 
 ;;;###autoload
-(defun vs/close-project-tab ()
-  "Closes the current project tab."
-  (interactive)
-  (unless (project-current)
-    (user-error "The current tab has no open projects"))
-  (project-kill-buffers)
-  (when (> (length (tab-bar-tabs)) 1)
-    (tab-bar-close-tab)))
-
-;;;###autoload
 (defun vs/open-with-xwidget-webkit ()
   "Renders HTML buffer with xwe xwidget-webkit."
   (interactive)
