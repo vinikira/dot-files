@@ -1584,6 +1584,7 @@ Removing some default keybindings
 #+begin_src emacs-lisp
   (keymap-global-unset "C-z" t)
   (keymap-global-unset "C-x C-z" t)
+  (keymap-global-unset "C-x C-c" t)
 #+end_src
 
 ** Keybindings for specific modes
