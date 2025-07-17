@@ -60,7 +60,7 @@ ENABLE_CORRECTION="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git archlinux jsontools node npm tmux docker docker-compose brew pass)
+plugins=(git jsontools node npm tmux docker docker-compose brew pass emacs kubectl macos)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -71,9 +71,9 @@ source $ZSH/oh-my-zsh.sh
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
 export ALTERNATE_EDITOR=""
-export EDITOR="emacsclient -r -a emacs"
-export VISUAL="emacsclient -r -c -a emacs"
-export ELIXIR_EDITOR="emacsclient -r -n +__LINE__ __FILE__"
+export EDITOR="emacsclient -c -a emacs"
+export VISUAL="emacsclient -c -a emacs"
+export ELIXIR_EDITOR="emacsclient -n +__LINE__ __FILE__"
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
