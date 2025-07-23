@@ -1639,7 +1639,8 @@ Packages
   (use-package prog-mode
     :ensure nil
     :hook ((prog-mode . flyspell-prog-mode)
-           (prog-mode-hook . subword-mode)))
+           (prog-mode-hook . subword-mode)
+           (prog-mode-hook . prettify-symbols-mode)))
 #+end_src
 
 *** C
@@ -1741,6 +1742,14 @@ Elixir TS Mode
     :mode ("\\.elixir\\'" "\\.ex\\'" "\\.exs\\'" "mix\\.lock")
     :hook (((elixir-ts-mode heex-ts-mode elixir-mode) . eglot-ensure)
            (elixir-ts-mode . (lambda () (tempo-use-tag-list 'elixir-tempo-tags))))
+    :custom (prettify-symbols-alist . '((">=" . ?\u2265)
+                                        ("<=" . ?\u2264)
+                                        ("!=" . ?\u2260)
+                                        ("==" . ?\u2A75)
+                                        ("=~" . ?\u2245)
+                                        ("<-" . ?\u2190)
+                                        ("->" . ?\u2192)
+                                        ("|>" . ?\u25B7)))
     :bind (:map elixir-ts-mode-map
                 ("C-c C-c f" . elixir-format-buffer)
                 ("C-c C-c M" . vs/elixir-map-string-to-map-atom)
