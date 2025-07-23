@@ -2006,6 +2006,105 @@ Mix.el
                            '("require IEx; IEx.pry();")
                            "pry"
                            "IEx pry"
+                           'elixir-tempo-tags)
+    (tempo-define-template "elixir-ecto-schema"
+                           '(
+                             (let ((fields '())
+                                   (field-name "")
+                                   (field-type "")
+                                   (is-required ""))
+                               (while (not (string= field-name "stop"))
+                                 (setq field-name (read-string "Enter field name (or type 'stop' to finish): "))
+                                 (unless (string= field-name "stop")
+                                   (setq field-type (read-string (format "Enter type for field '%s': " field-name)))
+                                   (setq is-required (y-or-n-p (format "Is field '%s' required? " field-name)))
+                                   (push (list field-name field-type is-required) fields)))
+                               `(l
+                                 "use Ecto.Schema"
+                                 n>
+                                 "import Ecto.Changeset"
+                                 n>
+                                 "@type t :: %__MODULE__{"
+                                 n>
+                                 ,(mapconcat (lambda (field)
+                                               (format "%s: %s,"
+                                                       (nth 0 field)   ; Field name
+                                                       (pcase (nth 1 field) ; Field type
+                                                         (":string" "String.t()")
+                                                         (":id" "integer()")
+                                                         (":binary_id" "binary()")
+                                                         (":binary" "binary()")
+                                                         (":integer" "non_neg_integer()")
+                                                         (":decimal" "Decimal.t()")
+                                                         (":float" "float()")
+                                                         (":boolean" "boolean()")
+                                                         (":map" "map()")
+                                                         (":time" "Time.t()")
+                                                         (":time_usec" "Time.t()")
+                                                         (":naive_datetime" "NaiveDateTime.t()")
+                                                         (":naive_datetime_usec" "NaiveDateTime.t()")
+                                                         (":utc_datetime" "DateTime.t()")
+                                                         (":utc_datetime_usec" "DateTime.t()")
+                                                         (":duration" "Duration.t()")
+                                                         (":date" "Date.t()")
+                                                         (default "[]"))
+                                                       ))
+                                             (reverse fields)
+                                             "\n")
+                                 "inserted_at: DateTime.t(),"
+                                 n>
+                                 "updated_at: DateTime.t()"
+                                 n>
+                                 "}"
+                                 n
+                                 n>
+                                 "@required ~w("
+                                 ,(mapconcat (lambda (field)
+                                               (message "%s" (nth 2 field))
+                                               (when (nth 2 field)
+                                                 (nth 0 field)))
+                                             (reverse fields)
+                                             " ")
+                                 ")a"
+                                 n >
+                                 "@optional ~w("
+                                 ,(mapconcat (lambda (field)
+                                               (when (not (nth 2 field))
+                                                 (nth 0 field)))
+                                             (reverse fields)
+                                             " ")
+                                 ")a"
+                                 n>
+                                 n
+                                 "  schema \"\" do"
+                                 n>
+                                 ,(mapconcat (lambda (field)
+                                               (format "field :%s, %s"
+                                                       (nth 0 field)   ; Field name
+                                                       (nth 1 field)   ; Field type
+                                                       ))
+                                             (reverse fields)
+                                             "\n")
+                                 n>
+                                 "timestamps(type: :utc_datetime)"
+                                 n>
+                                 "end"
+                                 n>
+                                 n
+                                 "@doc false"
+                                 n>
+                                 "def changeset(struct, attrs) do"
+                                 n>
+                                 "struct"
+                                 n>
+                                 "|> cast(attrs, @required ++ @optional)"
+                                 n>
+                                 "|> validate_required(@required)"
+                                 n>
+                                 "end"
+                                 )))
+                           "eschema"
+                           "Ecto Schema"
                            'elixir-tempo-tags))
 #+end_src
 *** Elm
