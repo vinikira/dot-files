@@ -1303,9 +1303,11 @@ Experimenting Mood Line
   Uses position instead of index field."
       (interactive)
       (let* ((tabs (funcall tab-bar-tabs-function)))
-  	  (let* ((groups (delete-dups (mapcar (lambda (tab)
-  										    (funcall tab-bar-tab-group-function tab))
-  										  tabs)))
+  	  (let* ((groups (delete-dups
+                        (mapcar
+                         (lambda (tab)
+  						 (funcall tab-bar-tab-group-function tab))
+  					   tabs)))
   		     (group (completing-read "Switch to group: " groups nil t)))
   	    (let ((i 1) (found nil))
   		  (dolist (tab tabs)
