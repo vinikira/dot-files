@@ -1320,7 +1320,9 @@ Experimenting Mood Line
     (tab-bar-mode 1)
     :bind
     ("C-x t P" . vs/tab-group-from-project)
+    ("H-P" . vs/tab-group-from-project)
     ("C-x t g" . vs/tab-switch-to-group)
+    ("H-K" . vs/close-project-tab)
     ("C-x p K" . vs/close-project-tab))
 
 #+end_src
