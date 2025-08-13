@@ -1762,10 +1762,6 @@ Elixir TS Mode
                 ("C-c C-c j" . vs/json-to-etf)
                 ("C-c C-c D" . vs/elixir-open-dep-docs)
                 ("C-c C-c z" . run-elixir-project))
-    :init
-    ;; add major mode remap alist
-    (add-to-list 'major-mode-remap-alist
-                 '(elixir-mode . elixir-ts-mode))
     :config
     ;; reformatter
     (reformatter-define elixir-format
@@ -1816,8 +1812,7 @@ Ex Unit
     (custom-set-faces
      '(ansi-color-black ((t (:background "MediumPurple2" :foreground "MediumPurple2")))))
     :hook
-    (elixir-ts-mode . exunit-mode)
-    (elixir-mode . exunit-mode))
+    (elixir-ts-mode . exunit-mode))
 #+end_src
 
 Inf Elixir
