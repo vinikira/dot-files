@@ -1395,73 +1395,48 @@ Hide the mode line of the Embark live/completions buffers
      ("C-c m" . consult-mode-command)
      ("C-c b" . consult-bookmark)
      ("C-c k" . consult-kmacro)
-
      ("C-x M-:" . consult-complex-command)
-     ("C-x b". consult-buffer)
-     ("C-x 4 b". consult-buffer-other-window)
-     ("C-x 5 b". consult-buffer-other-frame)
+     ("C-x b" . consult-buffer)
+     ("C-x 4 b" . consult-buffer-other-window)
+     ("C-x 5 b" . consult-buffer-other-frame)
+     ;; Custom =M-#= bindings for fast register access
+     ("M-#" . consult-register-load)
+     ("M-'" . consult-register-store)
+     ("C-M-#" . consult-register)
+     ("C-M-#" . consult-register)
+     ;; Other custom bindings
+     ("M-y" . consult-yank-pop)
+     ;; M-g bindings (goto-map)
+     ("M-g e" . consult-compile-error)
+     ("M-g g" . consult-goto-line)
+     ("M-g M-g" . consult-goto-line)
+     ("M-g o" . consult-outline)
+     ("M-g m" . consult-mark)
+     ("M-g k" . consult-global-mark)
+     ("M-g i" . consult-imenu)
+     ("M-g I" . consult-imenu-multi)
+     ("M-g !" . consult-flymake)
+     ;; M-s bindings (search-map)
+     ("M-s f" . consult-find)
+     ("M-s L" . consult-locate)
+     ("M-s g" . consult-grep)
+     ("M-s G" . consult-git-grep)
+     ("M-s r" . consult-ripgrep)
+     ("M-s l" . consult-line)
+     ("M-s k" . consult-keep-lines)
+     ("M-s u" . consult-focus-lines)
+     ;; Isearch integration
+     ("M-s e" . consult-isearch-history)
+     :map isearch-mode-map
+     ("M-e" . consult-isearch-history)
+     ("M-s e" . consult-isearch-history)
+     ("M-s l" . consult-line))
+    ;; Consult narrow key
+    :custom
+    (consult-narrow-key "<"))
 #+end_src
 
-Custom =M-#= bindings for fast register access
-
-#+begin_src emacs-lisp
-  ("M-#" . consult-register-load)
-  ("M-'" . consult-register-store)
-  ("C-M-#" . consult-register)
-  ("C-M-#" . consult-register)
-#+end_src
-
-Other custom bindings
-
-#+begin_src emacs-lisp
-  ("M-y" . consult-yank-pop)
-#+end_src
-
-M-g bindings (goto-map)
-
-#+begin_src emacs-lisp
-  ("M-g e" . consult-compile-error)
-  ("M-g g" . consult-goto-line)
-  ("M-g M-g" . consult-goto-line)
-  ("M-g o" . consult-outline)
-  ("M-g m" . consult-mark)
-  ("M-g k" . consult-global-mark)
-  ("M-g i" . consult-imenu)
-  ("M-g I" . consult-imenu-multi)
-  ("M-g !" . consult-flymake)
-#+end_src
-
-M-s bindings (search-map)
-
-#+begin_src emacs-lisp
-  ("M-s f" . consult-find)
-  ("M-s L" . consult-locate)
-  ("M-s g" . consult-grep)
-  ("M-s G" . consult-git-grep)
-  ("M-s r" . consult-ripgrep)
-  ("M-s l" . consult-line)
-  ("M-s k" . consult-keep-lines)
-  ("M-s u" . consult-focus-lines)
-#+end_src
-
-Isearch integration
-
-#+begin_src emacs-lisp
-  ("M-s e" . consult-isearch-history)
-  :map isearch-mode-map
-  ("M-e" . consult-isearch-history)
-  ("M-s e" . consult-isearch-history)
-  ("M-s l" . consult-line))
-#+end_src
-
-Consult narrow key
-
-#+begin_src emacs-lisp
-  :custom
-  (consult-narrow-key "<"))
-#+end_src
-
-Consult and emabark
+;; Consult and emabark
 
 #+begin_src emacs-lisp
   (use-package embark-consult
