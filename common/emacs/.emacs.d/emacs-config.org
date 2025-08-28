@@ -1760,22 +1760,25 @@ Elixir TS Mode
       "Choose LSP SERVER for `elixir-ts-mode'."
       (interactive (list
                     (read-multiple-choice "Select the server: "
-                                          '((?E "ElixirLS")
+                                          '((?X "ExpertLS")
+                                            (?E "ElixirLS")
                                             (?L "LexicalLSP")
                                             (?N "NextLS")))))
       (with-eval-after-load 'eglot
         (setf (alist-get '(elixir-mode elixir-ts-mode heex-ts-mode) eglot-server-programs nil nil #'equal)
               (pcase server
+                ('(?X "ExpertLS")
+                 `(,(expand-file-name (concat user-emacs-directory "cache/lsp/elixir-ts-mode/expert/expert"))))
                 ('(?E "ElixirLS")
                  `(,(expand-file-name (concat user-emacs-directory "cache/lsp/elixir-ts-mode/elixir-ls/language_server.sh"))))
                 ('(?L "LexicalLSP")
                  `(,(expand-file-name (concat user-emacs-directory "cache/lsp/elixir-ts-mode/lexical/bin/start_lexical.sh"))))
                 ('(?N "NextLS")
-                 `(,(expand-file-name (concat user-emacs-directory "/cache/lsp/elixir-ts-mode/next-ls/next_ls")
+                 `(,(expand-file-name (concat user-emacs-directory "cache/lsp/elixir-ts-mode/next-ls/next_ls"))
                    "--stdio=true"
-                   :initializationOptions (:experimental (:completions (:enable t))))))))))
+                   :initializationOptions (:experimental (:completions (:enable t)))))))))
 
-    (vs/elixir-choose-lsp '(?E "ElixirLS")))
+    (vs/elixir-choose-lsp '(?X "ExpertLS")))
 #+end_src
 
 Ex Unit
