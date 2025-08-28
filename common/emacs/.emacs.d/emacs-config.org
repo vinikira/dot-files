@@ -657,7 +657,7 @@ Abntex2 class
 #+end_src
 
 **** Org Download
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package org-download
     :hook (dired-mode . org-download-enable))
 #+end_src
