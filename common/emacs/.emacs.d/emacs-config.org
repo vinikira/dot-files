@@ -327,7 +327,8 @@ Run after emacs init hook, this file contains non-shared lisp code.
 #+begin_src emacs-lisp
   (when (eq system-type 'darwin)
     (setopt mac-command-modifier 'meta
-            mac-option-modifier 'hyper))
+            mac-option-modifier 'hyper
+            tab-bar-select-tab-modifiers '(meta)))
 #+end_src
 *** Hooks for builtin modes
 #+begin_src emacs-lisp
