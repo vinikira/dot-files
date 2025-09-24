@@ -1002,7 +1002,7 @@ formatters, dealing with things such as:
     :hook (prog-mode . rainbow-mode))
 #+end_src
 *** Smartparens
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package smartparens
     :config
     (require 'smartparens-config)
