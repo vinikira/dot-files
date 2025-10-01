@@ -3,7 +3,7 @@
 ;; Author: Vinícius Simões
 ;; Maintainer: Vinícius Simões
 ;; Version: version
-;; Package-Requires: ((emacs . 28.1))
+;; Package-Requires: ((emacs "30.2"))
 ;; Homepage: homepage
 ;; Keywords: org mode emacs
 

@@ -3,7 +3,7 @@
 ;; Author: Vinícius Simões
 ;; Maintainer: Vinícius Simões
 ;; Version: 0.0.1
-;; Package-Requires: (project)
+;; Package-Requires: ((emacs "30.2"))
 ;; Homepage: homepage
 ;; Keywords: Project
 

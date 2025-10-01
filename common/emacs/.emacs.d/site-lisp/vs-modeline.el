@@ -30,6 +30,10 @@
 
 ;;; Code:
 
+(autoload 'nerd-icons-faicon "nerd-icons")
+(autoload 'nerd-icons-devicon "nerd-icons")
+(autoload 'nerd-icons-icon-for-buffer "nerd-icons")
+
 (defgroup vc-modeline nil
   "Custom group for vs-modeline."
   :group 'mode-line)

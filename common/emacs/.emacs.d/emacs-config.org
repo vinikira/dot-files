@@ -1573,9 +1573,12 @@ Removing some default keybindings
   (use-package nxml-mode
     :ensure nil
     :bind (:map nxml-mode-map
-                ("C-c C-f" . vs/format-xml-buffer)
-                ("C-c C-w" . vs/nxml-where)))
-
+                ("C-c C-f" . xml-format-buffer)
+                ("C-c C-w" . vs/nxml-where))
+    :config
+    (reformatter-define xml-format
+      :program "xmllint"
+      :args '("--nowarning" "--format" "-")))
 #+end_src
 
 ** Language server protocol (LSP)
@@ -2649,7 +2652,7 @@ Emmet Mode
     :custom
     (emmet-move-cursor-between-quotes t)
     :hook
-    ((web-mode vue-mode js-mode js-ts-mode heex-ts-mode elixir-ts-mode)
+    ((web-mode vue-mode js-mode js-ts-mode heex-ts-mode elixir-ts-mode nxml-mode)
      . emmet-mode))
 #+end_src
 

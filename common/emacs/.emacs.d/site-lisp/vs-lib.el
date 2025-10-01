@@ -3,7 +3,7 @@
 ;; Author: Vinícius Simões
 ;; Maintainer: Vinícius Simões
 ;; Version: version
-;; Package-Requires: (dependencies)
+;; Package-Requires: ((emacs "30.2"))
 ;; Homepage: homepage
 ;; Keywords: keywords
 
@@ -31,7 +31,6 @@
 ;;; Code:
 
 (require 'cl-macs)
-(require 'eieio)
 (require 'json)
 (require 'nxml-mode)
 (require 'project)
@@ -52,20 +51,6 @@ SIZE is the window size."
   (interactive)
   (call-interactively 'split-window-right t (vector size))
   (other-window 1))
-
-;;;###autoload
-(defun vs/format-xml-buffer (&optional begin end)
-  "Format xml buffer using xmllint, BEGIN region and END region."
-  (interactive "r")
-  (when (executable-find "xmllint")
-    (let ((curr-point (point)))
-      (call-shell-region
-       (if (region-active-p) begin (point-min))
-       (if (region-active-p) end (point-max))
-       "xmllint --nowarning --format -"
-       t
-       (current-buffer))
-      (goto-char curr-point))))
 
 ;;;###autoload
 (defun sudo-edit (&optional arg)
@@ -116,25 +101,6 @@ SIZE is the window size."
     (switch-to-buffer
      (get-buffer-create (format "*%s-scratch*" selected-mode)))
     (funcall (intern selected-mode))))
-
-;;;###autoload
-(defun vs/verb-graphql (rs)
-  "Transform verb RS to GraphQL request."
-  (let* ((before-body (oref rs body))
-         (splited-body (split-string before-body "\n\n"))
-         (query (nth 0 splited-body))
-         (variables (nth 1 splited-body))
-         (json-object-type 'alist)
-         (parsed-variables (if variables (json-parse-string variables) '()))
-         (new-body (json-encode `((query . ,query) (variables . ,parsed-variables)))))
-    (oset rs body new-body)
-    rs))
-
-;;;###autoload
-(defun vs/verb-remove-body-newlines (rs)
-  "Remove body newlines from RS."
-  (oset rs body (replace-regexp-in-string "\n" "" (oref rs body)))
-  rs)
 
 ;;;###autoload
 (defun vs/nxml-where (&optional copy)
@@ -253,15 +219,6 @@ cleared."
   (let ((fill-column (point-max))
         (emacs-lisp-docstring-fill-column t))
     (fill-paragraph nil region)))
-
-;;;###autoload
-(defun vs/minify (&optional begin end)
-  "Minify text from BEGIN to END."
-  (interactive "r")
-  (save-excursion
-    (replace-regexp-in-region "^\\([[:blank:]]+\\)" "" begin end)
-    (while (search-forward "\n" end t)
-      (replace-match " "))))
 
 ;;;###autoload
 (defun vs/most-touched-git-files ()

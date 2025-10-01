@@ -3,7 +3,7 @@
 ;; Author: Vinícius Simões
 ;; Maintainer: Vinícius Simões
 ;; Version: 0.0.1
-;; Package-Requires: (eglot)
+;; Package-Requires: ((emacs "30.2"))
 ;; Homepage: homepage
 ;; Keywords: LSP Eglot
 
@@ -27,6 +27,8 @@
 ;;; Commentary:
 
 ;; commentary
+
+;;; Code:
 
 (require 'dired)
 
@@ -109,9 +111,6 @@ When REINSTALL is t deletes the current server directory."
           (dired-compress-file file-path)
           (chmod file-path #o755))
       (message "Server already installed."))))
-
-;;; Code:
-
 
 (provide 'vs-lsp)
 

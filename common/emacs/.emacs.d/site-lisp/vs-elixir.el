@@ -3,7 +3,7 @@
 ;; Author: Vinícius Simões
 ;; Maintainer: Vinícius Simões
 ;; Version: 0.0.1
-;; Package-Requires: (elixir-mode project xwidget)
+;; Package-Requires: ((emacs "30.2"))
 ;; Homepage: homepage
 ;; Keywords: Elixir Emacs
 
@@ -84,29 +84,10 @@ FORCE-EXTERNAL browser if provided."
                              (split-string (string-trim (buffer-string)) "\n")))))
     (if force-external
         (browse-url url)
+      (require 'xwidget nil t)
       (if (featurep 'xwidget)
           (xwidget-webkit-browse-url url t)
         (browse-url url)))))
-
-;;;###autoload
-(defun vs/elixir-format (&optional project)
-  "Format the current elixir file. Format the whole PROJECT if flag is provided."
-  (interactive "P")
-  (unless (project-current)
-    (user-error "Not in a project"))
-  (let* ((default-directory (project-root (project-current)))
-         (mix (executable-find "mix"))
-         (file-name (buffer-file-name))
-         (buffer-name "*mix format*")
-         (args (append
-                `("elixir-format" ,buffer-name ,mix "format")
-                (if project '() `(,file-name)))))
-    (apply #'start-process args)
-    (set-process-sentinel
-     (get-buffer-process buffer-name)
-     (lambda (process _event)
-       (when (> (process-exit-status process) 0 )
-         (pop-to-buffer buffer-name))))))
 
 (provide 'vs-elixir)
 
