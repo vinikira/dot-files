@@ -1,5 +1,5 @@
 " Map leader
-let mapleader="<space>"
+let mapleader=" "
 
 " My settings
 syntax on
@@ -50,5 +50,22 @@ nmap <silent> <C-C> :silent noh<CR>
 if (has("termguicolors"))
     set termguicolors
 endif
+
+" Quickfix list
+nnoremap <C-j> :cnext<cr>
+nnoremap <C-k> :cprev<cr>
+nmap <leader>co :copen<cr>
+nmap <leader>cc :cclose<cr>
+
+" Rg instead of grep 
+if executable("rg")
+    set grepprg=rg\ --vimgrep\ --no-heading\ --line-number\ --color=never
+    set grepformat^=%f:%l:%c:%m
+end
+
+if executable("git") && !isdirectory(expand("~/.vim/pack/plugins/start/vim-polyglot"))
+    call system("git clone --depth 1 https://github.com/sheerun/vim-polyglot ~/.vim/pack/plugins/start/vim-polyglot")
+    execute "packadd vim-polyglot"
+end
 
 colorscheme desert 
