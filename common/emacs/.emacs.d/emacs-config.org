@@ -1609,8 +1609,9 @@ Packages
   (use-package prog-mode
     :ensure nil
     :hook ((prog-mode . flyspell-prog-mode)
-           (prog-mode-hook . subword-mode)
-           (prog-mode-hook . prettify-symbols-mode)))
+           (prog-mode . subword-mode)
+           (prog-mode . prettify-symbols-mode)
+           (prog-mode . electric-pair-local-mode)))
 #+end_src
 
 *** C
