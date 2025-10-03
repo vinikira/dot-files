@@ -1001,19 +1001,6 @@ formatters, dealing with things such as:
   (use-package rainbow-mode
     :hook (prog-mode . rainbow-mode))
 #+end_src
-*** Smartparens
-#+begin_src emacs-lisp :tangle no
-  (use-package smartparens
-    :config
-    (require 'smartparens-config)
-    :bind
-    (:map smartparens-mode-map
-          ("C-)" . sp-forward-slurp-sexp)
-          ("C-(" . sp-forward-barf-sexp)
-          ("C-{" . sp-backward-slurp-sexp)
-          ("C-}" . sp-backward-barf-sexp))
-    :hook   (prog-mode . smartparens-mode))
-#+end_src
 *** Switch Window
 #+begin_src emacs-lisp
   (use-package switch-window
