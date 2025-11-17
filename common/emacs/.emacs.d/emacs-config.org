@@ -238,7 +238,7 @@ libs with my custom functions
 Run after emacs init hook, this file contains non-shared lisp code.
 
 #+begin_src emacs-lisp
-  (add-hook 'elpaca-after-init-hook
+  (add-hook 'after-init-hook
             (lambda ()
               (setq local-init-file (expand-file-name "local-init.el" private-dir))
               (when (file-exists-p local-init-file)
