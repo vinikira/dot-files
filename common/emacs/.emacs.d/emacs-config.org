@@ -1090,30 +1090,12 @@ Emacsclient popups on desktop
                         (window-system . ns)
                         (popup-frame . t)))))
          (select-frame frame)
+         (select-frame-set-input-focus frame)
          (switch-to-buffer " popup-frame-hidden-buffer")
          (condition-case nil
              (progn
                (call-interactively ',command)
-               (delete-other-windows)
-               (when (eq system-type 'darwin)
-                 (sit-for 0.2)
-                 (start-process
-                  "osascript"
-                  nil
-                  "osascript"
-                  "-e"
-                  (format "'tell application \"System Events\"
-      tell application process \"Emacs\"
-          set windowList to windows
-          repeat with win in windowList
-              if name of win is \"%s\" then
-                  set frontmost to true
-                  perform action \"AXRaise\" of win
-                  exit repeat
-              end if
-          end repeat
-      end tell
-  end tell'" title))))
+               (delete-other-windows))
            (error (delete-frame frame)))
          (when ,delete-frame
            (sit-for 0.2)
