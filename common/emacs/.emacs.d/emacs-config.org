@@ -1522,6 +1522,7 @@ New global keybindings
   (keymap-global-set "H-S-<tab>" 'tab-previous)
   (keymap-global-set "M-W" 'vs/kill-ring-unfilled)
   (keymap-global-set "H-g o" 'vs/grep-org-files)
+  (keymap-global-set "H-f" 'vs/find-org-file)
   (keymap-global-set "<f5>" 'project-compile)
 
   ;; global replacements

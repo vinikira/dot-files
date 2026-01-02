@@ -270,6 +270,15 @@ cleared."
         (funcall-interactively 'consult-ripgrep org-directory)
       (funcall-interactively 'lgrep (read-string "Search for: ") "*.org" org-directory))))
 
+;;;###autoload
+(defun vs/find-org-file ()
+  "Find org file under `org-directory'."
+  (interactive)
+  (when (boundp 'org-directory)
+    (find-file
+     (completing-read "Select the file: "
+                      (directory-files-recursively org-directory ".org$")))))
+
 (provide 'vs-lib)
 
 ;;; vs-lib.el ends here
