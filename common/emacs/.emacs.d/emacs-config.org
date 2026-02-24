@@ -1742,7 +1742,7 @@ Elixir TS Mode
         (setf (alist-get '(elixir-mode elixir-ts-mode heex-ts-mode) eglot-server-programs nil nil #'equal)
               (pcase server
                 ('(?X "ExpertLS")
-                 `(,(expand-file-name (concat user-emacs-directory "cache/lsp/elixir-ts-mode/expert/expert"))))
+                 `(,(expand-file-name (concat user-emacs-directory "cache/lsp/elixir-ts-mode/expert/expert")) "--stdio"))
                 ('(?E "ElixirLS")
                  `(,(expand-file-name (concat user-emacs-directory "cache/lsp/elixir-ts-mode/elixir-ls/language_server.sh"))))
                 ('(?L "LexicalLSP")
