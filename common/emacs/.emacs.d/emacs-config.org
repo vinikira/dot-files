@@ -391,6 +391,19 @@ Run after emacs init hook, this file contains non-shared lisp code.
     (server-start))
 #+end_src
 
+*** Auth sources
+#+begin_src emacs-lisp
+  (use-package auth-source
+    :ensure nil
+    :defer t
+    :custom
+    (epg-pinentry-mode 'loopback)
+    :config
+    ;; Use `pass` as an auth-source
+    (when (file-exists-p "~/.password-store")
+      (auth-source-pass-enable)))
+#+end_src
+
 ** Compile mode
 #+begin_src emacs-lisp
   (use-package compile
