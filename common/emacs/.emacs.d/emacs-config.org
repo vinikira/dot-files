@@ -186,13 +186,13 @@ Use package integration
 #+begin_src emacs-lisp
   ;; Install use-package support
   (elpaca elpaca-use-package
-    ;; Enable :elpaca use-package keyword.
-    (elpaca-use-package-mode)
-    ;; Assume :elpaca t unless otherwise specified.
-    (setq elpaca-use-package-by-default t))
+    ;; Enable use-package :ensure support for Elpaca.
+    (elpaca-use-package-mode))
+
+  (setopt use-package-always-ensure t)
 
   ;; Block until current queue processed.
-  (elpaca-wait)
+  (elpaca-process-queues)
 #+end_src
 
 ** Base configuration
