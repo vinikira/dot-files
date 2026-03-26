@@ -190,9 +190,6 @@ Use package integration
     (elpaca-use-package-mode))
 
   (setopt use-package-always-ensure t)
-
-  ;; Block until current queue processed.
-  (elpaca-process-queues)
 #+end_src
 
 ** Base configuration
@@ -1039,8 +1036,7 @@ formatters, dealing with things such as:
 *** Transform Symbol At Point
 #+begin_src emacs-lisp
   (use-package transform-symbol-at-point
-    :ensure (transform-symbol-at-point
-             :repo "git@github.com:waymondo/transform-symbol-at-point.git")
+    :vc (:url "git@github.com:waymondo/transform-symbol-at-point.git" :rev :newest)
     :bind (("H-;" . transform-symbol-at-point)))
 #+end_src
 *** Treesit Auto
@@ -2203,7 +2199,7 @@ ESLint compilation mode
 
 #+begin_src emacs-lisp :tangle no
   (use-package compile-eslint
-    :ensure (compile-eslint :type git :host github :repo "Fuco1/compile-eslint" :branch "master")
+    :vc (:url "https://github.com/Fuco1/compile-eslint.git" :rev :newest)
     :after (:any js-mode js-ts-mode)
     :config
     (require 'compile-eslint)
