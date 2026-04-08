@@ -298,7 +298,8 @@ Run after emacs init hook, this file contains non-shared lisp code.
           `((".*" ,(concat temp-dir "/backup/") t))
           bookmark-save-flag t
           bookmark-default-file (concat temp-dir "/bookmarks")
-          read-process-output-max (* 1024 1024)
+          ;; 4MB
+          read-process-output-max (* 4 1024 1024)
           indent-tabs-mode nil
           tab-always-indent 'complete
           scroll-conservatively 101
@@ -310,14 +311,19 @@ Run after emacs init hook, this file contains non-shared lisp code.
           use-dialog-box t
           global-auto-revert-non-file-buffers t
           ediff-window-setup-function 'ediff-setup-windows-plain
-          read-extended-command-predicate #'command-completion-default-include-p)
+          read-extended-command-predicate #'command-completion-default-include-p
+          ;; Better support for files with long lines
+          bidi-paragraph-direction 'left-to-right
+          bidi-display-reordering 'left-to-right
+          bidi-inhibit-bpa t
+          redisplay-skip-fontification-on-input t
+          window-combination-resize t
+          set-mark-command-repeat-pop t
+          help-window-select t
+          ffap-machine-p-known 'reject)
 
   (fset 'yes-or-no-p 'y-or-n-p)
   (windmove-default-keybindings)
-
-  ;; Better support for files with long lines
-  (setopt bidi-paragraph-direction 'left-to-right)
-  (setopt bidi-inhibit-bpa t)
 #+end_src
 
 *** MacOS variables customizations
@@ -1516,6 +1522,7 @@ New global keybindings
   (keymap-global-set "H-=" 'maximize-window)
   (keymap-global-set "H--" 'minimize-window)
   (keymap-global-set "H-0" 'balance-windows)
+  (keymap-global-set "C-x 1" 'vs/toggle-delete-other-windows)
   (keymap-global-set "C-x 2" 'vs/split-window-below-and-switch)
   (keymap-global-set "C-x 3" 'vs/split-window-right-and-switch)
   (keymap-global-set "M-S-<up>" 'vs/move-line-up)

@@ -279,6 +279,15 @@ cleared."
      (completing-read "Select the file: "
                       (directory-files-recursively org-directory ".org$")))))
 
+;;;###autoload
+(defun vs/toggle-delete-other-windows ()
+  "Delete other windows in frame if any, or restore previous window config."
+  (interactive)
+  (if (and winner-mode
+           (equal (selected-window) (next-window)))
+      (winner-undo)
+    (delete-other-windows)))
+
 (provide 'vs-lib)
 
 ;;; vs-lib.el ends here
