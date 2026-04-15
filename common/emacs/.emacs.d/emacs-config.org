@@ -2735,6 +2735,12 @@ LSP
     :defer t)
 #+end_src
 
+*** Nix
+#+begin_src emacs-lisp
+  (use-package nix-ts-mode
+    :mode "\\.nix\\'")
+#+end_src
+
 *** Plantuml Mode
 #+begin_src emacs-lisp
   (use-package plantuml-mode
