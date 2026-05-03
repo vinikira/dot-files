@@ -3,6 +3,9 @@ eval "$(starship init zsh)"
 
 # User configuration
 
+# mise
+eval "$(mise activate zsh)"
+
 # asdf vm
 export ASDF_DATA_DIR=~/.asdf
 export PATH=$ASDF_DATA_DIR/shims:/usr/local/bin:$PATH
