@@ -17,8 +17,8 @@ return {
             local neotest = require("neotest")
             neotest.setup({
                 adapters = {
-                    require("neotest-plenary").setup({ }),
-                    require("neotest-elixir"),
+                    require("neotest-plenary").setup({}),
+                    require("neotest-elixir")({}),
                     require("neotest-zig"),
                     require("neotest-rspec"),
                     require('neotest-jest'),
@@ -28,10 +28,16 @@ return {
 
             vim.keymap.set("n", "<leader>tc", function()
                 neotest.run.run()
-            end)
+            end, { desc = "neotest - run test file" })
             vim.keymap.set("n", "<leader>tf", function()
                 neotest.run.run(vim.fn.expand("%"))
-            end)
+            end, { desc = "neotest - run current test" })
+            vim.keymap.set('n', '<leader>td', function()
+                neotest.run.run({ strategy = "dap" })
+            end, { desc = "neotest - debug test" })
+            vim.keymap.set('n', '<leader>tp', function()
+                neotest.output_panel.toggle()
+            end, { desc = "neotest - toggle output panel" })
             vim.keymap.set("n", "<leader>tt", function()
                 local file = vim.fn.expand("%:p")
                 if file == "" then return end
