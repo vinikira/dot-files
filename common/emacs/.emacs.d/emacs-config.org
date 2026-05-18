@@ -781,7 +781,7 @@ Requires Python package =grip=.
     :custom ((project-compilation-buffer-name-function
               'project-prefixed-buffer-name))
     :config
-    (fset 'project-shell 'vs/vterm-in-project))
+    (fset 'project-shell 'ghostel-project))
 #+end_src
 
 ** Grep
@@ -897,6 +897,15 @@ Requires Python package =grip=.
   (use-package gptel
     :custom ((gptel-default-mode 'org-mode))
     :defer t)
+#+end_src
+*** Ghostel
+#+begin_src emacs-lisp
+  (use-package ghostel
+    :ensure t
+    :bind ("<f7>" . ghostel)
+    :config
+    (ghostel-compile-global-mode 1)
+    (add-hook 'eshell-load-hook #'ghostel-eshell-visual-command-mode))
 #+end_src
 *** Iedit
 #+begin_src emacs-lisp
@@ -1028,7 +1037,7 @@ formatters, dealing with things such as:
     :hook (elpaca-after-init . (lambda () (require 'vlf-setup))))
 #+end_src
 *** VTerm
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package vterm
     :bind ("<f7>" . vterm-other-window)
     :custom (vterm-max-scrollback 5000))
@@ -1087,7 +1096,7 @@ Emacsclient popups on desktop
                              (sticky . t)))))))
 #+end_src
 ** My extensions
-*** popup frames
+*** Popup frames
 #+begin_src emacs-lisp
   (defun popup-frame-delete (&rest _)
     "Kill selected frame if it has parameter `popup-frame'."
@@ -1218,7 +1227,7 @@ Experimenting Mood Line
 *** Display buffer rules
 #+begin_src emacs-lisp
   (setopt display-buffer-alist
-          '(("\\(\\*.*vterm\\.*\\*?\\|\\*?e?shell\\*\\)"
+          '(("\\(\\*.*vterm\\.*\\*?\\|\\*?e?shell\\*\\|\\*ghostel\\*\\)"
              (display-buffer-in-side-window)
              (window-height . 0.30)
              (side . bottom)
