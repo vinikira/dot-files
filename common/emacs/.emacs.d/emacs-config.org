@@ -840,6 +840,15 @@ Requires Python package =grip=.
 #+end_src
 
 ** Third part Extensions
+*** Clutch
+Interactive Database Client for Emacs
+
+Repo: https://github.com/LuciusChen/clutch
+
+#+begin_src emacs-lisp
+  (use-package clutch)
+#+end_src
+
 *** Diff HL
 #+begin_src emacs-lisp
   (use-package diff-hl
