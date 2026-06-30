@@ -288,6 +288,17 @@ cleared."
       (winner-undo)
     (delete-other-windows)))
 
+;;;###autoload
+(defun vs/biome-format (extension)
+  "Format using Biome process according the EXTENSION."
+  (interactive (list
+                (completing-read "Select the file extension: "
+                                 '("html" "css" "js" "ts" "json" "graphql"))))
+  (funcall-interactively #'shell-command-on-region
+                         (region-beginning) (region-end)
+                         (format "biome format --stdin-file-path=foo.%s" extension)
+                         nil t))
+
 (provide 'vs-lib)
 
 ;;; vs-lib.el ends here
