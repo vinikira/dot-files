@@ -17,8 +17,8 @@ return {
             local neotest = require("neotest")
             neotest.setup({
                 adapters = {
-                    require("neotest-plenary").setup({}),
-                    require("neotest-elixir")({}),
+                    require("neotest-plenary"),
+                    require("neotest-elixir"),
                     require("neotest-zig"),
                     require("neotest-rspec"),
                     require('neotest-jest'),
