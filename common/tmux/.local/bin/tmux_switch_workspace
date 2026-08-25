@@ -6,7 +6,7 @@ function main() {
     local project_dir
 
     if command -v fd >/dev/null 2>&1; then
-        project_dir=$(fd ".git" $HOME/Projects --type d --hidden --exec dirname {} | fzf)
+        project_dir=$(fd "^.git$" $HOME/Projects --type d --hidden --prune --exec-batch dirname {} | fzf)
     else
         project_dir=$(find $HOME/Projects -type d -name ".git" -prune -print0 | xargs -0 dirname | fzf)
     fi
