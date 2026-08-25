@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -xe
+
+function main() {
+    local project_dir=$(find $HOME/Projects -type d -name ".git" -prune -print0 | xargs -0 dirname | fzf)
+    local project_name=$(basename $project_dir)
+    tmux new-session -d -s $project_name -c $project_dir
+    tmux switch-client -t $project_name
+}
+
+main

@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -xe
+
+function main() {
+    find $HOME/.password-store/ -type f -print0 | fzf --read0 | sed 's@.*password-store/@@; s/.gpg//' | xargs pass -c
+}
+
+main
