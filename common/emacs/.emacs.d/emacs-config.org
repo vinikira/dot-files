@@ -320,7 +320,8 @@ Run after emacs init hook, this file contains non-shared lisp code.
           window-combination-resize t
           set-mark-command-repeat-pop t
           help-window-select t
-          ffap-machine-p-known 'reject)
+          ffap-machine-p-known 'reject
+          treesit-enabled-modes t)
 
   (fset 'yes-or-no-p 'y-or-n-p)
   (windmove-default-keybindings)
