@@ -13,11 +13,11 @@ return {
             org_default_notes_file = '~/org/notes.org',
         })
         require('org-bullets').setup()
-        require('cmp').setup({
-            sources = {
-                { name = 'orgmode' }
-            }
-        })
+        -- require('cmp').setup({
+        --     sources = {
+        --         { name = 'orgmode' }
+        --     }
+        -- })
 
         require("telescope").load_extension("orgmode")
 
