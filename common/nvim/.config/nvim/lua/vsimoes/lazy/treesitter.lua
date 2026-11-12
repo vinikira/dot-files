@@ -19,7 +19,9 @@ return {
 				"html",
 			}
 
-			local group = vim.api.nvim_create_augroup("VSimoesTreesitter", { clear = true })
+			local group = vim.api.nvim_create_augroup("VSimoesTreesitter", {
+				clear = true,
+			})
 
 			vim.api.nvim_create_autocmd({ "BufEnter", "FileType" }, {
 				group = group,
@@ -40,6 +42,14 @@ return {
 					require("nvim-treesitter").install(parsers)
 				end,
 			})
+		end,
+	},
+	{
+		"Wansmer/treesj",
+		keys = { "<leader>m" },
+		dependencies = { "nvim-treesitter/nvim-treesitter" },
+		config = function()
+			require("treesj").setup({})
 		end,
 	},
 	{
